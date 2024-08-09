@@ -60,7 +60,7 @@ class Swayam:
                 if prompt_or_object.lower().endswith('.txt'):
                     prompts.append(PromptTextFile(prompt_or_object).content)
                 elif prompt_or_object.lower().endswith('.ini'):
-                    prompts.append(PromptIniFile(prompt_or_object).content.values())
+                    prompts.extend(PromptIniFile(prompt_or_object).content.values())
                 else:
                     prompts.append(prompt_or_object)
             else:
