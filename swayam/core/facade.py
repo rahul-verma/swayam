@@ -43,7 +43,7 @@ class Swayam:
         cls._SWAYAM_SINGLETON.init()
         
     @classmethod
-    def run_prompt(cls, *prompts_or_objects, model="gpt-4o-mini", temperature=0, content_only=True, display=True, **kwargs):
+    def run_prompt(cls, *prompts_or_objects, model="gpt-4o-mini", temperature=0, content_only=True, display=True, report_html=False, **kwargs):
         '''
             Runs the prompt text and returns the result.
         '''
@@ -72,12 +72,21 @@ class Swayam:
         contents_or_messages = []
         messages = []
         
+        from swayam.report.html import PromptSessionHtmlReporter
+        
+        if report_html:
+            reporter = PromptSessionHtmlReporter("session")
+        
         for prompt in prompts:
             if display:
                 print("-" * 80)
                 print("Prompt:")
                 print(prompt)
                 print("-" * 80)
+                
+            if report_html:
+                reporter.report_prompt(prompt)
+                
             messages.extend([{"role": "user", "content": prompt}])
             
             
@@ -101,8 +110,12 @@ class Swayam:
             if display:
                 print("Response:")
                 print(content)
+            if report_html:
+                reporter.report_output(response.choices[0].message)
 
             messages.extend([response.choices[0].message.to_dict()])
+            
+
         
         if display:
             print("-"* 80) 

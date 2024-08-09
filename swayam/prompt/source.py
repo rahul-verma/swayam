@@ -70,5 +70,5 @@ class PromptIniFile(IniFile):
         Initializes the FlatFileReader with the provided file path and try_relative_path flag.
         """
         from tarkash import Tarkash
-        path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPTS_ROOT_DIR), path)
+        path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
         super().__init__(path, **kwargs)

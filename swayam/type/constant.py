@@ -22,5 +22,8 @@ class SwayamOption(Enum):
         Represents all built-in configuration options for Swayam.
     '''
     
-    PROMPTS_ROOT_DIR = auto()
+    PROMPT_ROOT_DIR = auto()
+    '''Root Directory for Prompt Files'''
+    
+    REPORT_ROOT_DIR = auto()
     '''Root Directory for Prompt Files'''

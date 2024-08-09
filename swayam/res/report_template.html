@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swayam Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Top header */
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Bottom footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Middle section with treeview and content */
+        .middle-section {
+            display: flex;
+            margin: 20px;
+            height: calc(100vh - 160px); /* Adjust height based on header and footer */
+        }
+
+        /* Left treeview section */
+        .left-pane {
+            width: 20%;
+            background-color: #ffffff;
+            border-right: 2px solid #e0e0e0;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* Right content section */
+        .right-pane {
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* Content styling */
+        #details {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        /* Styling the treeview */
+        .jstree-default .jstree-anchor {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .jstree-default .jstree-clicked {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <div class="header">
+        Swayam Report
+    </div>
+
+    <!-- Middle Section -->
+    <div class="middle-section">
+        <!-- Left Pane for jsTree -->
+        <div class="left-pane">
+            <div id="jstree_demo" class="treeview"></div>
+        </div>
+
+        <!-- Right Pane for Content -->
+        <div class="right-pane">
+            <div id="details"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="footer">
+        Swayam is an Apache Licensed library free for commercial use. Copyright Rahul Verma 2024.
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    <script>
+        // JSON data embedded in the HTML as a JavaScript variable
+        const jsonData = [
+            {
+                "id": "task",
+                "text": "Task: What is the difference between LangChain and LangSmith",
+                "children": false
+            },
+            {
+                "id": "plan",
+                "text": "Plan",
+                "children": [
+                    {
+                        "id": "plan_0",
+                        "text": "Introduction",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "LangChain and LangSmith are tools used in AI language processing. This document compares and contrasts their features."
+                        }
+                    },
+                    {
+                        "id": "plan_1",
+                        "text": "Overview of LangChain",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "LangChain is a tool designed for chaining multiple language models and processing tasks."
+                        }
+                    },
+                    {
+                        "id": "plan_2",
+                        "text": "Overview of LangSmith",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "LangSmith, on the other hand, is focused on integrating and orchestrating language tasks with more customizable options."
+                        }
+                    },
+                    {
+                        "id": "plan_3",
+                        "text": "Comparison",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "While both tools aim to facilitate language processing, LangChain is more general-purpose, whereas LangSmith provides more granular control."
+                        }
+                    }
+                ]
+            }
+        ];
+
+        $(document).ready(function() {
+            // Initialize jsTree with the embedded JSON data
+            $('#jstree_demo').jstree({
+                'core': {
+                    'data': jsonData
+                },
+                "plugins": ["state", "ui"],
+                "state": { "key": "single_click" },
+                "checkbox": {
+                    "three_state": false,
+                },
+                "themes": {
+                    "stripes": true,
+                }
+            });
+
+            // Ensure single click expands nodes
+            $('#jstree_demo').on("click.jstree", ".jstree-anchor", function (e) {
+                $('#jstree_demo').jstree(true).toggle_node(e.target);
+            });
+
+            // Handle node selection
+            $('#jstree_demo').on("changed.jstree", function (e, data) {
+                if (data && data.selected && data.selected.length) {
+                    const nodeId = data.selected[0];
+                    const node = $('#jstree_demo').jstree(true).get_node(nodeId);
+
+                    let detailsContent = "";
+                    if (nodeId === "task") {
+                        detailsContent = `<h2>${node.text}</h2><p>${node.text}</p>`;
+                    } else if (node.data && node.data.content) {
+                        detailsContent = `<h2>${node.text}</h2><p>${node.data.content}</p>`;
+                    }
+
+                    $('#details').html(detailsContent).show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
