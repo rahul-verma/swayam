@@ -48,15 +48,19 @@ class Swayam:
             Runs the prompt text and returns the result.
         '''
         from openai import OpenAI
-        from swayam.prompt.source import PromptFile
+        from swayam.prompt.source import PromptTextFile, PromptIniFile
         prompts = []
         
         for prompt_or_object in prompts_or_objects:
-            if isinstance(prompt_or_object, PromptFile):
+            if isinstance(prompt_or_object, PromptTextFile):
                 prompts.append(prompt_or_object.content)
+            elif isinstance(prompt_or_object, PromptIniFile):
+                prompts.extend(prompt_or_object.content.values())
             elif isinstance(prompt_or_object, str):
                 if prompt_or_object.lower().endswith('.txt'):
-                    prompts.append(PromptFile(prompt_or_object).content)
+                    prompts.append(PromptTextFile(prompt_or_object).content)
+                elif prompt_or_object.lower().endswith('.ini'):
+                    prompts.append(PromptIniFile(prompt_or_object).content.values())
                 else:
                     prompts.append(prompt_or_object)
             else:

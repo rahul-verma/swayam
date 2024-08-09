@@ -17,12 +17,38 @@
 
 import os
 
-from tarkash import FlatFile
+from tarkash import FlatFile, IniFile
 from tarkash.type.descriptor import *
 from tarkash import log_debug
 from swayam.type.constant import SwayamOption
 
-class PromptFile(FlatFile):
+class PromptTextFile(FlatFile):
+    _path = String(immutable=True)
+    
+    """
+    Loads prompt text from a prompt text file. The file / relative file path must exist, relative to <PROJECT_ROOT_DIR>/prompts
+    
+    Args:
+        file_path (str): Path to the file. If try_relative_path is True, it is relative to the current working directory.
+        
+    Keyword Arguments:
+        try_relative_path (bool): If True, file_path is relative to the file where the call is made. Else, it is an absolute path.
+        
+    Raises:
+        IncorrectFilePathError: If the file does not exist.
+        FileIOError: If there is an error reading the file.
+    """
+ 
+    def __init__(self, path, **kwargs):
+        """
+        Initializes the FlatFileReader with the provided file path and try_relative_path flag.
+        """
+        from tarkash import Tarkash
+        path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPTS_ROOT_DIR), path)
+        super().__init__(path, **kwargs)
+        
+        
+class PromptIniFile(IniFile):
     _path = String(immutable=True)
     
     """
