@@ -81,6 +81,16 @@
             color: white;
             border-radius: 4px;
         }
+
+        pre {
+            white-space: pre-wrap; /* Wrap text in the pre block */
+            word-wrap: break-word; /* Break long words to avoid overflow */
+            overflow-wrap: break-word; /* Ensure long text is wrapped */
+            background-color: #f9f9f9; /* Match the grey background of your content area */
+            border: 1px solid #ccc; /* Optional: maintain a consistent border around the pre block */
+            padding: 10px; /* Optional: add padding for better readability */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
     </style>
 </head>
 <body>
@@ -111,52 +121,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
     <script>
-        // JSON data embedded in the HTML as a JavaScript variable
-        const jsonData = [
-            {
-                "id": "task",
-                "text": "Task: What is the difference between LangChain and LangSmith",
-                "children": false
-            },
-            {
-                "id": "plan",
-                "text": "Plan",
-                "children": [
-                    {
-                        "id": "plan_0",
-                        "text": "Introduction",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangChain and LangSmith are tools used in AI language processing. This document compares and contrasts their features."
-                        }
-                    },
-                    {
-                        "id": "plan_1",
-                        "text": "Overview of LangChain",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangChain is a tool designed for chaining multiple language models and processing tasks."
-                        }
-                    },
-                    {
-                        "id": "plan_2",
-                        "text": "Overview of LangSmith",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangSmith, on the other hand, is focused on integrating and orchestrating language tasks with more customizable options."
-                        }
-                    },
-                    {
-                        "id": "plan_3",
-                        "text": "Comparison",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "While both tools aim to facilitate language processing, LangChain is more general-purpose, whereas LangSmith provides more granular control."
-                        }
+        function generateTableFromObject(obj, skipContent) {
+            let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+            table += '<tr><th style="text-align: left;">Property</th><th style="text-align: left;">Value</th></tr>';
+
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (skipContent && key === 'content') {
+                        continue;
                     }
-                ]
+                    if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        table += `<tr><td>${key}</td><td>${Array.isArray(obj[key]) ? obj[key].join(', ') : generateTableFromObject(obj[key], false)}</td></tr>`;
+                    } else {
+                        table += `<tr><td>${key}</td><td>${obj[key]}</td></tr>`;
+                    }
+                }
             }
-        ];
+
+            table += '</table>';
+            return table;
+        }
+
+        // Function to copy content to clipboard
+        function copyToClipboard(element) {
+            const temp = $('<textarea>');
+            $('body').append(temp);
+            temp.val($(element).text()).select();
+            document.execCommand('copy');
+            temp.remove();
+            alert('Content copied to clipboard!');
+        }
+
+        // JSON data embedded in the HTML as a JavaScript variable
+        const jsonData = $$SWAYAM_JSON_DATA$$;
 
         $(document).ready(function() {
             // Initialize jsTree with the embedded JSON data
@@ -185,17 +182,28 @@
                     const nodeId = data.selected[0];
                     const node = $('#jstree_demo').jstree(true).get_node(nodeId);
 
-                    let detailsContent = "";
-                    if (nodeId === "task") {
-                        detailsContent = `<h2>${node.text}</h2><p>${node.text}</p>`;
-                    } else if (node.data && node.data.content) {
-                        detailsContent = `<h2>${node.text}</h2><p>${node.data.content}</p>`;
+                    let detailsContent = `<h2>${node.text}</h2>`;
+
+                if (typeof node.data.content === 'object' && node.data.content !== null) {
+                    if ('content' in node.data.content) {
+                        detailsContent += generateTableFromObject(node.data.content, true);
+                        detailsContent += `<h3>Content</h3>`;
+                        detailsContent += `<pre id="contentPre">${node.data.content.content}</pre>`;
+                        detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                    } else {
+                        detailsContent += generateTableFromObject(node.data.content, false);
                     }
+                } else {
+                    detailsContent += `<pre id="contentPre">${node.data.content}</pre>`;
+                    detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                }
 
                     $('#details').html(detailsContent).show();
                 }
             });
         });
+
+        
     </script>
 </body>
 </html>

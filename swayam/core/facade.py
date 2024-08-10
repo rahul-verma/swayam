@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import os, sys
 from pprint import pprint
 import typing
 from tarkash.core.adv.decorator import singleton
@@ -23,12 +23,20 @@ from tarkash.core.adv.decorator import singleton
 @singleton
 class _SwayamSingleton:
     
-    def init(self):
-        pass
+    def init(self):        
+        self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
     
+    def __join_paths(self, *paths):
+                return os.path.abspath(os.path.join(*paths))
+        
     def run_prompt(self, prompt_text):
         return prompt_text
+    
+    def get_swayam_root_dir(self):
+        return self.__root_dir
 
+    def get_swayam_res_path(self, file_name):
+        return self.__join_paths(self.get_swayam_root_dir(), "res", file_name)
 
 class Swayam:
     '''
@@ -43,7 +51,11 @@ class Swayam:
         cls._SWAYAM_SINGLETON.init()
         
     @classmethod
-    def run_prompt(cls, *prompts_or_objects, model="gpt-4o-mini", temperature=0, content_only=True, display=True, report_html=False, **kwargs):
+    def _get_swayam_res_path(cls, file_name):
+        return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
+        
+    @classmethod
+    def run_prompt(cls, *prompts_or_objects, model="gpt-4o-mini", temperature=0, content_only=True, display=True, report_html=False, show_in_browser=True, **kwargs):
         '''
             Runs the prompt text and returns the result.
         '''
@@ -119,6 +131,9 @@ class Swayam:
         
         if display:
             print("-"* 80) 
+        if report_html:
+            if show_in_browser:
+                reporter.show_in_browser()
         
         if len(contents_or_messages) == 1:
             return contents_or_messages[0]     

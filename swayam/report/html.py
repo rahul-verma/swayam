@@ -76,17 +76,40 @@ class PromptSessionHtmlReporter:
         Initializes the PromptSessionReporter with the provided name.
         """
         from tarkash import Tarkash
+        
+        # For JSON Data
+        from swayam import Swayam
         from swayam.type.constant import SwayamOption
         self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), name)
         self.__json_path = self.__base_path + "/json/data.json"
-        print(self.__json_path)
+        
+        # For HTML Report
+        from tarkash.type.constant import TarkashOption
+        
+        self.__html_report_path = self.__base_path + "/report.html"
+        template_path = Swayam._get_swayam_res_path("report_template.html")
+        self.__template = ""
+        with open(template_path, 'r') as f:
+            self.__template = f.read()
+        self.__res_path = os.path.join(os.path.realpath(__file__), "..")
         self.__json_list = [
             
         ]
         self.__counter = -1
+        self._children_counter = -1
+        self.__update_report()
+
+            
+    def __update_report(self):
+        json_str = json.dumps(self.__json_list, indent=4)
         with open(self.__json_path, 'w') as f:
-            s = json.dumps(self.__json_list)
-            f.write(s)
+            
+            f.write(json_str)
+        
+        with open(self.__html_report_path, 'w') as f:
+            html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
+            f.write(html)
+        
         
     def report_prompt(self, prompt):
         """
@@ -96,6 +119,7 @@ class PromptSessionHtmlReporter:
             prompt (Prompt): The prompt to report.
         """
         self.__counter += 1
+        self._children_counter +=1
         self.__json_list.append(
         {
                 "id": "prompt_" + str(self.__counter),
@@ -112,14 +136,12 @@ class PromptSessionHtmlReporter:
                     }
                 ]
         })
-        with open(self.__json_path, 'w') as f:
-            s = json.dumps(self.__json_list)
-            f.write(s)
+        self.__update_report()
         
     def report_output(self, message):
         children = []
         children.append({
-                        "id": "message",
+                        "id": "message_" + str(self._children_counter),
                         "text": "Response Message",
                         "icon": "jstree-file",
                         "data": {
@@ -128,15 +150,20 @@ class PromptSessionHtmlReporter:
                     })
         
         children.append({
-                        "id": "content",
+                        "id": "content_" + str(self._children_counter),
                         "text": "Response Content",
                         "icon": "jstree-file",
                         "data": {
                             "content": message.content
                         }
                     })
-        self.__json_list[-1]["children"].append(children)
-        with open(self.__json_path, 'w') as f:
-            s = json.dumps(self.__json_list)
-            f.write(s)
+        self.__json_list[-1]["children"].extend(children)        
+        self.__update_report()
         
+        
+    def show_in_browser(self):
+        """
+        Opens the report in the default browser.
+        """
+        import webbrowser
+        webbrowser.open("file://" + self.__html_report_path)
