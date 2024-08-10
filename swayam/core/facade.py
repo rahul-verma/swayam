@@ -101,7 +101,9 @@ class Swayam:
                 
             messages.extend([{"role": "user", "content": prompt}])
             
-            
+            if report_html:
+                reporter.report_context(messages)
+
             if display:
                 print("Messages:")
                 pprint(messages)
@@ -126,8 +128,6 @@ class Swayam:
                 reporter.report_output(response.choices[0].message)
 
             messages.extend([response.choices[0].message.to_dict()])
-            
-
         
         if display:
             print("-"* 80) 

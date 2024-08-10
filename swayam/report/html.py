@@ -81,7 +81,9 @@ class PromptSessionHtmlReporter:
         from swayam import Swayam
         from swayam.type.constant import SwayamOption
         self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), name)
+        os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
+        os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
         from tarkash.type.constant import TarkashOption
@@ -92,18 +94,24 @@ class PromptSessionHtmlReporter:
         with open(template_path, 'r') as f:
             self.__template = f.read()
         self.__res_path = os.path.join(os.path.realpath(__file__), "..")
-        self.__json_list = [
-            
+        self.__json_data = [
+                                {
+                                    "id": "node_1",
+                                    "text": "Default Prompt Executor",
+                                    "children": []
+                                }
         ]
         self.__counter = -1
-        self._children_counter = -1
+        self.__context_counter = -1
+        self.__response_counter = -1
         self.__update_report()
-
+        
+    def __get_executor_node(self):
+        return self.__json_data[0]["children"]
             
     def __update_report(self):
-        json_str = json.dumps(self.__json_list, indent=4)
+        json_str = json.dumps(self.__json_data, indent=4)
         with open(self.__json_path, 'w') as f:
-            
             f.write(json_str)
         
         with open(self.__html_report_path, 'w') as f:
@@ -119,11 +127,10 @@ class PromptSessionHtmlReporter:
             prompt (Prompt): The prompt to report.
         """
         self.__counter += 1
-        self._children_counter +=1
-        self.__json_list.append(
+        self.__get_executor_node().append(
         {
                 "id": "prompt_" + str(self.__counter),
-                "text": "Prompt::" + str(self.__counter),
+                "text": "Prompt::" + str(self.__counter + 1),
                 "data": {
                             "content": prompt
                         },
@@ -138,10 +145,39 @@ class PromptSessionHtmlReporter:
         })
         self.__update_report()
         
+    def report_context(self, messages):
+        self.__context_counter += 1
+        children = []
+        self.__chat_context_counter = 0
+        output = []
+        for message in messages:
+            self.__chat_context_counter += 1
+            child = {
+                        "id": "chat_context_msg_" + str(self.__chat_context_counter),
+                        "text": "Message:: " + str(self.__chat_context_counter),
+                        "icon": "jstree-file",
+                        "data": {"content": message}
+                    }
+            output.append(child)
+            
+            
+        children.append({
+                        "id": "chat_context_" + str(self.__context_counter),
+                        "text": "Chat Context",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "This is the sequences of messages sent to the LLM for context management."
+                        },
+                        "children": output
+                    })
+        self.__get_executor_node()[-1]["children"].extend(children)        
+        self.__update_report()
+        
     def report_output(self, message):
+        self.__response_counter += 1
         children = []
         children.append({
-                        "id": "message_" + str(self._children_counter),
+                        "id": "message_" + str(self.__response_counter),
                         "text": "Response Message",
                         "icon": "jstree-file",
                         "data": {
@@ -150,14 +186,14 @@ class PromptSessionHtmlReporter:
                     })
         
         children.append({
-                        "id": "content_" + str(self._children_counter),
+                        "id": "content_" + str(self.__response_counter),
                         "text": "Response Content",
                         "icon": "jstree-file",
                         "data": {
                             "content": message.content
                         }
                     })
-        self.__json_list[-1]["children"].extend(children)        
+        self.__get_executor_node()[-1]["children"].extend(children)       
         self.__update_report()
         
         
