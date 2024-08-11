@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -20,10 +20,10 @@ import os
 from tarkash import FlatFile, IniFile
 from tarkash.type.descriptor import *
 from tarkash import log_debug
-from swayam.type.constant import SwayamOption
+from swayam.core.constant import SwayamOption
 
 class PromptTextFile(FlatFile):
-    _path = String(immutable=True)
+    _path = DString(immutable=True)
     
     """
     Loads prompt text from a prompt text file. The file / relative file path must exist, relative to <PROJECT_ROOT_DIR>/prompts
@@ -39,17 +39,17 @@ class PromptTextFile(FlatFile):
         FileIOError: If there is an error reading the file.
     """
  
-    def __init__(self, path, **kwargs):
+    def __init__(self, path:str, **kwargs):
         """
         Initializes the FlatFileReader with the provided file path and try_relative_path flag.
         """
-        from tarkash import Tarkash
-        path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPTS_ROOT_DIR), path)
+        from swayam import Swayam
+        path = os.path.join(Swayam.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
         super().__init__(path, **kwargs)
         
         
 class PromptIniFile(IniFile):
-    _path = String(immutable=True)
+    _path = DString(immutable=True)
     
     """
     Loads prompt text from a prompt text file. The file / relative file path must exist, relative to <PROJECT_ROOT_DIR>/prompts
@@ -65,7 +65,7 @@ class PromptIniFile(IniFile):
         FileIOError: If there is an error reading the file.
     """
  
-    def __init__(self, path, **kwargs):
+    def __init__(self, path:str, **kwargs):
         """
         Initializes the FlatFileReader with the provided file path and try_relative_path flag.
         """

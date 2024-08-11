@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -16,56 +16,8 @@
 # limitations under the License.
 
 import os
-
-"""
-[
-            {
-                "id": "task",
-                "text": "Task: What is the difference between LangChain and LangSmith",
-                "children": false
-            },
-            {
-                "id": "plan",
-                "text": "Plan",
-                "children": [
-                    {
-                        "id": "plan_0",
-                        "text": "Introduction",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangChain and LangSmith are tools used in AI language processing. This document compares and contrasts their features."
-                        }
-                    },
-                    {
-                        "id": "plan_1",
-                        "text": "Overview of LangChain",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangChain is a tool designed for chaining multiple language models and processing tasks."
-                        }
-                    },
-                    {
-                        "id": "plan_2",
-                        "text": "Overview of LangSmith",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "LangSmith, on the other hand, is focused on integrating and orchestrating language tasks with more customizable options."
-                        }
-                    },
-                    {
-                        "id": "plan_3",
-                        "text": "Comparison",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "While both tools aim to facilitate language processing, LangChain is more general-purpose, whereas LangSmith provides more granular control."
-                        }
-                    }
-                ]
-            }
-        ]
-"""
-
 import json
+
 class PromptSessionHtmlReporter:
     """
     Reports the prompt session details to a file.
@@ -75,19 +27,16 @@ class PromptSessionHtmlReporter:
         """
         Initializes the PromptSessionReporter with the provided name.
         """
-        from tarkash import Tarkash
+        from swayam import Swayam
+        from swayam.core.constant import SwayamOption
         
         # For JSON Data
-        from swayam import Swayam
-        from swayam.type.constant import SwayamOption
-        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), name)
+        self.__base_path = os.path.join(Swayam.get_option_value(SwayamOption.REPORT_ROOT_DIR), name)
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
-        from tarkash.type.constant import TarkashOption
-        
         self.__html_report_path = self.__base_path + "/report.html"
         template_path = Swayam._get_swayam_res_path("report_template.html")
         self.__template = ""

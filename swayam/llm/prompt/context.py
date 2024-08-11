@@ -15,15 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-import os
-import sys
-
-def __join_paths(*paths):
-    return os.path.abspath(os.path.join(*paths))
-
-__root_dir = __join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
-sys.path.insert(0, __root_dir)
-
-from swayam.core.facade import Swayam
-from swayam.llm.prompt.file import PromptTextFile, PromptIniFile
+class PromptContext:
+    
+    def __init__(self, messages=[]):
+        self.__messages = messages
+        
+    @property
+    def messages(self):
+        return self.__messages
+        
+    def append_prompt(self, prompt):
+        self.__messages.append(prompt.message)
+        
+    def append_assistant_response(self, *messages):
+        for message in messages:
+            self.__messages.append(message)
+        
+    def reset(self):
+        self.__messages = []

@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,15 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enum import Enum, auto
+class LLMResponse:
+    pass
 
-class SwayamOption(Enum):
-    '''
-        Represents all built-in configuration options for Swayam.
-    '''
-    
-    PROMPT_ROOT_DIR = auto()
-    '''Root Directory for Prompt Files'''
-    
-    REPORT_ROOT_DIR = auto()
-    '''Root Directory for Prompt Files'''
+class ContentResponse:
+    pass
+
+class FunctionResponse:
+    pass
+
+class ToolResponse:
+    pass

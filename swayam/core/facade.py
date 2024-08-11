@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -18,12 +18,15 @@
 import os, sys
 from pprint import pprint
 import typing
-from tarkash.core.adv.decorator import singleton
+
+from tarkash import singleton
 
 @singleton
 class _SwayamSingleton:
     
-    def init(self):        
+    def init(self):  
+        from tarkash import Tarkash
+        Tarkash.init()      
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
     
     def __join_paths(self, *paths):
@@ -43,7 +46,7 @@ class Swayam:
         Swayam is the facade of Swayam framework.
         Contains static methods which wrapper an internal singleton class for easy access to top-level Swayam functions.
     '''
-    _TARKASH_SINGLETON = None
+    _Swayam_SINGLETON = None
     
     @classmethod
     def init(cls):
@@ -55,86 +58,29 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def run_prompt(cls, *prompts_or_objects, model="gpt-4o-mini", temperature=0, content_only=True, display=True, report_html=False, show_in_browser=True, **kwargs):
-        '''
-            Runs the prompt text and returns the result.
-        '''
-        from openai import OpenAI
-        from swayam.prompt.source import PromptTextFile, PromptIniFile
-        prompts = []
+    def execute(cls, *prompts_or_objects, display:bool =True, same_context:bool =True):
+        """
+        A simple facade to default LLM Model, resulting in one or more prompts being executed.
         
-        for prompt_or_object in prompts_or_objects:
-            if isinstance(prompt_or_object, PromptTextFile):
-                prompts.append(prompt_or_object.content)
-            elif isinstance(prompt_or_object, PromptIniFile):
-                prompts.extend(prompt_or_object.content.values())
-            elif isinstance(prompt_or_object, str):
-                if prompt_or_object.lower().endswith('.txt'):
-                    prompts.append(PromptTextFile(prompt_or_object).content)
-                elif prompt_or_object.lower().endswith('.ini'):
-                    prompts.extend(PromptIniFile(prompt_or_object).content.values())
-                else:
-                    prompts.append(prompt_or_object)
-            else:
-                raise TypeError(f"Invalid type for prompt: {type(prompt_or_object)}")
-    
+        The goal is to provide an equivalent of a simple web interface like ChatGPT in API-level experience.
         
-        client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+        The default LLM Model is picked up from configuration.
         
-        contents_or_messages = []
-        messages = []
+        This method is meant for simple usage where a user wants to execute one or more prompts.
         
-        from swayam.report.html import PromptSessionHtmlReporter
+        The call supports multiple prompts and other objects to be provided in any sequence. Following are the supported object types:
+        1. Prompt as a string.
+        2. Prompt as a dictionary with role and content keys.
+        3. Prompt as a File. The file names (Text/INI) (or file paths relative to the <ROOT>Prompt directory) can be provided. 
         
-        if report_html:
-            reporter = PromptSessionHtmlReporter("session")
-        
-        for prompt in prompts:
-            if display:
-                print("-" * 80)
-                print("Prompt:")
-                print(prompt)
-                print("-" * 80)
-                
-            if report_html:
-                reporter.report_prompt(prompt)
-                
-            messages.extend([{"role": "user", "content": prompt}])
-            
-            if report_html:
-                reporter.report_context(messages)
+        Args:
+            *prompts_or_objects (str, List, Dict): The prompts to be executed
+            display (bool, optional): If True, the prompts and responses are displayed. Defaults to True.
+            same_context (bool, optional): If True, the same context is used for all prompts. Defaults to True.
 
-            if display:
-                print("Messages:")
-                pprint(messages)
-                print("-" * 80)
-            response = client.chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=temperature, # this is the degree of randomness of the model's output
-                **kwargs
-            )
-            content = response.choices[0].message.content
-            if content_only:
-                contents_or_messages.append(content)
-            else:
-                message = response.choices[0].message
-                contents_or_messages.append(message)
-
-            if display:
-                print("Response:")
-                print(content)
-            if report_html:
-                reporter.report_output(response.choices[0].message)
-
-            messages.extend([response.choices[0].message.to_dict()])
-        
-        if display:
-            print("-"* 80) 
-        if report_html:
-            if show_in_browser:
-                reporter.show_in_browser()
-        
-        if len(contents_or_messages) == 1:
-            return contents_or_messages[0]     
-        return contents_or_messages
+        Returns:
+            (str, List): Returns a string or a list of strings as the output of the LLM.
+        """
+        from swayam.llm.agent import Agent
+        agent = Agent(display=display, same_context=same_context)
+        return agent.execute(*prompts_or_objects)
