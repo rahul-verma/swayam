@@ -33,7 +33,7 @@ class Agent(TarkashObject):
     """
     Swayam Agent to talk with LLMs.
     """
-    def __init__(self, name:str = "Swayam Agent", provider:str = None, model:str = None, temperature=0, display=True, report_html=False, show_in_browser=True, **kwargs):
+    def __init__(self, name:str = "Swayam Agent", provider:str = None, model:str = None, temperature=0, display=False, report_html=True, show_in_browser=True, **kwargs):
         self.__model_config = ModelConfig(provider=provider, model=model)
         self.__prompt_config = PromptConfig(temperature=temperature, **kwargs)
         
