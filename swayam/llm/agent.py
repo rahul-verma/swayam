@@ -110,7 +110,7 @@ class Agent(TarkashObject):
         from .listener import AgentListener
         listener = AgentListener(display=self._display, report_html=self._report_html, show_in_browser=self._show_in_browser)
 
-        log_info(f"Executing {len(nodes)} LLM node(s) (same_context={same_context})")        
+        log_debug(f"Executing {len(nodes)} LLM node(s) (same_context={same_context})")        
         output_list = []
         for node in nodes:
             if not same_context:
@@ -118,7 +118,7 @@ class Agent(TarkashObject):
             from .node import PromptNode
             if isinstance(node, PromptNode):
                 prompt_sequence = node.wrapped_object
-                log_debug(f"Found PromptSequence Node (children = {len(prompt_sequence)})", self)
+                log_debug(f"Found PromptSequence Node (children = {len(prompt_sequence)})")
                 #print(node.wrapped_object.describe())
                 if not same_context:
                     context.reset()

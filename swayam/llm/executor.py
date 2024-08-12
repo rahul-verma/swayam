@@ -17,7 +17,7 @@
 
 import os
 from pprint import pprint
-from tarkash import TarkashObject, log_info
+from tarkash import TarkashObject, log_info, log_debug
 from .prompt.response import LLMResponse
 
 class PromptExecutor(TarkashObject):    
@@ -60,7 +60,7 @@ class PromptExecutor(TarkashObject):
         output_messages = []
 
         for prompt in prompt_sequence:
-            log_info("Executing prompt...")
+            log_debug("Executing prompt...")
             self.listener.report_prompt(prompt)
             context.append_prompt(prompt)
             self.listener.report_context(context)

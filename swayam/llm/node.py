@@ -51,7 +51,11 @@ class PromptNode(AgentNode):
     @classmethod
     def _load(clas, raw_node, nodes) -> None:
         from .prompt.request import Prompt        
+        
+        # Depending upon the type of raw node, the loaded_prompt_sequence will itself be a Prompt or a PromptSequence
         loaded_prompt_sequence = Prompt.load_prompt_object(raw_node)._get_first_child()
+        if isinstance (loaded_prompt_sequence, Prompt):
+            loaded_prompt_sequence = PromptSequence(loaded_prompt_sequence)
         nodes.append(PromptNode(loaded_prompt_sequence))
     
     

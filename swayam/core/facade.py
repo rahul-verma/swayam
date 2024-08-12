@@ -82,5 +82,5 @@ class Swayam:
             (str, List): Returns a string or a list of strings as the output of the LLM.
         """
         from swayam.llm.agent import Agent
-        agent = Agent(display=display, same_context=same_context)
-        return agent.execute(*prompts_or_objects)
+        agent = Agent(display=display)
+        return agent.execute(*prompts_or_objects, same_context=same_context)
