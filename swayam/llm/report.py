@@ -20,6 +20,7 @@ import json
 import webbrowser
 from abc import ABC, abstractmethod
 from pprint import pprint
+import copy
 
 from .prompt.request import Prompt
 from .prompt.context import PromptContext
@@ -85,7 +86,16 @@ class ConsoleReporter(Reporter):
         """
         print("-" * 80)
         print("Prompt:", f"(Role: {prompt.role})")
-        print(prompt.content)
+        
+        ## Should not print image
+        content = prompt.content
+        if type(content) == list:
+            print(prompt.reportable_text)
+            for item in prompt.reportable_content:
+                if item["type"] == "image_url":
+                    print(item["local_path"])
+        else:
+            print(prompt.content)
         print("-" * 80)
 
     def report_context(self, context:PromptContext) -> None:
@@ -177,22 +187,38 @@ class HtmlReporter(Reporter):
             prompt (Prompt): The prompt to report.
         """
         self.__counter += 1
-        self.__get_executor_node().append(
-        {
+        prompt_node = {
                 "id": "prompt_" + str(self.__counter),
                 "text": "Prompt::" + str(self.__counter + 1),
                 "data": {
-                            "content": prompt.content
+                            "content": prompt.reportable_text
                         },
-                "children": [
-                    {
-                        "id": "prompt_text_" + str(self.__counter),
-                        "text": "Prompt",
+                "children": []
+        }
+        
+        reportable_content = prompt.reportable_content
+        if type(prompt.reportable_content)  != list:
+            reportable_content = [reportable_content]
+            
+        sub_counter = 0
+        for item in reportable_content:
+            sub_counter += 1
+            if item["type"] == "image_url":
+                prompt_node["children"].append({
+                        "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
+                        "text": "Image Upload",
                         "icon": "jstree-file",
-                        "data": {"content": prompt.content}
-                    }
-                ]
-        })
+                        "data": {"content": item["local_path"]}
+            })
+            else:
+                prompt_node["children"].append({
+                            "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
+                            "text": "Prompt",
+                            "icon": "jstree-file",
+                            "data": {"content": item["text"]}
+                })
+                        
+        self.__get_executor_node().append(prompt_node)
         self.__update_report()
         
     def report_context(self, context:PromptContext) -> None:
@@ -206,7 +232,7 @@ class HtmlReporter(Reporter):
         children = []
         self.__chat_context_counter = 0
         output = []
-        for message in context.messages:
+        for message in context.reportable_messages:
             self.__chat_context_counter += 1
             child = {
                         "id": "chat_context_msg_" + str(self.__chat_context_counter),
@@ -215,6 +241,8 @@ class HtmlReporter(Reporter):
                         "data": {"content": message}
                     }
             output.append(child)
+            
+            
             
             
         children.append({

@@ -19,13 +19,19 @@ class PromptContext:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
+        self.__reportable_messages = []
         
     @property
     def messages(self):
         return self.__messages
+    
+    @property
+    def reportable_messages(self):
+        return self.__reportable_messages
         
     def append_prompt(self, prompt):
         self.__messages.append(prompt.message)
+        self.__reportable_messages.append(prompt.reportable_message)
         
     def append_assistant_response(self, *messages):
         for message in messages:

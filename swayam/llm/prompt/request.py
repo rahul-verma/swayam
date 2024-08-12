@@ -15,16 +15,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 from typing import Any
 from tarkash import log_debug
+from tarkash import ImageFile
 
 class Prompt:
     
-    def __init__(self, *, role, content) -> Any:
-        self.__message = {
-            "role": role,
-            "content": content
-        }
+    def __init__(self, *, role, content, image=None) -> Any:
+        if image is None:
+            self.__message = {
+                "role": role,
+                "content": content
+            }
+            self.__reportable_message = self.__message
+        else:
+            self.__image_path = image.full_path
+            self.__image = image
+            self.__message = {"role": "user", "content": [
+                                {"type": "text", "text": content},
+                                {"type": "image_url", "image_url": {"url": image.as_data_url}}
+                            ]}
+            self.__reportable_message = deepcopy(self.__message)
+            temp_content = self.__reportable_message["content"]
+            self.__reportable_text = temp_content
+            if type(temp_content) == list:
+                for item in temp_content:
+                    if item["type"] == "text":
+                        self.__reportable_text = item["text"]
+                    elif item["type"] == "image_url":
+                        prefix = self.__image.as_data_url.split(",")[0]
+                        item["description"] = f"{prefix}, <Base64 encoded content of {self.__image_path}>."
+                        item["local_path"] = self.__image_path
+                        del item["image_url"]
         
     @property
     def message(self):
@@ -37,6 +60,22 @@ class Prompt:
     @property
     def role(self):
         return self.__message["role"]
+    
+    @property
+    def image_path(self):
+        return self.__image_path
+    
+    @property
+    def reportable_text(self):
+        return self.__reportable_text
+    
+    @property
+    def reportable_content(self):
+        return self.__reportable_message["content"]
+    
+    @property
+    def reportable_message(self):
+        return self.__reportable_message   
     
     @classmethod
     def load_prompt_object(cls, input_object, sequence=None):
@@ -78,6 +117,8 @@ class Prompt:
                 return Prompt.load_prompt_object(list(PromptIniFile(input_object).content.values()), sequence)
             else:
                 sequence.append(UserPrompt(input_object))
+        elif isinstance(input_object, Prompt):
+            sequence.append(input_object)
         else:
             raise TypeError(f"Invalid PromptNode type: {type(input_object)}")
         
@@ -90,8 +131,17 @@ class SystemPrompt(Prompt):
         super().__init__(role="system", content=content)
 
 class UserPrompt(Prompt):
-    def __init__(self, content:str) -> Any:
-        super().__init__(role="user", content=content)
+    def __init__(self, content:str, image:str=None) -> Any:
+        image = ImageFile(image) if image else None
+        super().__init__(role="user", content=content, image=image)
+        
+    @property
+    def image(self):
+        return self.__image
+    
+    @property
+    def image_as_data_url(self):
+        return self.__image.as_data_url if self.__image else None
 
 class FunctionPrompt(Prompt):
     def __init__(self, content:str) -> Any:

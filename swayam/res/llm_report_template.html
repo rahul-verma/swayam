@@ -91,6 +91,15 @@
             padding: 10px; /* Optional: add padding for better readability */
             border-radius: 5px; /* Optional: rounded corners */
         }
+
+        /* Image styling */
+        .fixed-size-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -124,7 +133,7 @@
         function generateTableFromObject(obj, skipContent) {
             let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
             table += '<tr><th style="text-align: left;">Property</th><th style="text-align: left;">Value</th></tr>';
-
+        
             for (let key in obj) {
                 if (obj.hasOwnProperty(key)) {
                     if (skipContent && key === 'content') {
@@ -137,7 +146,7 @@
                     }
                 }
             }
-
+        
             table += '</table>';
             return table;
         }
@@ -156,7 +165,6 @@
         const jsonData = $$SWAYAM_JSON_DATA$$;
 
         $(document).ready(function() {
-            // Initialize jsTree with the embedded JSON data
             $('#jstree_demo').jstree({
                 'core': {
                     'data': jsonData
@@ -170,34 +178,60 @@
                     "stripes": true,
                 }
             });
-
+        
             // Ensure single click expands nodes
             $('#jstree_demo').on("click.jstree", ".jstree-anchor", function (e) {
                 $('#jstree_demo').jstree(true).toggle_node(e.target);
             });
-
+        
             // Handle node selection
             $('#jstree_demo').on("changed.jstree", function (e, data) {
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
                     const node = $('#jstree_demo').jstree(true).get_node(nodeId);
-
+        
                     let detailsContent = `<h2>${node.text}</h2>`;
-
-                if (typeof node.data.content === 'object' && node.data.content !== null) {
-                    if ('content' in node.data.content) {
-                        detailsContent += generateTableFromObject(node.data.content, true);
-                        detailsContent += `<h3>Content</h3>`;
-                        detailsContent += `<pre id="contentPre">${node.data.content.content}</pre>`;
-                        detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+        
+                    if (typeof node.data.content === 'object' && node.data.content !== null) {
+                        if ('content' in node.data.content) {
+                            detailsContent += generateTableFromObject(node.data.content, true);
+                            detailsContent += `<h3>Content</h3>`;
+        
+                            if (Array.isArray(node.data.content.content)) {
+                                node.data.content.content.forEach(item => {
+                                    if (item.type === 'text') {
+                                        detailsContent += `<pre>${item.text}</pre>`;
+                                    } else if (item.type === 'image_url') {
+                                        if (item.local_path) {
+                                            const imagePath = item.local_path.trim();
+                                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                        }
+                                    }
+                                });
+                            } else {
+                                const contentStr = node.data.content.content;
+                                if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
+                                    const imagePath = contentStr.trim();
+                                    detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                } else {
+                                    detailsContent += `<pre id="contentPre">${node.data.content.content}</pre>`;
+                                    detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                                }
+                            }
+                        } else {
+                            detailsContent += generateTableFromObject(node.data.content, false);
+                        }
                     } else {
-                        detailsContent += generateTableFromObject(node.data.content, false);
+                        const contentStr = node.data.content;
+                        if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
+                            const imagePath = contentStr.trim();
+                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                        } else {
+                            detailsContent += `<pre id="contentPre">${node.data.content}</pre>`;
+                            detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                        }
                     }
-                } else {
-                    detailsContent += `<pre id="contentPre">${node.data.content}</pre>`;
-                    detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
-                }
-
+        
                     $('#details').html(detailsContent).show();
                 }
             });
