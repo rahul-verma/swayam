@@ -17,6 +17,7 @@
 
 import os
 import json
+import webbrowser
 from abc import ABC, abstractmethod
 from pprint import pprint
 
@@ -52,7 +53,7 @@ class Reporter(ABC):
         
     def report_response(self, message:LLMResponse) -> None:
         """
-        Reports the output message.
+        Reports the LLM response.
 
         Args:
             message (LLMResponse): Response message from LLM.
@@ -107,7 +108,7 @@ class ConsoleReporter(Reporter):
         
     def report_response(self, response:LLMResponse) -> None:
         """
-        Reports the output message.
+        Reports the LLM response.
 
         Args:
             response (LLMResponse): Response message from LLM.
@@ -123,65 +124,23 @@ class ConsoleReporter(Reporter):
 
 class HtmlReporter(Reporter):
     
-    def __init__(self, **kwargs):
+    def __init__(self, show_in_browser=True, **kwargs):
         super().__init__(**kwargs)
-
-    def report_prompt(self, prompt:Prompt) -> None:
-        """
-        Reports the prompt details.
+        self.__show_in_browser = show_in_browser
         
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        pass
-
-    def report_context(self, context:PromptContext) -> None:
-        """
-        Reports the context details.
-
-        Args:
-            context (PromptContext): Context object with all input messages.
-        """
-        pass
-
-        
-    def report_response(self, response:LLMResponse) -> None:
-        """
-        Reports the output message.
-
-        Args:
-            response (LLMResponse): Response message from LLM.
-        """
-        pass
-
-    def finish(self) -> None:
-        """
-        Finishes report creation.
-        """
-        if self._show_in_browser:
-            self.show_in_browser()
-
-class PromptSessionHtmlReporter:
-    """
-    Reports the prompt session details to a file.
-    """
-    
-    def __init__(self, name, **kwargs):
-        """
-        Initializes the PromptSessionReporter with the provided name.
-        """
+        from tarkash import Tarkash
         from swayam import Swayam
         from swayam.core.constant import SwayamOption
         
         # For JSON Data
-        self.__base_path = os.path.join(Swayam.get_option_value(SwayamOption.REPORT_ROOT_DIR), name)
+        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), "session")
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
         self.__html_report_path = self.__base_path + "/report.html"
-        template_path = Swayam._get_swayam_res_path("report_template.html")
+        template_path = Swayam._get_swayam_res_path("llm_report_template.html")
         self.__template = ""
         with open(template_path, 'r') as f:
             self.__template = f.read()
@@ -209,8 +168,8 @@ class PromptSessionHtmlReporter:
         with open(self.__html_report_path, 'w') as f:
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
-        
-    def report_prompt(self, prompt):
+
+    def report_prompt(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.
         
@@ -223,25 +182,31 @@ class PromptSessionHtmlReporter:
                 "id": "prompt_" + str(self.__counter),
                 "text": "Prompt::" + str(self.__counter + 1),
                 "data": {
-                            "content": prompt
+                            "content": prompt.content
                         },
                 "children": [
                     {
                         "id": "prompt_text_" + str(self.__counter),
                         "text": "Prompt",
                         "icon": "jstree-file",
-                        "data": {"content": prompt}
+                        "data": {"content": prompt.content}
                     }
                 ]
         })
         self.__update_report()
         
-    def report_context(self, messages):
+    def report_context(self, context:PromptContext) -> None:
+        """
+        Reports the context details.
+
+        Args:
+            context (PromptContext): Context object with all input messages.
+        """
         self.__context_counter += 1
         children = []
         self.__chat_context_counter = 0
         output = []
-        for message in messages:
+        for message in context.messages:
             self.__chat_context_counter += 1
             child = {
                         "id": "chat_context_msg_" + str(self.__chat_context_counter),
@@ -264,7 +229,13 @@ class PromptSessionHtmlReporter:
         self.__get_executor_node()[-1]["children"].extend(children)        
         self.__update_report()
         
-    def report_response(self, message):
+    def report_response(self, response:LLMResponse) -> None:
+        """
+        Reports the LLM response.
+
+        Args:
+            response (LLMResponse): Response message from LLM.
+        """
         self.__response_counter += 1
         children = []
         children.append({
@@ -272,7 +243,7 @@ class PromptSessionHtmlReporter:
                         "text": "Response Message",
                         "icon": "jstree-file",
                         "data": {
-                            "content": message.to_dict()
+                            "content": response.as_dict()
                         }
                     })
         
@@ -281,17 +252,20 @@ class PromptSessionHtmlReporter:
                         "text": "Response Content",
                         "icon": "jstree-file",
                         "data": {
-                            "content": message.content
+                            "content": response.content
                         }
                     })
         self.__get_executor_node()[-1]["children"].extend(children)       
         self.__update_report()
-        
-        
-    def show_in_browser(self):
+
+    def finish(self) -> None:
         """
-        Opens the report in the default browser.
+        Finishes report creation.
         """
-        import webbrowser
-        webbrowser.open("file://" + self.__html_report_path)
+        if self.__show_in_browser:        
+            webbrowser.open("file://" + self.__html_report_path)
+
+
+        
+
 

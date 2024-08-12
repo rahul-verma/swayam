@@ -26,7 +26,10 @@ class AgentListener:
         from .report import ConsoleReporter, HtmlReporter
         if display:
             self.__reporters.append(ConsoleReporter(enabled=display))
-        #self.__reporters.append(HtmlReporter(enabled=report_html, show_in_browser=show_in_browser))
+            
+        if report_html:
+            self.__reporters.append(HtmlReporter(show_in_browser=show_in_browser))
+
     def report_prompt(self, prompt:Prompt) -> None:
         """
         Broadcasts the prompt details.
