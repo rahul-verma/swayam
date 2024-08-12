@@ -32,21 +32,6 @@ class ModelConfig:
     @property
     def model(self):
         return self._model
-    
-class ReporterConfig:
-
-    def __init__(self, *, enabled, show_in_browser):
-        self._enabled = enabled
-        self._show_in_browser = show_in_browser
-        
-    @property
-    def enabled(self):
-        return self._enabled
-    
-    @property
-    def show_in_browser(self):
-        return self._show_in_browser
-
 
 class PromptConfig:
     

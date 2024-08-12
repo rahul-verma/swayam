@@ -17,8 +17,8 @@
 
 class PromptContext:
     
-    def __init__(self, messages=[]):
-        self.__messages = messages
+    def __init__(self, messages=None):
+        self.__messages = messages if messages else []
         
     @property
     def messages(self):

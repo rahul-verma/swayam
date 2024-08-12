@@ -43,8 +43,8 @@ class PromptTextFile(FlatFile):
         """
         Initializes the FlatFileReader with the provided file path and try_relative_path flag.
         """
-        from swayam import Swayam
-        path = os.path.join(Swayam.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
+        from tarkash import Tarkash
+        path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
         super().__init__(path, **kwargs)
         
         

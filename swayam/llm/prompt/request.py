@@ -16,7 +16,7 @@
 # limitations under the License.
 
 from typing import Any
-from tarkash import log_info
+from tarkash import log_debug
 
 class Prompt:
     
@@ -30,21 +30,36 @@ class Prompt:
     def message(self):
         return self.__message
     
+    @property
+    def content(self):
+        return self.__message["content"]
+    
+    @property
+    def role(self):
+        return self.__message["role"]
+    
     @classmethod
     def load_prompt_object(cls, input_object, sequence=None):
-        log_info("Loading Prompt object")
-        log_info(f"Input: {type(input_object)}, Sequence: {sequence}")
+        log_debug("Loading Prompt object")
+        log_debug(f"Input: {type(input_object)}, Sequence: {sequence}")
         if sequence is None:
             sequence = PromptSequence()
 
         from swayam.llm.prompt.file import PromptTextFile, PromptIniFile
         if isinstance(input_object, PromptTextFile) :
-            return Prompt.load_prompt_object(input_object.content, sequence)
+            return cls.load_prompt_object(input_object.content, sequence)
         elif isinstance(input_object, PromptIniFile):
-            return Prompt.load_prompt_object(input_object.content.values(), sequence)
+            sub_sequence = PromptSequence()
+            for value in input_object.content.values():
+                cls.load_prompt_object(value, sub_sequence)
+            sequence.append(sub_sequence)
+            return sequence
         elif isinstance(input_object, list):
+            sub_sequence = PromptSequence()
             for item in input_object:
-                return Prompt.load_prompt_object(item, sequence)
+                cls.load_prompt_object(item, sub_sequence)
+            sequence.append(sub_sequence)
+            return sequence
         elif isinstance(input_object, dict):
             if input_object["role"] == "system":
                 sequence.append(SystemPrompt(input_object["content"]))
@@ -60,13 +75,13 @@ class Prompt:
             if input_object.lower().endswith('.txt'):
                 return Prompt.load_prompt_object(PromptTextFile(input_object).content, sequence)
             elif input_object.lower().endswith('.ini'):
-                return Prompt.load_prompt_object(PromptIniFile(input_object).content.values(), sequence)
+                return Prompt.load_prompt_object(list(PromptIniFile(input_object).content.values()), sequence)
             else:
                 sequence.append(UserPrompt(input_object))
         else:
             raise TypeError(f"Invalid PromptNode type: {type(input_object)}")
         
-        log_info(f"Returning: Sequence: {sequence}")
+        log_debug(f"Returning: Sequence: {sequence}")
         return sequence
 
 class SystemPrompt(Prompt):
@@ -76,7 +91,7 @@ class SystemPrompt(Prompt):
 
 class UserPrompt(Prompt):
     def __init__(self, content:str) -> Any:
-        super().__init__(role="system", content=content)
+        super().__init__(role="user", content=content)
 
 class FunctionPrompt(Prompt):
     def __init__(self, content:str) -> Any:
@@ -94,6 +109,25 @@ class PromptSequence:
     def append(self, prompt:Prompt):
         self.__prompts.append(prompt)
         
+    def __len__(self):
+        return len(self.__prompts)
+        
+    def describe(self, level=0):
+        """
+        Returns a string describing the structure of the PromptSequence.
+        Includes the length and a tree representation of the contained objects.
+        """
+        indent = " " * level
+        description = f"{indent}PromptSequence (Length: {len(self)})\n"
+        
+        for prompt in self.__prompts:
+            if isinstance(prompt, PromptSequence):
+                description += prompt.describe(level + 1)
+            else:
+                description += f"{indent}  {type(prompt).__name__}\n"
+        
+        return description
+        
     def __iter__(self):
         self.__index = -1
         return self
@@ -105,3 +139,6 @@ class PromptSequence:
         except IndexError:
             self.__index = -1
             raise StopIteration()
+        
+    def _get_first_child(self):
+        return self.__prompts[0]

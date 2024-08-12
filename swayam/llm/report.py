@@ -17,6 +17,147 @@
 
 import os
 import json
+from abc import ABC, abstractmethod
+from pprint import pprint
+
+from .prompt.request import Prompt
+from .prompt.context import PromptContext
+from .prompt.response import LLMResponse
+
+class Reporter(ABC):
+    
+    def __init__(self, **kwargs):
+        pass
+    
+    @abstractmethod
+    def report_prompt(self, prompt:Prompt) -> None:
+        """
+        Reports the prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        pass
+        
+    @abstractmethod
+    def report_context(self, context:PromptContext) -> None:
+        """
+        Reports the context details.
+
+        Args:
+            context (PromptContext): Context object with all input messages.
+        """
+        pass
+
+        
+    def report_response(self, message:LLMResponse) -> None:
+        """
+        Reports the output message.
+
+        Args:
+            message (LLMResponse): Response message from LLM.
+        """
+        pass
+    
+    @abstractmethod
+    def finish(self) -> None:
+        """
+        Finishes report creation.
+        """
+        pass
+        
+    
+class ConsoleReporter(Reporter):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    @property
+    def enabled(self):
+        return self.__enabled
+
+    def report_prompt(self, prompt:Prompt) -> None:
+        """
+        Reports the prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        print("-" * 80)
+        print("Prompt:", f"(Role: {prompt.role})")
+        print(prompt.content)
+        print("-" * 80)
+
+    def report_context(self, context:PromptContext) -> None:
+        """
+        Reports the context details.
+
+        Args:
+            context (PromptContext): Context object with all input messages.
+        """
+        print ("Total Context Length:", len(context.messages), "#Previous Request-Response Pairs:", int((len(context.messages)-1)/2))
+        # if not context.messages:
+        #     print("Context Messages: None")
+        # else:
+        #     print("Context Messages:")
+        #     pprint(context.messages)
+        print("-" * 80)
+
+        
+    def report_response(self, response:LLMResponse) -> None:
+        """
+        Reports the output message.
+
+        Args:
+            response (LLMResponse): Response message from LLM.
+        """
+        print("Response:")
+        print(response.content)
+        
+    def finish(self) -> None:
+        """
+        Finishes report creation.
+        """
+        print("-"* 80) 
+
+class HtmlReporter(Reporter):
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def report_prompt(self, prompt:Prompt) -> None:
+        """
+        Reports the prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        pass
+
+    def report_context(self, context:PromptContext) -> None:
+        """
+        Reports the context details.
+
+        Args:
+            context (PromptContext): Context object with all input messages.
+        """
+        pass
+
+        
+    def report_response(self, response:LLMResponse) -> None:
+        """
+        Reports the output message.
+
+        Args:
+            response (LLMResponse): Response message from LLM.
+        """
+        pass
+
+    def finish(self) -> None:
+        """
+        Finishes report creation.
+        """
+        if self._show_in_browser:
+            self.show_in_browser()
 
 class PromptSessionHtmlReporter:
     """
@@ -66,7 +207,6 @@ class PromptSessionHtmlReporter:
         with open(self.__html_report_path, 'w') as f:
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
-        
         
     def report_prompt(self, prompt):
         """
@@ -122,7 +262,7 @@ class PromptSessionHtmlReporter:
         self.__get_executor_node()[-1]["children"].extend(children)        
         self.__update_report()
         
-    def report_output(self, message):
+    def report_response(self, message):
         self.__response_counter += 1
         children = []
         children.append({
@@ -152,3 +292,4 @@ class PromptSessionHtmlReporter:
         """
         import webbrowser
         webbrowser.open("file://" + self.__html_report_path)
+

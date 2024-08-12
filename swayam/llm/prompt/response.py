@@ -16,10 +16,36 @@
 # limitations under the License.
 
 class LLMResponse:
-    pass
+    
+    def __init__(self, message, **kwargs) -> None:
+        self.__message = message
+        
+    @property
+    def message(self):
+        return self.__message
+    
+    def as_dict(self) -> dict:
+        return self.__message.to_dict()
+    
+    @classmethod
+    def create_response_object(cls, message:dict, **kwargs):
+        """
+        Creates a response object from the message.
+        
+        Args:
+            message (dict): The message to create the response from.
+        """
+        return ContentResponse(message, **kwargs)
 
-class ContentResponse:
-    pass
+class ContentResponse(LLMResponse):
+    
+    def __init__(self, message, **kwargs):
+        super().__init__(message, **kwargs)
+        self.__content = message.content
+        
+    @property
+    def content(self):
+        return self.__content
 
 class FunctionResponse:
     pass

@@ -27,3 +27,4 @@ sys.path.insert(0, __root_dir)
 
 from swayam.core.facade import Swayam
 from swayam.llm.prompt.file import PromptTextFile, PromptIniFile
+from swayam.llm.agent import Agent

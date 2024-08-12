@@ -51,9 +51,7 @@ class PromptNode(AgentNode):
     @classmethod
     def _load(clas, raw_node, nodes) -> None:
         from .prompt.request import Prompt        
-        # As of now only Prompt and PromptSequence objects are expected to work.
-        print(raw_node)
-        loaded_prompt = Prompt.load_prompt_object(raw_node)
-        nodes.append(PromptNode(loaded_prompt))
+        loaded_prompt_sequence = Prompt.load_prompt_object(raw_node)._get_first_child()
+        nodes.append(PromptNode(loaded_prompt_sequence))
     
     

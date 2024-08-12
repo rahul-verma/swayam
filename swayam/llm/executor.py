@@ -17,22 +17,22 @@
 
 import os
 from pprint import pprint
-from tarkash import TarkashObject
+from tarkash import TarkashObject, log_info
+from .prompt.response import LLMResponse
 
 class PromptExecutor(TarkashObject):    
     """
     Executes the prompt and returns the result.
     """
     
-    def __init__(self, *, model_config, reporter_config, prompt_config):
+    def __init__(self, *, model_config, prompt_config, listener):
         tobj_kwargs = dict()
         tobj_kwargs["model_config"] = model_config
-        tobj_kwargs["reporter_config"] = reporter_config
         tobj_kwargs["prompt_config"] = prompt_config
         super().__init__(**tobj_kwargs)
         self.__model_config = model_config
-        self.__reporter_config = reporter_config
         self.__prompt_config = prompt_config
+        self.__listener = listener
         self.__client = None
         self.__load()
         
@@ -41,69 +41,36 @@ class PromptExecutor(TarkashObject):
         return self.__model_config
     
     @property
-    def reporter_config(self):
-        return self.__reporter_config
-    
-    @property
     def prompt_config(self):
         return self.__prompt_config
+    
+    @property
+    def listener(self):
+        return self.__listener
         
     def __load(self):
         from .model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, prompt_sequence, context, display=True):
+    def execute(self, *, prompt_sequence, context):
         '''
             Runs the prompt text and returns the result.
         '''
 
-        response_messages = []
-        messages = []
-        
-        from swayam.llm.report import PromptSessionHtmlReporter
-        
-        if self.__reporter_config.enabled:
-            reporter = PromptSessionHtmlReporter("session")
-        
+        output_messages = []
+
         for prompt in prompt_sequence:
-            
-            if display:
-                print("-" * 80)
-                print("Prompt:")
-                print(prompt)
-                print("-" * 80)
-                
-            if display:
-                if not context.messages:
-                    print("Context Messages: None")
-                else:
-                    print("Context Messages:")
-                    pprint(context.messages)
-                print("-" * 80)
-                
+            log_info("Executing prompt...")
+            self.listener.report_prompt(prompt)
             context.append_prompt(prompt)
-                
-            if self.__reporter_config.enabled:
-                reporter.report_prompt(prompt)
-            
-            if self.__reporter_config.enabled:
-                reporter.report_context(messages)
+            self.listener.report_context(context)
 
             response = self.__client.execute_messages(context.messages)
-            response_messages.append(response.choices[0].message)
+            output_message = response.choices[0].message
+            output_messages.append(output_message)
+            response_message = LLMResponse.create_response_object(output_message)
+            self.listener.report_response(response_message)
 
-            if display:
-                print("Response:")
-                print(response.choices[0].message.content)
-            if self.__reporter_config.enabled:
-                reporter.report_output(response.choices[0].message)
+            context.append_assistant_response(response_message.as_dict())
 
-            context.append_assistant_response(response.choices[0].message.to_dict())
-        
-        if display:
-            print("-"* 80) 
-        if self.__reporter_config.enabled:
-            if self._show_in_browser:
-                reporter.show_in_browser()
-        
-        return response_messages
+        return output_messages
