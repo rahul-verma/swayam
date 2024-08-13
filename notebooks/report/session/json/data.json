@@ -1,73 +1,65 @@
 [
     {
-        "id": "node_1",
-        "text": "Default Prompt Executor",
+        "id": "agent_node_1",
+        "text": "Agent",
         "children": [
             {
-                "id": "prompt_0",
-                "text": "Prompt::1",
-                "data": {
-                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
-                },
+                "id": "task_node_1",
+                "text": "Task",
                 "children": [
                     {
-                        "id": "prompt_part_0_1",
-                        "text": "Prompt",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
-                        }
-                    },
-                    {
-                        "id": "chat_context_0",
-                        "text": "Chat Context",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "This is the sequences of messages sent to the LLM for context management."
-                        },
+                        "id": "conversation_node_1",
+                        "text": "Conversation",
                         "children": [
                             {
-                                "id": "chat_context_msg_1",
-                                "text": "Message:: 1",
+                                "id": "chat_context_0",
+                                "text": "Chat Context",
                                 "icon": "jstree-file",
                                 "data": {
-                                    "content": {
-                                        "role": "user",
-                                        "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
-                                    }
+                                    "content": "No context messages were sent along with the next prompt."
                                 }
+                            },
+                            {
+                                "id": "prompt_0",
+                                "text": "Prompt::1",
+                                "data": {
+                                    "content": "What's the weather like in Boston?"
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_0",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "function_call": {
+                                                    "arguments": "{\"location\":\"Boston, MA\"}",
+                                                    "name": "get_current_weather"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_0",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "No response content was returned by the LLM."
+                                        }
+                                    },
+                                    {
+                                        "id": "action_0",
+                                        "text": "Needs Function Call",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "A function call needs to be made:\n\nFunction Name: get_current_weather \nArguments: {\"location\":\"Boston, MA\"}"
+                                        }
+                                    }
+                                ]
                             }
                         ]
-                    },
-                    {
-                        "id": "message_0",
-                        "text": "Response Message",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": {
-                                "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":\"\"}",
-                                "refusal": null,
-                                "role": "assistant",
-                                "tool_calls": [],
-                                "parsed": {
-                                    "name": "Science Fair",
-                                    "date": "Friday",
-                                    "participants": [
-                                        "Alice",
-                                        "Bob"
-                                    ],
-                                    "city": ""
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "id": "content_0",
-                        "text": "Response Content",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":\"\"}"
-                        }
                     }
                 ]
             }

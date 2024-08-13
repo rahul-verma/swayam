@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .prompt.request import Prompt
+from .prompt.prompt import Prompt
 from .prompt.context import PromptContext
 
 class AgentListener:

@@ -21,7 +21,7 @@ from pydantic import BaseModel
 from tarkash import TarkashObject, log_info, log_debug
 from .prompt.response import LLMResponse
 
-class PromptExecutor(TarkashObject):    
+class ConversationExecutor(TarkashObject):    
     """
     Executes the prompt and returns the result.
     """
@@ -53,25 +53,26 @@ class PromptExecutor(TarkashObject):
         from .model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, prompt_sequence, context, response_format:BaseModel=None):
+    def execute(self, *, conversation, response_format:BaseModel=None, functions=None):
         '''
             Runs the prompt text and returns the result.
         '''
 
         output_messages = []
-
-        for prompt in prompt_sequence:
+        for prompt in conversation:
             log_debug("Executing prompt...")
+            prompt.process_for_report()
+            self.listener.report_context(conversation.context)
+            conversation.context.append_prompt(prompt)
+            
             self.listener.report_prompt(prompt)
-            context.append_prompt(prompt)
-            self.listener.report_context(context)
 
-            response = self.__client.execute_messages(context.messages, response_format=response_format)
+            response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, functions=functions)
             output_message = response.choices[0].message
             output_messages.append(output_message)
             response_message = LLMResponse.create_response_object(output_message)
             self.listener.report_response(response_message)
 
-            context.append_assistant_response(response_message.as_dict())
+            conversation.context.append_assistant_response(response_message.as_dict())
 
         return output_messages

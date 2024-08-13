@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swayam Report</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
     <style>
         body {
             margin: 0;
@@ -129,6 +130,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script>
         function generateTableFromObject(obj, skipContent) {
             let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
@@ -200,7 +203,7 @@
                             if (Array.isArray(node.data.content.content)) {
                                 node.data.content.content.forEach(item => {
                                     if (item.type === 'text') {
-                                        detailsContent += `<pre>${item.text}</pre>`;
+                                        detailsContent += `<pre><code class="language-json">${Prism.highlight(item.text, Prism.languages.json, 'json')}</code></pre>`;
                                     } else if (item.type === 'image_url') {
                                         if (item.local_path) {
                                             const imagePath = item.local_path.trim();
@@ -214,7 +217,7 @@
                                     const imagePath = contentStr.trim();
                                     detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
                                 } else {
-                                    detailsContent += `<pre id="contentPre">${node.data.content.content}</pre>`;
+                                    detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content.content, Prism.languages.json, 'json')}</code></pre>`;
                                     detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
                                 }
                             }
@@ -227,7 +230,7 @@
                             const imagePath = contentStr.trim();
                             detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
                         } else {
-                            detailsContent += `<pre id="contentPre">${node.data.content}</pre>`;
+                            detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content, Prism.languages.json, 'json')}</code></pre>`;
                             detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
                         }
                     }

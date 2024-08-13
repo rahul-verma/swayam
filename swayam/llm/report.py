@@ -22,7 +22,7 @@ from abc import ABC, abstractmethod
 from pprint import pprint
 import copy
 
-from .prompt.request import Prompt
+from .prompt.prompt import Prompt
 from .prompt.context import PromptContext
 from .prompt.response import LLMResponse
 
@@ -91,6 +91,7 @@ class ConsoleReporter(Reporter):
         content = prompt.content
         if type(content) == list:
             print(prompt.reportable_text)
+            print("=" * 100)
             for item in prompt.reportable_content:
                 if item["type"] == "image_url":
                     print(item["local_path"])
@@ -155,20 +156,31 @@ class HtmlReporter(Reporter):
         with open(template_path, 'r') as f:
             self.__template = f.read()
         self.__res_path = os.path.join(os.path.realpath(__file__), "..")
-        self.__json_data = [
-                                {
-                                    "id": "node_1",
-                                    "text": "Default Prompt Executor",
+        self.__json_data = [{
+                                "id": "agent_node_1",
+                                "text": "Agent",
+                                "children": []   
+                            }]
+        
+        self.__json_data[0]["children"] = [{
+                                    "id": "task_node_1",
+                                    "text": "Task",
                                     "children": []
-                                }
-        ]
+                                }]
+        
+        self.__json_data[0]["children"][0]["children"] = [{
+                                    "id": "conversation_node_1",
+                                    "text": "Conversation",
+                                    "children": []
+                                }]
         self.__counter = -1
         self.__context_counter = -1
+        self.__chat_context_counter = -1
         self.__response_counter = -1
         self.__update_report()
         
     def __get_executor_node(self):
-        return self.__json_data[0]["children"]
+        return self.__json_data[0]["children"][0]["children"][0]["children"]
             
     def __update_report(self):
         json_str = json.dumps(self.__json_data, indent=4)
@@ -178,6 +190,55 @@ class HtmlReporter(Reporter):
         with open(self.__html_report_path, 'w') as f:
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
+            
+    def report_context(self, context:PromptContext) -> None:
+        """
+        Reports the context details.
+
+        Args:
+            context (PromptContext): Context object with all input messages.
+        """
+        self.__context_counter += 1
+        self.__chat_context_counter += 1
+        context_messages = []
+        
+        title = {
+            "system": "System",
+            "user": "User",
+            "assistant": "LLM",
+        }
+        
+        for i, message in enumerate(context.reportable_messages):
+            self.__chat_context_counter += 1
+            text = title[message["role"]]
+            child = {
+                        "id": "chat_context_msg_" + str(self.__chat_context_counter),
+                        "text": text,
+                        "icon": "jstree-file",
+                        "data": {"content": message}
+                    }
+            context_messages.append(child)
+
+        if not context_messages:
+            context_node = {
+                        "id": "chat_context_" + str(self.__context_counter),
+                        "text": "Chat Context",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "No context messages were sent along with the next prompt."
+                        }
+                    }
+        else:            
+            context_node = {
+                            "id": "chat_context_" + str(self.__context_counter),
+                            "text": "Chat Context",
+                            "data": {
+                                "content": "This is the sequences of messages sent to the LLM for context management."
+                            },
+                            "children": context_messages
+                        }
+        self.__get_executor_node().append(context_node)        
+        self.__update_report()
 
     def report_prompt(self, prompt:Prompt) -> None:
         """
@@ -211,8 +272,9 @@ class HtmlReporter(Reporter):
         sub_counter = 0
         for item in reportable_content:
             sub_counter += 1
-            if type(item) is str:
-                append_text_child(item, sub_counter)
+            # As the text part of prompt is already the tree node, we skip the text item type.
+            if isinstance(item, str):
+                pass
             elif item["type"] == "image_url":
                 prompt_node["children"].append({
                         "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
@@ -220,46 +282,10 @@ class HtmlReporter(Reporter):
                         "icon": "jstree-file",
                         "data": {"content": item["local_path"]}
             })
-            else:
-                append_text_child(item["text"], sub_counter)
+            # else:
+            #     append_text_child(item["text"], sub_counter)
                         
         self.__get_executor_node().append(prompt_node)
-        self.__update_report()
-        
-    def report_context(self, context:PromptContext) -> None:
-        """
-        Reports the context details.
-
-        Args:
-            context (PromptContext): Context object with all input messages.
-        """
-        self.__context_counter += 1
-        children = []
-        self.__chat_context_counter = 0
-        output = []
-        for message in context.reportable_messages:
-            self.__chat_context_counter += 1
-            child = {
-                        "id": "chat_context_msg_" + str(self.__chat_context_counter),
-                        "text": "Message:: " + str(self.__chat_context_counter),
-                        "icon": "jstree-file",
-                        "data": {"content": message}
-                    }
-            output.append(child)
-            
-            
-            
-            
-        children.append({
-                        "id": "chat_context_" + str(self.__context_counter),
-                        "text": "Chat Context",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "This is the sequences of messages sent to the LLM for context management."
-                        },
-                        "children": output
-                    })
-        self.__get_executor_node()[-1]["children"].extend(children)        
         self.__update_report()
         
     def report_response(self, response:LLMResponse) -> None:
@@ -271,23 +297,49 @@ class HtmlReporter(Reporter):
         """
         self.__response_counter += 1
         children = []
+        response = response.as_dict()
+        content = response["content"]
+        del response["content"]
         children.append({
                         "id": "message_" + str(self.__response_counter),
-                        "text": "Response Message",
+                        "text": "Response Meta-Data",
                         "icon": "jstree-file",
                         "data": {
-                            "content": response.as_dict()
+                            "content": response
                         }
                     })
         
-        children.append({
-                        "id": "content_" + str(self.__response_counter),
-                        "text": "Response Content",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": response.content
-                        }
-                    })
+        if content:
+            children.append({
+                            "id": "content_" + str(self.__response_counter),
+                            "text": "Response Content",
+                            "icon": "jstree-file",
+                            "data": {
+                                "content": content
+                            }
+                        })
+        else:
+            children.append({
+                            "id": "content_" + str(self.__response_counter),
+                            "text": "Response Content",
+                            "icon": "jstree-file",
+                            "data": {
+                                "content": "No response content was returned by the LLM."
+                            }
+                        })
+            
+        # Appending non-LLM action requirements
+        if "function_call" in response:
+            children.append({
+                            "id": "action_" + str(self.__response_counter),
+                            "text": "Needs Function Call",
+                            "icon": "jstree-file",
+                            "data": {
+                                "content": f"A function call needs to be made:\n\nFunction Name: {response['function_call']['name']} \nArguments: {response['function_call']['arguments']}"
+                            }
+                        })
+            
+        
         self.__get_executor_node()[-1]["children"].extend(children)       
         self.__update_report()
 

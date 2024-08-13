@@ -36,6 +36,4 @@ class PromptContext:
     def append_assistant_response(self, *messages):
         for message in messages:
             self.__messages.append(message)
-        
-    def reset(self):
-        self.__messages = []
+            self.__reportable_messages.append(message)

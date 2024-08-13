@@ -65,21 +65,8 @@ class Agent(TarkashObject):
     @property
     def reporter_config(self):
         return self.__reporter_config
-        
-        
-    def __normalise_nodes(self, *nodes):
-        from .node import AgentNode
-        node_objects = []
-        nodes = list(nodes)
-        log_debug(f"Normalising {len(nodes)} nodes", self)
-        for i, node in enumerate(nodes):
-            log_debug(f"Node:: {i+1}", self)
-            AgentNode.append_node(node, node_objects) 
-            log_debug(f"Finished:: Current Nodes: {node_objects}", self) 
-        log_debug(f"Finished Normalisation:: Nodes: {node_objects}", self) 
-        return node_objects
 
-    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None):
+    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None, functions:dict=None):
         """
         A simple facade to default LLM Model, resulting in one or more prompts being executed.
         
@@ -102,38 +89,28 @@ class Agent(TarkashObject):
         Returns:
             (str, List): Returns a string or a list of strings as the output of the LLM.
         """
-                
-        nodes = self.__normalise_nodes(*nodes)
         
-        from .prompt.context import PromptContext
-        context = PromptContext()
-        log_debug("Context Length: ", len(context.messages))
-        
+        from swayam import Task
+        task = Task(*nodes, same_context=same_context)
         from .listener import AgentListener
         listener = AgentListener(display=self._display, report_html=self._report_html, show_in_browser=self._show_in_browser)
 
-        log_debug(f"Executing {len(nodes)} LLM node(s) (same_context={same_context})")        
+        log_debug(f"Executing Task with {len(nodes)} conversation steps (same_context={same_context})")        
         output_list = []
-        for node in nodes:
-            if not same_context:
-                input_messages = []
-            from .node import PromptNode
-            if isinstance(node, PromptNode):
-                prompt_sequence = node.wrapped_object
-                log_debug(f"Found PromptSequence Node (children = {len(prompt_sequence)})")
-                #print(node.wrapped_object.describe())
-                if not same_context:
-                    context.reset()
-                from .executor import PromptExecutor
-                executor = PromptExecutor(model_config=self.__model_config, prompt_config=self.__prompt_config, listener=listener)
-                output = executor.execute(prompt_sequence=node.wrapped_object, context=context, response_format=response_format)
-                output_list.extend(output)
-                log_debug(f"Finished PromptNode")
+        for conversation in task:
+            log_debug(f"Performing Conversation (prompts = {len(conversation)})")
+            from .executor import ConversationExecutor
+            executor = ConversationExecutor(model_config=self.__model_config, prompt_config=self.__prompt_config, listener=listener)
+            output = executor.execute(conversation=conversation, response_format=response_format, functions=functions)
+            output_list.extend(output)
+            log_debug(f"Finished PromptNode")
                 
         listener.finish()
         
-        content = [m.content for m in output_list]
+        content = [m for m in output_list]
         if len(content) == 1:
+            if content[0].function_call:
+                print(content[0].function_call)
             return content[0]
         else:
             return content
