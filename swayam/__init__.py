@@ -29,3 +29,4 @@ from swayam.core.facade import Swayam
 from swayam.llm.prompt.file import PromptTextFile, PromptIniFile
 from swayam.llm.agent import Agent
 from swayam.llm.prompt.request import UserPrompt
+from swayam.llm.structure import create_structure

@@ -199,11 +199,21 @@ class HtmlReporter(Reporter):
         reportable_content = prompt.reportable_content
         if type(prompt.reportable_content)  != list:
             reportable_content = [reportable_content]
+        
+        def append_text_child(text, sub_counter):
+            prompt_node["children"].append({
+                        "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
+                        "text": "Prompt",
+                        "icon": "jstree-file",
+                        "data": {"content": text}
+            })
             
         sub_counter = 0
         for item in reportable_content:
             sub_counter += 1
-            if item["type"] == "image_url":
+            if type(item) is str:
+                append_text_child(item, sub_counter)
+            elif item["type"] == "image_url":
                 prompt_node["children"].append({
                         "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
                         "text": "Image Upload",
@@ -211,12 +221,7 @@ class HtmlReporter(Reporter):
                         "data": {"content": item["local_path"]}
             })
             else:
-                prompt_node["children"].append({
-                            "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
-                            "text": "Prompt",
-                            "icon": "jstree-file",
-                            "data": {"content": item["text"]}
-                })
+                append_text_child(item["text"], sub_counter)
                         
         self.__get_executor_node().append(prompt_node)
         self.__update_report()

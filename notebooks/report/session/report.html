@@ -171,7 +171,7 @@
                 "id": "prompt_0",
                 "text": "Prompt::1",
                 "data": {
-                    "content": "Please explain this image to me."
+                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
                 },
                 "children": [
                     {
@@ -179,15 +179,7 @@
                         "text": "Prompt",
                         "icon": "jstree-file",
                         "data": {
-                            "content": "Please explain this image to me."
-                        }
-                    },
-                    {
-                        "id": "prompt_part_0_2",
-                        "text": "Image Upload",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "/Users/rahulverma/Documents/GitHub/swayam/notebooks/data/images/5EModel.png"
+                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
                         }
                     },
                     {
@@ -205,17 +197,7 @@
                                 "data": {
                                     "content": {
                                         "role": "user",
-                                        "content": [
-                                            {
-                                                "type": "text",
-                                                "text": "Please explain this image to me."
-                                            },
-                                            {
-                                                "type": "image_url",
-                                                "description": "data:image/png;base64, <Base64 encoded content of /Users/rahulverma/Documents/GitHub/swayam/notebooks/data/images/5EModel.png>.",
-                                                "local_path": "/Users/rahulverma/Documents/GitHub/swayam/notebooks/data/images/5EModel.png"
-                                            }
-                                        ]
+                                        "content": "Extract event information: Alice and Bob are going to a science fair on Friday."
                                     }
                                 }
                             }
@@ -227,9 +209,19 @@
                         "icon": "jstree-file",
                         "data": {
                             "content": {
-                                "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing,\" which outlines a structured approach to integrating large language models (LLMs) in testing processes. Here's a breakdown of its components:\n\n1. **5E Framework**: The model is organized into five key stages:\n   - **Engage**: Identifying the testing problem and defining roles between humans and LLMs.\n   - **Explore**: Assessing if the problem is the right one and experimenting with prompts and models.\n   - **Engineer**: Involves prompt engineering and knowledge augmentation to refine the approach.\n   - **Embed**: Integrating solutions and defining roles for participants in the testing process.\n   - **Evolve**: Continuous feedback and adaptation to improve the testing process.\n\n2. **Participants**: The model emphasizes the roles of different participants, including:\n   - **Humans**: Those involved in verifying and solving problems.\n   - **LLMs**: The AI solutions that assist in the testing process.\n   - **Invokers and Recipients**: Different roles in the communication and application of solutions.\n\n3. **Feedback & Adaptation**: A crucial aspect of the model, highlighting the importance of continuous improvement through feedback loops.\n\n4. **Core Values**: The bottom section lists essential values such as fairness, transparency, and accountability, which are critical in the context of AI and testing.\n\nOverall, the image serves as a guide for effectively utilizing LLMs in testing, ensuring a collaborative and iterative approach.",
+                                "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":\"\"}",
+                                "refusal": null,
                                 "role": "assistant",
-                                "refusal": null
+                                "tool_calls": [],
+                                "parsed": {
+                                    "name": "Science Fair",
+                                    "date": "Friday",
+                                    "participants": [
+                                        "Alice",
+                                        "Bob"
+                                    ],
+                                    "city": ""
+                                }
                             }
                         }
                     },
@@ -238,7 +230,7 @@
                         "text": "Response Content",
                         "icon": "jstree-file",
                         "data": {
-                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing,\" which outlines a structured approach to integrating large language models (LLMs) in testing processes. Here's a breakdown of its components:\n\n1. **5E Framework**: The model is organized into five key stages:\n   - **Engage**: Identifying the testing problem and defining roles between humans and LLMs.\n   - **Explore**: Assessing if the problem is the right one and experimenting with prompts and models.\n   - **Engineer**: Involves prompt engineering and knowledge augmentation to refine the approach.\n   - **Embed**: Integrating solutions and defining roles for participants in the testing process.\n   - **Evolve**: Continuous feedback and adaptation to improve the testing process.\n\n2. **Participants**: The model emphasizes the roles of different participants, including:\n   - **Humans**: Those involved in verifying and solving problems.\n   - **LLMs**: The AI solutions that assist in the testing process.\n   - **Invokers and Recipients**: Different roles in the communication and application of solutions.\n\n3. **Feedback & Adaptation**: A crucial aspect of the model, highlighting the importance of continuous improvement through feedback loops.\n\n4. **Core Values**: The bottom section lists essential values such as fairness, transparency, and accountability, which are critical in the context of AI and testing.\n\nOverall, the image serves as a guide for effectively utilizing LLMs in testing, ensuring a collaborative and iterative approach."
+                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":\"\"}"
                         }
                     }
                 ]

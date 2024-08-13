@@ -29,6 +29,7 @@ class Prompt:
                 "content": content
             }
             self.__reportable_message = self.__message
+            self.__reportable_text = self.__message["content"]
         else:
             self.__image_path = image.full_path
             self.__image = image

@@ -17,6 +17,7 @@
 
 import os
 from pprint import pprint
+from pydantic import BaseModel
 from tarkash import TarkashObject, log_info, log_debug
 from .prompt.response import LLMResponse
 
@@ -52,7 +53,7 @@ class PromptExecutor(TarkashObject):
         from .model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, prompt_sequence, context):
+    def execute(self, *, prompt_sequence, context, response_format:BaseModel=None):
         '''
             Runs the prompt text and returns the result.
         '''
@@ -65,7 +66,7 @@ class PromptExecutor(TarkashObject):
             context.append_prompt(prompt)
             self.listener.report_context(context)
 
-            response = self.__client.execute_messages(context.messages)
+            response = self.__client.execute_messages(context.messages, response_format=response_format)
             output_message = response.choices[0].message
             output_messages.append(output_message)
             response_message = LLMResponse.create_response_object(output_message)

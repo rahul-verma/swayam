@@ -20,6 +20,7 @@ from typing import List
 from tarkash import TarkashObject, log_info, log_debug
 from .config import *
 from tarkash.type.descriptor import DString, DNumber, DBoolean
+from pydantic import BaseModel
 
 class Agent(TarkashObject):
     _name = DString()
@@ -78,7 +79,7 @@ class Agent(TarkashObject):
         log_debug(f"Finished Normalisation:: Nodes: {node_objects}", self) 
         return node_objects
 
-    def execute(self, *nodes:List[object], same_context:bool=True):
+    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None):
         """
         A simple facade to default LLM Model, resulting in one or more prompts being executed.
         
@@ -96,6 +97,7 @@ class Agent(TarkashObject):
         Args:
             *prompts_or_objects (str, List, Dict): The prompts to be executed
             same_context (bool, optional): If True, the same context is used for all prompts. Defaults to True.
+            response_format (BaseModel, optional): The Pydantic response format to be used. Defaults to None.
 
         Returns:
             (str, List): Returns a string or a list of strings as the output of the LLM.
@@ -124,7 +126,7 @@ class Agent(TarkashObject):
                     context.reset()
                 from .executor import PromptExecutor
                 executor = PromptExecutor(model_config=self.__model_config, prompt_config=self.__prompt_config, listener=listener)
-                output = executor.execute(prompt_sequence=node.wrapped_object, context=context)
+                output = executor.execute(prompt_sequence=node.wrapped_object, context=context, response_format=response_format)
                 output_list.extend(output)
                 log_debug(f"Finished PromptNode")
                 

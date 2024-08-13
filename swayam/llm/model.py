@@ -75,12 +75,20 @@ class Model(TarkashObject):
                 from openai import OpenAI
                 self._client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
                 
-            def execute_messages(self, messages:List[str]=[], **kwargs):
-                return self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    **self._model_kwargs
-                )
+            def execute_messages(self, messages:List[str]=[], response_format=None):
+                if response_format is None:
+                    return self.client.chat.completions.create(
+                        model=self.model_name,
+                        messages=messages,
+                        **self._model_kwargs
+                    )
+                else:
+                    return self.client.beta.chat.completions.parse(
+                        model=self.model_name,
+                        messages=messages,
+                        response_format=response_format,
+                        **self._model_kwargs
+                    )
 
         model_classes = {
             "openai": OpenAIModelClient
