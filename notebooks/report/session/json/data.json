@@ -23,7 +23,7 @@
                                 "id": "prompt_0",
                                 "text": "Prompt::1",
                                 "data": {
-                                    "content": "What's the weather like in Boston?"
+                                    "content": "Find whether there is an email address in the following text marked with triple backticks \n ```This is a sample text with a@b.com and c@d.com addresses```?"
                                 },
                                 "children": [
                                     {
@@ -35,8 +35,8 @@
                                                 "refusal": null,
                                                 "role": "assistant",
                                                 "function_call": {
-                                                    "arguments": "{\"location\":\"Boston\"}",
-                                                    "name": "get_current_weather"
+                                                    "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
+                                                    "name": "search_email"
                                                 }
                                             }
                                         }
@@ -54,7 +54,7 @@
                                         "text": "Needs Function Call",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": "A function call needs to be made:\n\nFunction Name: get_current_weather \nArguments: {\"location\":\"Boston\"}"
+                                            "content": "A function call needs to be made:\n\nFunction Name: search_email \nArguments: {\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}"
                                         }
                                     }
                                 ]
