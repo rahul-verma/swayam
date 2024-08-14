@@ -22,7 +22,8 @@ from pydantic import BaseModel, create_model
 class Structure(BaseModel):
     pass
 
-def create_structure(klass_name: str, **fields):
+
+def create_structure(klass_name: str, desc:str=None, **fields):
     """
     Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
@@ -30,6 +31,6 @@ def create_structure(klass_name: str, **fields):
     :param fields: A dictionary where keys are field names and values are field types.
     :return: A new Pydantic BaseModel subclass with the given name and fields.
     """
-    annotations = {field_name: (field_type, ...) for field_name, field_type in fields.items()}
+    model_fields = {name: (field_type, field_info) for name, (field_type, field_info) in fields.items()}
     
-    return create_model(klass_name, __base__=Structure, **annotations)
+    return create_model(klass_name, __base__=Structure, **model_fields)
