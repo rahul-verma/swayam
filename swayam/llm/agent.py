@@ -71,7 +71,7 @@ class Agent(TarkashObject):
     def reporter_config(self):
         return self.__reporter_config
 
-    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None, functions:dict=None):
+    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None, functions:dict=None, reset_report=False):
         """
         A simple facade to default LLM Model, resulting in one or more prompts being executed.
         
@@ -96,7 +96,7 @@ class Agent(TarkashObject):
         """
         
         from .listener import AgentListener
-        self.__listener = AgentListener(display=self._display, report_html=self._report_html, show_in_browser=self._show_in_browser)
+        self.__listener = AgentListener(display=self._display, report_html=self._report_html, show_in_browser=self._show_in_browser, reset=reset_report)
         
         from swayam import Task
         nodes = (self.__system_prompt,) + nodes

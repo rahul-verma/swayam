@@ -148,7 +148,7 @@ class ConsoleReporter(Reporter):
 
 class HtmlReporter(Reporter):
     
-    def __init__(self, show_in_browser=True, **kwargs):
+    def __init__(self, show_in_browser=True, reset=False, **kwargs):
         super().__init__(**kwargs)
         self.__show_in_browser = show_in_browser
         
@@ -169,11 +169,15 @@ class HtmlReporter(Reporter):
         with open(template_path, 'r') as f:
             self.__template = f.read()
         self.__res_path = os.path.join(os.path.realpath(__file__), "..")
-        self.__json_data = []
+        if reset:
+            self.__json_data = []
+        else:
+            with open(self.__json_path, 'r') as f:
+                self.__json_data = json.load(f)
         self.__update_report()
         
     def __get_latest_conversation_node(self):
-        first_agent_insertion_point = self.__json_data[0]["children"] # System prompt is at index 0
+        first_agent_insertion_point = self.__json_data[-1]["children"] # System prompt is at index 0
         first_task_insertion_point = first_agent_insertion_point[1]["children"]
         first_conversation_insertion_point = first_task_insertion_point[0]["children"]
         from pprint import pprint
@@ -197,7 +201,7 @@ class HtmlReporter(Reporter):
             prompt (Prompt): The prompt to report.
         """
         print("Reporting System Prompt")
-        
+
         # Add Agent Node
         self.__json_data.append({
                                 "id": "agent_node_" + uuid4().hex,
@@ -207,10 +211,10 @@ class HtmlReporter(Reporter):
         
         # The system prompt node it as index 0
         prompt_node = self.report_prompt(prompt, role="System", append=False)
-        self.__json_data[0]["children"].append(prompt_node)
+        self.__json_data[-1]["children"].append(prompt_node)
         
         # The Task node is index 1
-        self.__json_data[0]["children"].append({
+        self.__json_data[-1]["children"].append({
                                     "id": "task_node_" + uuid4().hex,
                                     "text": "Task",
                                     "children": []
@@ -218,7 +222,7 @@ class HtmlReporter(Reporter):
         
         # This children in this node is the executor node for rest of the reporting.
         # self.__json_data[0]["children"][1]["children"][0["children"]
-        self.__json_data[0]["children"][1]["children"] = [{
+        self.__json_data[-1]["children"][1]["children"] = [{
                                     "id": "conversation_node_" + uuid4().hex,
                                     "text": "Conversation",
                                     "children": []
@@ -375,7 +379,7 @@ class HtmlReporter(Reporter):
             
         
         if prompt.role == "system":
-            self.__json_data[0]["children"][0]["children"].extend(children)
+            self.__json_data[-1]["children"][0]["children"].extend(children)
         else:
             self.__get_latest_conversation_node()[-1]["children"].extend(children)       
         self.__update_report()

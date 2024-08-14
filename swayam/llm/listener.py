@@ -20,7 +20,7 @@ from .prompt.context import PromptContext
 
 class AgentListener:
     
-    def __init__(self, display:bool=True, report_html=False, show_in_browser=True, **kwargs):
+    def __init__(self, display:bool=True, report_html=False, show_in_browser=True, reset=False, **kwargs):
         self.__reporters = []
         
         from .report import ConsoleReporter, HtmlReporter
@@ -28,7 +28,7 @@ class AgentListener:
             self.__reporters.append(ConsoleReporter(enabled=display))
             
         if report_html:
-            self.__reporters.append(HtmlReporter(show_in_browser=show_in_browser))
+            self.__reporters.append(HtmlReporter(show_in_browser=show_in_browser, reset=reset))
             
     def report_system_prompt(self, prompt:SystemPrompt) -> None:
         """
