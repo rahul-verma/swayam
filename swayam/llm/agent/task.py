@@ -17,29 +17,37 @@
 
 
 from tarkash import log_debug
-from .prompt.prompt import Prompt
-from .prompt.converse import Conversation
-from .prompt.context import PromptContext
+from swayam.llm.prompt import Prompt
+from swayam.llm.prompt.converse import Conversation
+from swayam.llm.prompt.context import PromptContext
 
 class Task:
     """
     Represents a sequence of conversations, commonly in the same context.
     """
     
-    def __init__(self, *conversations, same_context=True):
-        if not conversations:
-            self.__conversations = []
-        else:
-            self.__conversations = []
+    def __init__(self, *conversations, system_prompt=None, same_context=True):
+        self.__conversations = []
+        self.__system_prompt = system_prompt
+        self.__same_context = same_context
+        if conversations:
             for conversation in conversations:
                 self.append(conversation)
-        self.__same_context = same_context
         self.__context = PromptContext()
         
     def append(self, node):
-        message = Conversation.load_message(node)._get_first_child()
+        message = None
+        if isinstance(node, Conversation):
+            message = node
+        else:
+            message = Conversation.load_message(node)._get_first_child()
         if isinstance (message, Prompt):
             message = Conversation(message)
+        # First node
+        if self.__same_context and len(self.__conversations) == 0:
+            message.append_system_prompt(self.__system_prompt) 
+        if not self.__same_context:
+            message.append_system_prompt(self.__system_prompt)
         self.__conversations.append(message)
 
     def __iter__(self):

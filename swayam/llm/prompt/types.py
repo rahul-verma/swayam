@@ -15,20 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from swayam.llm.prompt import Prompt
+from tarkash import log_debug
+from typing import Any
 
-import os
-import sys
+class SystemPrompt(Prompt):
+    
+    def __init__(self, *, text:str, image:str=None, tools:list=None ) -> Any:
+        super().__init__(role="system", text=text, image=image, tools=tools)
 
-def __join_paths(*paths):
-    return os.path.abspath(os.path.join(*paths))
-
-__root_dir = __join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
-sys.path.insert(0, __root_dir)
-
-from swayam.core.facade import Swayam
-from swayam.llm.prompt.file import PromptTextFile, PromptIniFile
-from swayam.llm.agent import Agent
-from swayam.llm.prompt.types import Prompt
-from swayam.llm.prompt.converse import Conversation
-from swayam.llm.agent.task import Task
-from swayam.llm.tool import Tool
+class UserPrompt(Prompt):
+    def __init__(self, *, text:str, image:str=None, tools:list=None) -> Any:
+        super().__init__(role="user", text=text, image=image, tools=tools)

@@ -19,132 +19,13 @@ from uuid import uuid4
 import os
 import json
 import webbrowser
-from abc import ABC, abstractmethod
 from pprint import pprint
 import copy
 
-from .prompt.prompt import Prompt
-from .prompt.context import PromptContext
-from .prompt.response import LLMResponse
-
-class Reporter(ABC):
-    
-    def __init__(self, **kwargs):
-        pass
-    
-    @abstractmethod
-    def report_prompt(self, prompt:Prompt) -> None:
-        """
-        Reports the prompt details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        pass
-        
-    @abstractmethod
-    def report_context(self, context:PromptContext) -> None:
-        """
-        Reports the context details.
-
-        Args:
-            context (PromptContext): Context object with all input messages.
-        """
-        pass
-
-        
-    def report_response(self, message:LLMResponse) -> None:
-        """
-        Reports the LLM response.
-
-        Args:
-            message (LLMResponse): Response message from LLM.
-        """
-        pass
-    
-    @abstractmethod
-    def finish(self) -> None:
-        """
-        Finishes report creation.
-        """
-        pass
-        
-    
-class ConsoleReporter(Reporter):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
-    @property
-    def enabled(self):
-        return self.__enabled
-    
-    def report_system_prompt(self, prompt:Prompt) -> None:
-        """
-        Reports the prompt details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        print("-" * 80)
-        print("Prompt:", f"(Role: {prompt.role})")
-        
-        self.report_prompt(prompt)
-
-    def report_prompt(self, prompt:Prompt) -> None:
-        """
-        Reports the prompt details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        print("-" * 80)
-        print("Prompt:", f"(Role: {prompt.role})")
-        
-        ## Should not print image
-        content = prompt.content
-        if type(content) == list:
-            print(prompt.reportable_text)
-            print("=" * 100)
-            for item in prompt.reportable_content:
-                if item["type"] == "image_url":
-                    print(item["local_path"])
-        else:
-            print(prompt.content)
-        print("-" * 80)
-
-    def report_context(self, context:PromptContext) -> None:
-        """
-        Reports the context details.
-
-        Args:
-            context (PromptContext): Context object with all input messages.
-        """
-        if len(context.messages) == 1:
-            return
-        print ("Total Context Length (Previous Request-Response Pairs):", int((len(context.messages)-1)/2))
-        # if not context.messages:
-        #     print("Context Messages: None")
-        # else:
-        #     print("Context Messages:")
-        #     pprint(context.messages)
-        print("-" * 80)
-
-        
-    def report_response(self, prompt, response:LLMResponse) -> None:
-        """
-        Reports the LLM response.
-
-        Args:
-            response (LLMResponse): Response message from LLM.
-        """
-        print("Response:")
-        print(response.content)
-        
-    def finish(self) -> None:
-        """
-        Finishes report creation.
-        """
-        print("-"* 80) 
+from swayam.llm.prompt import Prompt
+from swayam.llm.prompt.context import PromptContext
+from swayam.llm.prompt.response import LLMResponse
+from swayam.llm.report import Reporter
 
 class HtmlReporter(Reporter):
     
@@ -180,8 +61,6 @@ class HtmlReporter(Reporter):
         first_agent_insertion_point = self.__json_data[-1]["children"] # System prompt is at index 0
         first_task_insertion_point = first_agent_insertion_point[1]["children"]
         first_conversation_insertion_point = first_task_insertion_point[0]["children"]
-        from pprint import pprint
-        pprint(first_conversation_insertion_point)
         return first_conversation_insertion_point
             
     def __update_report(self):
@@ -200,7 +79,6 @@ class HtmlReporter(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-        print("Reporting System Prompt")
 
         # Add Agent Node
         self.__json_data.append({
@@ -236,7 +114,6 @@ class HtmlReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
-        print("Reporting Context")
         context_messages = []
         
         title = {
@@ -283,7 +160,6 @@ class HtmlReporter(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-        print("Reporting Prompt")
         prompt_node = {
                 "id": "prompt_" + uuid4().hex,
                 "text": f"{role} Prompt",
@@ -320,7 +196,6 @@ class HtmlReporter(Reporter):
             #     append_text_child(item["text"], sub_counter)
 
         if append:
-            print("Appending prompt node")
             self.__get_latest_conversation_node().append(prompt_node)
             self.__update_report()
         else:
@@ -333,7 +208,6 @@ class HtmlReporter(Reporter):
         Args:
             response (LLMResponse): Response message from LLM.
         """
-        print("Reporting Prompt Response")
         children = []
         response = response.as_dict()
         content = response["content"]

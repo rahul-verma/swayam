@@ -143,7 +143,11 @@
                         continue;
                     }
                     if (typeof obj[key] === 'object' && obj[key] !== null) {
-                        table += `<tr><td>${key}</td><td>${Array.isArray(obj[key]) ? obj[key].join(', ') : generateTableFromObject(obj[key], false)}</td></tr>`;
+                        if (Array.isArray(obj[key])) {
+                            table += `<tr><td>${key}</td><td>${obj[key].map(item => typeof item === 'object' ? `<pre><code class="language-json">${Prism.highlight(JSON.stringify(item, null, 2), Prism.languages.json, 'json')}</code></pre>` : item).join(', ')}</td></tr>`;
+                        } else {
+                            table += `<tr><td>${key}</td><td><pre><code class="language-json">${Prism.highlight(JSON.stringify(obj[key], null, 2), Prism.languages.json, 'json')}</code></pre></td></tr>`;
+                        }
                     } else {
                         table += `<tr><td>${key}</td><td>${obj[key]}</td></tr>`;
                     }

@@ -15,11 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel, Field
-from enum import Enum
-from typing import *
 
-from .structure import create_structure
+
 import json
 
 class Tool:
@@ -62,35 +59,20 @@ class Tool:
     def __call__(self, **fields):
         structure = self.__tool_structure(**fields)
         return self.__target(**structure.dict())
+
+    @classmethod
+    def structure_builder(cls, name:str):
+        """
+        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
+
+        :param name: Name of the structure
+        """
+        from .structure import StructureBuilder
+        return StructureBuilder(name)
+    
+    @classmethod
+    def tool_builder(cls, target, desc:str=None, **fields):
+        from .builder import ToolBuilder
+        return ToolBuilder(target, desc, **fields)
     
     
-class ToolBuilder:
-    def __init__(self, target:callable, desc:str):
-        self.__target = target
-        self.__tool_name = target.__name__
-        self.__fields = {}
-        self.__desc = desc
-        
-    def add_field(self, name:str, *, type, desc:str, default="not_given"):
-        is_enum = False
-        try:
-            is_enum = issubclass(type, Enum)
-        except TypeError:
-            pass
-        
-        if is_enum:
-            choices = [entry.value for entry in type]
-            if isinstance(default, Enum):
-                default = default.name
-            return self.add_choices(name, choices=choices, desc=desc, default=default)
-        if default=="not_given":
-            self.__fields[name] = (type, Field(..., description=desc))
-        else:
-            self.__fields[name] = (type, Field(default, description=desc))
-            
-    def add_choices(self, name:str, *, choices, desc:str, default="not_given"):
-        type_def = Literal.__getitem__(tuple(choices))
-        self.add_field(name, type=type_def, desc=desc, default=default)
-        
-    def build(self):
-        return Tool(self.__target, self.__desc, create_structure(self.__tool_name + "_arguments", **self.__fields))

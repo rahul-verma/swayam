@@ -19,7 +19,7 @@ import os
 from pprint import pprint
 from pydantic import BaseModel
 from tarkash import TarkashObject, log_info, log_debug
-from .prompt.response import LLMResponse
+from swayam.llm.prompt.response import LLMResponse
 
 class ConversationExecutor(TarkashObject):    
     """
@@ -50,10 +50,10 @@ class ConversationExecutor(TarkashObject):
         return self.__listener
         
     def __load(self):
-        from .model import Model
+        from swayam.llm.model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, conversation, response_format:BaseModel=None, functions=None):
+    def execute(self, *, conversation, response_format:BaseModel=None, tools=None):
         '''
             Runs the prompt text and returns the result.
         '''
@@ -61,17 +61,18 @@ class ConversationExecutor(TarkashObject):
         output_messages = []
         for prompt in conversation:
             log_debug("Executing prompt...")
-            prompt.process_for_report()
-            print("Is system prompt", prompt.is_system_prompt, prompt.content)
-            if prompt.is_system_prompt:
-                self.listener.report_system_prompt(prompt)
-                conversation.context.append_prompt(prompt)
-            else:
-                self.listener.report_context(conversation.context)
-                conversation.context.append_prompt(prompt)
-                self.listener.report_prompt(prompt)
+            if prompt.included_system_prompt is not None:
+                prompt.included_system_prompt.process_for_report()
+                self.listener.report_system_prompt(prompt.included_system_prompt)
+                conversation.context.append_prompt(prompt.included_system_prompt)
 
-            response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, functions=functions)
+            prompt.process_for_report()
+            if prompt.included_system_prompt is None:
+                self.listener.report_context(conversation.context)
+            conversation.context.append_prompt(prompt)
+            self.listener.report_prompt(prompt)
+
+            response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, tools=tools)
             output_message = response.choices[0].message
             output_messages.append(output_message)
             response_message = LLMResponse.create_response_object(output_message)

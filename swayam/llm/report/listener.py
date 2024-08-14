@@ -15,15 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .prompt.prompt import Prompt, SystemPrompt
-from .prompt.context import PromptContext
+from swayam.llm.prompt import Prompt
+from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.prompt.context import PromptContext
 
 class AgentListener:
     
     def __init__(self, display:bool=True, report_html=False, show_in_browser=True, reset=False, **kwargs):
         self.__reporters = []
         
-        from .report import ConsoleReporter, HtmlReporter
+        from .console import ConsoleReporter
+        from .html import HtmlReporter
         if display:
             self.__reporters.append(ConsoleReporter(enabled=display))
             

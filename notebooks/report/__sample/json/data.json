@@ -1,0 +1,386 @@
+[
+    {
+        "id": "agent_node_11f8f40b2b9f4624a4e95c8b59f78291",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_1a9cb440d7204177ba7240b31072de47",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_8f37e187b4a54fcb916455c597a24d9d",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_755d5a15356042788e701e32490ebaac",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_68e9c6cb4fd945d086044bad96674487",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_5b4c75fe56914ca0a6011f4ecb5eed4e",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_63c4f41275a4476da74549eba60e5550",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_6c244d3b41df4835a65c52833a9b28bb",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_d19b374e75934f8db221e136210275d3",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_2f1dfd5cee9f407e91148418c15fcdac",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_518d4ae28f824a3d80175e13323749f5",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_ffc0dd41bccf426eb643097c9d6d996c",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_aec74e04097e48cbbc4e75c6402ca7f9",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_83d471a2563a42b69366b6c9abf7a8a6",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_e118158e962a4a7b93d868b88f365cdf",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_2b9786f30dfd40fc9fbbe3e1d305275f",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_605d8b49c51b47c984d91895ae2f0542",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_e99d2c4b1c5a4f0282cddde2ed97956a",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_69ccab6d029744b0963e09cb25468929",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_b8b2d46bdf5c4442bb7f751f67f27d73",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_0a056b2272424979803d3c5595136190",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_38b8c66b7f0b401e8597f3b2c2dfe76f",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_c6bd5f3706cc42199e2a2a05135c1427",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_efc9cbcc84554620aa1abbf0dd8ada37",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_267cc6232df3488bafd0168b9e865f55",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_ebd1eeb2bf2a45ea8874fa51ca498cbb",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_aff428a6a55b49ec8c0ed236fd0cab97",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_2ca3724f7cf94e28b2adf5810ba115b7",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "Of course! I'm here to help you with any questions or queries you have. What do you need assistance with today?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_e9dfc47ab3f44ae79f1b197461493e91",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_404f911e1d3243e58da978bfd98992a2",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_f0d6dd75657745c18828617258b1c661",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_6b3aa29a8e5f47e48f674778fc1ffd2e",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_e3d7869e2c484c6daf270dfdf1f43f72",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_de04985fea9f49ce8ed4b964bf5b5b48",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_9b6a09a0c26e49acab31a1d4c3d088ed",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_d32f635bd51e4d368702862e3ba2562e",
+                        "text": "Conversation",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "agent_node_b2ad777ae82540028293c4647147a963",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_9ff40eac087349c3ab8dba383559ed58",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_2b9be9e6293548949dc9933575bb1669",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_d1a7b3448d4547f6b3012d117f4db447",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_b84e61e097e34a0ab4de0ff7215ba2d5",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_d49d2b3b7e7d4781a7401ab92ea25840",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "chat_context_33c694a4d81045b8af2dea6fb5cb90fd",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_54b4ba5777934401aacdee3ccc14c3c1",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant. You are here to help me with my queries."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_d3bbe700ee3d4aa78dcf12c40737e155",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "I'm here to help! What questions do you have?",
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_d6e49caae03948a09be0e4e3defbc351",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Please explain this image to me."
+                                },
+                                "children": [
+                                    {
+                                        "id": "prompt_part_c460c1a4d180402db966ba629174ccbd",
+                                        "text": "Image Upload",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/notebooks/data/images/5EModel.png"
+                                        }
+                                    },
+                                    {
+                                        "id": "message_7ff68c28298146d8ac0ab79466138b3d",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_56bed1f31b0648ff86d075a48ddbd717",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing,\" developed by Rahul Verma. It outlines a structured approach to integrating large language models (LLMs) in testing processes. Here\u2019s a breakdown of its components:\n\n### Key Sections:\n\n1. **Engage**: \n   - Focuses on identifying and defining the testing problem.\n   - Encourages taking charge and determining the roles of humans versus LLMs.\n\n2. **Explore**: \n   - Involves assessing whether the right problem is being addressed.\n   - Includes prompting experiments and evaluating the context and capabilities of LLMs.\n\n3. **Engineer**: \n   - Centers on the technical aspects, such as selecting base LLMs and prompt engineering.\n   - Discusses knowledge augmentation and tuning/deployment strategies.\n\n4. **Embed**: \n   - Highlights the importance of involving participants (humans and LLMs) in the testing process.\n   - Discusses roles of \"Invokers\" and \"Recipients\" in the testing framework.\n\n5. **Evolve**: \n   - Focuses on continuous improvement and adaptation based on feedback.\n   - Emphasizes fairness, transparency, accountability, and other ethical considerations.\n\n### Additional Elements:\n- **Feedback & Adaptation**: A continuous loop for refining the process based on outcomes.\n- **Testing Protocols**: Guidelines for assessing the effectiveness and completeness of solutions.\n\n### Overall Purpose:\nThe model aims to facilitate a collaborative approach between humans and AI in testing, ensuring that both parties contribute effectively to problem-solving and innovation."
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -18,11 +18,12 @@
 from typing import List
 
 from tarkash import TarkashObject, log_info, log_debug
-from .config import *
+from swayam.llm.config.prompt import PromptConfig
+from swayam.llm.config.model import ModelConfig
 from tarkash.type.descriptor import DString, DNumber, DBoolean
+from swayam.llm.prompt.types import SystemPrompt
 from pydantic import BaseModel
-from .prompt.prompt import SystemPrompt
-from .prompt.converse import Conversation
+
 
 class Agent(TarkashObject):
     _name = DString()
@@ -57,7 +58,7 @@ class Agent(TarkashObject):
         self._model_kwargs = kwargs
         self.__system_prompt = system_prompt   
         if self.__system_prompt is None:
-            self.__system_prompt = SystemPrompt("You are a helpful assistant. You are here to help me with my queries.")         
+            self.__system_prompt = SystemPrompt(text="You are a helpful assistant. You are here to help me with my queries.") 
         
     @property
     def model_config(self):
@@ -71,7 +72,7 @@ class Agent(TarkashObject):
     def reporter_config(self):
         return self.__reporter_config
 
-    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None, functions:dict=None, reset_report=False):
+    def execute(self, *nodes:List[object], same_context:bool=True, response_format:BaseModel=None, reset_report=False):
         """
         A simple facade to default LLM Model, resulting in one or more prompts being executed.
         
@@ -95,12 +96,12 @@ class Agent(TarkashObject):
             (str, List): Returns a string or a list of strings as the output of the LLM.
         """
         
-        from .listener import AgentListener
+        from swayam.llm.report.listener import AgentListener
         self.__listener = AgentListener(display=self._display, report_html=self._report_html, show_in_browser=self._show_in_browser, reset=reset_report)
         
         from swayam import Task
-        nodes = (self.__system_prompt,) + nodes
-        task = Task(*nodes, same_context=same_context)
+        # nodes = (self.__system_prompt,) + nodes
+        task = Task(*nodes, system_prompt=self.__system_prompt, same_context=same_context)
 
         log_debug(f"Executing Task with {len(nodes)} conversation steps (same_context={same_context})")        
         output_list = []
@@ -108,7 +109,7 @@ class Agent(TarkashObject):
             log_debug(f"Performing Conversation (prompts = {len(conversation)})")
             from .executor import ConversationExecutor
             executor = ConversationExecutor(model_config=self.__model_config, prompt_config=self.__prompt_config, listener=self.__listener)
-            output = executor.execute(conversation=conversation, response_format=response_format, functions=functions)
+            output = executor.execute(conversation=conversation, response_format=response_format, tools=self.__system_prompt.tools)
             output_list.extend(output)
             log_debug(f"Finished PromptNode")
                 

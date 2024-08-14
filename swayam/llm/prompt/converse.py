@@ -17,7 +17,7 @@
 # limitations under the License.
 
 from tarkash import log_debug
-from .prompt import *
+from .types import *
 from .context import PromptContext
 
 class Conversation:
@@ -28,6 +28,9 @@ class Conversation:
         
     def append(self, prompt:Prompt):
         self.__prompts.append(prompt)
+        
+    def append_system_prompt(self, prompt:SystemPrompt):
+        self._get_first_child().append_system_prompt(prompt)
         
     @property
     def context(self):
@@ -55,6 +58,10 @@ class Conversation:
                 description += f"{indent}  {type(prompt).__name__}\n"
         
         return description
+    
+    @property
+    def _prompts(self):
+        return self.__prompts
         
     def __iter__(self):
         self.__index = -1
@@ -95,9 +102,9 @@ class Conversation:
             return sequence
         elif isinstance(input_object, dict):
             if input_object["role"] == "system":
-                sequence.append(SystemPrompt(input_object["content"], **kwargs))
+                sequence.append(SystemPrompt(text=input_object["text"], **kwargs))
             elif input_object["role"] == "user":
-                sequence.append(UserPrompt(input_object["content"], **kwargs))
+                sequence.append(UserPrompt(text=input_object["text"], **kwargs))
             else:
                 raise TypeError(f"Invalid PromptNode type: {type(input_object)}")
         elif isinstance(input_object, str):
@@ -106,7 +113,7 @@ class Conversation:
             elif input_object.lower().endswith('.ini'):
                 return cls.load_message(list(PromptIniFile(input_object).content.values()), sequence, **kwargs)
             else:
-                sequence.append(UserPrompt(input_object, **kwargs))
+                sequence.append(UserPrompt(text=input_object, **kwargs))
         elif isinstance(input_object, Prompt):
             sequence.append(input_object)
         elif isinstance(input_object, Conversation):
