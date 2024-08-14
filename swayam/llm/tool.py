@@ -55,7 +55,7 @@ class Tool:
             "description": self.__desc,
             "parameters": data_schema
         }
-        return json.dumps(schema, indent=4)
+        return schema
     
     def __call__(self, **fields):
         structure = self.__tool_structure(**fields)

@@ -35,7 +35,7 @@
                                                 "refusal": null,
                                                 "role": "assistant",
                                                 "function_call": {
-                                                    "arguments": "{\"location\":\"Boston, MA\"}",
+                                                    "arguments": "{\"location\":\"Boston\"}",
                                                     "name": "get_current_weather"
                                                 }
                                             }
@@ -54,7 +54,7 @@
                                         "text": "Needs Function Call",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": "A function call needs to be made:\n\nFunction Name: get_current_weather \nArguments: {\"location\":\"Boston, MA\"}"
+                                            "content": "A function call needs to be made:\n\nFunction Name: get_current_weather \nArguments: {\"location\":\"Boston\"}"
                                         }
                                     }
                                 ]
