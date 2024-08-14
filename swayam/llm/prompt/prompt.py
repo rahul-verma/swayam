@@ -100,17 +100,32 @@ class Prompt:
     
     @property
     def reportable_message(self):
-        return self.__reportable_message   
+        return self.__reportable_message
     
     @classmethod
-    def as_user(cls, node, *, image=None):
+    def as_user(cls, *nodes, image=None):
         from .converse import Conversation
-        return Conversation.load_message(node, image=image)
+        nodes = [{"role": "user", "content": node} for node in nodes]
+        return Conversation.load_message([nodes], image=image)
+    
+    @classmethod
+    def as_system(cls, node, *, image=None, tools=None):
+        from .converse import Conversation
+        return Conversation.load_message({"role": "system", "content": node}, image=image, tools=tools)
+    
+    @property
+    def is_system_prompt(self):
+        return self.__role == "system"
 
 class SystemPrompt(Prompt):
     
-    def __init__(self, content:str) -> Any:
-        super().__init__(role="system", content=content)
+    def __init__(self, content:str, image:str=None, tools:list=None) -> Any:
+        super().__init__(role="system", content=content, image=image)
+        self.__tools = tools
+        
+    @property
+    def tools(self):
+        return tuple(self.__tools) if self.__tools else None
 
 class UserPrompt(Prompt):
     def __init__(self, content:str, image:str=None) -> Any:

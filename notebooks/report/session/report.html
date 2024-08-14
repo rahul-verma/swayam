@@ -167,61 +167,101 @@
         // JSON data embedded in the HTML as a JavaScript variable
         const jsonData = [
     {
-        "id": "agent_node_1",
+        "id": "agent_node_ab8af15af36b495d9009b392e31a1508",
         "text": "Agent",
         "children": [
             {
-                "id": "task_node_1",
+                "id": "prompt_66211d7f06b74fc3a701dff1a5f1dc10",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": [
+                    {
+                        "id": "message_5f68ab3fca2b4619aa6b23a0764247d0",
+                        "text": "Response Meta-Data",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "refusal": null,
+                                "role": "assistant"
+                            }
+                        }
+                    },
+                    {
+                        "id": "content_000420c707804d74b59ded729fa7d814",
+                        "text": "Response Content",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "I'm here to help! What questions do you have?"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "task_node_2326f0254e104a9383db4a7c169816b1",
                 "text": "Task",
                 "children": [
                     {
-                        "id": "conversation_node_1",
+                        "id": "conversation_node_4971fe9354e5407a9d12084fef2b1c71",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "chat_context_0",
+                                "id": "chat_context_1075ccc9be9d420086a5648e5e6b40e8",
                                 "text": "Chat Context",
-                                "icon": "jstree-file",
                                 "data": {
-                                    "content": "No context messages were sent along with the next prompt."
-                                }
-                            },
-                            {
-                                "id": "prompt_0",
-                                "text": "Prompt::1",
-                                "data": {
-                                    "content": "Find whether there is an email address in the following text marked with triple backticks \n ```This is a sample text with a@b.com and c@d.com addresses```?"
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "message_0",
+                                        "id": "chat_context_msg_ced2827627b74abe9ec955f1a47a3268",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant. You are here to help me with my queries."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_9f2fc7dde51b4964b8384ff2e9b16669",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "I'm here to help! What questions do you have?",
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_b91cd51b5f6c4a109efe6dfb4eb5a4a2",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_97e64953650f4b23ba89c473486fa63b",
                                         "text": "Response Meta-Data",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
                                                 "refusal": null,
-                                                "role": "assistant",
-                                                "function_call": {
-                                                    "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
-                                                    "name": "search_email"
-                                                }
+                                                "role": "assistant"
                                             }
                                         }
                                     },
                                     {
-                                        "id": "content_0",
+                                        "id": "content_bf0104de817e4612b7dd596407395e05",
                                         "text": "Response Content",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": "No response content was returned by the LLM."
-                                        }
-                                    },
-                                    {
-                                        "id": "action_0",
-                                        "text": "Needs Function Call",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "A function call needs to be made:\n\nFunction Name: search_email \nArguments: {\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}"
+                                            "content": "Berlin is a vibrant city with a rich history and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, known for its stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing artistic expressions of freedom.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, with a museum detailing its history.\n\n7. **Alexanderplatz** - A bustling square known for the iconic TV Tower (Fernsehturm) and shopping opportunities.\n\n8. **Potsdamer Platz** - A modern square with shops, restaurants, and the Sony Center, showcasing Berlin's contemporary architecture.\n\n9. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n10. **Tiergarten** - Berlin's largest park, ideal for a relaxing walk, a picnic, or cycling.\n\n11. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with its partially destroyed tower.\n\n12. **Topography of Terror** - An outdoor and indoor history museum located on the site of the former Gestapo and SS headquarters, detailing the history of the Nazi regime.\n\n13. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the history of the Holocaust.\n\n15. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n16. **Kreuzberg District** - Known for its vibrant culture, street art, and diverse food scene, it's a great area to explore.\n\n17. **Friedrichshain District** - Famous for its nightlife, bars, and the lively Boxhagener Platz market.\n\n18. **Berlin Zoo (Zoologischer Garten Berlin)** - One of the oldest and most famous zoos in the world, located in the heart of the city.\n\n19. **Jewish Museum Berlin** - A museum dedicated to Jewish history and culture, featuring a striking architectural design.\n\n20. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Concert House, often considered one of the most beautiful squares in Berlin.\n\nMake sure to check the opening hours and any special events happening in June, as the city often hosts festivals and outdoor activities during the summer. Enjoy your trip!"
                                         }
                                     }
                                 ]

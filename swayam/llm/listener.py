@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .prompt.prompt import Prompt
+from .prompt.prompt import Prompt, SystemPrompt
 from .prompt.context import PromptContext
 
 class AgentListener:
@@ -29,6 +29,16 @@ class AgentListener:
             
         if report_html:
             self.__reporters.append(HtmlReporter(show_in_browser=show_in_browser))
+            
+    def report_system_prompt(self, prompt:SystemPrompt) -> None:
+        """
+        Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        for reporter in self.__reporters:
+            reporter.report_system_prompt(prompt)
 
     def report_prompt(self, prompt:Prompt) -> None:
         """
@@ -50,7 +60,7 @@ class AgentListener:
         for reporter in self.__reporters:
             reporter.report_context(context)
  
-    def report_response(self, message:dict) -> None:
+    def report_response(self, prompt, message:dict) -> None:
         """
         Broadcasts the output message.
 
@@ -58,7 +68,7 @@ class AgentListener:
             message (dict): Response dict from LLM.
         """
         for reporter in self.__reporters:
-            reporter.report_response(message)
+            reporter.report_response(prompt, message)
             
     def finish(self) -> None:
         """

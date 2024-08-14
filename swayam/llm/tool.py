@@ -51,10 +51,12 @@ class Tool:
                 property.pop("title")
                 property.pop("default")
         schema = {
-            "name": self.__name,
-            "description": self.__desc,
-            "parameters": data_schema
-        }
+            "type": "function",
+            "function":{
+                "name": self.__name,
+                "description": self.__desc,
+                "parameters": data_schema
+            }}
         return schema
     
     def __call__(self, **fields):

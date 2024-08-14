@@ -62,16 +62,20 @@ class ConversationExecutor(TarkashObject):
         for prompt in conversation:
             log_debug("Executing prompt...")
             prompt.process_for_report()
-            self.listener.report_context(conversation.context)
-            conversation.context.append_prompt(prompt)
-            
-            self.listener.report_prompt(prompt)
+            print("Is system prompt", prompt.is_system_prompt, prompt.content)
+            if prompt.is_system_prompt:
+                self.listener.report_system_prompt(prompt)
+                conversation.context.append_prompt(prompt)
+            else:
+                self.listener.report_context(conversation.context)
+                conversation.context.append_prompt(prompt)
+                self.listener.report_prompt(prompt)
 
             response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, functions=functions)
             output_message = response.choices[0].message
             output_messages.append(output_message)
             response_message = LLMResponse.create_response_object(output_message)
-            self.listener.report_response(response_message)
+            self.listener.report_response(prompt, response_message)
 
             conversation.context.append_assistant_response(response_message.as_dict())
 
