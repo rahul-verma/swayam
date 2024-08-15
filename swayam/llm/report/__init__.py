@@ -19,7 +19,7 @@
 from abc import ABC, abstractmethod
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.prompt.context import PromptContext
+from swayam.llm.conversation.context import PromptContext
 from swayam.llm.prompt.response import LLMResponse
 
 class Reporter(ABC):

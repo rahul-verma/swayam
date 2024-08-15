@@ -15,24 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ModelConfig:
-
-    def __init__(self, *, provider, model):
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        provider = provider or Tarkash.get_option_value(SwayamOption.LLM_PROVIDER)
-        model = model or Tarkash.get_option_value(SwayamOption.LLM_MODEL)
-        self._provider = provider
-        self._model = model
-        
-    @property
-    def provider(self):
-        return self._provider
-    
-    @property
-    def model(self):
-        return self._model
-
 class PromptConfig:
     
     def __init__(self, *, temperature=0, **kwargs):

@@ -19,13 +19,13 @@ import os
 from pprint import pprint
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.context import PromptContext
+from swayam.llm.conversation.context import PromptContext
 from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.report import Reporter
     
 class ConsoleReporter(Reporter):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self):
+        super().__init__()
         
     @property
     def enabled(self):
@@ -38,9 +38,6 @@ class ConsoleReporter(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-        print("-" * 80)
-        print("Prompt:", f"(Role: {prompt.role})")
-        
         self.report_prompt(prompt)
 
     def report_prompt(self, prompt:Prompt) -> None:
@@ -72,6 +69,7 @@ class ConsoleReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
+        print(context.messages)
         if len(context.messages) == 1:
             return
         print ("Total Context Length (Previous Request-Response Pairs):", int((len(context.messages)-1)/2))

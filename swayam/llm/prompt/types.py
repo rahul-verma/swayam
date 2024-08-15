@@ -17,7 +17,7 @@
 
 from swayam.llm.prompt import Prompt
 from tarkash import log_debug
-from typing import Any
+from typing import Any, Union
 
 class SystemPrompt(Prompt):
     
@@ -25,5 +25,5 @@ class SystemPrompt(Prompt):
         super().__init__(role="system", text=text, image=image, tools=tools)
 
 class UserPrompt(Prompt):
-    def __init__(self, *, text:str, image:str=None, tools:list=None) -> Any:
-        super().__init__(role="user", text=text, image=image, tools=tools)
+    def __init__(self, *, text:str, system_prompt:SystemPrompt=None, image:str=None, tools:list=None) -> Any:
+        super().__init__(role="user", text=text, system_prompt=system_prompt, image=image, tools=tools)

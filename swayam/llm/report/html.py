@@ -23,14 +23,14 @@ from pprint import pprint
 import copy
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.context import PromptContext
+from swayam.llm.conversation.context import PromptContext
 from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.report import Reporter
 
 class HtmlReporter(Reporter):
     
-    def __init__(self, show_in_browser=True, reset=False, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, show_in_browser=True, run_id=False):
+        super().__init__()
         self.__show_in_browser = show_in_browser
         
         from tarkash import Tarkash
@@ -38,7 +38,7 @@ class HtmlReporter(Reporter):
         from swayam.core.constant import SwayamOption
         
         # For JSON Data
-        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), "session")
+        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
@@ -50,7 +50,8 @@ class HtmlReporter(Reporter):
         with open(template_path, 'r') as f:
             self.__template = f.read()
         self.__res_path = os.path.join(os.path.realpath(__file__), "..")
-        if reset:
+        self.__json_data = []
+        if not os.path.exists(self.__json_path):
             self.__json_data = []
         else:
             with open(self.__json_path, 'r') as f:

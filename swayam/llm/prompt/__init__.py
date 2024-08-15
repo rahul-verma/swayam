@@ -21,7 +21,7 @@ from typing import Any
 
 class Prompt:
     
-    def __init__(self, *, role, text, image=None, tools=None) -> Any:
+    def __init__(self, *, role, text, system_prompt=None, image=None, tools=None) -> Any:
         self.__role = role
         self.__content = text
         self.__tools = tools
@@ -36,17 +36,17 @@ class Prompt:
             self.__image = None
             self.__image_path = None
             
-        self.__system_prompt = None
+        self.__system_prompt = system_prompt
         
     @property
     def tools(self):
         return tuple(self.__tools) if self.__tools else None
             
-    def append_system_prompt(self, prompt):
+    def set_system_prompt(self, prompt):
         self.__system_prompt = prompt
     
     @property
-    def included_system_prompt(self):
+    def system_prompt(self):
         return self.__system_prompt
 
     def process_for_report(self):

@@ -25,6 +25,15 @@ class SwayamOption(Enum):
     PROMPT_ROOT_DIR = auto()
     '''Root Directory for Prompt Files'''
     
+    CONVERSATION_ROOT_DIR = auto()
+    '''Root Directory for Conversation Files'''
+    
+    TASK_ROOT_DIR = auto()
+    '''Root Directory for Task Files'''
+    
+    PLAN_ROOT_DIR = auto()
+    '''Root Directory for Plan Files'''
+    
     REPORT_ROOT_DIR = auto()
     '''Root Directory for Prompt Files'''
     

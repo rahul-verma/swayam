@@ -22,6 +22,11 @@ from tarkash.type.descriptor import *
 from tarkash import log_debug
 from swayam.core.constant import SwayamOption
 
+
+def _convert_to_prompt_text(*, role, content, image, tools):
+    from swayam.llm.prompt import Prompt
+    return Prompt.create_prompt(role=role, content=content, image=image, tools=tools) 
+
 class PromptTextFile(FlatFile):
     _path = DString(immutable=True)
     
@@ -39,13 +44,32 @@ class PromptTextFile(FlatFile):
         FileIOError: If there is an error reading the file.
     """
  
-    def __init__(self, path:str, **kwargs):
+    def __init__(self, path:str, format_map=None, **kwargs):
         """
         Initializes the FlatFileReader with the provided file path and try_relative_path flag.
         """
         from tarkash import Tarkash
         path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
-        super().__init__(path, **kwargs)
+        super().__init__(path, format_map=format_map, **kwargs)
+        
+    def as_user(self, image=None, tools=None):
+        """
+        Returns content as a UserPrompt object.
+        """
+        return _convert_to_prompt_text(role="user", content=self.content, image=image, tools=tools)
+    
+    def as_system(self, image=None, tools=None):
+        """
+        Returns content as a SystemPrompt object.
+        """
+        return _convert_to_prompt_text(role="system", content=self.content, image=image, tools=tools)
+    
+    def as_system(self, image=None, tools=None):
+        """
+        Returns the prompt text as it would be displayed to the user.
+        """
+        from swayam.llm.prompt.types import UserPrompt
+        return UserPrompt(self.content, image=image, tools=tools)
         
         
 class PromptIniFile(IniFile):
@@ -72,3 +96,10 @@ class PromptIniFile(IniFile):
         from tarkash import Tarkash
         path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), path)
         super().__init__(path, **kwargs)
+        
+    @property
+    def content(self):
+        for k,v in super().content:
+            if k.strip().lower() == "system":
+                return _convert_to_prompt_text(role="system", content=v)
+        

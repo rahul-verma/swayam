@@ -21,7 +21,7 @@ from pydantic import BaseModel
 from tarkash import TarkashObject, log_info, log_debug
 from swayam.llm.prompt.response import LLMResponse
 
-class ConversationExecutor(TarkashObject):    
+class Mediator(TarkashObject):    
     """
     Executes the prompt and returns the result.
     """
@@ -57,27 +57,24 @@ class ConversationExecutor(TarkashObject):
         '''
             Runs the prompt text and returns the result.
         '''
-
-        output_messages = []
         for prompt in conversation:
             log_debug("Executing prompt...")
-            if prompt.included_system_prompt is not None:
-                prompt.included_system_prompt.process_for_report()
-                self.listener.report_system_prompt(prompt.included_system_prompt)
-                conversation.context.append_prompt(prompt.included_system_prompt)
-
+            #print(f"Found a user prompt >>{prompt.content}<<. Has system prompt: ", prompt.system_prompt)
+            if prompt.system_prompt is not None:
+                prompt.system_prompt.process_for_report()
+                self.listener.report_system_prompt(prompt.system_prompt)
+                conversation.context.append_prompt(prompt.system_prompt)
             prompt.process_for_report()
-            if prompt.included_system_prompt is None:
+            if prompt.system_prompt is None:
                 self.listener.report_context(conversation.context)
             conversation.context.append_prompt(prompt)
             self.listener.report_prompt(prompt)
 
             response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, tools=tools)
             output_message = response.choices[0].message
-            output_messages.append(output_message)
             response_message = LLMResponse.create_response_object(output_message)
             self.listener.report_response(prompt, response_message)
 
             conversation.context.append_assistant_response(response_message.as_dict())
 
-        return output_messages
+        return output_message

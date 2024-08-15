@@ -20,6 +20,7 @@ from pprint import pprint
 import typing
 
 from tarkash import singleton
+from swayam.llm.conversation import Conversation
 
 @singleton
 class _SwayamSingleton:
@@ -28,9 +29,12 @@ class _SwayamSingleton:
         from tarkash import Tarkash
         Tarkash.init()      
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
+        from swayam.llm.router import Router
+        print("Creating default router...")
+        self.__default_router = Router()
     
     def __join_paths(self, *paths):
-                return os.path.abspath(os.path.join(*paths))
+        return os.path.abspath(os.path.join(*paths))
         
     def run_prompt(self, prompt_text):
         return prompt_text
@@ -40,6 +44,10 @@ class _SwayamSingleton:
 
     def get_swayam_res_path(self, file_name):
         return self.__join_paths(self.get_swayam_root_dir(), "res", file_name)
+    
+    @property
+    def router(self):
+        return self.__default_router
 
 class Swayam:
     '''
@@ -58,29 +66,23 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, *prompts_or_objects, display:bool =True, same_context:bool =True):
+    def execute(cls, prompt, system_prompt=None, image:str=None, reset_context:bool=False):
         """
-        A simple facade to default LLM Model, resulting in one or more prompts being executed.
+        A simple facade to default LLM Model, resulting in one a prompt being executed.
         
-        The goal is to provide an equivalent of a simple web interface like ChatGPT in API-level experience.
+        The goal is to provide a basic chatting experience.
         
         The default LLM Model is picked up from configuration.
         
         This method is meant for simple usage where a user wants to execute one or more prompts.
         
-        The call supports multiple prompts and other objects to be provided in any sequence. Following are the supported object types:
-        1. Prompt as a string.
-        2. Prompt as a dictionary with role and content keys.
-        3. Prompt as a File. The file names (Text/INI) (or file paths relative to the <ROOT>Prompt directory) can be provided. 
-        
         Args:
-            *prompts_or_objects (str, List, Dict): The prompts to be executed
-            display (bool, optional): If True, the prompts and responses are displayed. Defaults to True.
-            same_context (bool, optional): If True, the same context is used for all prompts. Defaults to True.
+            prompt (str, List, Dict): The prompts to be executed
+            reset_context (bool, optional): If True, the context is reset. Defaults to False (All executions use same context).
 
         Returns:
-            (str, List): Returns a string or a list of strings as the output of the LLM.
+            (str): Returns the message from the LLM.
         """
-        from swayam.llm.agent import Agent
-        agent = Agent(display=display, report_html=False)
-        return agent.execute(*prompts_or_objects, same_context=same_context)
+        from swayam import Conversation
+        conversation = Conversation.from_text(prompt, system_prompt=system_prompt, image=image)
+        return cls._SWAYAM_SINGLETON.router.execute(conversation, display=True,reset_context=reset_context, report_html=False)

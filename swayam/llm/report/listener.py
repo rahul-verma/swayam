@@ -17,20 +17,20 @@
 
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.prompt.context import PromptContext
+from swayam.llm.conversation.context import PromptContext
 
 class AgentListener:
     
-    def __init__(self, display:bool=True, report_html=False, show_in_browser=True, reset=False, **kwargs):
+    def __init__(self, report_config):
         self.__reporters = []
         
         from .console import ConsoleReporter
         from .html import HtmlReporter
-        if display:
-            self.__reporters.append(ConsoleReporter(enabled=display))
+        if report_config.display:
+            self.__reporters.append(ConsoleReporter())
             
-        if report_html:
-            self.__reporters.append(HtmlReporter(show_in_browser=show_in_browser, reset=reset))
+        if report_config.report_html:
+            self.__reporters.append(HtmlReporter(show_in_browser=report_config.show_in_browser, run_id=report_config.run_id))
             
     def report_system_prompt(self, prompt:SystemPrompt) -> None:
         """

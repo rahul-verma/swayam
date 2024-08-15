@@ -32,19 +32,3 @@ class ModelConfig:
     @property
     def model(self):
         return self._model
-
-class PromptConfig:
-    
-    def __init__(self, *, temperature=0, **kwargs):
-        self._model_kwargs = dict()
-        self._model_kwargs["temperature"] = temperature
-
-    @property
-    def model_kwargs(self):
-        return self._model_kwargs
-    
-    @property
-    def temperature(self):
-        return self._model_kwargs["temperature"]
-        
-    

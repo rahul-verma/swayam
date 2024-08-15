@@ -15,25 +15,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class PromptContext:
+class ReportConfig:
     
-    def __init__(self, messages=None):
-        self.__messages = messages if messages else []
-        self.__reportable_messages = []
-        
+    def __init__(self, *, display=False, report_html=True, show_in_browser=True):
+        self._display = display
+        self._report_html = report_html
+        self._show_in_browser = show_in_browser
+
     @property
-    def messages(self):
-        return self.__messages
+    def display(self):
+        return self._display
     
     @property
-    def reportable_messages(self):
-        return self.__reportable_messages
+    def report_html(self):
+        return self._report_html
+    
+    @property
+    def show_in_browser(self):
+        return self._show_in_browser
+    
+    @property
+    def run_id(self):
+        return self._run_id        
         
-    def append_prompt(self, prompt):
-        self.__messages.append(prompt.message)
-        self.__reportable_messages.append(prompt.reportable_message)
-        
-    def append_assistant_response(self, *messages):
-        for message in messages:
-            self.__messages.append(message)
-            self.__reportable_messages.append(message)
+    
