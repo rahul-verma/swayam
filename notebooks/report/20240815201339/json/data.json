@@ -1,0 +1,127 @@
+[
+    {
+        "id": "agent_node_0f05a34a2b5a4a8fb0928f3f41b43a19",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_8cee7c5eaf5b402fa67a9682053fcde0",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": []
+            },
+            {
+                "id": "task_node_a159b1d10b3948a38f89e74799536ad1",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_f83896e452f7455a8060d0d64c960b14",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_de8c5c98f87746739180b24410804fc6",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What else should I take there?"
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_d7cf8ab1392c472b96947a746275e18d",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_d5796278c5084a13ad0fd4e998cd5ee0",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Could you please provide more context about where \"there\" is and what you are planning to take? This will help me give you more specific and useful suggestions!"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "chat_context_eb598eb8d9ac4676a44e7230731632f7",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_c5b77b39e6b549628def129ff28946e2",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant. You are here to help me with my queries."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_b6910586fe264eb6b432c079d76bacad",
+                                        "text": "User",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "user",
+                                                "content": "What else should I take there?"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_86c81b86b0b04274abe9caf2dbe2e50b",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "Could you please provide more context about where \"there\" is and what you are planning to take? This will help me give you more specific and useful suggestions!",
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_406a1d47566046daad9cf2f0214ba7e3",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Sorry I forgot to mention. We were talking about Berlin."
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_eb842373b0c644c1ade5e8fc5aba6f75",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_edd5b2bb11dc4a19a422ca0cb89bb43c",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "No problem! If you're planning a trip to Berlin, here are some suggestions on what to take with you:\n\n1. **Comfortable Shoes**: Berlin is a city best explored on foot, so bring comfortable walking shoes.\n\n2. **Weather-Appropriate Clothing**: Check the weather forecast before you go. Layers are a good idea, as the weather can change quickly.\n\n3. **Travel Adapter**: Germany uses Type C and Type F plugs, so make sure you have the right adapter for your electronics.\n\n4. **Reusable Water Bottle**: Staying hydrated is important, and Berlin has many public drinking fountains.\n\n5. **Camera or Smartphone**: You'll want to capture the beautiful sights, from the Brandenburg Gate to the East Side Gallery.\n\n6. **Guidebook or Map**: While smartphones are handy, having a physical map or guidebook can be useful, especially if you want to explore areas with limited internet access.\n\n7. **Personal Identification**: Always carry a form of ID, such as a passport or national ID card.\n\n8. **Cash and Cards**: While many places accept cards, some smaller shops and markets may only take cash, so it's good to have some euros on hand.\n\n9. **Travel Insurance**: Consider getting travel insurance for peace of mind during your trip.\n\n10. **Snacks**: If you have specific dietary needs or preferences, bringing some snacks can be helpful, especially for long days of sightseeing.\n\n11. **Portable Charger**: If you plan to use your phone for navigation and photos, a portable charger can keep your devices powered throughout the day.\n\n12. **Umbrella or Rain Jacket**: Depending on the season, it can be rainy, so it's good to be prepared.\n\nIf you have specific activities planned or places you want to visit, let me know, and I can tailor the suggestions further!"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

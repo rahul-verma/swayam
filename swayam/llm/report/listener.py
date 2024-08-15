@@ -30,7 +30,7 @@ class AgentListener:
             self.__reporters.append(ConsoleReporter())
             
         if report_config.report_html:
-            self.__reporters.append(HtmlReporter(show_in_browser=report_config.show_in_browser, run_id=report_config.run_id))
+            self.__reporters.append(HtmlReporter(config=report_config))
             
     def report_system_prompt(self, prompt:SystemPrompt) -> None:
         """

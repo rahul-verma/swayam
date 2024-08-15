@@ -19,12 +19,14 @@ from datetime import datetime
 
 class Router:
     
-    def __init__(self):
+    def __init__(self, display=False, report_html=True, show_in_browser=True):
         from swayam.llm.conversation.context import PromptContext
         self.__context = PromptContext()
-        self._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
+        from swayam.llm.config.report import ReportConfig
+        self.__report_config = ReportConfig(display=display, report_html=report_html, show_in_browser=show_in_browser)
+        self.__report_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
     
-    def execute(self, executable, display=False, reset_context=True, report_html=True, show_in_browser=True):
+    def execute(self, executable, reset_context=True):
         """
         Executes a compatible object.
         
@@ -39,12 +41,12 @@ class Router:
         if reset_context:
             print("Resetting context...")
             self.__context.reset()
-            self._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
+            self.__report_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
             
         from swayam import Conversation
         if isinstance(executable, Conversation):
             from swayam.llm.agent.conversation import ConversationAgent
-            agent = ConversationAgent(display=display, report_html=report_html, show_in_browser=show_in_browser)
-            agent.execute(executable, _run_id=self._run_id, context=self.__context)
+            agent = ConversationAgent(report_config=self.__report_config)
+            agent.execute(executable, context=self.__context)
         else:
             raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of Conversation, Task, or Plan.")

@@ -29,16 +29,18 @@ from swayam.llm.report import Reporter
 
 class HtmlReporter(Reporter):
     
-    def __init__(self, show_in_browser=True, run_id=False):
+    def __init__(self, config):
         super().__init__()
-        self.__show_in_browser = show_in_browser
+        self.__show_in_browser = config.show_in_browser
         
         from tarkash import Tarkash
         from swayam import Swayam
         from swayam.core.constant import SwayamOption
         
         # For JSON Data
-        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(run_id))
+        
+        # Don't store the run_id, always get it from config.
+        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(config.run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)

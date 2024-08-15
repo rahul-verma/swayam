@@ -31,7 +31,7 @@ class _SwayamSingleton:
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
         from swayam.llm.router import Router
         print("Creating default router...")
-        self.__default_router = Router()
+        self.__default_router = Router(display=True, report_html=False)
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
@@ -66,7 +66,7 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, prompt, system_prompt=None, image:str=None, reset_context:bool=False):
+    def execute(cls, prompt:str, *, reset_context:bool=False):
         """
         A simple facade to default LLM Model, resulting in one a prompt being executed.
         
@@ -77,12 +77,14 @@ class Swayam:
         This method is meant for simple usage where a user wants to execute one or more prompts.
         
         Args:
-            prompt (str, List, Dict): The prompts to be executed
+            prompt (str): The prompts to be executed
             reset_context (bool, optional): If True, the context is reset. Defaults to False (All executions use same context).
 
         Returns:
             (str): Returns the message from the LLM.
         """
+        if type(prompt) is not str:
+            raise TypeError("Prompt should be a string")
         from swayam import Conversation
-        conversation = Conversation.from_text(prompt, system_prompt=system_prompt, image=image)
-        return cls._SWAYAM_SINGLETON.router.execute(conversation, display=True,reset_context=reset_context, report_html=False)
+        conversation = Conversation.from_text(prompt, image=image)
+        return cls._SWAYAM_SINGLETON.router.execute(conversation, reset_context=reset_context)

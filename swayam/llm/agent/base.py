@@ -31,26 +31,19 @@ class BaseLLMAgent(TarkashObject):
     _name = DString()
     _temperature = DNumber()
     _model = DString()
-    _content_only = DBoolean()
-    _display = DBoolean()
-    _report_html = DBoolean()
-    _show_in_browser = DBoolean()
     
     """
     Base Class for All LLM Agents
     """
-    def __init__(self, name:str = "Swayam Agent", provider:str = None, model:str = None, temperature=0, system_prompt:SystemPrompt=None, display=False, report_html=True, show_in_browser=True, **kwargs):
+    def __init__(self, *, report_config, name:str = "Swayam Agent", provider:str = None, model:str = None, temperature=0, system_prompt:SystemPrompt=None, **kwargs):
         self.__model_config = ModelConfig(provider=provider, model=model)
         self.__prompt_config = PromptConfig(temperature=temperature, **kwargs)
-        self.__report_config = ReportConfig(display=display, report_html=report_html, show_in_browser=show_in_browser)
+        self.__report_config = report_config
         super().__init__(**kwargs)
         self._temperature = temperature
         self._provider = self.model_config.provider
         self._model = self.model_config.model
-        self._display = display
-        self._report_html = report_html
-        self._show_in_browser = show_in_browser
-        
+
     @property
     def model_config(self):
         return self.__model_config

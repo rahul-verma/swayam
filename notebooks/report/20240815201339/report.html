@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swayam Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Top header */
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Bottom footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Middle section with treeview and content */
+        .middle-section {
+            display: flex;
+            margin: 20px;
+            height: calc(100vh - 160px); /* Adjust height based on header and footer */
+        }
+
+        /* Left treeview section */
+        .left-pane {
+            width: 20%;
+            background-color: #ffffff;
+            border-right: 2px solid #e0e0e0;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* Right content section */
+        .right-pane {
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* Content styling */
+        #details {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        /* Styling the treeview */
+        .jstree-default .jstree-anchor {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .jstree-default .jstree-clicked {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+
+        pre {
+            white-space: pre-wrap; /* Wrap text in the pre block */
+            word-wrap: break-word; /* Break long words to avoid overflow */
+            overflow-wrap: break-word; /* Ensure long text is wrapped */
+            background-color: #f9f9f9; /* Match the grey background of your content area */
+            border: 1px solid #ccc; /* Optional: maintain a consistent border around the pre block */
+            padding: 10px; /* Optional: add padding for better readability */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
+
+        /* Image styling */
+        .fixed-size-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <div class="header">
+        Swayam Report
+    </div>
+
+    <!-- Middle Section -->
+    <div class="middle-section">
+        <!-- Left Pane for jsTree -->
+        <div class="left-pane">
+            <div id="jstree_demo" class="treeview"></div>
+        </div>
+
+        <!-- Right Pane for Content -->
+        <div class="right-pane">
+            <div id="details"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="footer">
+        Swayam is an Apache Licensed library free for commercial use. Copyright Rahul Verma 2024.
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script>
+        function generateTableFromObject(obj, skipContent) {
+            let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+            table += '<tr><th style="text-align: left;">Property</th><th style="text-align: left;">Value</th></tr>';
+        
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (skipContent && key === 'content') {
+                        continue;
+                    }
+                    if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        if (Array.isArray(obj[key])) {
+                            table += `<tr><td>${key}</td><td>${obj[key].map(item => typeof item === 'object' ? `<pre><code class="language-json">${Prism.highlight(JSON.stringify(item, null, 2), Prism.languages.json, 'json')}</code></pre>` : item).join(', ')}</td></tr>`;
+                        } else {
+                            table += `<tr><td>${key}</td><td><pre><code class="language-json">${Prism.highlight(JSON.stringify(obj[key], null, 2), Prism.languages.json, 'json')}</code></pre></td></tr>`;
+                        }
+                    } else {
+                        table += `<tr><td>${key}</td><td>${obj[key]}</td></tr>`;
+                    }
+                }
+            }
+        
+            table += '</table>';
+            return table;
+        }
+
+        // Function to copy content to clipboard
+        function copyToClipboard(element) {
+            const temp = $('<textarea>');
+            $('body').append(temp);
+            temp.val($(element).text()).select();
+            document.execCommand('copy');
+            temp.remove();
+            alert('Content copied to clipboard!');
+        }
+
+        // JSON data embedded in the HTML as a JavaScript variable
+        const jsonData = [
+    {
+        "id": "agent_node_0f05a34a2b5a4a8fb0928f3f41b43a19",
+        "text": "Agent",
+        "children": [
+            {
+                "id": "prompt_8cee7c5eaf5b402fa67a9682053fcde0",
+                "text": "System Prompt",
+                "data": {
+                    "content": "You are a helpful assistant. You are here to help me with my queries."
+                },
+                "children": []
+            },
+            {
+                "id": "task_node_a159b1d10b3948a38f89e74799536ad1",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_f83896e452f7455a8060d0d64c960b14",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_de8c5c98f87746739180b24410804fc6",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What else should I take there?"
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_d7cf8ab1392c472b96947a746275e18d",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_d5796278c5084a13ad0fd4e998cd5ee0",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Could you please provide more context about where \"there\" is and what you are planning to take? This will help me give you more specific and useful suggestions!"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "chat_context_eb598eb8d9ac4676a44e7230731632f7",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_c5b77b39e6b549628def129ff28946e2",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant. You are here to help me with my queries."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_b6910586fe264eb6b432c079d76bacad",
+                                        "text": "User",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "user",
+                                                "content": "What else should I take there?"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_86c81b86b0b04274abe9caf2dbe2e50b",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "Could you please provide more context about where \"there\" is and what you are planning to take? This will help me give you more specific and useful suggestions!",
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_406a1d47566046daad9cf2f0214ba7e3",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Sorry I forgot to mention. We were talking about Berlin."
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_eb842373b0c644c1ade5e8fc5aba6f75",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_edd5b2bb11dc4a19a422ca0cb89bb43c",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "No problem! If you're planning a trip to Berlin, here are some suggestions on what to take with you:\n\n1. **Comfortable Shoes**: Berlin is a city best explored on foot, so bring comfortable walking shoes.\n\n2. **Weather-Appropriate Clothing**: Check the weather forecast before you go. Layers are a good idea, as the weather can change quickly.\n\n3. **Travel Adapter**: Germany uses Type C and Type F plugs, so make sure you have the right adapter for your electronics.\n\n4. **Reusable Water Bottle**: Staying hydrated is important, and Berlin has many public drinking fountains.\n\n5. **Camera or Smartphone**: You'll want to capture the beautiful sights, from the Brandenburg Gate to the East Side Gallery.\n\n6. **Guidebook or Map**: While smartphones are handy, having a physical map or guidebook can be useful, especially if you want to explore areas with limited internet access.\n\n7. **Personal Identification**: Always carry a form of ID, such as a passport or national ID card.\n\n8. **Cash and Cards**: While many places accept cards, some smaller shops and markets may only take cash, so it's good to have some euros on hand.\n\n9. **Travel Insurance**: Consider getting travel insurance for peace of mind during your trip.\n\n10. **Snacks**: If you have specific dietary needs or preferences, bringing some snacks can be helpful, especially for long days of sightseeing.\n\n11. **Portable Charger**: If you plan to use your phone for navigation and photos, a portable charger can keep your devices powered throughout the day.\n\n12. **Umbrella or Rain Jacket**: Depending on the season, it can be rainy, so it's good to be prepared.\n\nIf you have specific activities planned or places you want to visit, let me know, and I can tailor the suggestions further!"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+        $(document).ready(function() {
+            $('#jstree_demo').jstree({
+                'core': {
+                    'data': jsonData
+                },
+                "plugins": ["state", "ui"],
+                "state": { "key": "single_click" },
+                "checkbox": {
+                    "three_state": false,
+                },
+                "themes": {
+                    "stripes": true,
+                }
+            });
+        
+            // Ensure single click expands nodes
+            $('#jstree_demo').on("click.jstree", ".jstree-anchor", function (e) {
+                $('#jstree_demo').jstree(true).toggle_node(e.target);
+            });
+        
+            // Handle node selection
+            $('#jstree_demo').on("changed.jstree", function (e, data) {
+                if (data && data.selected && data.selected.length) {
+                    const nodeId = data.selected[0];
+                    const node = $('#jstree_demo').jstree(true).get_node(nodeId);
+        
+                    let detailsContent = `<h2>${node.text}</h2>`;
+        
+                    if (typeof node.data.content === 'object' && node.data.content !== null) {
+                        if ('content' in node.data.content) {
+                            detailsContent += generateTableFromObject(node.data.content, true);
+                            detailsContent += `<h3>Content</h3>`;
+        
+                            if (Array.isArray(node.data.content.content)) {
+                                node.data.content.content.forEach(item => {
+                                    if (item.type === 'text') {
+                                        detailsContent += `<pre><code class="language-json">${Prism.highlight(item.text, Prism.languages.json, 'json')}</code></pre>`;
+                                    } else if (item.type === 'image_url') {
+                                        if (item.local_path) {
+                                            const imagePath = item.local_path.trim();
+                                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                        }
+                                    }
+                                });
+                            } else {
+                                const contentStr = node.data.content.content;
+                                if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
+                                    const imagePath = contentStr.trim();
+                                    detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                } else {
+                                    detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content.content, Prism.languages.json, 'json')}</code></pre>`;
+                                    detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                                }
+                            }
+                        } else {
+                            detailsContent += generateTableFromObject(node.data.content, false);
+                        }
+                    } else {
+                        const contentStr = node.data.content;
+                        if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
+                            const imagePath = contentStr.trim();
+                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                        } else {
+                            detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content, Prism.languages.json, 'json')}</code></pre>`;
+                            detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                        }
+                    }
+        
+                    $('#details').html(detailsContent).show();
+                }
+            });
+        });
+
+        
+    </script>
+</body>
+</html>

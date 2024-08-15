@@ -22,14 +22,13 @@ from tarkash import log_debug
 
 class ConversationAgent(BaseLLMAgent):
 
-    def __init__(self, name:str = "Conversation Agent", provider:str = None, model:str = None, temperature=0, display=False, report_html=True, show_in_browser=True, **kwargs):
-        super().__init__(name=name, provider=provider, model=model, temperature=temperature, display=display, report_html=report_html, show_in_browser=show_in_browser, **kwargs) 
+    def __init__(self, *, report_config, name:str = "Conversation Agent", provider:str = None, model:str = None, temperature=0, **kwargs):
+        super().__init__(name=name, provider=provider, model=model, temperature=temperature, report_config=report_config, **kwargs) 
         self.__default_system_prompt = SystemPrompt(text="You are a helpful assistant. You are here to help me with my queries.") 
         
-    def execute(self, conversation, *, context, _run_id=True):
+    def execute(self, conversation, *, context):
         from swayam.llm.report.listener import AgentListener
         from swayam.llm.prompt import Prompt
-        self.report_config._run_id = _run_id
         listener = AgentListener(self.report_config)
 
         # If a non-empty context is provided, then the system prompt is already set in it. (Till we reach a multi-agent router)

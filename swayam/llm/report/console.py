@@ -69,9 +69,6 @@ class ConsoleReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
-        print(context.messages)
-        if len(context.messages) == 1:
-            return
         print ("Total Context Length (Previous Request-Response Pairs):", int((len(context.messages)-1)/2))
         # if not context.messages:
         #     print("Context Messages: None")
