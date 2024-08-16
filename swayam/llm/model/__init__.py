@@ -54,14 +54,6 @@ class Model(TarkashObject):
     @abstractmethod
     def execute_messages(self, message:str, **kwargs):
         pass
-
-    def execute_user_prompt(self, prompt:str, *, messages:List[str]=[], **kwargs):
-        messages.insert(0, {"role": "user", "content": prompt})
-        return self.execute_messages(messages=messages, **kwargs)
-    
-    def execute_system_prompt(self, prompt:str, *, messages:List[str]=[], **kwargs):
-        messages.insert(0, {"role": "user", "content": prompt})
-        return self.execute_messages(messages=messages, **kwargs)
         
         
     @staticmethod
@@ -75,10 +67,11 @@ class Model(TarkashObject):
                 from openai import OpenAI
                 self._client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
                 
-            def execute_messages(self, messages:List[str]=[], response_format=None, tools=None):
+            def execute_messages(self, *, messages, response_format=None, tools=None):
                 from pprint import pprint
                 if tools:
                     tools =[tool.definition for tool in tools]
+
                 if response_format is None:
                     return self.client.chat.completions.create(
                         model=self.model_name,

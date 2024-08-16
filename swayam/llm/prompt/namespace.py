@@ -16,6 +16,7 @@
 # limitations under the License.
 
 import os
+import importlib
 
 class PromptFileLoader:
     
@@ -30,6 +31,7 @@ class PromptFileLoader:
         
         text = None
         image = None
+        response_format = None
         
         content = file.content
         if type(content) is str:
@@ -41,6 +43,12 @@ class PromptFileLoader:
                 text = content["prompt"]
             if "image" in content:
                 image = content["image"]
+            elif "response_format" in content:
+                response_format = content["response_format"].strip()
+                if response_format:
+                    project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
+                    structure = importlib.import_module(f"{project_name}.lib.hook.structure")
+                    response_format = getattr(structure, response_format)
 
         from swayam import Prompt
-        return Prompt.user_prompt(text, image=image)
+        return Prompt.user_prompt(text, image=image, response_format=response_format)

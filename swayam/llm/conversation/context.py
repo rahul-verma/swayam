@@ -15,15 +15,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 class PromptContext:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
         self.__reportable_messages = []
+        self.__expected_response_format = None
         
     def reset(self):
         self.__messages = []
         self.__reportable_messages = []
+        
+    @property
+    def expected_response_format(self):
+        if not self.__expected_response_format:
+            return None
+        return json.loads(self.__expected_response_format.schema_json())
+    
+    @expected_response_format.setter
+    def expected_response_format(self, value):
+        self.__expected_response_format = value
         
     @property
     def messages(self):

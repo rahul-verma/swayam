@@ -181,7 +181,8 @@ class HtmlReporter(Reporter):
                             },
                             "children": context_messages
                         }
-        self.__get_conversation_children_node().append(context_node)        
+        self.__get_conversation_children_node().append(context_node)    
+     
         self.__update_report()
         log_debug("Finished: Reporting Context.")
 
@@ -237,6 +238,25 @@ class HtmlReporter(Reporter):
             })
             # else:
             #     append_text_child(item["text"], sub_counter)
+            
+        
+        if role == "User":
+            
+            expected_response_format = prompt.response_format
+            if expected_response_format is None:
+                expected_response_format = "Not specified."
+            else:
+                import json
+                expected_response_format = json.loads(expected_response_format.schema_json())
+            
+            prompt_node["children"].append({
+                        "id": "expected_response_format_" + uuid4().hex,
+                        "text": "Expected Response Format",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": expected_response_format
+                        }
+            })
 
         self.__get_conversation_children_node().append(prompt_node)
         self.__update_report()

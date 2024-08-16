@@ -1,0 +1,415 @@
+[
+    {
+        "id": "plan_node_a00dec268cad4311a8d76672b86c4ada",
+        "text": "Plan",
+        "children": [
+            {
+                "id": "task_node_1a7c734349db450fbb3ea596ff048cee",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_node_6b6156b62af6449d88443ab134235739",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_f43547375fa44b7b96af0a391f169cfc",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_566358a6d8d945138db321eaceb0f0dd",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_fb581437d53d4401a3fb6c7b39d2165c",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_ce4bb5f9a85b498993bcc7676e689036",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_c5f99705967c4af89835213834f0ab3a",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Science Fair",
+                                                    "date": "Friday",
+                                                    "participants": [
+                                                        "Alice",
+                                                        "Bob"
+                                                    ],
+                                                    "city": []
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_e7c81e3048bb4ada8d99e5b515e2a7fa",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_a309e7a90fab4c2584c8901e9998de9a",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_09b4cac9998c4668927bf9c9c653a666",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_2615a466bd9d498a8886c5e46bde94b9",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_d1d0d1d63c744ab0913730912fe81518",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_8b683ff6b8b64995acf6024f1cb457c6",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "message_ff2a7a0e03f04b60b57ed5e592a6f4de",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Science Fair",
+                                                    "date": "Friday",
+                                                    "participants": [
+                                                        "Alice",
+                                                        "Bob"
+                                                    ],
+                                                    "city": []
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_bafa2482153d4cb3a3fca36e81e36df5",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_2ee0ddb2d48047d2970f8de278863174",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_5ae4eb90a65e467f9ad35e2ce173078f",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_d17610c3126a462796dd845952b27dba",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_559cbe41f793454a8d375f230894e9bb",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_cdaa4504177c4e68b03746dbddf96c0c",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_cfa0cdb84d64473c9e5dc528af36b7dc",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_6539d9d95e8342ab80ad81ea9faebc54",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_6326ba7dbb104f39995d8904572d6eab",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_bd96214fbe104cdc8afbceda5b2f8c97",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_b8604eee23a14f71a003d7d6bbfeea74",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_806f360749554492ad5f2917d4212fc8",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_94815734e44b444aab8787e25065e6d8",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_f209e0e6467d4e2993476e75ae6ed32e",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_2eeeb59a3e80432ab2e9c05ae854e6fb",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Name of the event",
+                                                        "title": "Name",
+                                                        "type": "string"
+                                                    },
+                                                    "date": {
+                                                        "description": "Date on which the event takes place.",
+                                                        "title": "Date",
+                                                        "type": "string"
+                                                    },
+                                                    "participants": {
+                                                        "description": "Names of participants.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": "Participants",
+                                                        "type": "array"
+                                                    },
+                                                    "city": {
+                                                        "description": "City where the event takes place.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": "City",
+                                                        "type": "array"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "date",
+                                                    "participants",
+                                                    "city"
+                                                ],
+                                                "title": "CalendarEvent",
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "message_c7a909072b014f2bafb78c6dca75a09b",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Science Fair",
+                                                    "date": "Friday",
+                                                    "participants": [
+                                                        "Alice",
+                                                        "Bob"
+                                                    ],
+                                                    "city": []
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_0c04051a98c642ada41979aacc41a36c",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_271cb0657aa04085b972c891bdefaa9d",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_8077bc706f4b40ce902b0876fee4153a",
+                                "text": "System Prompt",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_85f584bc9e6f4dd9b68273f46892e7ab",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_02dc11211fa144a5a4ae23ca080580fa",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_ce42f79f9eae461b8d286db171ea113d",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "Please explain this image to me."
+                                },
+                                "children": [
+                                    {
+                                        "id": "prompt_part_f147497f98534638856086666f8e4cb1",
+                                        "text": "Image Upload",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
+                                        }
+                                    },
+                                    {
+                                        "id": "expected_response_format_82102489d84b4549ac9d0b0a692b227a",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "No expected response format was provided."
+                                        }
+                                    },
+                                    {
+                                        "id": "message_5ab8b006c87b453dbea46f4162d26461",
+                                        "text": "Response Meta-Data",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "content_545fdc9c273d44fda56bf3918cffa1c9",
+                                        "text": "Response Content",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing v1.1\" by Rahul Verma. It outlines a structured approach to utilizing Large Language Models (LLMs) in testing processes. Here\u2019s a breakdown of its components:\n\n### Structure:\n1. **5E Framework**: The model is organized into five key stages:\n   - **Engage**: Identifying the testing problem and determining roles between humans and LLMs.\n   - **Explore**: Assessing if the problem is the right one and conducting experiments with prompts.\n   - **Engineer**: Involves the technical aspects like prompt engineering and knowledge augmentation.\n   - **Embed**: Integrating solutions and defining roles for participants in the testing process.\n   - **Evolve**: Continuous improvement through feedback and adaptation.\n\n2. **Participants**: \n   - **Humans**: Involved in various roles such as verifiers and solvers.\n   - **LLMs**: Used as tools to assist in the testing process.\n   - **Translators and Invokers**: Facilitate communication between different participants.\n\n3. **Feedback & Adaptation**: Emphasizes the importance of quick feedback loops and adaptability in the testing process.\n\n### Key Concepts:\n- **Fairness, Transparency, Accountability**: These principles are highlighted as essential for the testing framework.\n- **Protocols and Autonomy**: Discusses the need for clear protocols and the degree of autonomy in solutions.\n- **Evaluation Metrics**: Includes criteria like completeness, accepted risks, and overall effectiveness of the solutions.\n\nOverall, the model aims to provide a comprehensive approach to leveraging LLMs in testing, ensuring that the process is collaborative, iterative, and focused on continuous improvement."
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

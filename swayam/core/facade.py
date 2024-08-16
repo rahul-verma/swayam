@@ -30,8 +30,12 @@ class _SwayamSingleton:
         Tarkash.init()      
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
         from swayam.llm.router import Router
-        print("Creating default router...")
+        #print("Creating default router...")
         self.__default_router = Router(display=True, report_html=False)
+        
+        # Making project importable
+        from swayam.core.constant import SwayamOption
+        sys.path.append(os.path.join(Tarkash.get_option_value(SwayamOption.PROJECT_ROOT_DIR), ".."))
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
