@@ -59,19 +59,9 @@ class Tool:
     def __call__(self, **fields):
         structure = self.__tool_structure(**fields)
         return self.__target(**structure.dict())
-
-    @classmethod
-    def structure_builder(cls, name:str):
-        """
-        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
-
-        :param name: Name of the structure
-        """
-        from .structure import StructureBuilder
-        return StructureBuilder(name)
     
     @classmethod
-    def tool_builder(cls, target, desc:str=None, **fields):
+    def builder(cls, target, desc:str=None, **fields):
         from .builder import ToolBuilder
         return ToolBuilder(target, desc, **fields)
     

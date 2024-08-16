@@ -19,13 +19,15 @@ from copy import deepcopy
 from typing import Any
 
 from abc import ABC, abstractmethod
+from swayam.llm.structure.structure import ResponseStructure
 
 
 class BasePrompt(ABC):
     
-    def __init__(self, *, role, text, image=None, tools=None) -> Any:
+    def __init__(self, *, role, text, image=None, response_format:ResponseStructure=None, tools=None) -> Any:
         self.__role = role
         self.__content = text
+        self.__response_format = response_format
         self.__tools = tools
         
         self.__message = {
@@ -37,7 +39,10 @@ class BasePrompt(ABC):
         else:
             self.__image = None
             self.__image_path = None
-        
+            
+    @property
+    def response_format(self):
+        return self.__response_format
     @property
     def tools(self):
         return tuple(self.__tools) if self.__tools else None

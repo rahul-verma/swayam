@@ -19,6 +19,8 @@ from pydantic import BaseModel, create_model, Field
 from enum import Enum
 from typing import *
 
+from .structure import ResponseStructure
+
 class StructureBuilder:
     def __init__(self, name:str):
         self.__name = name
@@ -46,11 +48,7 @@ class StructureBuilder:
         self.add_field(name, type=type_def, desc=desc, default=default)
 
     def build(self):
-        # Define a base class `Structure` that inherits from `BaseModel`
-        class Structure(BaseModel):
-            pass
-
         from swayam.llm.tool import Tool
         model_fields = {name: (field_type, field_info) for name, (field_type, field_info) in self.__fields.items()}
         
-        return create_model(self.__name, __base__=BaseModel, **model_fields)
+        return create_model(self.__name, __base__=ResponseStructure, **model_fields)

@@ -15,14 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pydantic import BaseModel, create_model, Field
+from enum import Enum
+from typing import *
 
-from .types import UserPrompt, SystemPrompt
-from .namespace import PromptFileLoader
-from swayam.llm.structure.structure import ResponseStructure
-
-class Prompt:
-    namespace = PromptFileLoader()
-    
-    @classmethod
-    def user_prompt(cls, text, *, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> UserPrompt:
-        return UserPrompt(text=text, image=image, response_format=response_format, tools=tools)
+# Define a base class `Structure` that inherits from `BaseModel`
+class ResponseStructure(BaseModel):
+    pass

@@ -21,7 +21,12 @@ class SwayamOption(Enum):
     '''
         Represents all built-in configuration options for Swayam.
     '''
+    STRUCTURE_ROOT_DIR = auto()
+    '''Root Directory for Structure Files'''
     
+    TOOL_ROOT_DIR = auto()
+    '''Root Directory for Tool Files'''
+        
     PROMPT_ROOT_DIR = auto()
     '''Root Directory for Prompt Files'''
     

@@ -25,7 +25,7 @@ class ToolBuilder:
         self.__target = target
         self.__tool_name = target.__name__
         self.__desc = desc
-        from .structure import StructureBuilder
+        from ..structure.builder import StructureBuilder
         self.__structure_builder = StructureBuilder(self.__tool_name + "_arguments")
         
     def add_field(self, name:str, *, type, desc:str, default="not_given"):

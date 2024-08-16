@@ -18,12 +18,13 @@
 from .base import BasePrompt
 from tarkash import log_debug
 from typing import Any, Union
+from swayam.llm.structure.structure import ResponseStructure
 
 class SystemPrompt(BasePrompt):
     
-    def __init__(self, *, text:str, image:str=None, tools:list=None ) -> Any:
-        super().__init__(role="system", text=text, image=image, tools=tools)
+    def __init__(self, *, text:str, image:str=None, response_format:ResponseStructure=None, tools:list=None ) -> Any:
+        super().__init__(role="system", text=text, image=image, response_format=response_format, tools=tools)
 
 class UserPrompt(BasePrompt):
-    def __init__(self, *, text:str, image:str=None, tools:list=None) -> Any:
-        super().__init__(role="user", text=text, image=image, tools=tools)
+    def __init__(self, *, text:str, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> Any:
+        super().__init__(role="user", text=text, image=image, response_format=response_format, tools=tools)

@@ -53,7 +53,7 @@ class Mediator(TarkashObject):
         from swayam.llm.model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, conversation, response_format:BaseModel=None, tools=None):
+    def execute(self, *, conversation, tools=None):
         '''
             Runs the prompt text and returns the result.
         '''
@@ -81,7 +81,7 @@ class Mediator(TarkashObject):
             log_debug("Finished processing prompt...")
 
             log_debug("Executing prompt...")
-            response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, tools=tools)
+            response = self.__client.execute_messages(conversation.context.messages, response_format=prompt.response_format, tools=tools)
             log_debug("Handling Response.")
             output_message = response.choices[0].message
             response_message = LLMResponse.create_response_object(output_message)

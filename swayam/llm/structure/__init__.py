@@ -15,14 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .namespace import StructureFileLoader
 
-from .types import UserPrompt, SystemPrompt
-from .namespace import PromptFileLoader
-from swayam.llm.structure.structure import ResponseStructure
-
-class Prompt:
-    namespace = PromptFileLoader()
+class Structure:
+    namespace = StructureFileLoader()
     
     @classmethod
-    def user_prompt(cls, text, *, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> UserPrompt:
-        return UserPrompt(text=text, image=image, response_format=response_format, tools=tools)
+    def builder(cls, name:str):
+        """
+        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
+
+        :param name: Name of the structure
+        """
+        from .builder import StructureBuilder
+        return StructureBuilder(name)
