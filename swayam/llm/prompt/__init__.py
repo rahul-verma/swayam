@@ -17,9 +17,10 @@
 
 
 from .types import UserPrompt, SystemPrompt
-
+from .namespace import PromptFileLoader
 
 class Prompt:
+    namespace = PromptFileLoader()
     
     @classmethod
     def user_prompt(cls, text, *, image:str=None, tools:list=None) -> UserPrompt:
