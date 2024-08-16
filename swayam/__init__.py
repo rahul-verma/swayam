@@ -27,5 +27,6 @@ sys.path.insert(0, __root_dir)
 
 from swayam.core.facade import Swayam
 from swayam.llm.router import Router
+from swayam.llm.prompt import Prompt
 from swayam.llm.conversation import Conversation
 from swayam.llm.tool import Tool

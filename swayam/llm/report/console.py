@@ -31,6 +31,16 @@ class ConsoleReporter(Reporter):
     def enabled(self):
         return self.__enabled
     
+
+    def report_begin_conversation(self, conversation) -> None:
+        """
+        Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        pass
+    
     def report_system_prompt(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.

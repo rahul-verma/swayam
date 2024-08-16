@@ -22,6 +22,8 @@ import webbrowser
 from pprint import pprint
 import copy
 
+from tarkash import log_debug
+
 from swayam.llm.prompt import Prompt
 from swayam.llm.conversation.context import PromptContext
 from swayam.llm.prompt.response import LLMResponse
@@ -31,7 +33,7 @@ class HtmlReporter(Reporter):
     
     def __init__(self, config):
         super().__init__()
-        self.__show_in_browser = config.show_in_browser
+        self.__report_config = config
         
         from tarkash import Tarkash
         from swayam import Swayam
@@ -40,13 +42,14 @@ class HtmlReporter(Reporter):
         # For JSON Data
         
         # Don't store the run_id, always get it from config.
-        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(config.run_id))
+        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(self.__report_config.run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
         self.__html_report_path = self.__base_path + "/report.html"
+        log_debug("Report Path:", self.__html_report_path)
         template_path = Swayam._get_swayam_res_path("llm_report_template.html")
         self.__template = ""
         with open(template_path, 'r') as f:
@@ -54,17 +57,30 @@ class HtmlReporter(Reporter):
         self.__res_path = os.path.join(os.path.realpath(__file__), "..")
         self.__json_data = []
         if not os.path.exists(self.__json_path):
+            log_debug("It's a new report.")
             self.__json_data = []
         else:
+            log_debug("Found existing report.")
             with open(self.__json_path, 'r') as f:
                 self.__json_data = json.load(f)
         self.__update_report()
         
-    def __get_latest_conversation_node(self):
-        first_agent_insertion_point = self.__json_data[-1]["children"] # System prompt is at index 0
-        first_task_insertion_point = first_agent_insertion_point[1]["children"]
-        first_conversation_insertion_point = first_task_insertion_point[0]["children"]
-        return first_conversation_insertion_point
+        # So far the report has only one plan node with one task node.
+
+    def __get_plan_children_node(self):
+        return self.__json_data[-1]["children"]
+    
+    def __get_task_children_node(self):
+        return self.__get_plan_children_node()[-1]["children"]
+    
+    def __get_conversation_children_node(self):
+        return self.__get_task_children_node()[-1]["children"]
+    
+    def __get_prompt_children_node(self):
+        return self.__get_conversation_children_node()[-1]["children"]
+    
+    def increment_conversation_node(self):
+        self.__current_conversation_node_index += 1
             
     def __update_report(self):
         json_str = json.dumps(self.__json_data, indent=4)
@@ -75,6 +91,36 @@ class HtmlReporter(Reporter):
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
             
+    def report_begin_conversation(self, conversation) -> None:
+        """
+        Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        
+        if self.__json_data == []:
+            # Add Plan Node
+            self.__json_data.append({
+                                    "id": "plan_node_" + uuid4().hex,
+                                    "text": "Plan",
+                                    "children": []   
+                                })
+            
+            # The Task node
+            self.__get_plan_children_node().append({
+                                        "id": "task_node_" + uuid4().hex,
+                                        "text": "Task",
+                                        "children": []
+                                    })
+        
+        if conversation.is_new():
+            self.__get_task_children_node().append({
+                                        "id": "conversation_node_" + uuid4().hex,
+                                        "text": "Conversation",
+                                        "children": []
+                                    })
+            
     def report_system_prompt(self, prompt:Prompt) -> None:
         """
         Reports the system prompt details.
@@ -82,33 +128,14 @@ class HtmlReporter(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
+        log_debug("Begin: Reporting System Prompt.")
 
-        # Add Agent Node
-        self.__json_data.append({
-                                "id": "agent_node_" + uuid4().hex,
-                                "text": "Agent",
-                                "children": []   
-                            })
+
         
         # The system prompt node it as index 0
-        prompt_node = self.report_prompt(prompt, role="System", append=False)
-        self.__json_data[-1]["children"].append(prompt_node)
-        
-        # The Task node is index 1
-        self.__json_data[-1]["children"].append({
-                                    "id": "task_node_" + uuid4().hex,
-                                    "text": "Task",
-                                    "children": []
-                                })
-        
-        # This children in this node is the executor node for rest of the reporting.
-        # self.__json_data[0]["children"][1]["children"][0["children"]
-        self.__json_data[-1]["children"][1]["children"] = [{
-                                    "id": "conversation_node_" + uuid4().hex,
-                                    "text": "Conversation",
-                                    "children": []
-                                }]
+        prompt_node = self.report_prompt(prompt, role="System")
         self.__update_report()
+        log_debug("Finished: Reporting System Prompt.")
             
     def report_context(self, context:PromptContext) -> None:
         """
@@ -117,6 +144,7 @@ class HtmlReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
+        log_debug("Begin: Reporting Context.")
         context_messages = []
         
         title = {
@@ -153,24 +181,36 @@ class HtmlReporter(Reporter):
                             },
                             "children": context_messages
                         }
-        self.__get_latest_conversation_node().append(context_node)        
+        self.__get_conversation_children_node().append(context_node)        
         self.__update_report()
+        log_debug("Finished: Reporting Context.")
 
-    def report_prompt(self, prompt:Prompt, role="User", append=True) -> None:
+    def report_prompt(self, prompt:Prompt, role="User") -> None:
         """
         Reports the prompt details.
         
         Args:
             prompt (Prompt): The prompt to report.
         """
-        prompt_node = {
-                "id": "prompt_" + uuid4().hex,
-                "text": f"{role} Prompt",
-                "data": {
-                            "content": prompt.reportable_text
-                        },
-                "children": []
-        }
+
+        log_debug("Begin: Reporting Prompt.")
+        if role == "User":
+            prompt_node = {
+                    "id": "prompt_" + uuid4().hex,
+                    "text": f"{role} Prompt",
+                    "data": {
+                                "content": prompt.reportable_text
+                            },
+                    "children": []
+            }
+        else:
+             prompt_node = {
+                    "id": "prompt_" + uuid4().hex,
+                    "text": f"{role} Prompt",
+                    "data": {
+                                "content": prompt.reportable_text
+                            }
+            }           
         
         reportable_content = prompt.reportable_content
         if type(prompt.reportable_content)  != list:
@@ -198,11 +238,9 @@ class HtmlReporter(Reporter):
             # else:
             #     append_text_child(item["text"], sub_counter)
 
-        if append:
-            self.__get_latest_conversation_node().append(prompt_node)
-            self.__update_report()
-        else:
-            return prompt_node
+        self.__get_conversation_children_node().append(prompt_node)
+        self.__update_report()
+        log_debug("Finished: Reporting Prompt.")
         
     def report_response(self, prompt, response:LLMResponse) -> None:
         """
@@ -211,6 +249,7 @@ class HtmlReporter(Reporter):
         Args:
             response (LLMResponse): Response message from LLM.
         """
+        log_debug("Finished: Reporting Response.")
         children = []
         response = response.as_dict()
         content = response["content"]
@@ -255,17 +294,17 @@ class HtmlReporter(Reporter):
                         })
             
         
-        if prompt.role == "system":
-            self.__json_data[-1]["children"][0]["children"].extend(children)
-        else:
-            self.__get_latest_conversation_node()[-1]["children"].extend(children)       
+        self.__get_prompt_children_node().extend(children)       
         self.__update_report()
+        log_debug("Finished: Reporting Response.")
 
     def finish(self) -> None:
         """
         Finishes report creation.
         """
-        if self.__show_in_browser:        
+        # !!!Should always be referred from reporting_config as it is a global object updated by Router from one execution to another.
+        log_debug("Showing report in browser", self.__report_config.show_in_browser)
+        if self.__report_config.show_in_browser:        
             webbrowser.open("file://" + self.__html_report_path)
 
 

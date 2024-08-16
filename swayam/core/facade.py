@@ -77,7 +77,7 @@ class Swayam:
         This method is meant for simple usage where a user wants to execute one or more prompts.
         
         Args:
-            prompt (str): The prompts to be executed
+            prompt (str): The prompt to be executed
             reset_context (bool, optional): If True, the context is reset. Defaults to False (All executions use same context).
 
         Returns:
@@ -85,6 +85,6 @@ class Swayam:
         """
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
-        from swayam import Conversation
-        conversation = Conversation.from_text(prompt, image=image)
-        return cls._SWAYAM_SINGLETON.router.execute(conversation, reset_context=reset_context)
+        from swayam import Prompt
+        user_prompt = Prompt.user_prompt(prompt)
+        return cls._SWAYAM_SINGLETON.router.execute(user_prompt, reset_context=reset_context)

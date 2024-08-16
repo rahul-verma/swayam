@@ -114,7 +114,7 @@
     <div class="middle-section">
         <!-- Left Pane for jsTree -->
         <div class="left-pane">
-            <div id="jstree_demo" class="treeview"></div>
+            <div id="jstree_router" class="treeview"></div>
         </div>
 
         <!-- Right Pane for Content -->
@@ -172,12 +172,12 @@
         const jsonData = $$SWAYAM_JSON_DATA$$;
 
         $(document).ready(function() {
-            $('#jstree_demo').jstree({
+            $('#jstree_router').jstree({
                 'core': {
                     'data': jsonData
                 },
-                "plugins": ["state", "ui"],
-                "state": { "key": "single_click" },
+                "plugins": ["state", "ui", "wholerow"],
+                //"state": { "key": "single_click" },
                 "checkbox": {
                     "three_state": false,
                 },
@@ -186,16 +186,31 @@
                 }
             });
         
-            // Ensure single click expands nodes
-            $('#jstree_demo').on("click.jstree", ".jstree-anchor", function (e) {
-                $('#jstree_demo').jstree(true).toggle_node(e.target);
+            // These functions deal with enabling single click expansion of a node.
+            $('#jstree_router').on("click", ".jstree-anchor", function (e) {
+                e.preventDefault();
+                var instance = $('#jstree_router').jstree(true);
+                var node = instance.get_node(e.target);
+        
+                // Single-click toggle for the clicked node
+        if (node.children.length > 0) {
+            if (node.state.opened) {
+                instance.close_node(node); // Close if open
+            } else {
+                instance.open_node(node);  // Open if closed
+            }
+        }
+            });
+        
+            $('#jstree_router').on("dblclick.jstree", function (e) {
+                e.stopPropagation();
             });
         
             // Handle node selection
-            $('#jstree_demo').on("changed.jstree", function (e, data) {
+            $('#jstree_router').on("changed.jstree", function (e, data) {
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
-                    const node = $('#jstree_demo').jstree(true).get_node(nodeId);
+                    const node = $('#jstree_router').jstree(true).get_node(nodeId);
         
                     let detailsContent = `<h2>${node.text}</h2>`;
         

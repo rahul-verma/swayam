@@ -32,6 +32,16 @@ class AgentListener:
         if report_config.report_html:
             self.__reporters.append(HtmlReporter(config=report_config))
             
+    def report_begin_conversation(self, conversation) -> None:
+        """
+        Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        for reporter in self.__reporters:
+            reporter.report_begin_conversation(conversation)
+            
     def report_system_prompt(self, prompt:SystemPrompt) -> None:
         """
         Broadcasts the system prompt details.

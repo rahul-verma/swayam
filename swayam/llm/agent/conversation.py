@@ -15,30 +15,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
+
+from tarkash import log_debug
 
 from swayam.llm.prompt.types import SystemPrompt
 from .base import BaseLLMAgent
-from tarkash import log_debug
 
 class ConversationAgent(BaseLLMAgent):
 
-    def __init__(self, *, report_config, name:str = "Conversation Agent", provider:str = None, model:str = None, temperature=0, **kwargs):
-        super().__init__(name=name, provider=provider, model=model, temperature=temperature, report_config=report_config, **kwargs) 
-        self.__default_system_prompt = SystemPrompt(text="You are a helpful assistant. You are here to help me with my queries.") 
+    def __init__(self, *, report_config, name:str = "Conversation Agent", provider:str = None, model:str = None, temperature=0, system_prompt: Union[str,SystemPrompt]=None, **kwargs):
+        super().__init__(name=name, provider=provider, model=model, temperature=temperature, report_config=report_config, **kwargs)
         
-    def execute(self, conversation, *, context):
+        self.__default_agent_system_prompt = "You are a helpful assistant who deliberates and provides useful answers to my queries."
+        if system_prompt is None:
+            self.__system_prompt = SystemPrompt(text=self.__default_agent_system_prompt)
+        elif isinstance(system_prompt, str):
+            self.__system_prompt = SystemPrompt(text=system_prompt) 
+        elif isinstance(system_prompt, SystemPrompt):
+            self.__system_prompt = system_prompt
+        else:
+            TypeError(f"Invalid type for system_prompt: {type(system_prompt)}. Can be either str or SystemPrompt.")
+            
+        log_debug(f"Conversation Agent {name} created")
+        
+    @property
+    def system_prompt(self):
+        return self.__system_prompt
+        
+    def execute(self, conversation):
         from swayam.llm.report.listener import AgentListener
         from swayam.llm.prompt import Prompt
+        log_debug(f"Creating Listener")
         listener = AgentListener(self.report_config)
-
-        # If a non-empty context is provided, then the system prompt is already set in it. (Till we reach a multi-agent router)
-        if len(context) == 0 and not conversation.has_system_prompt():
-            conversation.set_system_prompt(self.__default_system_prompt)
 
         print(f"Executing Conversation with {len(conversation)} step(s)")
         from .mediator import Mediator
         mediator = Mediator(model_config=self.model_config, prompt_config=self.prompt_config, listener=listener)
-        conversation.context = context
         output = mediator.execute(conversation=conversation)
         log_debug(f"Finished Conversation")        
         listener.finish()

@@ -57,24 +57,37 @@ class Mediator(TarkashObject):
         '''
             Runs the prompt text and returns the result.
         '''
+        
+        # For multiple calls across Swayam or Router execute calls, context can be maintained through the setting of reset_context.
+        # For the same context, there can be only one SystemPrompt which could be already executed.
+        # At this stage this can be known from conversation.context length.
+        # If the context is not empty, don't use the system prompt.
+        log_debug("Processing system prompt...")
+        
+        # For an extended conversation, the system prompt is already executed in one of the previous conversations.
+        self.listener.report_begin_conversation(conversation)
+        if conversation.has_system_prompt():
+            conversation.system_prompt.process_for_report()
+            self.listener.report_system_prompt(conversation.system_prompt)
+            conversation.context.append_prompt(conversation.system_prompt)
+        log_debug("Finished processing system prompt.")
+        
         for prompt in conversation:
-            log_debug("Executing prompt...")
-            #print(f"Found a user prompt >>{prompt.content}<<. Has system prompt: ", prompt.system_prompt)
-            if prompt.system_prompt is not None:
-                prompt.system_prompt.process_for_report()
-                self.listener.report_system_prompt(prompt.system_prompt)
-                conversation.context.append_prompt(prompt.system_prompt)
+            log_debug("Processing prompt...")
             prompt.process_for_report()
-            if prompt.system_prompt is None:
-                self.listener.report_context(conversation.context)
+            self.listener.report_context(conversation.context)
             conversation.context.append_prompt(prompt)
             self.listener.report_prompt(prompt)
+            log_debug("Finished processing prompt...")
 
+            log_debug("Executing prompt...")
             response = self.__client.execute_messages(conversation.context.messages, response_format=response_format, tools=tools)
+            log_debug("Handling Response.")
             output_message = response.choices[0].message
             response_message = LLMResponse.create_response_object(output_message)
             self.listener.report_response(prompt, response_message)
 
             conversation.context.append_assistant_response(response_message.as_dict())
+            log_debug("Updated Context with Response message.")
 
         return output_message

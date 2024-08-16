@@ -34,6 +34,10 @@ class ReportConfig:
     def show_in_browser(self):
         return self._show_in_browser
     
+    @show_in_browser.setter
+    def show_in_browser(self, value):
+        self._show_in_browser = value
+    
     @property
     def run_id(self):
         return self._run_id        

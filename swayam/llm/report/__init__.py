@@ -28,6 +28,16 @@ class Reporter(ABC):
         pass
     
     @abstractmethod
+    def report_begin_conversation(self, conversation) -> None:
+        """
+        Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        pass
+    
+    @abstractmethod
     def report_prompt(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.

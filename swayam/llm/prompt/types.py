@@ -15,15 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.prompt import Prompt
+from .base import BasePrompt
 from tarkash import log_debug
 from typing import Any, Union
 
-class SystemPrompt(Prompt):
+class SystemPrompt(BasePrompt):
     
     def __init__(self, *, text:str, image:str=None, tools:list=None ) -> Any:
         super().__init__(role="system", text=text, image=image, tools=tools)
 
-class UserPrompt(Prompt):
-    def __init__(self, *, text:str, system_prompt:SystemPrompt=None, image:str=None, tools:list=None) -> Any:
-        super().__init__(role="user", text=text, system_prompt=system_prompt, image=image, tools=tools)
+class UserPrompt(BasePrompt):
+    def __init__(self, *, text:str, image:str=None, tools:list=None) -> Any:
+        super().__init__(role="user", text=text, image=image, tools=tools)
