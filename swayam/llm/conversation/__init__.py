@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any
+from typing import Union
 
 from tarkash import log_debug
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
@@ -25,5 +25,19 @@ from .conversation import LLMConversation
 class Conversation:
     
     @classmethod
-    def from_prompts(cls, *prompts:UserPrompt, system_prompt:SystemPrompt=None) -> LLMConversation:
+    def from_prompts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
+        if len(prompts) == 0:
+            raise ValueError("No prompts provided, returning an empty conversation")
+        if system_prompt:
+            if type(system_prompt) == str:
+                system_prompt = SystemPrompt(system_prompt)
+            elif not isinstance(system_prompt, SystemPrompt):
+                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
         return LLMConversation(*prompts, system_prompt=system_prompt)
+    
+    @classmethod
+    def from_texts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
+        for prompt in prompts:
+            if type(prompt) is not str:
+                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
+        return cls.from_prompts(*[UserPrompt(text=prompt) for prompt in prompts], system_prompt=system_prompt)
