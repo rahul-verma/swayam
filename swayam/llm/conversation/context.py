@@ -55,6 +55,8 @@ class PromptContext:
         
     def append_assistant_response(self, *messages):
         for message in messages:
+            if "tool_calls" in message and not message["tool_calls"]:
+                del message["tool_calls"]
             self.__messages.append(message)
             self.__reportable_messages.append(message)
             

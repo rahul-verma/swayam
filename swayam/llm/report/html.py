@@ -151,6 +151,7 @@ class HtmlReporter(Reporter):
             "system": "System",
             "user": "User",
             "assistant": "LLM",
+            "tool": "Tool"
         }
 
         for i, message in enumerate(context.reportable_messages):
