@@ -28,7 +28,7 @@ class PromptDir(ABC):
     def __getattr__(self, name):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
-        from swayam.core.constant import SwayamOption
+        from swayam import Tool, Structure
         self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), self.__dict__["_role"])
 
         file = YamlFile(os.path.join(self.__base_path, f"{name}.yaml"))
@@ -51,19 +51,16 @@ class PromptDir(ABC):
             if "response_format" in content:
                 response_format = content["response_format"].strip()
                 if response_format:
-                    project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
-                    structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
-                    response_format = getattr(structure_module, response_format)
+                    response_format = Structure.import_structure(response_format)
+                   
             if "tools" in content:
                 tools_content = content["tools"]
                 for tool in tools_content:
                     tool = tool.strip()
                     if tool:
-                        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
-                        tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
-                        if tools is None:
+                        if not tools:
                             tools = []
-                        tools.append(getattr(tool_module, tool))
+                        tools.append(Tool.import_tool(tool))
 
         from swayam import Prompt
         return Prompt.user_prompt(text, image=image, response_format=response_format, tools=tools)

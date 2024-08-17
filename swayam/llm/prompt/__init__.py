@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
 
 from .types import UserPrompt, SystemPrompt
 from .namespace import UserPromptDir, SystemPromptDir
@@ -25,5 +26,17 @@ class Prompt:
     system = SystemPromptDir() 
     
     @classmethod
-    def user_prompt(cls, text, *, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> UserPrompt:
+    def user_prompt(cls, text, *, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> UserPrompt:
+        from swayam import Tool, Structure
+        if response_format is not None and type(response_format) is str:
+            response_format = Structure.import_structure(response_format)
+        if tools is not None:
+            output_tools = []
+            for tool in tools:
+                if type(tool) is str:
+                    output_tools.append(Tool.import_tool(tool))
+                else:
+                    output_tools.append(tool)
+            tools = output_tools
+                
         return UserPrompt(text=text, image=image, response_format=response_format, tools=tools)

@@ -1,18 +1,18 @@
 [
     {
-        "id": "plan_node_a9809c90df5a4b578c57521b4680fe18",
+        "id": "plan_node_c9b3a5af41374cb0962e4575f4991849",
         "text": "Plan",
         "children": [
             {
-                "id": "task_node_fa2ad61a5c0d4e8fb49bde48bbf90b75",
+                "id": "task_node_02d14292a08b4f779b0df7b40200c112",
                 "text": "Task",
                 "children": [
                     {
-                        "id": "conversation_node_b118124a5f09404b857e06ab06b968ac",
+                        "id": "conversation_node_7b9eefd7aac541c3810ef19a20188246",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_b24f54e43e46432f85fa755ee2e8bf84",
+                                "id": "prompt_64715e39f632457b813ca9451dc6cf41",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -20,14 +20,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_316235416dd043de8ff8ca73fa936733",
+                                "id": "chat_context_bce1bdbec25546cdb470255d0b626868",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_45d13da7d5f84453a4271a3ab8e8ac26",
+                                        "id": "chat_context_msg_6435296650ef44d2817900fd2fa024e3",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -40,148 +40,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_bd0813f08a164af1b7c8c078d4a7fee4",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_65f37f260d7c4ca7a9d40a7c1a3ad485",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_c173700961524d2595258565bb78bdce",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_5488d8c33fff489a87fe2c96959a77fa",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_1ab6f804e4e544f9a889e71ec7d5328d",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [],
-                                                        "parsed": {
-                                                            "name": "Science Fair",
-                                                            "date": "Friday",
-                                                            "participants": [
-                                                                "Alice",
-                                                                "Bob"
-                                                            ],
-                                                            "city": []
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_eeec8e44d2cf4519b1cac7dff38b1633",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_1aefe05ea38a428599c688570a2e8be3",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_2922d531694047d28c14b1b27ff01a2a",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_03815e2ee5eb4de980e11cb7953cefa0",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_41262a3edfbb4b0e879b6df9e82aaf6b",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_ec7e9ee033b14c37aa067a7b11aa7873",
+                                "id": "prompt_646e59bb86204331b62641766ecb0b4a",
                                 "text": "User Prompt",
                                 "data": {
                                     "content": "What's the weather like in Boston?\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_8e0d87e876914dfea7592b7847854ae2",
+                                        "id": "expected_response_format_723913057637432896f0234bc4927117",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -189,453 +55,7 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_cc935196bf3c4cef8a2fb86e3b530d71",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_88ef26e6f2234ec4844f261c36b58062",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_b92b36ee8c404348b9b78ccea62e4ec9",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_7c9578afc4bf47ee94d2462a5c96d122",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_d780f2d1de1e4ffd811b50ce85ee4666",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_8f0971dec5e8463c9f6676c49fd840bf",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_EXjiXNoRg6euwbwLPf8dGny8",
-                                                                "function": {
-                                                                    "arguments": "{\"location\":\"Boston\"}",
-                                                                    "name": "WeatherInfo"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_424423faa4b143abb7a223010f2d83fe",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_calls4b3e90e7990143e2b09909f6e35dfc8b",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_7b20acb2b9324174b3b2b2f23ae70d04",
-                                                        "text": "WeatherInfo",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_EXjiXNoRg6euwbwLPf8dGny8",
-                                                                "function": "WeatherInfo",
-                                                                "arguments": {
-                                                                    "location": "Boston"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_e6eac45d528642edb9e847a1af859eeb",
-                                        "text": "Tool Response: WeatherInfo",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_EXjiXNoRg6euwbwLPf8dGny8",
-                                                "response": {
-                                                    "response": "11\u00b0C"
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_ef1d0caba88b491a8233cd12d0ec125e",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_1aa71be520f44a5b9983066e26d2824b",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_e754c5cc184145e88dd42ed4dba0064b",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_cd255a7cbd9449e181580c9fff88324d",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_450b906ae1bb495aaf541b40e5a42490",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "What is 7 *30 + 13?\n"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_610aafad06e54512ac16b5f5c2651af3",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_3ee9584ad29b457993de037dc9682d58",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_2ebed3df8bab485c8f37480c4af20921",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_47cb3819c53146f9834a822c48a002cf",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_a32fb5ebee0d4886ab691409358ade2c",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_7df6421947b84a7c84c45599931a3a08",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_ece52ee28ff441018d232d86b07d01e8",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_5cA5qwrEaMZ258QjwneJygjG",
-                                                                "function": {
-                                                                    "arguments": "{\"expression\":\"7 * 30 + 13\"}",
-                                                                    "name": "Calculator"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_13c878e3379743978302c2c13ab9814b",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_callsbe3de4909ed140b987aabb538b9f630a",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_bdcd35443a5d4902be5411a0cbec78f8",
-                                                        "text": "Calculator",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_5cA5qwrEaMZ258QjwneJygjG",
-                                                                "function": "Calculator",
-                                                                "arguments": {
-                                                                    "expression": "7 * 30 + 13"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_de92c97d6f024defb8fb9c689a110059",
-                                        "text": "Tool Response: Calculator",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_5cA5qwrEaMZ258QjwneJygjG",
-                                                "response": {
-                                                    "response": 223
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_bd008b7688f445c296a5f46a6e21dbfc",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_caf8b7c8d96d4fb6a678f399f8093e29",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_e7a76e78b41c445ab8058bea70738257",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_fe28f5f5319449cb848382bc2b4e8ca3",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_5d0d6a017eb144dcb99f2a48d48ed3fe",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "What's the weather like in Boston?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_ca621c3a78a24b17abb78e056a4707b4",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_9a8f29678b724077b33c7c916f644dd3",
+                                        "id": "provided_tools_c035baf520464b15805c1df280da99ae",
                                         "text": "Provided Tools",
                                         "icon": "jstree-file",
                                         "data": {
@@ -643,14 +63,14 @@
                                         }
                                     },
                                     {
-                                        "id": "llm_response_9a46ed1658da489093a1550a694bd5f6",
+                                        "id": "llm_response_6d0e9ef034d843a1856ee09ea8ef7f6b",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_7af6c1f2d10f4c76a6ed527456c71e89",
+                                                "id": "message_b7ddc583dd924104a439217e8f9cce7d",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -661,11 +81,11 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_465f9606e59f47af843635e48c3e3de7",
+                                                "id": "content_d6a40eadd007455083720dcde44f524c",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
-                                                    "content": "I don't have real-time data access to provide current weather conditions. However, you can easily check the weather in Boston by using a weather website, a weather app, or a search engine. Typically, Boston experiences cold winters, warm summers, and variable weather in spring and fall. If you need information about typical weather patterns for a specific time of year, feel free to ask!"
+                                                    "content": "I don't have real-time data access to provide current weather conditions. However, you can easily check the weather in Boston by using a weather website, app, or a search engine. Typically, Boston experiences cold winters, warm summers, and a mix of weather throughout the year. If you need information about the typical climate or seasonal weather patterns in Boston, feel free to ask!"
                                                 }
                                             }
                                         ]
@@ -675,11 +95,11 @@
                         ]
                     },
                     {
-                        "id": "conversation_node_18d724b0420d4aa096512efb19d82246",
+                        "id": "conversation_node_b8ed058e1cd64859ae41a46d23a05732",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_c769f00369da460097f26c95c10b5173",
+                                "id": "prompt_400ae8fa67d1426e980cbea68bd75252",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -687,14 +107,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_98bd822f16d14b66a0281d4f068e6e4b",
+                                "id": "chat_context_907f66936f7d46769047a730ae670cb2",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_72d9f31532614a398f8d12eea4d71416",
+                                        "id": "chat_context_msg_af0993182085426c9f81b945daea86c4",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -707,901 +127,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_0c9949c3b9eb443290f093b823cf2ddd",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "What's the weather like in Boston?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_a53ba67e7ee449669966f8482562488d",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_2aea1a0c62a646698842afeeb4e96fe3",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_6758be813ca447d5b58300cbd60662fb",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_090c0514e8d9485d8d9709872677db6a",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_e734d76c8856483e90e0fc3fc94a8bcb",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_0b3db85310ea42aba40561cdb5dd5058",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_a8fb05c2e22b463fba2834920c166ed1",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_1vTusiBrQfyz8nRsyQ3Lx2O6",
-                                                                "function": {
-                                                                    "arguments": "{\"location\":\"Boston\"}",
-                                                                    "name": "WeatherInfo"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_7895a22f9270413f9f2a50cc19833808",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_callsf7dddb41446d4976aee361268a260258",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_8503cb3917a945efafa14d4d94d46fd3",
-                                                        "text": "WeatherInfo",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_1vTusiBrQfyz8nRsyQ3Lx2O6",
-                                                                "function": "WeatherInfo",
-                                                                "arguments": {
-                                                                    "location": "Boston"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_ef77ac9a1bd7484b867cc179ef8432c7",
-                                        "text": "Tool Response: WeatherInfo",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_1vTusiBrQfyz8nRsyQ3Lx2O6",
-                                                "response": "35\u00b0C"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_9ee6469146924599872f494ba84d6816",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_666fac102c2249e6bd1eaf278199c9e2",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_b9a1e00f18504139b9f25f1d8f0136e3",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_eb7837fd98c74c31a22a1a9eb1463ab7",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_acc7433ae1c94ef89ac287e13e051285",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "What is 7 *30 + 13?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_19a42ca48809457ca84f0123cb9622e2",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_a45664044ecb4f5b97ea8741923b167f",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_eb3d2c62d52a41f481586468cbc9c870",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_d2da81bf1d7944d0901489b3b913064c",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_d0e0e4fae8b4468781ea5d0a92dc0164",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_aafdde4390c346c4bc11bfc8a3152696",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_acf60d7d5ba047299b96830ae6687065",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_gnNmqe9TYagqBl7uylyhgtre",
-                                                                "function": {
-                                                                    "arguments": "{\"expression\":\"7 * 30 + 13\"}",
-                                                                    "name": "Calculator"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_c27fd72ad78d48288b4d9c14bde5a124",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_calls00f9afb0a24f4a029bf9df68fe13a4c7",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_7a5ddc8ae82644c5b2fa977f793a00ba",
-                                                        "text": "Calculator",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_gnNmqe9TYagqBl7uylyhgtre",
-                                                                "function": "Calculator",
-                                                                "arguments": {
-                                                                    "expression": "7 * 30 + 13"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_85fbbc0e5b0f40ef831fb3af5186122a",
-                                        "text": "Tool Response: Calculator",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_gnNmqe9TYagqBl7uylyhgtre",
-                                                "response": 223
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_bac91b2439004171a856c2465dfcdc91",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_f21e79ea40704b1590836199f3c76787",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_cf669469f7a94a148aed582b0c03a5fb",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_56e45fb3dd244acea28b7850de43cffb",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_f61fc3f2737f4b7c9398ef35d6125d5e",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "Find whether there is an email address in the following text marked with triple backticks \n            ```This is a sample text with a@b.com and c@d.com addresses```\n            "
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_7f5c36e8e7e64c328fb2b0afe1cbeed8",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_f50ebb42271a43e48802dc53edefcfe0",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_97c543b530614fcc98736527063f96d0",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_9f28518ba28f44db8c0ef6d8ea3fa663",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_d4fea1ec978a4fffa8a41c5cc1ea0b30",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_37e1f21f61a0435fa8cdf32081c845ec",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_27cdae3fa03a4669ab585f3f43ab411f",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_xfGoBjAmRCQdFoRmtN9cETLx",
-                                                                "function": {
-                                                                    "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
-                                                                    "name": "EmailSearch"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_71d5739034af4f2bbb16ba7a762db8ce",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_callsb9f788b1ae1844ec8687eedc989feb56",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_97800446cde84e4690c248e58b9d87ea",
-                                                        "text": "EmailSearch",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_xfGoBjAmRCQdFoRmtN9cETLx",
-                                                                "function": "EmailSearch",
-                                                                "arguments": {
-                                                                    "text": "This is a sample text with a@b.com and c@d.com addresses"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_2ca9a93905ee4572afa7ea37ea52ceea",
-                                        "text": "Tool Response: EmailSearch",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_xfGoBjAmRCQdFoRmtN9cETLx",
-                                                "response": [
-                                                    "a@b.com",
-                                                    "c@d.com"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_38e7c0b01cd94aaca81d7089d1946255",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_dbbfae245dda48e0b5c412caea79b10b",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_881c5736be2241149d8312be07bfe6d8",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_e59924d8dbf34c44948eab7a1b97b5ea",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_58807d8cb5e24009b58aca9bb1e1379c",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "What's the weather like in Boston?\n"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_45905c10c0434a979027584ffe5607ae",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_24c098b243e34da0ac3436cbb01da49b",
-                                        "text": "Provided Tools",
-                                        "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_cac03c8f9bff47629b84da0132483a19",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_da281326fb9d46e3ad11c26cfe0ad342",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_fe4986abe94a4bf08d08d2350644b2d0",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "llm_response_788c247282864911b4e94314574ecb3b",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_30bc63dcd0f64827ad80f189cd686c14",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_Hp5XM7EpaLkaDR7il8bP3bLB",
-                                                                "function": {
-                                                                    "arguments": "{\"location\":\"Boston\"}",
-                                                                    "name": "WeatherInfo"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_4ba594a239ad4625be6e9a2c1a0e1e62",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "No response content was returned by the LLM."
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_callscef3628f114348d386a941edc48bafe8",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_6af5bd61cc9a41f0ba798cd1fbb1a2e1",
-                                                        "text": "WeatherInfo",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_Hp5XM7EpaLkaDR7il8bP3bLB",
-                                                                "function": "WeatherInfo",
-                                                                "arguments": {
-                                                                    "location": "Boston"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "id": "tool_response_57cc13a3bcf64187be301bd676eea9f5",
-                                        "text": "Tool Response: WeatherInfo",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_Hp5XM7EpaLkaDR7il8bP3bLB",
-                                                "response": "39\u00b0C"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_572462e230944a99b8083fe05dcb3b4f",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_a28724dea1e24e0f92508a9b6828b56c",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_b713730adc464f81a80f9660012ee627",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_b4d0134dd9ed4d92a5b481e76248c0e6",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_9162016b45cf47a79e581ee99acbe925",
+                                "id": "prompt_7c1ef8a6f45c499fa654d816048c6654",
                                 "text": "User Prompt",
                                 "data": {
                                     "content": "What is 7 *30 + 13?\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_3172859fdcf34741b955bead5a316b3b",
+                                        "id": "expected_response_format_06a5d1f770ba42d8a31c5fb405a37f70",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -1609,185 +142,51 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_b68d8cdd0e514bc6b5ae9f998326de7b",
+                                        "id": "provided_tools_835b5495cb0647798a6382aee4abf44d",
                                         "text": "Provided Tools",
+                                        "icon": "jstree-file",
                                         "data": {
-                                            "content": "These are the tools provided for this prompt."
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "tool_232908cd38db426587a002c23830339f",
-                                                "text": "WeatherInfo",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "WeatherInfo",
-                                                            "description": "Get the current weather in a given location",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "location": {
-                                                                        "description": "Location to get weather information for",
-                                                                        "title": "Location",
-                                                                        "type": "string"
-                                                                    },
-                                                                    "unit": {
-                                                                        "description": "Unit of temperature",
-                                                                        "enum": [
-                                                                            "celsius",
-                                                                            "fahrenheit"
-                                                                        ],
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "location"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_ff06339175504a34952a759b9a5a92f3",
-                                                "text": "Calculator",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "Calculator",
-                                                            "description": "Evaluates a mathematical expression",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "expression": {
-                                                                        "description": "The expression to be evaluated.",
-                                                                        "title": "Expression",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "expression"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "tool_444e4f85d87942d4977c4d8ed9e42b03",
-                                                "text": "EmailSearch",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "type": "function",
-                                                        "function": {
-                                                            "name": "EmailSearch",
-                                                            "description": "Searches email addresses in a given text",
-                                                            "parameters": {
-                                                                "properties": {
-                                                                    "text": {
-                                                                        "description": "The target text in which emails are to be searched.",
-                                                                        "title": "Text",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "text"
-                                                                ],
-                                                                "type": "object"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
+                                            "content": "Not specified."
+                                        }
                                     },
                                     {
-                                        "id": "llm_response_00128ff09f2d40aea34566fc35a8217a",
+                                        "id": "llm_response_f115d5240b724e14ba9e5dd13e97aaf9",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_4473f4271a76495b93b569d8520c4397",
+                                                "id": "message_567dec3242a94157985dd7c4703a1856",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
                                                     "content": {
                                                         "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [
-                                                            {
-                                                                "id": "call_j67JsSvQhRjwxTBwEyIn0QFu",
-                                                                "function": {
-                                                                    "arguments": "{\"expression\":\"7 * 30 + 13\"}",
-                                                                    "name": "Calculator"
-                                                                },
-                                                                "type": "function"
-                                                            }
-                                                        ]
+                                                        "role": "assistant"
                                                     }
                                                 }
                                             },
                                             {
-                                                "id": "content_8a6495f5684b4ea6af838da1851ec97f",
+                                                "id": "content_6438a4faf9884743b27df4c87af8fa70",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
-                                                    "content": "No response content was returned by the LLM."
+                                                    "content": "To calculate \\( 7 \\times 30 + 13 \\):\n\nFirst, multiply \\( 7 \\) by \\( 30 \\):\n\\[ 7 \\times 30 = 210 \\]\n\nNext, add \\( 13 \\) to the result:\n\\[ 210 + 13 = 223 \\]\n\nSo, \\( 7 \\times 30 + 13 = 223 \\)."
                                                 }
-                                            },
-                                            {
-                                                "id": "tool_calls1662b6b5e7194a9abef4ff65bf7a34cb",
-                                                "text": "Expected Tool Calls",
-                                                "data": {
-                                                    "content": "These are the tool calls expected by the LLM."
-                                                },
-                                                "children": [
-                                                    {
-                                                        "id": "tool_650829f4ac234c2580c11b676bd71001",
-                                                        "text": "Calculator",
-                                                        "icon": "jstree-file",
-                                                        "data": {
-                                                            "content": {
-                                                                "id": "call_j67JsSvQhRjwxTBwEyIn0QFu",
-                                                                "function": "Calculator",
-                                                                "arguments": {
-                                                                    "expression": "7 * 30 + 13"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
                                             }
                                         ]
-                                    },
-                                    {
-                                        "id": "tool_response_76edadc9479447f393986e7e9283a969",
-                                        "text": "Tool Response: Calculator",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "id": "call_j67JsSvQhRjwxTBwEyIn0QFu",
-                                                "response": 223
-                                            }
-                                        }
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "id": "conversation_node_b007cac0451e4c2fbc5b54b4a29dbbae",
+                        "id": "conversation_node_91222851e62846319a779927fd196431",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_270f0fffdc1d42139df64f1d413149a4",
+                                "id": "prompt_0cd0db3f13e54ec4b797835ab122f7c0",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -1795,14 +194,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_6d6eec542cec4693b6f0d6d9e0fd75c8",
+                                "id": "chat_context_6ce8a14249df40e28a04192b7fc41b28",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_1ecb4b2b5e624a169124fd75bdb1c5e3",
+                                        "id": "chat_context_msg_3bc0a1424078492292de73fab5f465b6",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -1815,14 +214,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_646751478d45461aabd8f32385b06787",
+                                "id": "prompt_2034cf72e8c84d648767d51c16441f73",
                                 "text": "User Prompt",
                                 "data": {
                                     "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is a sample text with a@b.com and c@d.com addresses```\n\"\"\"\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_2605b55cf05f4d8cae8ef316ae41223b",
+                                        "id": "expected_response_format_dfd29f24d0a04c1cbc55e56429ef5186",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -1830,14 +229,101 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_ab544b411dc84906b48c6489825e9de6",
+                                        "id": "provided_tools_909d6d4b29c34bf9826a2af7554181a2",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_75ecbffce37c49d387e699a1f3b4eea8",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_9b32928f62824656b27750309e33bf3c",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_aec1ec29ca084e47a081d7e27f940813",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Yes, there are two email addresses in the provided text: `a@b.com` and `c@d.com`."
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_c21694952ee34f8a906558eee006a1e2",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_54447caef9814f3c81a0388875067138",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_f20204d981d349e1b031f1b74fc1a92e",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_a76df93a860e4979a68ce1841e81fab4",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_ff89accb5e0f4c2884115842a3994943",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What's the weather like in Boston?\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_0f650cbdc7744ac389d8701ce5293e18",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_831f68f9d57d42259eb553c895865dbd",
                                         "text": "Provided Tools",
                                         "data": {
                                             "content": "These are the tools provided for this prompt."
                                         },
                                         "children": [
                                             {
-                                                "id": "tool_c4d2d70b8f9743f781e4f6abf465a1be",
+                                                "id": "tool_4f83cb9b2c154025a5ed85a01639c4bc",
                                                 "text": "WeatherInfo",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1872,7 +358,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_3ff41d8c4c5d4d0cbde20b5a39c25859",
+                                                "id": "tool_cdc9bfe2f7dd421fab72ccbedbb0c8aa",
                                                 "text": "Calculator",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1899,7 +385,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_f3e981c8d9b04a458d58369cbc051a4c",
+                                                "id": "tool_b55a36c8392747d68d1cdcd0c1a37608",
                                                 "text": "EmailSearch",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1928,14 +414,14 @@
                                         ]
                                     },
                                     {
-                                        "id": "llm_response_c26cf1844f974509980406f3d85ae3a6",
+                                        "id": "llm_response_feb835e4213241d3a5875c413413b554",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_cf0afb884ddb4c1289a5351cf0aad3b9",
+                                                "id": "message_06d9dd3c289f4a8ab7b64768939f097f",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1944,7 +430,449 @@
                                                         "role": "assistant",
                                                         "tool_calls": [
                                                             {
-                                                                "id": "call_UM21djUy57gDyzEPHwaJu266",
+                                                                "id": "call_j9Z02iqGC6DeIiZ0fJySdKZl",
+                                                                "function": {
+                                                                    "arguments": "{\"location\":\"Boston\"}",
+                                                                    "name": "WeatherInfo"
+                                                                },
+                                                                "type": "function"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_9de261b7d4394ed2921d2f15c2c57a34",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "No response content was returned by the LLM."
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_calls7adc9d2947c54870beb0287d2f1a3dae",
+                                                "text": "Expected Tool Calls",
+                                                "data": {
+                                                    "content": "These are the tool calls expected by the LLM."
+                                                },
+                                                "children": [
+                                                    {
+                                                        "id": "tool_026943008c6e4ff3a2ec35e6a6ad44e4",
+                                                        "text": "WeatherInfo",
+                                                        "icon": "jstree-file",
+                                                        "data": {
+                                                            "content": {
+                                                                "id": "call_j9Z02iqGC6DeIiZ0fJySdKZl",
+                                                                "function": "WeatherInfo",
+                                                                "arguments": {
+                                                                    "location": "Boston"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "tool_response_c9b34129bce445598d15a09b37b6e6bc",
+                                        "text": "Tool Response: WeatherInfo",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "id": "call_j9Z02iqGC6DeIiZ0fJySdKZl",
+                                                "response": "4\u00b0C"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_860075c99fe24af3bfc826fe42580c48",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_8426065b67974007ab494bf66423fcc9",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_bdae4648708c476bbf9a3b14b7b76d2d",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_6c746809db5542b882084a1b82ccea0b",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_bdd20ad9be5640d29e05c6e899f9b099",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What is 7 *30 + 13?\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_7ca84c9de86341619205defb8ceccd37",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_ce7bc1caf43246f687371b76ccff8e1d",
+                                        "text": "Provided Tools",
+                                        "data": {
+                                            "content": "These are the tools provided for this prompt."
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "tool_1c85edbbcee64705ab9f7c7041e318d1",
+                                                "text": "WeatherInfo",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "WeatherInfo",
+                                                            "description": "Get the current weather in a given location",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "location": {
+                                                                        "description": "Location to get weather information for",
+                                                                        "title": "Location",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "unit": {
+                                                                        "description": "Unit of temperature",
+                                                                        "enum": [
+                                                                            "celsius",
+                                                                            "fahrenheit"
+                                                                        ],
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "location"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_fcb6cc95cb6941478871acc9fba9ef84",
+                                                "text": "Calculator",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "Calculator",
+                                                            "description": "Evaluates a mathematical expression",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "expression": {
+                                                                        "description": "The expression to be evaluated.",
+                                                                        "title": "Expression",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "expression"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_7634bb9c490d492fa2eb461b58306bdd",
+                                                "text": "EmailSearch",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "EmailSearch",
+                                                            "description": "Searches email addresses in a given text",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "text": {
+                                                                        "description": "The target text in which emails are to be searched.",
+                                                                        "title": "Text",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "text"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "llm_response_621a28766fa148bf9afeaf3eb99c8faf",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_0ac6c12e333d4aa5b03c4b2c97fbffd1",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant",
+                                                        "tool_calls": [
+                                                            {
+                                                                "id": "call_5P9mBMhxJD2k2QJDNwAZSAXC",
+                                                                "function": {
+                                                                    "arguments": "{\"expression\":\"7 * 30 + 13\"}",
+                                                                    "name": "Calculator"
+                                                                },
+                                                                "type": "function"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_a9e9799838174093a0fc064f3508a239",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "No response content was returned by the LLM."
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_callsb621057f470e4f8986453b0dba6a7836",
+                                                "text": "Expected Tool Calls",
+                                                "data": {
+                                                    "content": "These are the tool calls expected by the LLM."
+                                                },
+                                                "children": [
+                                                    {
+                                                        "id": "tool_f02dae7d776741aab0b832111d62c698",
+                                                        "text": "Calculator",
+                                                        "icon": "jstree-file",
+                                                        "data": {
+                                                            "content": {
+                                                                "id": "call_5P9mBMhxJD2k2QJDNwAZSAXC",
+                                                                "function": "Calculator",
+                                                                "arguments": {
+                                                                    "expression": "7 * 30 + 13"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "tool_response_a88f191526be421e82647a24149e6629",
+                                        "text": "Tool Response: Calculator",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "id": "call_5P9mBMhxJD2k2QJDNwAZSAXC",
+                                                "response": 223
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_d6769322124749f7905355f81feaca8a",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_66c4e92571864fa2b34ff41be8a97547",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_1fdf2634f44946bf9eac7cc3abbc5bbc",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_6489a2d0bad64a508f833e258698132a",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_460a8a3f1caa414c8f1bcd55efe96cc7",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is a sample text with a@b.com and c@d.com addresses```\n\"\"\"\n"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_8bc6dbfd8e00406c8a23a7d6bdaa5848",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_e44fd229d9af4892818646c33dfbfda0",
+                                        "text": "Provided Tools",
+                                        "data": {
+                                            "content": "These are the tools provided for this prompt."
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "tool_17c49d0ef0de4e76bb01f475050e5f9b",
+                                                "text": "WeatherInfo",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "WeatherInfo",
+                                                            "description": "Get the current weather in a given location",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "location": {
+                                                                        "description": "Location to get weather information for",
+                                                                        "title": "Location",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "unit": {
+                                                                        "description": "Unit of temperature",
+                                                                        "enum": [
+                                                                            "celsius",
+                                                                            "fahrenheit"
+                                                                        ],
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "location"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_b2ebc94717eb4206a6bb71424d5b7dc1",
+                                                "text": "Calculator",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "Calculator",
+                                                            "description": "Evaluates a mathematical expression",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "expression": {
+                                                                        "description": "The expression to be evaluated.",
+                                                                        "title": "Expression",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "expression"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_6287ff29e8bf43d0b3255081d713072d",
+                                                "text": "EmailSearch",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "EmailSearch",
+                                                            "description": "Searches email addresses in a given text",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "text": {
+                                                                        "description": "The target text in which emails are to be searched.",
+                                                                        "title": "Text",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "text"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "llm_response_ff804f42171c4fc280e3b3bf2c8c95d3",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_5c6f9257f299480a9f8bd94ac9443224",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant",
+                                                        "tool_calls": [
+                                                            {
+                                                                "id": "call_ihpOQcvzhgRNuyWepYCMD6Nz",
                                                                 "function": {
                                                                     "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
                                                                     "name": "EmailSearch"
@@ -1956,7 +884,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_19cfc1ebbcab45d5865b8d54b40b7e62",
+                                                "id": "content_f4e0c6c755b347f8a86f462c84aa681d",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1964,19 +892,19 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_calls0952630e25374cd39270b5ab50f05db0",
+                                                "id": "tool_calls4e87c404fa5e479999c81c6d6b2ff296",
                                                 "text": "Expected Tool Calls",
                                                 "data": {
                                                     "content": "These are the tool calls expected by the LLM."
                                                 },
                                                 "children": [
                                                     {
-                                                        "id": "tool_7179e8b4207f45c992f01b051564715d",
+                                                        "id": "tool_509bef6255a140f194fb92bd6d944506",
                                                         "text": "EmailSearch",
                                                         "icon": "jstree-file",
                                                         "data": {
                                                             "content": {
-                                                                "id": "call_UM21djUy57gDyzEPHwaJu266",
+                                                                "id": "call_ihpOQcvzhgRNuyWepYCMD6Nz",
                                                                 "function": "EmailSearch",
                                                                 "arguments": {
                                                                     "text": "This is a sample text with a@b.com and c@d.com addresses"
@@ -1989,12 +917,12 @@
                                         ]
                                     },
                                     {
-                                        "id": "tool_response_7d4a9b5c6da5450eb49c9217b79163ee",
+                                        "id": "tool_response_bfc9fa8abf22482fafd1fe3edd8abbab",
                                         "text": "Tool Response: EmailSearch",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
-                                                "id": "call_UM21djUy57gDyzEPHwaJu266",
+                                                "id": "call_ihpOQcvzhgRNuyWepYCMD6Nz",
                                                 "response": [
                                                     "a@b.com",
                                                     "c@d.com"
@@ -2007,11 +935,11 @@
                         ]
                     },
                     {
-                        "id": "conversation_node_1e727796cfe8495d8f138959e804002f",
+                        "id": "conversation_node_5ac98a3cfaa64f8c99b0d7dffa0be651",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_aba82a2b278e409e99c54937efcf113f",
+                                "id": "prompt_4d306668c50544008c35e81fcc960abd",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -2019,14 +947,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_d78fa255d31f47fd886583c8525ed035",
+                                "id": "chat_context_c629f743026a426ebce9e83aa0b074d3",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_2ddc6e8df4534ff3bd8983a0a1e4a5f4",
+                                        "id": "chat_context_msg_e10fd50607104ea4a4091e7a50a4d850",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2039,14 +967,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_a96bccea045e4a88ad0911eb84d571f5",
+                                "id": "prompt_cb76b338d14c48ccbe37360caea883cb",
                                 "text": "User Prompt",
                                 "data": {
                                     "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_6eb92ba18b734bee9ef3881fbe0368fd",
+                                        "id": "expected_response_format_5d6f7c0e5254460bbb6bcb183beed14e",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2054,7 +982,7 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_86422fc530a54335b281a0be7ed751cf",
+                                        "id": "provided_tools_d5fd0382222f438fb0f3bfb9f4ee0a97",
                                         "text": "Provided Tools",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2062,14 +990,14 @@
                                         }
                                     },
                                     {
-                                        "id": "llm_response_feb17feb911f4485931fc4e5387f615c",
+                                        "id": "llm_response_ca98e87a3b9c4815bc454f52bf2618fd",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_ffc73020f0a64c5c8215184efe88de60",
+                                                "id": "message_1fc09c0b5925465d979252b24d5a1a09",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -2080,11 +1008,11 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_e568e80ae2b949d7b87a454b3c4a8fc2",
+                                                "id": "content_7d5d2acb1e9d4bcca9da17e43d2c7b57",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
-                                                    "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of freedom and unity.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum with historical exhibits.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with its partially destroyed tower.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike to explore.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany, housed in a striking modern building.\n\n13. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of the Nazi regime.\n\n15. **Mauerpark** - A lively park known for its flea market and karaoke sessions, especially popular on Sundays.\n\n16. **Berlin Zoo and Aquarium** - One of the oldest zoos in the world, home to a wide variety of animals and a great place for families.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Friedrichstra\u00dfe** - A major shopping street with a mix of high-end shops, boutiques, and restaurants.\n\n19. **Kreuzberg District** - Known for its multicultural vibe, street art, and vibrant nightlife, it\u2019s a great area to explore local cafes and bars.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer. Enjoy your trip!"
+                                                    "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of peace and freedom.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum and tourist attraction.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church (Kaiser-Wilhelm-Ged\u00e4chtniskirche)** - A striking church that serves as a memorial to peace and reconciliation.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany.\n\n13. **Tempelhofer Feld** - A former airport turned public park, great for cycling, skating, and picnicking.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and Nazi history.\n\n15. **Mauerpark** - A lively park known for its flea market, karaoke sessions, and vibrant atmosphere, especially on Sundays.\n\n16. **Berlin Zoo (Zoologischer Garten Berlin)** - One of the oldest and most famous zoos in the world, home to a wide variety of animals.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Hackescher Markt** - A trendy area filled with shops, restaurants, and nightlife, perfect for exploring Berlin\u2019s contemporary culture.\n\n19. **Berlin TV Tower (Fernsehturm)** - Offering stunning views of the city from its observation deck, it\u2019s a great spot for photography.\n\n20. **Street Art Tours** - Explore Berlin\u2019s vibrant street art scene through guided tours that showcase the city\u2019s creative side.\n\nMake sure to check the opening hours and any special events happening in June, as the city often hosts festivals and cultural events during the summer. Enjoy your trip!"
                                                 }
                                             }
                                         ]
@@ -2092,14 +1020,14 @@
                                 ]
                             },
                             {
-                                "id": "chat_context_f0bf16a33e0845619b4e3cd8b81ed7b6",
+                                "id": "chat_context_7a2168fef8424579b7f01db6f816c77d",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_e22e98656fbb41bc9f8784ac691f5c7b",
+                                        "id": "chat_context_msg_c9bf7a538f704b3680c87a8e4a2b8df8",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2110,7 +1038,7 @@
                                         }
                                     },
                                     {
-                                        "id": "chat_context_msg_082b7b77b4dd4e6c8266c7a29a5ff37c",
+                                        "id": "chat_context_msg_9c6918ed39df4addb69238a4a5739b54",
                                         "text": "User",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2121,12 +1049,12 @@
                                         }
                                     },
                                     {
-                                        "id": "chat_context_msg_264c60e3cfe14c2fbcdffdadf78c5415",
+                                        "id": "chat_context_msg_a3884ecec26849f689689c793c0feee7",
                                         "text": "LLM",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
-                                                "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of freedom and unity.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum with historical exhibits.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with its partially destroyed tower.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike to explore.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany, housed in a striking modern building.\n\n13. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of the Nazi regime.\n\n15. **Mauerpark** - A lively park known for its flea market and karaoke sessions, especially popular on Sundays.\n\n16. **Berlin Zoo and Aquarium** - One of the oldest zoos in the world, home to a wide variety of animals and a great place for families.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Friedrichstra\u00dfe** - A major shopping street with a mix of high-end shops, boutiques, and restaurants.\n\n19. **Kreuzberg District** - Known for its multicultural vibe, street art, and vibrant nightlife, it\u2019s a great area to explore local cafes and bars.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer. Enjoy your trip!",
+                                                "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of peace and freedom.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum and tourist attraction.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church (Kaiser-Wilhelm-Ged\u00e4chtniskirche)** - A striking church that serves as a memorial to peace and reconciliation.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany.\n\n13. **Tempelhofer Feld** - A former airport turned public park, great for cycling, skating, and picnicking.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and Nazi history.\n\n15. **Mauerpark** - A lively park known for its flea market, karaoke sessions, and vibrant atmosphere, especially on Sundays.\n\n16. **Berlin Zoo (Zoologischer Garten Berlin)** - One of the oldest and most famous zoos in the world, home to a wide variety of animals.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Hackescher Markt** - A trendy area filled with shops, restaurants, and nightlife, perfect for exploring Berlin\u2019s contemporary culture.\n\n19. **Berlin TV Tower (Fernsehturm)** - Offering stunning views of the city from its observation deck, it\u2019s a great spot for photography.\n\n20. **Street Art Tours** - Explore Berlin\u2019s vibrant street art scene through guided tours that showcase the city\u2019s creative side.\n\nMake sure to check the opening hours and any special events happening in June, as the city often hosts festivals and cultural events during the summer. Enjoy your trip!",
                                                 "refusal": null,
                                                 "role": "assistant"
                                             }
@@ -2135,14 +1063,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_bf8627584dc04ddbad03b94994c85027",
+                                "id": "prompt_23de542cc47f4499a6940006e393c3cd",
                                 "text": "User Prompt",
                                 "data": {
                                     "content": "What should I pack for my trip?"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_b15d9c7e57f74359b3ec2bbbd3b44430",
+                                        "id": "expected_response_format_7786b6ed2b5a4a0d881bdf6bb9086a8f",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2150,7 +1078,7 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_e5d4e887a1134fd286777e430d66c67c",
+                                        "id": "provided_tools_634de2fb7255491099bfb9434bbb0df2",
                                         "text": "Provided Tools",
                                         "icon": "jstree-file",
                                         "data": {
@@ -2158,14 +1086,14 @@
                                         }
                                     },
                                     {
-                                        "id": "llm_response_6ab8808259704818b6f0f59ca3b05f62",
+                                        "id": "llm_response_85a56349736141309bf243765b699f27",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_c1056c5933804a03943de321f9e763f9",
+                                                "id": "message_d284735123044db99a673315ff42e3cb",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -2176,11 +1104,11 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_32ffbf970f7942c99083427a4ff13583",
+                                                "id": "content_70ee8d5dad1349588b502b99d77dc686",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
-                                                    "content": "Packing for a trip to Berlin in June requires consideration of the weather, activities, and your personal preferences. Here\u2019s a comprehensive packing list to help you prepare:\n\n### Clothing\n1. **Lightweight Clothing**: June in Berlin can be warm, with temperatures typically ranging from 15\u00b0C to 25\u00b0C (59\u00b0F to 77\u00b0F). Pack breathable fabrics like cotton and linen.\n2. **Layers**: Evenings can be cooler, so bring a light sweater or cardigan.\n3. **Comfortable Walking Shoes**: You'll likely do a lot of walking, so pack comfortable sneakers or walking shoes.\n4. **Casual Outfits**: For exploring the city, casual outfits are ideal. Consider packing a mix of t-shirts, shorts, and lightweight pants.\n5. **Dressier Outfit**: If you plan to dine out or attend events, include a nicer outfit.\n6. **Rain Jacket or Umbrella**: June can have occasional rain showers, so a lightweight, packable rain jacket or a small umbrella is a good idea.\n7. **Sun Protection**: A wide-brimmed hat and sunglasses to protect against the sun.\n\n### Accessories\n1. **Daypack or Backpack**: For carrying your essentials while exploring the city.\n2. **Reusable Water Bottle**: Stay hydrated while walking around.\n3. **Travel Guide or Map**: While smartphones are handy, having a physical map can be useful in areas with poor reception.\n4. **Camera or Smartphone**: To capture your memories.\n5. **Power Bank**: To keep your devices charged while on the go.\n\n### Toiletries\n1. **Basic Toiletries**: Toothbrush, toothpaste, shampoo, conditioner, soap, deodorant, etc.\n2. **Sunscreen**: Protect your skin from UV rays.\n3. **Personal Medications**: Bring any necessary medications and a small first-aid kit.\n\n### Travel Documents\n1. **Passport**: Ensure it\u2019s valid for the duration of your stay.\n2. **Travel Insurance**: A copy of your travel insurance policy.\n3. **Accommodation and Transportation Confirmations**: Printouts or digital copies of your bookings.\n4. **Emergency Contacts**: A list of important contacts, including your embassy.\n\n### Electronics\n1. **Chargers**: For your phone, camera, and any other devices.\n2. **Travel Adapter**: Germany uses Type C and F plugs, so bring an appropriate adapter if needed.\n\n### Optional Items\n1. **Guidebook or Language Phrasebook**: Helpful for navigating and communicating.\n2. **Swimwear**: If you plan to visit pools or lakes.\n3. **Lightweight Blanket or Travel Pillow**: For comfort during long flights or train rides.\n\n### Tips\n- **Check the Weather Forecast**: Just before you leave, check the weather to make any last-minute adjustments to your packing.\n- **Pack Light**: Try to pack versatile clothing that can be mixed and matched to save space.\n- **Leave Room for Souvenirs**: If you plan to shop, consider leaving some space in your luggage for new items.\n\nBy packing thoughtfully, you\u2019ll be well-prepared to enjoy your trip to Berlin!"
+                                                    "content": "Packing for a trip to Berlin in June requires consideration of the weather, activities, and your personal preferences. Here\u2019s a comprehensive packing list to help you prepare:\n\n### Clothing\n1. **Lightweight Clothing**: June in Berlin can be warm, with temperatures typically ranging from 15\u00b0C to 25\u00b0C (59\u00b0F to 77\u00b0F). Pack breathable fabrics like cotton and linen.\n2. **Layers**: Evenings can be cooler, so bring a light sweater or cardigan.\n3. **Comfortable Shoes**: You\u2019ll likely be doing a lot of walking, so pack comfortable walking shoes or sneakers.\n4. **Dressy Outfit**: If you plan to dine out or attend events, consider packing a nicer outfit.\n5. **Rain Jacket or Umbrella**: June can have occasional rain showers, so a lightweight waterproof jacket or a compact umbrella is advisable.\n6. **Sunglasses and Hat**: Protect yourself from the sun while exploring the city.\n\n### Accessories\n1. **Daypack or Backpack**: Useful for carrying your essentials while sightseeing.\n2. **Reusable Water Bottle**: Stay hydrated as you explore the city.\n3. **Travel Guide or Map**: While smartphones are handy, having a physical map can be useful in areas with poor reception.\n4. **Power Bank**: Keep your devices charged while on the go.\n\n### Toiletries\n1. **Basic Toiletries**: Toothbrush, toothpaste, shampoo, conditioner, soap, deodorant, etc.\n2. **Sunscreen**: Protect your skin from UV rays, especially if you plan to spend time outdoors.\n3. **Personal Medications**: Bring any necessary medications and a small first-aid kit.\n\n### Electronics\n1. **Smartphone and Charger**: For navigation, communication, and capturing memories.\n2. **Camera**: If you want higher-quality photos than your phone can provide.\n3. **Travel Adapter**: Germany uses Type C and Type F plugs, so bring an adapter if your devices have different plugs.\n\n### Travel Documents\n1. **Passport**: Ensure it\u2019s valid for the duration of your stay.\n2. **Travel Insurance**: A copy of your travel insurance policy.\n3. **Accommodation and Transportation Confirmations**: Printouts or digital copies of your bookings.\n4. **Emergency Contacts**: A list of important contacts, including your embassy.\n\n### Optional Items\n1. **Guidebook or Language Phrasebook**: Helpful for navigating and communicating.\n2. **Notebook and Pen**: For jotting down thoughts or travel notes.\n3. **Swimwear**: If you plan to visit a pool or beach area.\n\n### Tips\n- **Check the Weather Forecast**: Before you leave, check the weather forecast for Berlin to make any last-minute adjustments to your packing.\n- **Pack Light**: Try to pack versatile clothing that can be mixed and matched to save space.\n- **Leave Room for Souvenirs**: If you plan to shop, leave some space in your luggage for any items you may want to bring back.\n\nBy considering these items, you\u2019ll be well-prepared for your trip to Berlin in June. Enjoy your travels!"
                                                 }
                                             }
                                         ]

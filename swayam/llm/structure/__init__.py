@@ -15,10 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .namespace import StructureFileLoader
+import importlib
 
 class Structure:
-    namespace = StructureFileLoader()
     
     @classmethod
     def builder(cls, name:str):
@@ -29,3 +28,11 @@ class Structure:
         """
         from .builder import StructureBuilder
         return StructureBuilder(name)
+    
+    @classmethod
+    def import_structure(self, name:str):
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
+        structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
+        return getattr(structure_module, name)

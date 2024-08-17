@@ -16,7 +16,7 @@
 # limitations under the License.
 
 
-
+import importlib
 import json
 
 class Tool:
@@ -68,5 +68,13 @@ class Tool:
     def builder(cls, name, *, target, desc:str=None, **fields):
         from .builder import ToolBuilder
         return ToolBuilder(name, target=target, desc=desc, **fields)
+    
+    @classmethod
+    def import_tool(self, name:str):
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
+        tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
+        return getattr(tool_module, name)
     
     
