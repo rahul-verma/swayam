@@ -69,7 +69,16 @@ class Router:
             raise ValueError("As it is continued conversation, the system prompt is already set in the context. So, the context found in this conversation is going to be ignored. Review.")
             
         log_debug(f"Executing Conversation with ConversationAgent.")
-        return agent.execute(conversation)
+        output = agent.execute(conversation)
+        if type(output) is list:
+            if len(output) == 1:
+                return output[0]
+            elif len(output) == 0:
+                return None
+            else:
+                return output
+        else:
+            return output
                 
     
     def execute(self, executable, reset_context=True, show_in_browser=False):

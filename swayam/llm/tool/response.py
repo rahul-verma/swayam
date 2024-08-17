@@ -47,3 +47,6 @@ class ToolResponse:
     @property
     def content(self):
         return self.__result
+    
+    def __repr__(self):
+        return f"ToolResponse: {self.content}"

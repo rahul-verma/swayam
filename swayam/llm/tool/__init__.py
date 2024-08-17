@@ -62,10 +62,7 @@ class Tool:
         from .response import ToolResponse
         
         output = self.__target(**structure.dict())
-        if type(output) is dict:
-            return ToolResponse(self, output)
-        else:
-            return ToolResponse(self, {"response": output})
+        return ToolResponse(self, output)
     
     @classmethod
     def builder(cls, name, *, target, desc:str=None, **fields):

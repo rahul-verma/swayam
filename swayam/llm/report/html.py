@@ -338,7 +338,7 @@ class HtmlReporter(Reporter):
                         })
             
         # Appending non-LLM action requirements
-        if "tool_calls" in response:
+        if "tool_calls" in response and response["tool_calls"]:
                 tool_nodes = []
                 for tool in response["tool_calls"]:
                     tool_nodes.append({

@@ -1,6 +1,9 @@
 prompt: |
   """Find whether there is an email address in the following text marked with triple backticks 
-    ```{text}```
+    ```This is a sample text with a@b.com and c@d.com addresses```
   """
 
-response_format: CalendarEvent
+tools: 
+  - WeatherInfo
+  - Calculator
+  - EmailSearch
