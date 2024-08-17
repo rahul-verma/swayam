@@ -51,7 +51,7 @@ class PromptContext:
         
     def append_prompt(self, prompt):
         self.__messages.append(prompt.message)
-        self.__reportable_messages.append(prompt.reportable_message)
+        self.__reportable_messages.append(prompt.message)
         
     def append_assistant_response(self, *messages):
         for message in messages:

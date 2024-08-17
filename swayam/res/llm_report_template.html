@@ -36,30 +36,34 @@
             left: 0;
         }
 
-        /* Middle section with treeview and content */
+        /* Update the middle section to allow for resizing */
         .middle-section {
             display: flex;
             margin: 20px;
             height: calc(100vh - 160px); /* Adjust height based on header and footer */
+            resize: horizontal; /* Allow horizontal resizing */
+            overflow: hidden;
         }
 
-        /* Left treeview section */
         .left-pane {
-            width: 20%;
             background-color: #ffffff;
             border-right: 2px solid #e0e0e0;
             padding: 15px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
+            min-width: 150px; /* Minimum width to prevent collapsing too much */
+            max-width: 50%; /* Prevent the left pane from taking too much space */
+            resize: horizontal;
+            overflow: auto;
+            flex-shrink: 0;
         }
 
-        /* Right content section */
         .right-pane {
-            width: 80%;
             background-color: #ffffff;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
+            flex-grow: 1;
         }
 
         /* Content styling */
@@ -110,6 +114,14 @@
             display: block;
             margin: 0 auto;
         }
+
+        #resizer {
+            width: 5px;
+            cursor: ew-resize;
+            background-color: #e0e0e0;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -122,12 +134,15 @@
     <!-- Middle Section -->
     <div class="middle-section">
         <!-- Left Pane for jsTree -->
-        <div class="left-pane">
+        <div class="left-pane" id="leftPane">
             <div id="jstree_router" class="treeview"></div>
         </div>
 
+        <!-- Resizer Handle -->
+        <div id="resizer"></div>
+
         <!-- Right Pane for Content -->
-        <div class="right-pane">
+        <div class="right-pane" id="rightPane">
             <div id="details"></div>
         </div>
     </div>
@@ -142,6 +157,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script>
+
+        document.getElementById('resizer').addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            
+            document.addEventListener('mousemove', resizePane);
+            document.addEventListener('mouseup', stopResize);
+            
+            function resizePane(e) {
+                const leftPane = document.getElementById('leftPane');
+                const rightPane = document.getElementById('rightPane');
+                
+                const newWidth = e.clientX - leftPane.getBoundingClientRect().left;
+                leftPane.style.width = newWidth + 'px';
+                
+                rightPane.style.flexGrow = 1;
+            }
+            
+            function stopResize() {
+                document.removeEventListener('mousemove', resizePane);
+                document.removeEventListener('mouseup', stopResize);
+            }
+        });
+
         function generateTableFromObject(obj, skipContent) {
             let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
             table += '<tr><th style="text-align: left;">Property</th><th style="text-align: left;">Value</th></tr>';
@@ -220,14 +258,34 @@
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
                     const node = $('#jstree_router').jstree(true).get_node(nodeId);
-        
+
                     let detailsContent = `<h2>${node.text}</h2>`;
-        
+
                     if (typeof node.data.content === 'object' && node.data.content !== null) {
-                        if ('content' in node.data.content) {
+                        if (Array.isArray(node.data.content)) {
+                            // Case 1: content is a list, loop through and process each item
+                            node.data.content.forEach(item => {
+                                if (typeof item === 'string') {
+                                    detailsContent += `<pre><code class="language-json">${Prism.highlight(item, Prism.languages.json, 'json')}</code></pre>`;
+                                } else if (typeof item === 'object' && item !== null && 'heading' in item && 'content' in item) {
+                                    detailsContent += `<h3>${item.heading}</h3>`;
+                                    if (typeof item.content === 'string') {
+                                        if (item.content.endsWith('.png') || item.content.endsWith('.jpg') || item.content.endsWith('.jpeg')) {
+                                            const imagePath = item.content.trim();
+                                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                        } else{
+                                        detailsContent += `<pre><code class="language-json">${Prism.highlight(item.content, Prism.languages.json, 'json')}</code></pre>`;
+                                    }
+                                    } else if (typeof item.content === 'object' && item.content !== null) {
+                                        detailsContent += generateTableFromObject(item.content, false);
+                                    }
+                                }
+                            });
+                        } else if ('content' in node.data.content) {
+                            // Case 2: content is an object with 'content' key
                             detailsContent += generateTableFromObject(node.data.content, true);
                             detailsContent += `<h3>Content</h3>`;
-        
+
                             if (Array.isArray(node.data.content.content)) {
                                 node.data.content.content.forEach(item => {
                                     if (item.type === 'text') {
@@ -241,28 +299,34 @@
                                 });
                             } else {
                                 const contentStr = node.data.content.content;
-                                if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
-                                    const imagePath = contentStr.trim();
-                                    detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
-                                } else {
-                                    detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content.content, Prism.languages.json, 'json')}</code></pre>`;
-                                    detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                                if (typeof contentStr === 'string') {
+                                    if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
+                                        const imagePath = contentStr.trim();
+                                        detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                                    } else {
+                                        detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(contentStr, Prism.languages.json, 'json')}</code></pre>`;
+                                        detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
+                                    }
+                                } else if (typeof contentStr === 'object' && contentStr !== null) {
+                                    detailsContent += generateTableFromObject(contentStr, false);
                                 }
                             }
                         } else {
+                            // Case 3: content is a dictionary without 'content' key
                             detailsContent += generateTableFromObject(node.data.content, false);
                         }
                     } else {
+                        // Case 4: content is a string
                         const contentStr = node.data.content;
                         if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
                             const imagePath = contentStr.trim();
                             detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
                         } else {
-                            detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(node.data.content, Prism.languages.json, 'json')}</code></pre>`;
+                            detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(contentStr, Prism.languages.json, 'json')}</code></pre>`;
                             detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
                         }
                     }
-        
+
                     $('#details').html(detailsContent).show();
                 }
             });

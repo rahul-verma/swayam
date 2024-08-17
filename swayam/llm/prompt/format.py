@@ -26,7 +26,7 @@ class PromptFormatter:
         import yaml
         with open(PromptDir.get_path_for_prompt(role=self.__role, name=name)) as f:
             content = yaml.safe_load(f.read().format(**self.__kwargs))
-        return PromptDir.create_prompt_from_content(content)
+        return PromptDir.create_prompt_from_content(name, content)
 
 class FormatterMediator:
     def __init__(self, *, role):

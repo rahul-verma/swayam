@@ -45,6 +45,7 @@ class HtmlReporter(Reporter):
         self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.REPORT_ROOT_DIR), str(self.__report_config.run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
+        self.__json_messages_path = self.__base_path + "/json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
@@ -73,11 +74,14 @@ class HtmlReporter(Reporter):
     def __get_task_children_node(self):
         return self.__get_plan_children_node()[-1]["children"]
     
-    def __get_conversation_children_node(self):
-        return self.__get_task_children_node()[-1]["children"]
+    def __get_conversation_node(self):
+        return self.__get_task_children_node()[-1]
     
-    def __get_prompt_children_node(self):
-        return self.__get_conversation_children_node()[-1]["children"]
+    def __get_conversation_children_node(self):
+        return self.__get_conversation_node()["children"]
+
+    def __get_prompt_content_node(self):
+        return self.__get_conversation_children_node()[-1]["data"]["content"]
     
     def increment_conversation_node(self):
         self.__current_conversation_node_index += 1
@@ -115,9 +119,20 @@ class HtmlReporter(Reporter):
                                     })
         
         if conversation.is_new():
+            conversation_id = "conversation_" + uuid4().hex
             self.__get_task_children_node().append({
-                                        "id": "conversation_node_" + uuid4().hex,
+                                        "id": conversation_id,
                                         "text": "Conversation",
+                                        "data": {
+                                            "content": [{
+                                                    "heading": "Conversation ID",
+                                                    "content": conversation_id
+                                                },
+                                                {
+                                                    "heading": "Message History",
+                                                    "content": []
+                                                }
+                                        ]},
                                         "children": []
                                     })
             
@@ -130,10 +145,18 @@ class HtmlReporter(Reporter):
         """
         log_debug("Begin: Reporting System Prompt.")
 
-
-        
-        # The system prompt node it as index 0
-        prompt_node = self.report_prompt(prompt, role="System")
+        prompt_node = {
+                    "id": "prompt_" + uuid4().hex,
+                    "text": f"{prompt.purpose}",
+                    "icon": "jstree-file",
+                    "data": {
+                                "content": [{
+                                                "heading": "Prompt Text",
+                                                "content" : prompt.reportable_text
+                                }]
+                    }
+        }
+        self.__get_conversation_children_node().append(prompt_node)
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
@@ -145,44 +168,13 @@ class HtmlReporter(Reporter):
             context (PromptContext): Context object with all input messages.
         """
         log_debug("Begin: Reporting Context.")
-        context_messages = []
-        
-        title = {
-            "system": "System",
-            "user": "User",
-            "assistant": "LLM",
-            "tool": "Tool"
-        }
-
-        for i, message in enumerate(context.reportable_messages):
-            text = title[message["role"]]
-            child = {
-                        "id": "chat_context_msg_" + uuid4().hex,
-                        "text": text,
-                        "icon": "jstree-file",
-                        "data": {"content": message}
-                    }
-            context_messages.append(child)
-
-        if not context_messages:
-            context_node = {
-                        "id": "chat_context_" + uuid4().hex,
-                        "text": "Chat Context",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "No context messages were sent along with the next prompt."
-                        }
-                    }
-        else:            
-            context_node = {
-                            "id": "chat_context_" + uuid4().hex,
-                            "text": "Chat Context",
-                            "data": {
-                                "content": "This is the sequences of messages sent to the LLM for context management."
-                            },
-                            "children": context_messages
-                        }
-        self.__get_conversation_children_node().append(context_node)    
+        context_file_path = self.__json_messages_path + "/" + self.__get_conversation_node()["id"] + "_context.json"
+        context_json = json.dumps(context.reportable_messages, indent=4)
+        with open(context_file_path, 'w') as f:
+            f.write(context_json)
+        messages = context.reportable_messages
+        for_html = {message["role"]: message for message in messages}
+        self.__get_conversation_node()["data"]["content"][1]["content"] =  for_html 
      
         self.__update_report()
         log_debug("Finished: Reporting Context.")
@@ -194,106 +186,64 @@ class HtmlReporter(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-
         log_debug("Begin: Reporting Prompt.")
-        if role == "User":
-            prompt_node = {
-                    "id": "prompt_" + uuid4().hex,
-                    "text": f"{role} Prompt",
-                    "data": {
-                                "content": prompt.reportable_text
-                            },
-                    "children": []
-            }
-        else:
-             prompt_node = {
-                    "id": "prompt_" + uuid4().hex,
-                    "text": f"{role} Prompt",
-                    "icon": "jstree-file",
-                    "data": {
-                                "content": prompt.reportable_text
-                            }
-            }           
+        prompt_node = {
+                "id": "prompt_" + uuid4().hex,
+                "text": f"{role} Prompt",
+                "icon": "jstree-file",
+                "data": {
+                            "content": [{
+                                            "heading": "Prompt Text",
+                                            "content" : prompt.reportable_text
+                                }]
+                        },
+                "children": []
+        }
+            
+        self.__get_conversation_children_node().append(prompt_node)
+        prompt_content_node = self.__get_prompt_content_node()
         
         reportable_content = prompt.reportable_content
         if type(prompt.reportable_content)  != list:
             reportable_content = [reportable_content]
-        
-        # def append_text_child(text, sub_counter):
-        #     prompt_node["children"].append({
-        #                 "id": "prompt_part_" + str(self.__counter) + "_" + str(sub_counter),
-        #                 "text": f"{role} Prompt",
-        #                 "icon": "jstree-file",
-        #                 "data": {"content": text}
-        #     })
 
         for item in reportable_content:
             # As the text part of prompt is already the tree node, we skip the text item type.
             if isinstance(item, str):
                 pass
             elif item["type"] == "image_url":
-                prompt_node["children"].append({
-                        "id": "prompt_part_" + uuid4().hex,
-                        "text": "Image Upload",
-                        "icon": "jstree-file",
-                        "data": {"content": item["local_path"]}
-            })
-            # else:
-            #     append_text_child(item["text"], sub_counter)
-            
-        
-        if role == "User":
-            
-            expected_response_format = prompt.response_format
-            if expected_response_format is None:
-                expected_response_format = "Not specified."
-            else:
-                import json
-                expected_response_format = json.loads(expected_response_format.schema_json())
-            
-            prompt_node["children"].append({
-                        "id": "expected_response_format_" + uuid4().hex,
-                        "text": "Expected Response Format",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": expected_response_format
-                        }
-            })
-            
-            provided_tools = prompt.tool_dict
-            if not provided_tools:
-                prompt_node["children"].append({
-                        "id": "provided_tools_" + uuid4().hex,
-                        "text": "Provided Tools",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": "Not specified."
-                        }
-            })
-            else:
-                tool_nodes = []
-                for tool in provided_tools.values():
-                    tool_nodes.append({
-                        "id": "tool_" + uuid4().hex,
-                        "text": tool.name,
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": tool.definition
-                        }
-                    })
-                    
-                prompt_node["children"].append({
-                        "id": "provided_tools_" + uuid4().hex,
-                        "text": "Provided Tools",
-                        "data": {
-                            "content": "These are the tools provided for this prompt."
-                        },
-                        "children": tool_nodes
+                prompt_content_node.append({
+                        "heading": "Image Upload",
+                        "content": item["local_path"]
                 })
-            
-            
+        
+        expected_response_format = prompt.response_format
+        if expected_response_format is None:
+            expected_response_format = "Not specified."
+        else:
+            expected_response_format = json.loads(expected_response_format.schema_json())
 
-        self.__get_conversation_children_node().append(prompt_node)
+        prompt_content_node.append({
+                    "heading": "Expected Response Format",
+                    "content": expected_response_format
+                })
+        
+        provided_tools = prompt.tool_dict
+        if not provided_tools:
+            prompt_content_node.append({
+                    "heading": "Provided Tools",
+                    "content": "No tool provided."
+                })
+        else:
+            tool_content_for_main_page = {
+                "heading": "Provided Tools",
+                "content": {}
+            }
+            for tool in provided_tools.values():
+                tool_content_for_main_page["content"][tool.name] = tool.definition
+                
+            prompt_content_node.append(tool_content_for_main_page)
+
         self.__update_report()
         log_debug("Finished: Reporting Prompt.")
         
@@ -319,62 +269,44 @@ class HtmlReporter(Reporter):
                         }
                     })
         
+        self.__get_prompt_content_node().append({
+                    "heading": "Response Meta-Data",
+                    "content": response
+            })
+        
         if content:
-            children.append({
-                            "id": "content_" + uuid4().hex,
-                            "text": "Content",
-                            "icon": "jstree-file",
-                            "data": {
-                                "content": content
-                            }
+            self.__get_prompt_content_node().append({
+                            "heading": "Response Content",
+                            "content": content
                         })
         else:
-            children.append({
-                            "id": "content_" + uuid4().hex,
-                            "text": "Content",
-                            "icon": "jstree-file",
-                            "data": {
-                                "content": "No response content was returned by the LLM."
-                            }
-                        })
+            self.__get_prompt_content_node().append({
+                    "heading": "Response Content",
+                    "content": "No response content was returned by the LLM. Check the response meta-data for more details."
+            })
             
         # Appending non-LLM action requirements
         if "tool_calls" in response and response["tool_calls"]:
-                tool_nodes = []
-                for tool in response["tool_calls"]:
-                    tool_nodes.append({
-                        "id": "tool_" + uuid4().hex,
-                        "text": tool["function"]["name"],
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": {
-                                "id": tool["id"],
-                                "function": tool["function"]["name"],
-                                "arguments": json.loads(tool["function"]["arguments"])
-                            }
-                        }
-                    })
-                    
-                children.append({
-                        "id": "tool_calls" + uuid4().hex,
-                        "text": "Expected Tool Calls",
-                        "data": {
-                            "content": "These are the tool calls expected by the LLM."
-                        },
-                        "children": tool_nodes
-                })            
+            tool_response_for_main_page = {
+                "heading": "Tool Calls Suggested by LLM",
+                "content": {}
+            }
+
+            for tool in response["tool_calls"]:
+                tool_response_for_main_page["content"][tool["id"]] = {
+                    "name": tool["function"]["name"],
+                    "arguments": json.loads(tool["function"]["arguments"])
+                }
+                
+            self.__get_prompt_content_node().append(tool_response_for_main_page)           
             
-            
-            
-        self.__get_prompt_children_node().append({
-                        "id": "llm_response_" + uuid4().hex,
-                        "text": "LLM Response",
-                        "data": {
-                            "content": "This node contains the processed LLM Response"
-                        },
-                        "children": children
-                    })
-     
+        else:
+            self.__get_prompt_content_node().append(
+                {
+                    "heading": "Tool Calls Suggested by LLM",
+                    "content": "No suggestions."
+                }
+            )     
         self.__update_report()
         log_debug("Finished: Reporting Response.")
         
@@ -400,7 +332,15 @@ class HtmlReporter(Reporter):
                             }
                         }
         
-        self.__get_prompt_children_node().append(tool_response_node)       
+        self.__get_prompt_content_node().append(
+                {
+                    "heading": f"Tool Response:  {response.tool_name}",
+                    "content": {
+                                    "tool_id": response.tool_id,
+                                    "response": response.content
+                                }
+                }
+            )     
         self.__update_report()
         log_debug("Finished: Reporting Tool Response.")
 

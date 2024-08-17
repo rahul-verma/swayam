@@ -30,23 +30,32 @@ class PromptDir(ABC):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
         return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), role, f"{name}.yaml")
-        
     @classmethod
-    def create_prompt_from_content(cls, content):
+    def _create_purpose_from_file_name(cls, name):
+        return name.replace("_", " ").lower().title()
+    
+    @classmethod
+    def create_prompt_from_content(cls, name, content):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
         from swayam import Tool, Structure
         text = None
+        purpose = None
         image = None
         response_format = None
         tools = None
         if type(content) is str:
             text = content
+            purpose = cls._create_purpose_from_file_name(name)
         elif type(content) is dict:
             if "prompt" not in content:
                 raise ValueError(f"Prompt file {name} does not contain a prompt key")  
             else:
                 text = content["prompt"]
+            if "purpose" in content:
+                purpose = content["purpose"].strip()
+            else:
+                purpose = cls._create_purpose_from_file_name(name)
             if "image" in content:
                 image = content["image"]
             if "response_format" in content:
@@ -64,7 +73,7 @@ class PromptDir(ABC):
                         tools.append(Tool.import_tool(tool))
 
         from swayam import Prompt
-        return Prompt.user_prompt(text, image=image, response_format=response_format, tools=tools)
+        return Prompt.user_prompt(text, purpose=purpose, image=image, response_format=response_format, tools=tools)
         
     def __getattr__(self, name):
         role = self.__dict__["_role"]
@@ -74,7 +83,7 @@ class PromptDir(ABC):
             return FormatterMediator(role=role)
 
         file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
-        return PromptDir.create_prompt_from_content(file.content)
+        return PromptDir.create_prompt_from_content(name, file.content)
         
 
 class UserPromptDir(PromptDir):

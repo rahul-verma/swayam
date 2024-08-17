@@ -70,14 +70,20 @@ class Mediator(TarkashObject):
         if conversation.has_system_prompt():
             conversation.system_prompt.process_for_report()
             self.listener.report_system_prompt(conversation.system_prompt)
+            
             conversation.context.append_prompt(conversation.system_prompt)
+            self.listener.report_context(conversation.context)
         log_debug("Finished processing system prompt.")
         
         for prompt in conversation:
             log_debug("Processing prompt...")
             prompt.process_for_report()
+            
             self.listener.report_context(conversation.context)
+            
             conversation.context.append_prompt(prompt)
+            self.listener.report_context(conversation.context)
+            
             self.listener.report_prompt(prompt)
             log_debug("Finished processing prompt...")
 
@@ -86,9 +92,13 @@ class Mediator(TarkashObject):
             log_debug("Handling Response.")
             output_message = response.choices[0].message
             llm_response = LLMResponse(output_message)
+            
+            conversation.context.append_assistant_response(llm_response.as_dict())
+            self.listener.report_context(conversation.context)
+            
             self.listener.report_response(prompt, llm_response)
 
-            conversation.context.append_assistant_response(llm_response.as_dict())
+            
             log_debug("Updated Context with Response message.")
 
             if output_message.tool_calls:

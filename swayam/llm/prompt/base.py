@@ -24,8 +24,11 @@ from swayam.llm.structure.structure import ResponseStructure
 
 class BasePrompt(ABC):
     
-    def __init__(self, *, role, text, image=None, response_format:ResponseStructure=None, tools=None) -> Any:
+    def __init__(self, *, role, text, purpose=None, image=None, response_format:ResponseStructure=None, tools=None) -> Any:
         self.__role = role
+        self.__purpose = purpose
+        if self.__purpose is None:
+            self.__purpose = f"{role.title()} Prompt"
         self.__content = text
         self.__response_format = response_format
         self.__tools = tools
@@ -46,7 +49,9 @@ class BasePrompt(ABC):
             self.__tool_definitions = [tool.definition for tool in tools]
             self.__tool_dict = {tool.name: tool for tool in tools}
         
-        
+    @property
+    def purpose(self):
+        return self.__purpose
             
     @property
     def response_format(self):
@@ -73,6 +78,7 @@ class BasePrompt(ABC):
             raise ValueError(f"Tool {tool_name} not defined for this prompt.")
 
     def process_for_report(self):
+        
         if not self.image:
             self.__reportable_message = deepcopy(self.__message)
             self.__reportable_text = self.__message["content"]
