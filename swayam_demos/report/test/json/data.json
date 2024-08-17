@@ -2005,6 +2005,189 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "id": "conversation_node_1e727796cfe8495d8f138959e804002f",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_aba82a2b278e409e99c54937efcf113f",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_d78fa255d31f47fd886583c8525ed035",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_2ddc6e8df4534ff3bd8983a0a1e4a5f4",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_a96bccea045e4a88ad0911eb84d571f5",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_6eb92ba18b734bee9ef3881fbe0368fd",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_86422fc530a54335b281a0be7ed751cf",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_feb17feb911f4485931fc4e5387f615c",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_ffc73020f0a64c5c8215184efe88de60",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_e568e80ae2b949d7b87a454b3c4a8fc2",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of freedom and unity.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum with historical exhibits.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with its partially destroyed tower.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike to explore.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany, housed in a striking modern building.\n\n13. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of the Nazi regime.\n\n15. **Mauerpark** - A lively park known for its flea market and karaoke sessions, especially popular on Sundays.\n\n16. **Berlin Zoo and Aquarium** - One of the oldest zoos in the world, home to a wide variety of animals and a great place for families.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Friedrichstra\u00dfe** - A major shopping street with a mix of high-end shops, boutiques, and restaurants.\n\n19. **Kreuzberg District** - Known for its multicultural vibe, street art, and vibrant nightlife, it\u2019s a great area to explore local cafes and bars.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer. Enjoy your trip!"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "chat_context_f0bf16a33e0845619b4e3cd8b81ed7b6",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_e22e98656fbb41bc9f8784ac691f5c7b",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_082b7b77b4dd4e6c8266c7a29a5ff37c",
+                                        "text": "User",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "user",
+                                                "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_264c60e3cfe14c2fbcdffdadf78c5415",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing messages of freedom and unity.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site that houses several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, now a museum with historical exhibits.\n\n7. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n8. **Charlottenburg Palace (Schloss Charlottenburg)** - A beautiful baroque palace with stunning gardens, perfect for a leisurely stroll.\n\n9. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with its partially destroyed tower.\n\n10. **Tiergarten** - Berlin\u2019s largest park, ideal for a relaxing walk, a picnic, or renting a bike to explore.\n\n11. **Berlin Cathedral (Berliner Dom)** - A magnificent Protestant cathedral with a stunning dome and beautiful interiors.\n\n12. **Jewish Museum Berlin** - A poignant museum that explores Jewish history and culture in Germany, housed in a striking modern building.\n\n13. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n14. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of the Nazi regime.\n\n15. **Mauerpark** - A lively park known for its flea market and karaoke sessions, especially popular on Sundays.\n\n16. **Berlin Zoo and Aquarium** - One of the oldest zoos in the world, home to a wide variety of animals and a great place for families.\n\n17. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n18. **Friedrichstra\u00dfe** - A major shopping street with a mix of high-end shops, boutiques, and restaurants.\n\n19. **Kreuzberg District** - Known for its multicultural vibe, street art, and vibrant nightlife, it\u2019s a great area to explore local cafes and bars.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer. Enjoy your trip!",
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_bf8627584dc04ddbad03b94994c85027",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What should I pack for my trip?"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_b15d9c7e57f74359b3ec2bbbd3b44430",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_e5d4e887a1134fd286777e430d66c67c",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_6ab8808259704818b6f0f59ca3b05f62",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_c1056c5933804a03943de321f9e763f9",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_32ffbf970f7942c99083427a4ff13583",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Packing for a trip to Berlin in June requires consideration of the weather, activities, and your personal preferences. Here\u2019s a comprehensive packing list to help you prepare:\n\n### Clothing\n1. **Lightweight Clothing**: June in Berlin can be warm, with temperatures typically ranging from 15\u00b0C to 25\u00b0C (59\u00b0F to 77\u00b0F). Pack breathable fabrics like cotton and linen.\n2. **Layers**: Evenings can be cooler, so bring a light sweater or cardigan.\n3. **Comfortable Walking Shoes**: You'll likely do a lot of walking, so pack comfortable sneakers or walking shoes.\n4. **Casual Outfits**: For exploring the city, casual outfits are ideal. Consider packing a mix of t-shirts, shorts, and lightweight pants.\n5. **Dressier Outfit**: If you plan to dine out or attend events, include a nicer outfit.\n6. **Rain Jacket or Umbrella**: June can have occasional rain showers, so a lightweight, packable rain jacket or a small umbrella is a good idea.\n7. **Sun Protection**: A wide-brimmed hat and sunglasses to protect against the sun.\n\n### Accessories\n1. **Daypack or Backpack**: For carrying your essentials while exploring the city.\n2. **Reusable Water Bottle**: Stay hydrated while walking around.\n3. **Travel Guide or Map**: While smartphones are handy, having a physical map can be useful in areas with poor reception.\n4. **Camera or Smartphone**: To capture your memories.\n5. **Power Bank**: To keep your devices charged while on the go.\n\n### Toiletries\n1. **Basic Toiletries**: Toothbrush, toothpaste, shampoo, conditioner, soap, deodorant, etc.\n2. **Sunscreen**: Protect your skin from UV rays.\n3. **Personal Medications**: Bring any necessary medications and a small first-aid kit.\n\n### Travel Documents\n1. **Passport**: Ensure it\u2019s valid for the duration of your stay.\n2. **Travel Insurance**: A copy of your travel insurance policy.\n3. **Accommodation and Transportation Confirmations**: Printouts or digital copies of your bookings.\n4. **Emergency Contacts**: A list of important contacts, including your embassy.\n\n### Electronics\n1. **Chargers**: For your phone, camera, and any other devices.\n2. **Travel Adapter**: Germany uses Type C and F plugs, so bring an appropriate adapter if needed.\n\n### Optional Items\n1. **Guidebook or Language Phrasebook**: Helpful for navigating and communicating.\n2. **Swimwear**: If you plan to visit pools or lakes.\n3. **Lightweight Blanket or Travel Pillow**: For comfort during long flights or train rides.\n\n### Tips\n- **Check the Weather Forecast**: Just before you leave, check the weather to make any last-minute adjustments to your packing.\n- **Pack Light**: Try to pack versatile clothing that can be mixed and matched to save space.\n- **Leave Room for Souvenirs**: If you plan to shop, consider leaving some space in your luggage for new items.\n\nBy packing thoughtfully, you\u2019ll be well-prepared to enjoy your trip to Berlin!"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
