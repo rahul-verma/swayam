@@ -1,18 +1,18 @@
 [
     {
-        "id": "plan_node_0f93a8b9259647248b43a42bc2868748",
+        "id": "plan_node_cbd4fcff1a954abd8b927c02800eca95",
         "text": "Plan",
         "children": [
             {
-                "id": "task_node_6b939436055144d5923779e031f002f1",
+                "id": "task_node_7dab447c28bd4ddab2749fc8ae077d75",
                 "text": "Task",
                 "children": [
                     {
-                        "id": "conversation_node_e13cfcb93bb444cdb6213cb26bf0118d",
+                        "id": "conversation_node_16987c40234b4717924f997f5e2d5b9c",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_dffc41ba1699458e914f4c4caa0c5a93",
+                                "id": "prompt_8271dfe1f60f4b49b59f42aa51d92e6c",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -20,14 +20,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_2a75eeaa3e834f7684926e63a16e28a7",
+                                "id": "chat_context_a93bdc1f63c146879367bc3f799f1719",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_c5bd70c98c974b829d48e23637df5be6",
+                                        "id": "chat_context_msg_f1178efb4e2b43f98914fdd4a514cb8d",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -40,172 +40,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_482bcfa5dfc145cea84b3e4cf58aa476",
+                                "id": "prompt_7492480ccfab4ec0b5514c6586b73b3b",
                                 "text": "User Prompt",
                                 "data": {
-                                    "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
+                                    "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is a sample with no email.```\n\"\"\"\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_40696c41ed1842acbde0a77a5d069564",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_deb84981ebc34aaa9b33c4687fe78990",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_eea0a9337ca944a0857ec42032686cc3",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_9b3fca0c67ad49c98e333e5ebad36ce4",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [],
-                                                        "parsed": {
-                                                            "name": "LLM Conference",
-                                                            "date": "2023-06-15",
-                                                            "participants": [
-                                                                "John Doe",
-                                                                "Jane Smith",
-                                                                "Alice Johnson"
-                                                            ],
-                                                            "city": [
-                                                                "Berlin"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_5924d8bd2cbe44bda7cd47d8cc43b58a",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_b0943f1439a64807810a46a73364b5b8",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_12250b2f80464ae89087cf0f06e740a1",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_75b081b137854d418efd5654a720a70d",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_e07cd5f9e6ae4aedb17ddfd4dae00772",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "LLM Conference",
-                                                    "date": "2023-06-15",
-                                                    "participants": [
-                                                        "John Doe",
-                                                        "Jane Smith",
-                                                        "Alice Johnson"
-                                                    ],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_0f55fb3de3724386b96d948a0de855eb",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to contact rahul@swayam.com"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_fe97962829864d6f8720fcca8c2617f6",
+                                        "id": "expected_response_format_1477ff4b9d7e43898a2f23b434df2c4c",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -213,14 +55,76 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_1b5a574b95d048f78d9d7d53cf64b4f6",
+                                        "id": "provided_tools_7a0fbb2a9fa04078ad9ff6e798579207",
                                         "text": "Provided Tools",
                                         "data": {
                                             "content": "These are the tools provided for this prompt."
                                         },
                                         "children": [
                                             {
-                                                "id": "tool_c1e74989a7504aa98604b582b0156ffe",
+                                                "id": "tool_04c0286ca0cb43148e13e75751ae0399",
+                                                "text": "WeatherInfo",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "WeatherInfo",
+                                                            "description": "Get the current weather in a given location",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "location": {
+                                                                        "description": "Location to get weather information for",
+                                                                        "title": "Location",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "unit": {
+                                                                        "description": "Unit of temperature",
+                                                                        "enum": [
+                                                                            "celsius",
+                                                                            "fahrenheit"
+                                                                        ],
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "location"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_6c14e9ea36b640d0b8ee21002799aa9b",
+                                                "text": "Calculator",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "Calculator",
+                                                            "description": "Evaluates a mathematical expression",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "expression": {
+                                                                        "description": "The expression to be evaluated.",
+                                                                        "title": "Expression",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "expression"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_9319d44af8d148bfacac1d86d405f626",
                                                 "text": "EmailSearch",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -249,14 +153,14 @@
                                         ]
                                     },
                                     {
-                                        "id": "llm_response_472d8abc85a44ac08474d43dfdd6467c",
+                                        "id": "llm_response_0a6f116eff734d74b166bc6dae594c57",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_32b36f863bb04940b59ea3a12ba30621",
+                                                "id": "message_a15e258f006d4ac4a2497e352a321504",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -265,9 +169,9 @@
                                                         "role": "assistant",
                                                         "tool_calls": [
                                                             {
-                                                                "id": "call_7WxH5RauGruA0pcM0V3YyCIv",
+                                                                "id": "call_njoZS4yKSX5HBARGnbtAjcnd",
                                                                 "function": {
-                                                                    "arguments": "{\"text\":\"rahul@swayam.com\"}",
+                                                                    "arguments": "{\"text\":\"This is a sample with no email.\"}",
                                                                     "name": "EmailSearch"
                                                                 },
                                                                 "type": "function"
@@ -277,7 +181,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_3342f658f7b04c0bb9265047e14bfcbf",
+                                                "id": "content_40997abe6d014821bbd466dd845c8960",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -285,22 +189,22 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_calls79c395c9bfea47c6933bc372604823b1",
+                                                "id": "tool_calls93994c801166492bb996322b566a448f",
                                                 "text": "Expected Tool Calls",
                                                 "data": {
                                                     "content": "These are the tool calls expected by the LLM."
                                                 },
                                                 "children": [
                                                     {
-                                                        "id": "tool_7c386b3a2e144a1ebebb9b9fdd18697d",
+                                                        "id": "tool_1835e4253d254842b2a28e41156bf671",
                                                         "text": "EmailSearch",
                                                         "icon": "jstree-file",
                                                         "data": {
                                                             "content": {
-                                                                "id": "call_7WxH5RauGruA0pcM0V3YyCIv",
+                                                                "id": "call_njoZS4yKSX5HBARGnbtAjcnd",
                                                                 "function": "EmailSearch",
                                                                 "arguments": {
-                                                                    "text": "rahul@swayam.com"
+                                                                    "text": "This is a sample with no email."
                                                                 }
                                                             }
                                                         }
@@ -310,273 +214,14 @@
                                         ]
                                     },
                                     {
-                                        "id": "tool_response_f2811dbedabd4202899336d43dbe81aa",
+                                        "id": "tool_response_27aeb08844934714b6adb137662db983",
                                         "text": "Tool Response: EmailSearch",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
-                                                "id": "call_7WxH5RauGruA0pcM0V3YyCIv",
-                                                "response": [
-                                                    "rahul@swayam.com"
-                                                ]
+                                                "id": "call_njoZS4yKSX5HBARGnbtAjcnd",
+                                                "response": null
                                             }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_1764ecf862a64f36adac24f697611d33",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_512e78c0f3a24936b36fcf1c97357167",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_99d86bac0efc431b9f5b76e8efaf4d6b",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_4cce32a8722e41429b8e8c922663c771",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "LLM Conference",
-                                                    "date": "2023-06-15",
-                                                    "participants": [
-                                                        "John Doe",
-                                                        "Jane Smith",
-                                                        "Alice Johnson"
-                                                    ],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_2f8ed7e8b3c8480084afd25fbb66a2bd",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I need to contact rahul@swayam.com"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_2571ac067ea441bf9e9880f392ae2f29",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": null,
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [
-                                                    {
-                                                        "id": "call_7WxH5RauGruA0pcM0V3YyCIv",
-                                                        "function": {
-                                                            "arguments": "{\"text\":\"rahul@swayam.com\"}",
-                                                            "name": "EmailSearch"
-                                                        },
-                                                        "type": "function"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_685b6123d7974f05828216bea92564f9",
-                                        "text": "Tool",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "tool",
-                                                "content": "[\"rahul@swayam.com\"]",
-                                                "tool_call_id": "call_7WxH5RauGruA0pcM0V3YyCIv"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_1a2fce7f341a42c7995d02f03ec94f9c",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to talk to him about this model. What are the 5 key points I should ask about it?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "prompt_part_04aeb00e60884879a2192b30467572d2",
-                                        "text": "Image Upload",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
-                                        }
-                                    },
-                                    {
-                                        "id": "expected_response_format_18f7e79dac724dbfb8d6764f083c020e",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_c76d2e666f534638803d3aae52a91f07",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_88e46d8bd3f94874a80c7b6190a3e182",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_805a24a8415944de8a65472fd37abbc7",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_6153ab0d79784cfbbd519c006332ce11",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "Here are five key points you might consider discussing with Rahul about the 5E Mental Model for LLM-Assisted Pluralistic Testing:\n\n1. **Engagement Strategies**: Ask about the best practices for identifying and engaging the right problems to test with LLMs. What criteria should be used to determine if a problem is suitable for LLM assistance?\n\n2. **Prompt Engineering**: Inquire about the techniques and considerations for effective prompt engineering. How can prompts be optimized to improve the performance of LLMs in testing scenarios?\n\n3. **Participant Involvement**: Discuss the role of humans versus LLMs in the testing process. What are the best ways to integrate human participants (verifiers/solvers) into the loop to enhance the testing outcomes?\n\n4. **Feedback Mechanisms**: Explore the feedback and adaptation processes outlined in the model. How can quick feedback loops be established to ensure continuous improvement in the testing approach?\n\n5. **Evaluation of Solutions**: Ask about the criteria for evaluating the effectiveness of the solutions generated by LLMs. What metrics or protocols should be used to assess completeness, risks, and overall success in the testing process? \n\nThese points should help facilitate a productive conversation about the model and its applications."
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_76d784b5412d4ff89af89e234e1128a2",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_d2ac80b092364b61910be80a5b0d862c",
-                                "text": "System Prompt",
-                                "icon": "jstree-file",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_7c7653059f3e4fb3b90fe791a7f38606",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_c3dcc2a8fec54f54a1d6542cca6490a7",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_e34f6f74fc7942bc82b6e3a2bccf1471",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_674e143653214d2dafa50f9de1509c55",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_6b1a9a07fab54481a34add5e9dde5c1e",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
                                         }
                                     }
                                 ]
@@ -584,11 +229,11 @@
                         ]
                     },
                     {
-                        "id": "conversation_node_bd49f174f12649039e56a16e0556ae56",
+                        "id": "conversation_node_652c5a8f038e4c3daf083ae1b6f6d706",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_147a1d441bde49c5b7912cad922673fc",
+                                "id": "prompt_ab7309638b404104af96de68b9c4d9c7",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -596,14 +241,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_e90338d023b44bca8711e004a8dcd484",
+                                "id": "chat_context_02588c208f614c99af892a6469e2459f",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_f96b285fa69e4f58ad56aae705045562",
+                                        "id": "chat_context_msg_7b27ca793f77463abf12c2ef5d52d931",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -616,172 +261,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_5dd0c0fbc18847e49ded21dc0b7e73cc",
+                                "id": "prompt_591dca2145ff4f2b9d339b2ee8855578",
                                 "text": "User Prompt",
                                 "data": {
-                                    "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
+                                    "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is has a single a@b.com address.```\n\"\"\"\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_226ad30e212546319c6dd61b739b01e8",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_01d86cb294d84244a1557f02614dc652",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_aa18b915ec894342bfd26730bfe16361",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_816de53daddc45a488859d35138eef69",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [],
-                                                        "parsed": {
-                                                            "name": "LLM Conference",
-                                                            "date": "2023-06-15",
-                                                            "participants": [
-                                                                "John Doe",
-                                                                "Jane Smith",
-                                                                "Alice Johnson"
-                                                            ],
-                                                            "city": [
-                                                                "Berlin"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_f3228b2184044d229a24074338193ec0",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_d57b181343de4f479db257adcc635206",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_a554ef10cd024d0a990f06b36ed2caeb",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_10aaf30204d04dd99a3bc048947a673c",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_7fadf5f00789400ebb0ddfe618fd3f4d",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "LLM Conference",
-                                                    "date": "2023-06-15",
-                                                    "participants": [
-                                                        "John Doe",
-                                                        "Jane Smith",
-                                                        "Alice Johnson"
-                                                    ],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_ec9273ed56df4b1a9463f1dcd7cde23c",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to contact rahul@swayam.com"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_e476f5c63635499287d2f0f2a9b1417e",
+                                        "id": "expected_response_format_90d0b5e05eef44d0ab797ed896df9f9b",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -789,14 +276,76 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_6b18897e9e6e43ee93fed55d8f939eee",
+                                        "id": "provided_tools_c15f9d5c4ffd46ec87cbd8a087d18f40",
                                         "text": "Provided Tools",
                                         "data": {
                                             "content": "These are the tools provided for this prompt."
                                         },
                                         "children": [
                                             {
-                                                "id": "tool_2ef429f1fc3840778198f9353346b766",
+                                                "id": "tool_2aec041c896f49378ed016c014ca8290",
+                                                "text": "WeatherInfo",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "WeatherInfo",
+                                                            "description": "Get the current weather in a given location",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "location": {
+                                                                        "description": "Location to get weather information for",
+                                                                        "title": "Location",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "unit": {
+                                                                        "description": "Unit of temperature",
+                                                                        "enum": [
+                                                                            "celsius",
+                                                                            "fahrenheit"
+                                                                        ],
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "location"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_ca98c29275e541d090469236f7f3cf50",
+                                                "text": "Calculator",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "Calculator",
+                                                            "description": "Evaluates a mathematical expression",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "expression": {
+                                                                        "description": "The expression to be evaluated.",
+                                                                        "title": "Expression",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "expression"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_a7322abacc0d4ec793571e5b961687be",
                                                 "text": "EmailSearch",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -825,14 +374,14 @@
                                         ]
                                     },
                                     {
-                                        "id": "llm_response_b23b2ac339214255a78d878d8865bd45",
+                                        "id": "llm_response_998156dc008d4349b5ac1e594379c3ab",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_8f0494cd50124e9a89f7d786a5b0ff02",
+                                                "id": "message_181a15ace8794c1183e978fc6826ab5b",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -841,9 +390,9 @@
                                                         "role": "assistant",
                                                         "tool_calls": [
                                                             {
-                                                                "id": "call_VybxPx3sdE6Y7GXxCOz2GlRS",
+                                                                "id": "call_AcVce0IcAn9r48Bk3tuJk3AI",
                                                                 "function": {
-                                                                    "arguments": "{\"text\":\"rahul@swayam.com\"}",
+                                                                    "arguments": "{\"text\":\"This is has a single a@b.com address.\"}",
                                                                     "name": "EmailSearch"
                                                                 },
                                                                 "type": "function"
@@ -853,7 +402,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_cae61b8117d54fd7a089d4cfaaa433be",
+                                                "id": "content_ab5b770f13cb49eaa00c11178d0b8474",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -861,22 +410,22 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_calls7fd93242144b4736845577ca2723dbce",
+                                                "id": "tool_callsd7712ba34c6d4d5ead28b55cad27d411",
                                                 "text": "Expected Tool Calls",
                                                 "data": {
                                                     "content": "These are the tool calls expected by the LLM."
                                                 },
                                                 "children": [
                                                     {
-                                                        "id": "tool_049b698d08394a05a86fb2ef51cd8968",
+                                                        "id": "tool_8da27f69e8494178924bb610b94d5a35",
                                                         "text": "EmailSearch",
                                                         "icon": "jstree-file",
                                                         "data": {
                                                             "content": {
-                                                                "id": "call_VybxPx3sdE6Y7GXxCOz2GlRS",
+                                                                "id": "call_AcVce0IcAn9r48Bk3tuJk3AI",
                                                                 "function": "EmailSearch",
                                                                 "arguments": {
-                                                                    "text": "rahul@swayam.com"
+                                                                    "text": "This is has a single a@b.com address."
                                                                 }
                                                             }
                                                         }
@@ -886,189 +435,28 @@
                                         ]
                                     },
                                     {
-                                        "id": "tool_response_68526921f8db4953a36eaf94b5cf051c",
+                                        "id": "tool_response_c22a37d8e9d742ddb84016641bde64fb",
                                         "text": "Tool Response: EmailSearch",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
-                                                "id": "call_VybxPx3sdE6Y7GXxCOz2GlRS",
+                                                "id": "call_AcVce0IcAn9r48Bk3tuJk3AI",
                                                 "response": [
-                                                    "rahul@swayam.com"
+                                                    "a@b.com"
                                                 ]
                                             }
                                         }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_52cde122376542eebd085c437cdeb961",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_22b255b9616b4821beccc184f93b6a29",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_fc72139d1120495b90a612cc329c4f7f",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_8ca82d41a5f24746b9bd8fccc7eb3825",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"LLM Conference\",\"date\":\"2023-06-15\",\"participants\":[\"John Doe\",\"Jane Smith\",\"Alice Johnson\"],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "LLM Conference",
-                                                    "date": "2023-06-15",
-                                                    "participants": [
-                                                        "John Doe",
-                                                        "Jane Smith",
-                                                        "Alice Johnson"
-                                                    ],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_1a8ffc2aa26e49e99e6f1451ca685e43",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I need to contact rahul@swayam.com"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_5dd8c8c9f2864d7abef61c80f2c79d10",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": null,
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [
-                                                    {
-                                                        "id": "call_VybxPx3sdE6Y7GXxCOz2GlRS",
-                                                        "function": {
-                                                            "arguments": "{\"text\":\"rahul@swayam.com\"}",
-                                                            "name": "EmailSearch"
-                                                        },
-                                                        "type": "function"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_6326453180cd4234b04b460c21f4b019",
-                                        "text": "Tool",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "tool",
-                                                "content": "[\"rahul@swayam.com\"]",
-                                                "tool_call_id": "call_VybxPx3sdE6Y7GXxCOz2GlRS"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_935d3852d5294993a7890d75066935f7",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to talk to him about this model. What are the 5 key points I should ask about it?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "prompt_part_7841876152cc406289d5741bbe842ac1",
-                                        "text": "Image Upload",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
-                                        }
-                                    },
-                                    {
-                                        "id": "expected_response_format_9bc1dd45f63844b89b3a908b2a3c6b70",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_f105c14609324b3eb286ca8effc5a556",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_5d77069478a84181ad75d10be869225f",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_53b084a1340c40bb8a1787c37bb29ac9",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_3ee1612dd5f841f8a64dc92fccfb14fc",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "Here are five key points you might consider discussing with Rahul about the 5E Mental Model for LLM-Assisted Pluralistic Testing:\n\n1. **Engagement Strategies**: Ask about the best practices for identifying and engaging the right problems to test with LLMs. What criteria should be used to determine if a problem is suitable for LLM assistance?\n\n2. **Prompt Engineering**: Inquire about the techniques and considerations for effective prompt engineering. How can prompts be optimized to improve the performance of LLMs in testing scenarios?\n\n3. **Participant Involvement**: Discuss the role of human participants in the testing process. How should they be integrated into the loop, and what are the best practices for collaboration between humans and LLMs?\n\n4. **Evaluation Metrics**: Ask about the metrics and criteria used to evaluate the success of LLM-assisted testing. What indicators should be monitored to assess the effectiveness and reliability of the solutions generated?\n\n5. **Feedback and Adaptation**: Explore the mechanisms for incorporating feedback into the model. How can iterative feedback loops be established to continuously improve the testing process and adapt to new challenges?\n\nThese points should help facilitate a productive conversation about the model and its applications."
-                                                }
-                                            }
-                                        ]
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "id": "conversation_node_237e2fbaf6b04031b4384b52f6094229",
+                        "id": "conversation_node_1aac96df288b48ddab4ba2457d6872a2",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_e3c10c404f244c1aa69b357107024120",
+                                "id": "prompt_0a111179f96d4e82801c11b008d73214",
                                 "text": "System Prompt",
                                 "icon": "jstree-file",
                                 "data": {
@@ -1076,14 +464,14 @@
                                 }
                             },
                             {
-                                "id": "chat_context_b309c51444d340d38ea37954565ba3ae",
+                                "id": "chat_context_9022bfac53e04370a000435f74ec4692",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_fa191b54d95e42f4bf486d0cee5599cd",
+                                        "id": "chat_context_msg_b0deb5557f8045708f3015171ea9dd75",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -1096,164 +484,14 @@
                                 ]
                             },
                             {
-                                "id": "prompt_ddbe84bdddf2425f9ab0555876d5e786",
+                                "id": "prompt_ca065c128a8a423e888cb4b2229c6427",
                                 "text": "User Prompt",
                                 "data": {
-                                    "content": "Extract event information from the following text marked by triple backticks. Don't guess. \nI am planning a trip to Berlin in June to attend a conference on LLMs."
+                                    "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This has a@b.com, c@d.com - two of them.```\n\"\"\"\n"
                                 },
                                 "children": [
                                     {
-                                        "id": "expected_response_format_d2a391e588554d59b7a2c683f2636d48",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_82c5458010ae42cb85f941291d5340e9",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_39166100ff13441f9968325773b259f4",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_e87a36bcfdcb4722b30146347bef6b7e",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant",
-                                                        "tool_calls": [],
-                                                        "parsed": {
-                                                            "name": "Conference on LLMs",
-                                                            "date": "June",
-                                                            "participants": [],
-                                                            "city": [
-                                                                "Berlin"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_ba89e6a4ee784bc9b981c9d99e9948fc",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "{\"name\":\"Conference on LLMs\",\"date\":\"June\",\"participants\":[],\"city\":[\"Berlin\"]}"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_c35a54dd0ffd419b9094515c913bfc2e",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_68fd628b4965431e97274e4c8bd3ab46",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_2bbcb200ee87491f96d2316ff209df37",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "Extract event information from the following text marked by triple backticks. Don't guess. \nI am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_e4b26b53b479434ebac82c11e38a810d",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"Conference on LLMs\",\"date\":\"June\",\"participants\":[],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "Conference on LLMs",
-                                                    "date": "June",
-                                                    "participants": [],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_2c621b0c73584745b152c450bf0e5013",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to contact rahul@swayam.com"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_1c8682ad04004bcfb914ebc4a4a9e79e",
+                                        "id": "expected_response_format_68d2458a99724eff879e46e93a2585e4",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
@@ -1261,14 +499,76 @@
                                         }
                                     },
                                     {
-                                        "id": "provided_tools_b019dba5d0234a499756f7e17711b857",
+                                        "id": "provided_tools_f27ed5c11d7f457eabf645de3615f9eb",
                                         "text": "Provided Tools",
                                         "data": {
                                             "content": "These are the tools provided for this prompt."
                                         },
                                         "children": [
                                             {
-                                                "id": "tool_de2dccec544442fcb7e6afe792273186",
+                                                "id": "tool_7473adb89a51424cb8a2fc417e97d9e0",
+                                                "text": "WeatherInfo",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "WeatherInfo",
+                                                            "description": "Get the current weather in a given location",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "location": {
+                                                                        "description": "Location to get weather information for",
+                                                                        "title": "Location",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "unit": {
+                                                                        "description": "Unit of temperature",
+                                                                        "enum": [
+                                                                            "celsius",
+                                                                            "fahrenheit"
+                                                                        ],
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "location"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_6c02bd60f0684208aa0654d8a416efeb",
+                                                "text": "Calculator",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "type": "function",
+                                                        "function": {
+                                                            "name": "Calculator",
+                                                            "description": "Evaluates a mathematical expression",
+                                                            "parameters": {
+                                                                "properties": {
+                                                                    "expression": {
+                                                                        "description": "The expression to be evaluated.",
+                                                                        "title": "Expression",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "expression"
+                                                                ],
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "tool_4838ee54aedc4c7ba4cf4300e2f2bb8e",
                                                 "text": "EmailSearch",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1297,14 +597,14 @@
                                         ]
                                     },
                                     {
-                                        "id": "llm_response_323d97ab1d82459386bc605fbc4dbaaa",
+                                        "id": "llm_response_d7ca2d3a0f614b8abfdb1f982298f1fa",
                                         "text": "LLM Response",
                                         "data": {
                                             "content": "This node contains the processed LLM Response"
                                         },
                                         "children": [
                                             {
-                                                "id": "message_ab5f99e17bbd4dbf936bea2bafbec08a",
+                                                "id": "message_63ed77edd2f24557a8cedb2409575561",
                                                 "text": "Response Meta-Data",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1313,9 +613,9 @@
                                                         "role": "assistant",
                                                         "tool_calls": [
                                                             {
-                                                                "id": "call_yTvrri6t3ScQNIeQtSMAPYFE",
+                                                                "id": "call_Zsy15ZqgQGxWetm6t0jPTxR3",
                                                                 "function": {
-                                                                    "arguments": "{\"text\":\"rahul@swayam.com\"}",
+                                                                    "arguments": "{\"text\":\"This has a@b.com, c@d.com - two of them.\"}",
                                                                     "name": "EmailSearch"
                                                                 },
                                                                 "type": "function"
@@ -1325,7 +625,7 @@
                                                 }
                                             },
                                             {
-                                                "id": "content_a04c51e17d6c4bfd98323cd2d7a90cb7",
+                                                "id": "content_b0641d9dd2d84e0e8c297dc6a33330ec",
                                                 "text": "Content",
                                                 "icon": "jstree-file",
                                                 "data": {
@@ -1333,22 +633,22 @@
                                                 }
                                             },
                                             {
-                                                "id": "tool_calls8579ff29bbf04ce9bc455f04b8fdab14",
+                                                "id": "tool_calls571b6c4f337b4336864a2a24c0547279",
                                                 "text": "Expected Tool Calls",
                                                 "data": {
                                                     "content": "These are the tool calls expected by the LLM."
                                                 },
                                                 "children": [
                                                     {
-                                                        "id": "tool_806316880701493e9197648167f25a8d",
+                                                        "id": "tool_97931dc3660e41d39331644929dd050c",
                                                         "text": "EmailSearch",
                                                         "icon": "jstree-file",
                                                         "data": {
                                                             "content": {
-                                                                "id": "call_yTvrri6t3ScQNIeQtSMAPYFE",
+                                                                "id": "call_Zsy15ZqgQGxWetm6t0jPTxR3",
                                                                 "function": "EmailSearch",
                                                                 "arguments": {
-                                                                    "text": "rahul@swayam.com"
+                                                                    "text": "This has a@b.com, c@d.com - two of them."
                                                                 }
                                                             }
                                                         }
@@ -1358,174 +658,18 @@
                                         ]
                                     },
                                     {
-                                        "id": "tool_response_602c9aeece844f0ea20b0da906bd0e77",
+                                        "id": "tool_response_aa0205c879ce4b508c727bc20ae0d2a2",
                                         "text": "Tool Response: EmailSearch",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
-                                                "id": "call_yTvrri6t3ScQNIeQtSMAPYFE",
+                                                "id": "call_Zsy15ZqgQGxWetm6t0jPTxR3",
                                                 "response": [
-                                                    "rahul@swayam.com"
+                                                    "a@b.com",
+                                                    "c@d.com"
                                                 ]
                                             }
                                         }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "chat_context_689bd51da33d424fa4c0e566fbee48c7",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_7cf921b2d48d4ff78e4c710fe4381b78",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_2385a770cff4417da20f4c784d6c40ed",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "Extract event information from the following text marked by triple backticks. Don't guess. \nI am planning a trip to Berlin in June to attend a conference on LLMs."
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_dc7ff1e8f0ac4eb1b0b1231df537bf06",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": "{\"name\":\"Conference on LLMs\",\"date\":\"June\",\"participants\":[],\"city\":[\"Berlin\"]}",
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "parsed": {
-                                                    "name": "Conference on LLMs",
-                                                    "date": "June",
-                                                    "participants": [],
-                                                    "city": [
-                                                        "Berlin"
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_8ef8697f1f234acc84a9349854393712",
-                                        "text": "User",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "user",
-                                                "content": "I need to contact rahul@swayam.com"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_67c82a9fc3ce4f20a389a631e9d84428",
-                                        "text": "LLM",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "content": null,
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [
-                                                    {
-                                                        "id": "call_yTvrri6t3ScQNIeQtSMAPYFE",
-                                                        "function": {
-                                                            "arguments": "{\"text\":\"rahul@swayam.com\"}",
-                                                            "name": "EmailSearch"
-                                                        },
-                                                        "type": "function"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "chat_context_msg_41b61cf448d649968864e880b3f663c8",
-                                        "text": "Tool",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "tool",
-                                                "content": "[\"rahul@swayam.com\"]",
-                                                "tool_call_id": "call_yTvrri6t3ScQNIeQtSMAPYFE"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_b61d60e8a039405e86c78059200856f9",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "I need to talk to him about this model. What are the 5 key points I should ask about it?"
-                                },
-                                "children": [
-                                    {
-                                        "id": "prompt_part_083a0cbac2a143488d950da517971dee",
-                                        "text": "Image Upload",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
-                                        }
-                                    },
-                                    {
-                                        "id": "expected_response_format_d8beb341de3b4236a8922747fdad2588",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "provided_tools_749610d0b7b34524bd01f9c646dac1aa",
-                                        "text": "Provided Tools",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "Not specified."
-                                        }
-                                    },
-                                    {
-                                        "id": "llm_response_a3278622dc0a41d1b16152e6c9b5549d",
-                                        "text": "LLM Response",
-                                        "data": {
-                                            "content": "This node contains the processed LLM Response"
-                                        },
-                                        "children": [
-                                            {
-                                                "id": "message_deeaa48f3146499b9870d38f22a7a2b4",
-                                                "text": "Response Meta-Data",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": {
-                                                        "refusal": null,
-                                                        "role": "assistant"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "content_3ac7dff867d04dab9f61215d386f0ce7",
-                                                "text": "Content",
-                                                "icon": "jstree-file",
-                                                "data": {
-                                                    "content": "Here are five key points you could ask Rahul about the 5E Mental Model for LLM-Assisted Pluralistic Testing:\n\n1. **Engagement Strategies**: What are the best practices for effectively engaging stakeholders in the testing process, and how do you determine the right problem to address?\n\n2. **Prompt Engineering**: Can you elaborate on the criteria for readiness when it comes to prompt engineering and how it impacts the performance of LLMs?\n\n3. **Participant Roles**: How do you define the roles of humans versus LLMs in the testing process, and what are the implications for collaboration?\n\n4. **Feedback Mechanisms**: What feedback loops do you recommend for continuous improvement, and how can they be integrated into the testing framework?\n\n5. **Evaluation Metrics**: What metrics do you use to assess the completeness and effectiveness of the solutions generated through this model?"
-                                                }
-                                            }
-                                        ]
                                     }
                                 ]
                             }

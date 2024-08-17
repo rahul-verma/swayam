@@ -1,0 +1,9 @@
+prompt: |
+  """Find whether there is an email address in the following text marked with triple backticks 
+    ```{text}```
+  """
+
+tools: 
+  - WeatherInfo
+  - Calculator
+  - EmailSearch

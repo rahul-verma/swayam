@@ -25,20 +25,21 @@ class PromptDir(ABC):
     def __init__(self, *, role):
         self._role = role
         
-    def __getattr__(self, name):
+    @classmethod
+    def get_path_for_prompt(cls, *, role, name):
+        from tarkash import Tarkash, YamlFile
+        from swayam.core.constant import SwayamOption
+        return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), role, f"{name}.yaml")
+        
+    @classmethod
+    def create_prompt_from_content(cls, content):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
         from swayam import Tool, Structure
-        self.__base_path = os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), self.__dict__["_role"])
-
-        file = YamlFile(os.path.join(self.__base_path, f"{name}.yaml"))
-        
         text = None
         image = None
         response_format = None
         tools = None
-        
-        content = file.content
         if type(content) is str:
             text = content
         elif type(content) is dict:
@@ -64,6 +65,16 @@ class PromptDir(ABC):
 
         from swayam import Prompt
         return Prompt.user_prompt(text, image=image, response_format=response_format, tools=tools)
+        
+    def __getattr__(self, name):
+        role = self.__dict__["_role"]
+        from tarkash import YamlFile        
+        if name == "formatter":
+            from .format import FormatterMediator
+            return FormatterMediator(role=role)
+
+        file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
+        return PromptDir.create_prompt_from_content(file.content)
         
 
 class UserPromptDir(PromptDir):
