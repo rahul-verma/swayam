@@ -1,0 +1,7 @@
+prompt: |
+  What is 7 *30 + 13?
+
+tools: 
+  - WeatherInfo
+  - Calculator
+  - EmailSearch

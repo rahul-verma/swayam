@@ -208,6 +208,7 @@ class HtmlReporter(Reporter):
              prompt_node = {
                     "id": "prompt_" + uuid4().hex,
                     "text": f"{role} Prompt",
+                    "icon": "jstree-file",
                     "data": {
                                 "content": prompt.reportable_text
                             }
@@ -257,6 +258,39 @@ class HtmlReporter(Reporter):
                             "content": expected_response_format
                         }
             })
+            
+            provided_tools = prompt.tool_dict
+            if not provided_tools:
+                prompt_node["children"].append({
+                        "id": "provided_tools_" + uuid4().hex,
+                        "text": "Provided Tools",
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": "Not specified."
+                        }
+            })
+            else:
+                tool_nodes = []
+                for tool in provided_tools.values():
+                    tool_nodes.append({
+                        "id": "tool_" + uuid4().hex,
+                        "text": tool.name,
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": tool.definition
+                        }
+                    })
+                    
+                prompt_node["children"].append({
+                        "id": "provided_tools_" + uuid4().hex,
+                        "text": "Provided Tools",
+                        "data": {
+                            "content": "These are the tools provided for this prompt."
+                        },
+                        "children": tool_nodes
+                })
+            
+            
 
         self.__get_conversation_children_node().append(prompt_node)
         self.__update_report()
@@ -269,11 +303,12 @@ class HtmlReporter(Reporter):
         Args:
             response (LLMResponse): Response message from LLM.
         """
-        log_debug("Finished: Reporting Response.")
+        log_debug("Begin: Reporting Response.")
         children = []
         response = response.as_dict()
         content = response["content"]
         del response["content"]
+        
         children.append({
                         "id": "message_" + uuid4().hex,
                         "text": "Response Meta-Data",
@@ -286,7 +321,7 @@ class HtmlReporter(Reporter):
         if content:
             children.append({
                             "id": "content_" + uuid4().hex,
-                            "text": "Response Content",
+                            "text": "Content",
                             "icon": "jstree-file",
                             "data": {
                                 "content": content
@@ -295,7 +330,7 @@ class HtmlReporter(Reporter):
         else:
             children.append({
                             "id": "content_" + uuid4().hex,
-                            "text": "Response Content",
+                            "text": "Content",
                             "icon": "jstree-file",
                             "data": {
                                 "content": "No response content was returned by the LLM."
@@ -303,20 +338,70 @@ class HtmlReporter(Reporter):
                         })
             
         # Appending non-LLM action requirements
-        if "function_call" in response:
-            children.append({
-                            "id": "action_" + uuid4().hex,
-                            "text": "Needs Function Call",
-                            "icon": "jstree-file",
-                            "data": {
-                                "content": f"A function call needs to be made:\n\nFunction Name: {response['function_call']['name']} \nArguments: {response['function_call']['arguments']}"
+        if "tool_calls" in response:
+                tool_nodes = []
+                for tool in response["tool_calls"]:
+                    tool_nodes.append({
+                        "id": "tool_" + uuid4().hex,
+                        "text": tool["function"]["name"],
+                        "icon": "jstree-file",
+                        "data": {
+                            "content": {
+                                "id": tool["id"],
+                                "function": tool["function"]["name"],
+                                "arguments": json.loads(tool["function"]["arguments"])
                             }
-                        })
+                        }
+                    })
+                    
+                children.append({
+                        "id": "tool_calls" + uuid4().hex,
+                        "text": "Expected Tool Calls",
+                        "data": {
+                            "content": "These are the tool calls expected by the LLM."
+                        },
+                        "children": tool_nodes
+                })            
             
-        
-        self.__get_prompt_children_node().extend(children)       
+            
+            
+        self.__get_prompt_children_node().append({
+                        "id": "llm_response_" + uuid4().hex,
+                        "text": "LLM Response",
+                        "data": {
+                            "content": "This node contains the processed LLM Response"
+                        },
+                        "children": children
+                    })
+     
         self.__update_report()
         log_debug("Finished: Reporting Response.")
+        
+
+    def report_tool_response(self, response) -> None:
+        """
+        Reports the tool response.
+
+        Args:
+            message (dict): ToolResponse object
+        """
+        log_debug("Begin: Tool Response.")
+ 
+        tool_response_node = {
+                            "id": "tool_response_" + uuid4().hex,
+                            "text": f"Tool Response: {response.tool_name}",
+                            "icon": "jstree-file",
+                            "data": {
+                                "content": {
+                                    "id": response.tool_id,
+                                    "response": response.content
+                                }
+                            }
+                        }
+        
+        self.__get_prompt_children_node().append(tool_response_node)       
+        self.__update_report()
+        log_debug("Finished: Reporting Tool Response.")
 
     def finish(self) -> None:
         """

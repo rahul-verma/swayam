@@ -98,6 +98,15 @@ class ConsoleReporter(Reporter):
         print("Response:")
         print(response.content)
         
+    def report_tool_response(self, response) -> None:
+        """
+        Reports the tool response.
+
+        Args:
+            message (dict): ToolResponse object
+        """
+        pass
+        
     def finish(self) -> None:
         """
         Finishes report creation.

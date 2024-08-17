@@ -15,18 +15,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class LLMResponse:
+class ToolResponse:
     
-    def __init__(self, message, **kwargs) -> None:
-        self.__message = message
+    def __init__(self, tool, result):
+        self.__tool = tool
+        self.__tool_name = tool.name
+        self.__tool_definition = tool.definition
+        self.__result = result
+        self.__tool_id = None
+    
+    @property
+    def tool_id(self):
+        return self.__tool_id
+    
+    @tool_id.setter
+    def tool_id(self, value):
+        self.__tool_id = value    
         
     @property
-    def message(self):
-        return self.__message
+    def tool(self):
+        return self.__tool
+    
+    @property
+    def tool_name(self):
+        return self.__tool.name
+    
+    @property
+    def definition(self):
+        return self.__tool_definition
     
     @property
     def content(self):
-        return self.__message.content
-    
-    def as_dict(self) -> dict:
-        return self.__message.to_dict()
+        return self.__result

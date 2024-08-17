@@ -21,7 +21,8 @@ from typing import *
 import json
 
 class ToolBuilder:
-    def __init__(self, target:callable, desc:str):
+    def __init__(self, name, *, target:callable, desc:str):
+        self.__name = name
         self.__target = target
         self.__tool_name = target.__name__
         self.__desc = desc
@@ -36,4 +37,4 @@ class ToolBuilder:
         
     def build(self):
         from swayam.llm.tool import Tool
-        return Tool(self.__target, self.__desc, self.__structure_builder.build())
+        return Tool(self.__name, target=self.__target, desc=self.__desc, tool_structure=self.__structure_builder.build())

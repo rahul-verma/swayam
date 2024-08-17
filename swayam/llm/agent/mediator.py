@@ -16,6 +16,7 @@
 # limitations under the License.
 
 import os
+import json
 from pprint import pprint
 from pydantic import BaseModel
 from tarkash import TarkashObject, log_info, log_debug
@@ -84,10 +85,20 @@ class Mediator(TarkashObject):
             response = self.__client.execute_messages(messages=conversation.context.messages, response_format=prompt.response_format, tools=prompt.tools)
             log_debug("Handling Response.")
             output_message = response.choices[0].message
-            response_message = LLMResponse.create_response_object(output_message)
-            self.listener.report_response(prompt, response_message)
+            llm_response = LLMResponse(output_message)
+            self.listener.report_response(prompt, llm_response)
 
-            conversation.context.append_assistant_response(response_message.as_dict())
+            conversation.context.append_assistant_response(llm_response.as_dict())
             log_debug("Updated Context with Response message.")
 
-        return output_message
+            if output_message.tool_calls:
+                response_messages = []
+                for tool in output_message.tool_calls:
+                    tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
+                    self.listener.report_tool_response(tool_response)
+                    response_messages.append(tool_response)
+                    conversation.context.append_tool_response(tool_response)
+            else: 
+                response_messages = output_message
+
+        return response_messages

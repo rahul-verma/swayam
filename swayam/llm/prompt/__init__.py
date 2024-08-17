@@ -17,11 +17,12 @@
 
 
 from .types import UserPrompt, SystemPrompt
-from .namespace import PromptFileLoader
+from .namespace import UserPromptDir, SystemPromptDir
 from swayam.llm.structure.structure import ResponseStructure
 
 class Prompt:
-    namespace = PromptFileLoader()
+    user = UserPromptDir()
+    system = SystemPromptDir() 
     
     @classmethod
     def user_prompt(cls, text, *, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> UserPrompt:

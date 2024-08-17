@@ -21,9 +21,10 @@ import json
 
 class Tool:
     
-    def __init__(self, target, desc, tool_structure):
-        self.__name = target.__name__
+    def __init__(self, name, *, target, desc, tool_structure):
+        self.__name = name
         self.__target = target
+        self.__target.__name__ = self.__target.__name__
         self.__desc = desc
         self.__tool_structure = tool_structure
         
@@ -32,8 +33,8 @@ class Tool:
         return self.__name
     
     @property
-    def qname(self):
-        return self.__target.__module__ + "." + self.__name
+    def target_name(self):
+        return self.__target.__name__
     
     @property
     def desc(self):
@@ -58,11 +59,17 @@ class Tool:
     
     def __call__(self, **fields):
         structure = self.__tool_structure(**fields)
-        return self.__target(**structure.dict())
+        from .response import ToolResponse
+        
+        output = self.__target(**structure.dict())
+        if type(output) is dict:
+            return ToolResponse(self, output)
+        else:
+            return ToolResponse(self, {"response": output})
     
     @classmethod
-    def builder(cls, target, desc:str=None, **fields):
+    def builder(cls, name, *, target, desc:str=None, **fields):
         from .builder import ToolBuilder
-        return ToolBuilder(target, desc, **fields)
+        return ToolBuilder(name, target=target, desc=desc, **fields)
     
     

@@ -57,3 +57,12 @@ class PromptContext:
         for message in messages:
             self.__messages.append(message)
             self.__reportable_messages.append(message)
+            
+    def append_tool_response(self, response):
+        message = {
+            "role": "tool",
+            "content": json.dumps(response.content),
+            "tool_call_id": response.tool_id
+        }
+        self.__messages.append(message)
+        self.__reportable_messages.append(message)

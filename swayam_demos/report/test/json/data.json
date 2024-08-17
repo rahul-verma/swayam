@@ -1,32 +1,33 @@
 [
     {
-        "id": "plan_node_a00dec268cad4311a8d76672b86c4ada",
+        "id": "plan_node_290c73cd0e68458c93ed23af400fb9f4",
         "text": "Plan",
         "children": [
             {
-                "id": "task_node_1a7c734349db450fbb3ea596ff048cee",
+                "id": "task_node_96a9505cce8b423d8b34bb4974cd0ca5",
                 "text": "Task",
                 "children": [
                     {
-                        "id": "conversation_node_6b6156b62af6449d88443ab134235739",
+                        "id": "conversation_node_1853a192ba97410fb97255b9d92cc013",
                         "text": "Conversation",
                         "children": [
                             {
-                                "id": "prompt_f43547375fa44b7b96af0a391f169cfc",
+                                "id": "prompt_2c7aa73519b84070a7cb9970f112275a",
                                 "text": "System Prompt",
+                                "icon": "jstree-file",
                                 "data": {
                                     "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
                                 }
                             },
                             {
-                                "id": "chat_context_566358a6d8d945138db321eaceb0f0dd",
+                                "id": "chat_context_74e551eabf034fc9969aabf5a748e67a",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_fb581437d53d4401a3fb6c7b39d2165c",
+                                        "id": "chat_context_msg_a5dc482345ad43468f3e4a88f0cf4e75",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -39,318 +40,67 @@
                                 ]
                             },
                             {
-                                "id": "prompt_ce4bb5f9a85b498993bcc7676e689036",
+                                "id": "prompt_73499247f63e4a1fb0145791ddaaaa1a",
                                 "text": "User Prompt",
                                 "data": {
-                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                    "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
                                 },
                                 "children": [
                                     {
-                                        "id": "message_c5f99705967c4af89835213834f0ab3a",
-                                        "text": "Response Meta-Data",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [],
-                                                "parsed": {
-                                                    "name": "Science Fair",
-                                                    "date": "Friday",
-                                                    "participants": [
-                                                        "Alice",
-                                                        "Bob"
-                                                    ],
-                                                    "city": []
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "content_e7c81e3048bb4ada8d99e5b515e2a7fa",
-                                        "text": "Response Content",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_a309e7a90fab4c2584c8901e9998de9a",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_09b4cac9998c4668927bf9c9c653a666",
-                                "text": "System Prompt",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_2615a466bd9d498a8886c5e46bde94b9",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_d1d0d1d63c744ab0913730912fe81518",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_8b683ff6b8b64995acf6024f1cb457c6",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
-                                },
-                                "children": [
-                                    {
-                                        "id": "message_ff2a7a0e03f04b60b57ed5e592a6f4de",
-                                        "text": "Response Meta-Data",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [],
-                                                "parsed": {
-                                                    "name": "Science Fair",
-                                                    "date": "Friday",
-                                                    "participants": [
-                                                        "Alice",
-                                                        "Bob"
-                                                    ],
-                                                    "city": []
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "content_bafa2482153d4cb3a3fca36e81e36df5",
-                                        "text": "Response Content",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_2ee0ddb2d48047d2970f8de278863174",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_5ae4eb90a65e467f9ad35e2ce173078f",
-                                "text": "System Prompt",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_d17610c3126a462796dd845952b27dba",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_559cbe41f793454a8d375f230894e9bb",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_cdaa4504177c4e68b03746dbddf96c0c",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_cfa0cdb84d64473c9e5dc528af36b7dc",
-                                "text": "System Prompt",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_6539d9d95e8342ab80ad81ea9faebc54",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_6326ba7dbb104f39995d8904572d6eab",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_bd96214fbe104cdc8afbceda5b2f8c97",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_b8604eee23a14f71a003d7d6bbfeea74",
-                                "text": "System Prompt",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
-                            },
-                            {
-                                "id": "chat_context_806f360749554492ad5f2917d4212fc8",
-                                "text": "Chat Context",
-                                "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
-                                },
-                                "children": [
-                                    {
-                                        "id": "chat_context_msg_94815734e44b444aab8787e25065e6d8",
-                                        "text": "System",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "role": "system",
-                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_f209e0e6467d4e2993476e75ae6ed32e",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
-                                },
-                                "children": [
-                                    {
-                                        "id": "expected_response_format_2eeeb59a3e80432ab2e9c05ae854e6fb",
+                                        "id": "expected_response_format_1f686c1aca264b23abec81a183b098c5",
                                         "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": {
-                                                "properties": {
-                                                    "name": {
-                                                        "description": "Name of the event",
-                                                        "title": "Name",
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "description": "Date on which the event takes place.",
-                                                        "title": "Date",
-                                                        "type": "string"
-                                                    },
-                                                    "participants": {
-                                                        "description": "Names of participants.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "Participants",
-                                                        "type": "array"
-                                                    },
-                                                    "city": {
-                                                        "description": "City where the event takes place.",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "title": "City",
-                                                        "type": "array"
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_f17f2605d7374400a6840163f8c566fb",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_8c9d867dbe7f41cc84133b8f081478cb",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_e1c17ff21557467787f4d7f9dd4c43e0",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
                                                     }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "date",
-                                                    "participants",
-                                                    "city"
-                                                ],
-                                                "title": "CalendarEvent",
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "id": "message_c7a909072b014f2bafb78c6dca75a09b",
-                                        "text": "Response Meta-Data",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": {
-                                                "refusal": null,
-                                                "role": "assistant",
-                                                "tool_calls": [],
-                                                "parsed": {
-                                                    "name": "Science Fair",
-                                                    "date": "Friday",
-                                                    "participants": [
-                                                        "Alice",
-                                                        "Bob"
-                                                    ],
-                                                    "city": []
+                                                }
+                                            },
+                                            {
+                                                "id": "content_1accecf58cd34141bed3277ff13938ba",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing artistic expressions of freedom.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site housing several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, with a museum detailing its history.\n\n7. **Berlin Cathedral (Berliner Dom)** - A stunning Protestant cathedral with a beautiful dome and an observation platform for great views.\n\n8. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n9. **Charlottenburg Palace (Schloss Charlottenburg)** - The largest palace in Berlin, featuring beautiful gardens and opulent rooms.\n\n10. **Tiergarten** - Berlin\u2019s central park, perfect for a leisurely stroll, picnics, or cycling.\n\n11. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with a modern structure built alongside the ruins of the original.\n\n12. **Topography of Terror** - An outdoor and indoor history museum located on the site of the former Gestapo and SS headquarters, detailing the history of the Nazi regime.\n\n13. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of concentration camps.\n\n14. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n15. **Mauerpark** - A popular park known for its flea market, karaoke sessions, and vibrant atmosphere, especially on Sundays.\n\n16. **Berlin Zoo (Zoologischer Garten Berlin)** - One of the oldest and most famous zoos in the world, home to a wide variety of animals.\n\n17. **Friedrichshain-Kreuzberg District** - Known for its alternative culture, street art, and lively nightlife.\n\n18. **Hackescher Markt** - A trendy area filled with shops, restaurants, and bars, perfect for exploring Berlin\u2019s contemporary culture.\n\n19. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer months. Enjoy your trip!"
                                                 }
                                             }
-                                        }
-                                    },
-                                    {
-                                        "id": "content_0c04051a98c642ada41979aacc41a36c",
-                                        "text": "Response Content",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[] }"
-                                        }
+                                        ]
                                     }
                                 ]
-                            }
-                        ]
-                    },
-                    {
-                        "id": "conversation_node_271cb0657aa04085b972c891bdefaa9d",
-                        "text": "Conversation",
-                        "children": [
-                            {
-                                "id": "prompt_8077bc706f4b40ce902b0876fee4153a",
-                                "text": "System Prompt",
-                                "data": {
-                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
-                                }
                             },
                             {
-                                "id": "chat_context_85f584bc9e6f4dd9b68273f46892e7ab",
+                                "id": "chat_context_0743c96d4e854df6af0fea144aead704",
                                 "text": "Chat Context",
                                 "data": {
                                     "content": "This is the sequences of messages sent to the LLM for context management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_02dc11211fa144a5a4ae23ca080580fa",
+                                        "id": "chat_context_msg_801e872bbf5f4f3eb536d7ab78a64e9c",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -359,50 +109,169 @@
                                                 "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
                                             }
                                         }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "prompt_ce42f79f9eae461b8d286db171ea113d",
-                                "text": "User Prompt",
-                                "data": {
-                                    "content": "Please explain this image to me."
-                                },
-                                "children": [
-                                    {
-                                        "id": "prompt_part_f147497f98534638856086666f8e4cb1",
-                                        "text": "Image Upload",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
-                                        }
                                     },
                                     {
-                                        "id": "expected_response_format_82102489d84b4549ac9d0b0a692b227a",
-                                        "text": "Expected Response Format",
-                                        "icon": "jstree-file",
-                                        "data": {
-                                            "content": "No expected response format was provided."
-                                        }
-                                    },
-                                    {
-                                        "id": "message_5ab8b006c87b453dbea46f4162d26461",
-                                        "text": "Response Meta-Data",
+                                        "id": "chat_context_msg_befc565273104c63a7ba5b6e196e84d0",
+                                        "text": "User",
                                         "icon": "jstree-file",
                                         "data": {
                                             "content": {
+                                                "role": "user",
+                                                "content": "I am planning a trip to Berlin in June. Create a list of places worth seeing there."
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "chat_context_msg_37e917e9c9ec4542b64df1aefd3f9b67",
+                                        "text": "LLM",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "content": "Berlin is a vibrant city with a rich history, diverse culture, and plenty of attractions. Here\u2019s a list of must-see places to consider for your trip in June:\n\n1. **Brandenburg Gate (Brandenburger Tor)** - An iconic symbol of Berlin and a must-visit landmark.\n\n2. **Reichstag Building** - The seat of the German Parliament, featuring a stunning glass dome that offers panoramic views of the city.\n\n3. **Berlin Wall Memorial (Gedenkst\u00e4tte Berliner Mauer)** - A historical site that commemorates the division of Berlin and includes a preserved section of the Wall.\n\n4. **East Side Gallery** - A 1.3 km-long stretch of the Berlin Wall covered in murals and street art, showcasing artistic expressions of freedom.\n\n5. **Museum Island (Museumsinsel)** - A UNESCO World Heritage site housing several world-renowned museums, including the Pergamon Museum and the Altes Museum.\n\n6. **Checkpoint Charlie** - The famous border crossing point between East and West Berlin during the Cold War, with a museum detailing its history.\n\n7. **Berlin Cathedral (Berliner Dom)** - A stunning Protestant cathedral with a beautiful dome and an observation platform for great views.\n\n8. **Potsdamer Platz** - A bustling square known for its modern architecture, shopping, and entertainment options.\n\n9. **Charlottenburg Palace (Schloss Charlottenburg)** - The largest palace in Berlin, featuring beautiful gardens and opulent rooms.\n\n10. **Tiergarten** - Berlin\u2019s central park, perfect for a leisurely stroll, picnics, or cycling.\n\n11. **Kaiser Wilhelm Memorial Church** - A striking church that serves as a memorial to peace and reconciliation, with a modern structure built alongside the ruins of the original.\n\n12. **Topography of Terror** - An outdoor and indoor history museum located on the site of the former Gestapo and SS headquarters, detailing the history of the Nazi regime.\n\n13. **Sachsenhausen Concentration Camp Memorial** - A sobering site located just outside Berlin, offering insights into the Holocaust and the history of concentration camps.\n\n14. **Tempelhofer Feld** - A former airport turned public park, where you can walk, cycle, or even kite-surf on the runways.\n\n15. **Mauerpark** - A popular park known for its flea market, karaoke sessions, and vibrant atmosphere, especially on Sundays.\n\n16. **Berlin Zoo (Zoologischer Garten Berlin)** - One of the oldest and most famous zoos in the world, home to a wide variety of animals.\n\n17. **Friedrichshain-Kreuzberg District** - Known for its alternative culture, street art, and lively nightlife.\n\n18. **Hackescher Markt** - A trendy area filled with shops, restaurants, and bars, perfect for exploring Berlin\u2019s contemporary culture.\n\n19. **Gendarmenmarkt** - A beautiful square featuring the German and French Cathedrals and the Konzerthaus, often considered one of the most beautiful squares in Berlin.\n\n20. **Spree River Cruise** - Consider taking a boat tour along the Spree River for a unique perspective of the city\u2019s landmarks.\n\nMake sure to check the opening hours and any special events happening in June, as Berlin often hosts festivals and cultural events during the summer months. Enjoy your trip!",
                                                 "refusal": null,
                                                 "role": "assistant"
                                             }
                                         }
-                                    },
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_5b9e1d6d426d401b981e3db7f17112d8",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What should I pack for my trip?"
+                                },
+                                "children": [
                                     {
-                                        "id": "content_545fdc9c273d44fda56bf3918cffa1c9",
-                                        "text": "Response Content",
+                                        "id": "expected_response_format_5aecb3c6150e4a78aa3358acfba91c4e",
+                                        "text": "Expected Response Format",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing v1.1\" by Rahul Verma. It outlines a structured approach to utilizing Large Language Models (LLMs) in testing processes. Here\u2019s a breakdown of its components:\n\n### Structure:\n1. **5E Framework**: The model is organized into five key stages:\n   - **Engage**: Identifying the testing problem and determining roles between humans and LLMs.\n   - **Explore**: Assessing if the problem is the right one and conducting experiments with prompts.\n   - **Engineer**: Involves the technical aspects like prompt engineering and knowledge augmentation.\n   - **Embed**: Integrating solutions and defining roles for participants in the testing process.\n   - **Evolve**: Continuous improvement through feedback and adaptation.\n\n2. **Participants**: \n   - **Humans**: Involved in various roles such as verifiers and solvers.\n   - **LLMs**: Used as tools to assist in the testing process.\n   - **Translators and Invokers**: Facilitate communication between different participants.\n\n3. **Feedback & Adaptation**: Emphasizes the importance of quick feedback loops and adaptability in the testing process.\n\n### Key Concepts:\n- **Fairness, Transparency, Accountability**: These principles are highlighted as essential for the testing framework.\n- **Protocols and Autonomy**: Discusses the need for clear protocols and the degree of autonomy in solutions.\n- **Evaluation Metrics**: Includes criteria like completeness, accepted risks, and overall effectiveness of the solutions.\n\nOverall, the model aims to provide a comprehensive approach to leveraging LLMs in testing, ensuring that the process is collaborative, iterative, and focused on continuous improvement."
+                                            "content": "Not specified."
                                         }
+                                    },
+                                    {
+                                        "id": "provided_tools_119062bb03f84a7dba995a97e42db939",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_9924314993f54d01bbfde8af85d961f0",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_8d6d576974214e9297c185bde6f17e66",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_cfe94d8f29bf410bb6efd442d7bde032",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Packing for a trip to Berlin in June requires consideration of the weather, activities, and your personal preferences. Here\u2019s a comprehensive packing list to help you prepare:\n\n### Clothing\n1. **Lightweight Clothing**: June in Berlin can be warm, with temperatures typically ranging from 15\u00b0C to 25\u00b0C (59\u00b0F to 77\u00b0F). Pack breathable fabrics like cotton and linen.\n2. **Layers**: Evenings can be cooler, so bring a light sweater or cardigan.\n3. **Comfortable Walking Shoes**: You'll likely do a lot of walking, so pack comfortable sneakers or walking shoes.\n4. **Casual Outfits**: For exploring the city, casual outfits are ideal. Consider packing a mix of t-shirts, blouses, and shorts or lightweight pants.\n5. **Dressier Outfit**: If you plan to dine out or attend events, include a nicer outfit.\n6. **Rain Jacket or Umbrella**: June can have occasional rain showers, so a lightweight, packable rain jacket or a small umbrella is a good idea.\n7. **Sun Protection**: A wide-brimmed hat and sunglasses to protect against the sun.\n\n### Accessories\n1. **Daypack or Backpack**: For carrying your essentials while exploring the city.\n2. **Reusable Water Bottle**: Stay hydrated while walking around.\n3. **Travel Guide or Map**: While smartphones are handy, having a physical map can be useful in areas with poor reception.\n4. **Camera or Smartphone**: To capture your memories.\n\n### Toiletries\n1. **Basic Toiletries**: Toothbrush, toothpaste, shampoo, conditioner, soap, deodorant, etc.\n2. **Sunscreen**: Protect your skin from sunburn.\n3. **Personal Medications**: Bring any necessary medications and a small first-aid kit.\n\n### Electronics\n1. **Phone and Charger**: Essential for navigation and communication.\n2. **Power Adapter**: Germany uses Type C and F plugs, so bring a suitable adapter if your devices have different plugs.\n3. **Portable Charger**: Useful for keeping your devices charged while on the go.\n\n### Travel Documents\n1. **Passport**: Ensure it\u2019s valid for the duration of your stay.\n2. **Travel Insurance**: A copy of your travel insurance policy.\n3. **Accommodation and Transportation Confirmations**: Printouts or digital copies of your bookings.\n4. **Emergency Contacts**: A list of important contacts, including your country's embassy in Germany.\n\n### Optional Items\n1. **Guidebook or Language Phrasebook**: Helpful for navigating and communicating.\n2. **Swimwear**: If you plan to visit pools or lakes.\n3. **Lightweight Blanket or Travel Pillow**: For comfort during long flights or train rides.\n\n### Tips\n- **Check the Weather Forecast**: Before you leave, check the weather forecast for Berlin to make any last-minute adjustments to your packing.\n- **Pack Light**: Try to pack versatile clothing that can be mixed and matched to save space.\n- **Leave Room for Souvenirs**: If you plan to shop, leave some space in your luggage for any items you may want to bring back.\n\nBy considering these items, you\u2019ll be well-prepared for your trip to Berlin in June. Enjoy your travels!"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "conversation_node_bc81dbba29914a7eb7e1b7a6f91921d7",
+                        "text": "Conversation",
+                        "children": [
+                            {
+                                "id": "prompt_ad4ab7fbad544b7b9667cd99c2c6985f",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                }
+                            },
+                            {
+                                "id": "chat_context_6f196f06c64e47c083e1bab632290895",
+                                "text": "Chat Context",
+                                "data": {
+                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                },
+                                "children": [
+                                    {
+                                        "id": "chat_context_msg_70fb6e4f2454488a87e9c955b9748809",
+                                        "text": "System",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": {
+                                                "role": "system",
+                                                "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "prompt_94bb733e06a84cfb82097b7eacfc4e55",
+                                "text": "User Prompt",
+                                "data": {
+                                    "content": "What else can you think of?"
+                                },
+                                "children": [
+                                    {
+                                        "id": "expected_response_format_1c577b96520244e4bd42520d434a6550",
+                                        "text": "Expected Response Format",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "provided_tools_913d13990f404718ba0453801b5290ba",
+                                        "text": "Provided Tools",
+                                        "icon": "jstree-file",
+                                        "data": {
+                                            "content": "Not specified."
+                                        }
+                                    },
+                                    {
+                                        "id": "llm_response_339f35036c7e47899373c5aae5b78940",
+                                        "text": "LLM Response",
+                                        "data": {
+                                            "content": "This node contains the processed LLM Response"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "message_29f3f729917b40cc95174731ff5ff0c0",
+                                                "text": "Response Meta-Data",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": {
+                                                        "refusal": null,
+                                                        "role": "assistant"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "content_587ee2c91af547a0824eb86c74cb031b",
+                                                "text": "Content",
+                                                "icon": "jstree-file",
+                                                "data": {
+                                                    "content": "Could you please provide more context or specify the topic you're interested in? That way, I can offer more relevant ideas or suggestions!"
+                                                }
+                                            }
+                                        ]
                                     }
                                 ]
                             }

@@ -82,6 +82,16 @@ class AgentListener:
         for reporter in self.__reporters:
             reporter.report_response(prompt, message)
             
+    def report_tool_response(self, response) -> None:
+        """
+        Broadcasts the tool response.
+
+        Args:
+            message (dict): ToolResponse object
+        """
+        for reporter in self.__reporters:
+            reporter.report_tool_response(response)
+            
     def finish(self) -> None:
         """
         Broadcasts finish signal.

@@ -40,12 +40,37 @@ class BasePrompt(ABC):
             self.__image = None
             self.__image_path = None
             
+        self.__tool_definitions = None
+        self.__tool_dict = {}
+        if tools is not None:
+            self.__tool_definitions = [tool.definition for tool in tools]
+            self.__tool_dict = {tool.name: tool for tool in tools}
+        
+        
+            
     @property
     def response_format(self):
         return self.__response_format
     @property
     def tools(self):
         return tuple(self.__tools) if self.__tools else None
+    
+    @property
+    def tool_definitions(self):
+        return self.__tool_definitions
+    
+    @property
+    def tool_dict(self):
+        return self.__tool_dict
+    
+    def call_tool(self, tool_id, tool_name, **kwargs):
+        tool = self.__tool_dict.get(tool_name)
+        if tool:
+            tool_response = tool(**kwargs)
+            tool_response.tool_id = tool_id
+            return tool_response
+        else:
+            raise ValueError(f"Tool {tool_name} not defined for this prompt.")
 
     def process_for_report(self):
         if not self.image:

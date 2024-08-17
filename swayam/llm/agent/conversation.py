@@ -55,8 +55,5 @@ class ConversationAgent(BaseLLMAgent):
         output = mediator.execute(conversation=conversation)
         log_debug(f"Finished Conversation")        
         listener.finish()
-
-        if output.tool_calls:
-            print(output.tool_calls)
         return output
                 
