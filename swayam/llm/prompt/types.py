@@ -22,8 +22,8 @@ from swayam.llm.structure.structure import ResponseStructure
 
 class SystemPrompt(BasePrompt):
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, response_format:ResponseStructure=None, tools:list=None ) -> Any:
-        super().__init__(role="system", text=text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+    def __init__(self, *, text:str) -> Any:
+        super().__init__(role="system", text=text)
 
 class UserPrompt(BasePrompt):
     def __init__(self, *, text:str, purpose:str=None, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> Any:

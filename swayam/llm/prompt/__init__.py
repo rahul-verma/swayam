@@ -29,7 +29,7 @@ class Prompt:
     file = PromptFileFinder()
     
     @classmethod
-    def text(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> UserPrompt:
+    def text(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None, role:str="user") -> UserPrompt:
         from swayam import Tool, Structure
         if response_format is not None and type(response_format) is str:
             response_format = Structure.import_structure(response_format)

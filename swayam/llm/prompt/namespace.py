@@ -35,7 +35,7 @@ class PromptDir(ABC):
         return name.replace("_", " ").lower().title()
     
     @classmethod
-    def create_prompt_from_content(cls, name, content):
+    def create_prompt_from_content(cls, role, name, content):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
         from swayam import Tool, Structure
@@ -73,13 +73,17 @@ class PromptDir(ABC):
                         tools.append(Tool.import_tool(tool))
 
         from swayam import Prompt
-        return Prompt.text(text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+        from swayam.llm.prompt.types import SystemPrompt
+        if role == "user":
+            return Prompt.text(text, purpose=purpose, image=image, response_format=response_format, tools=tools, role=role)
+        else:
+            return SystemPrompt(text=text)
         
     def __getattr__(self, name):
         role = self.__dict__["_role"]
         from tarkash import YamlFile        
         file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
-        return PromptDir.create_prompt_from_content(name, file.content)
+        return PromptDir.create_prompt_from_content(role, name, file.content)
         
 
 class UserPromptDir(PromptDir):
