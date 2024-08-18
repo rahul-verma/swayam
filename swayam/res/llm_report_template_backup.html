@@ -122,6 +122,14 @@
             border-left: 1px solid #ccc;
             border-right: 1px solid #ccc;
         }
+
+        table {
+            width: 100%; /* Adjust the table width as needed */
+          }
+          
+          table th:first-child, table td:first-child {
+            width: 10%; /* Adjust this value to your desired column width ratio */
+          }
     </style>
 </head>
 <body>
@@ -181,7 +189,7 @@
         });
 
         function generateTableFromObject(obj, skipContent) {
-            let table = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+            let table = '<br/><br/><table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
             table += '<tr><th style="text-align: left;">Property</th><th style="text-align: left;">Value</th></tr>';
         
             for (let key in obj) {
@@ -258,80 +266,70 @@
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
                     const node = $('#jstree_router').jstree(true).get_node(nodeId);
-
                     let detailsContent = `<h2>${node.text}</h2>`;
+                    const content = node.data.content;
+            
+                    const isImage = (path) => ['.png', '.jpg', '.jpeg'].some(ext => path.endsWith(ext));
 
-                    if (typeof node.data.content === 'object' && node.data.content !== null) {
-                        if (Array.isArray(node.data.content)) {
-                            // Case 1: content is a list, loop through and process each item
-                            node.data.content.forEach(item => {
-                                if (typeof item === 'string') {
-                                    detailsContent += `<pre><code class="language-json">${Prism.highlight(item, Prism.languages.json, 'json')}</code></pre>`;
-                                } else if (typeof item === 'object' && item !== null && 'heading' in item && 'content' in item) {
+                    const isFile = (path) => ['.pdf', '.json', '.txt'].some(ext => path.endsWith(ext));
+            
+                    const addImage = (path) => {
+                        const imagePath = path.trim();
+                        return `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
+                    };
+
+                    const addFile = (path) => {
+                        const filePath = path.trim();
+                        return `<a href="${filePath}" target="_blank" class="fixed-size-image" alt="Image Content"/>Download</a>`;
+                    };
+            
+                    const addCodeBlock = (code) => {
+                        return `<pre><code class="language-json">${Prism.highlight(code, Prism.languages.json, 'json')}</code></pre>`;
+                    };
+            
+                    const processContent = (content) => {
+                        if (typeof content === 'string') {
+                            if (isImage(content)) {
+                                return addImage(content);
+                            } else if (isFile(content)) {
+                                return addFile(content);
+                            } else {
+                                return addCodeBlock(content);
+                            }
+                        } else if (Array.isArray(content)) {
+                            return content.map(item => processContent(item)).join('');
+                        } else if (typeof content === 'object' && content !== null) {
+                            return generateTableFromObject(content, false);
+                        }
+                        return '';
+                    };
+            
+                    if (typeof content === 'object' && content !== null) {
+                        if (Array.isArray(content)) {
+                            content.forEach(item => {
+                                if (typeof item === 'object' && 'heading' in item && 'content' in item) {
                                     detailsContent += `<h3>${item.heading}</h3>`;
-                                    if (typeof item.content === 'string') {
-                                        if (item.content.endsWith('.png') || item.content.endsWith('.jpg') || item.content.endsWith('.jpeg')) {
-                                            const imagePath = item.content.trim();
-                                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
-                                        } else{
-                                        detailsContent += `<pre><code class="language-json">${Prism.highlight(item.content, Prism.languages.json, 'json')}</code></pre>`;
-                                    }
-                                    } else if (typeof item.content === 'object' && item.content !== null) {
-                                        detailsContent += generateTableFromObject(item.content, false);
-                                    }
+                                    detailsContent += processContent(item.content);
+                                } else {
+                                    detailsContent += processContent(item);
                                 }
                             });
-                        } else if ('content' in node.data.content) {
-                            // Case 2: content is an object with 'content' key
-                            detailsContent += generateTableFromObject(node.data.content, true);
+                        } else if ('content' in content) {
+                            detailsContent += generateTableFromObject(content, true);
                             detailsContent += `<h3>Content</h3>`;
-
-                            if (Array.isArray(node.data.content.content)) {
-                                node.data.content.content.forEach(item => {
-                                    if (item.type === 'text') {
-                                        detailsContent += `<pre><code class="language-json">${Prism.highlight(item.text, Prism.languages.json, 'json')}</code></pre>`;
-                                    } else if (item.type === 'image_url') {
-                                        if (item.local_path) {
-                                            const imagePath = item.local_path.trim();
-                                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
-                                        }
-                                    }
-                                });
-                            } else {
-                                const contentStr = node.data.content.content;
-                                if (typeof contentStr === 'string') {
-                                    if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
-                                        const imagePath = contentStr.trim();
-                                        detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
-                                    } else {
-                                        detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(contentStr, Prism.languages.json, 'json')}</code></pre>`;
-                                        detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
-                                    }
-                                } else if (typeof contentStr === 'object' && contentStr !== null) {
-                                    detailsContent += generateTableFromObject(contentStr, false);
-                                }
-                            }
+                            detailsContent += processContent(content.content);
                         } else {
-                            // Case 3: content is a dictionary without 'content' key
-                            detailsContent += generateTableFromObject(node.data.content, false);
+                            detailsContent += generateTableFromObject(content, false);
                         }
-                    } else {
-                        // Case 4: content is a string
-                        const contentStr = node.data.content;
-                        if (contentStr.endsWith('.png') || contentStr.endsWith('.jpg') || contentStr.endsWith('.jpeg')) {
-                            const imagePath = contentStr.trim();
-                            detailsContent += `<img src="${imagePath}" class="fixed-size-image" alt="Image Content"/>`;
-                        } else {
-                            detailsContent += `<pre id="contentPre"><code class="language-json">${Prism.highlight(contentStr, Prism.languages.json, 'json')}</code></pre>`;
-                            detailsContent += `<button onclick="copyToClipboard('#contentPre')">Copy to Clipboard</button>`;
-                        }
+                    } else if (typeof content === 'string') {
+                        detailsContent += processContent(content);
                     }
-
+            
                     $('#details').html(detailsContent).show();
                 }
             });
+            
         });
-
         
     </script>
 </body>

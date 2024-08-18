@@ -172,9 +172,10 @@ class HtmlReporter(Reporter):
         context_json = json.dumps(context.reportable_messages, indent=4)
         with open(context_file_path, 'w') as f:
             f.write(context_json)
-        messages = context.reportable_messages
-        for_html = {message["role"]: message for message in messages}
-        self.__get_conversation_node()["data"]["content"][1]["content"] =  for_html 
+        for_html = [
+            {"heading": message["role"].title(), "content":message} for message in context.reportable_messages
+        ]
+        self.__get_conversation_node()["data"]["content"][1]["content"] = [f"{context_file_path}"] + context.reportable_messages
      
         self.__update_report()
         log_debug("Finished: Reporting Context.")
