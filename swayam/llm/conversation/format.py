@@ -28,7 +28,7 @@ class ConversationFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def files(self, *prompt_files:PromptFile, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
+    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompt_files) == 0:
             raise ValueError("No prompts provided.")
         prompts = []
@@ -41,4 +41,4 @@ class ConversationFormatter:
             prompts.append(prompt)
         
         from swayam import Conversation
-        return Conversation.prompts(*prompts, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
+        return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)

@@ -122,7 +122,7 @@ class HtmlReporter(Reporter):
             conversation_id = "conversation_" + uuid4().hex
             self.__get_task_children_node().append({
                                         "id": conversation_id,
-                                        "text": "Conversation",
+                                        "text": f"{conversation.purpose}",
                                         "data": {
                                             "content": [{
                                                     "heading": "Conversation ID",

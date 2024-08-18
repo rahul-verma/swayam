@@ -26,8 +26,11 @@ from swayam.llm.structure.structure import ResponseStructure
 
 class LLMConversation:
     
-    def __init__(self, *prompts:Prompt, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> Any:
         self.__prompts = list(prompts)
+        self.__purpose = purpose
+        if self.__purpose is None:
+            self.__purpose = "Conversation"
         self.__context = None
         self.__system_prompt = system_prompt
         
@@ -48,6 +51,10 @@ class LLMConversation:
         
     def has_system_prompt(self):
         return self.__system_prompt is not None
+    
+    @property
+    def purpose(self):
+        return self.__purpose
     
     @property
     def system_prompt(self):
