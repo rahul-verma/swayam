@@ -1,1 +1,305 @@
-[]
+[
+    {
+        "id": "plan_node_fd56c1c48569443ab680539b3816cad2",
+        "text": "Plan",
+        "children": [
+            {
+                "id": "task_node_d992bc0e8fe74e64a0dcbac4c54495c1",
+                "text": "Task",
+                "children": [
+                    {
+                        "id": "conversation_2b18db85ac7145878d61d2083b589f0c",
+                        "text": "Conversation",
+                        "data": {
+                            "content": [
+                                {
+                                    "heading": "Conversation ID",
+                                    "content": "conversation_2b18db85ac7145878d61d2083b589f0c"
+                                },
+                                {
+                                    "heading": "Message History",
+                                    "content": [
+                                        "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/report/test/json/conversation_2b18db85ac7145878d61d2083b589f0c_context.json",
+                                        {
+                                            "role": "system",
+                                            "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "Alice stays in Frankfurt."
+                                        },
+                                        {
+                                            "content": "{\"name\":\"Alice\",\"place\":\"Frankfurt\"}",
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "parsed": {
+                                                "name": "Alice",
+                                                "place": "Frankfurt"
+                                            }
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                        },
+                                        {
+                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[\"Frankfurt\"]}",
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "parsed": {
+                                                "name": "Science Fair",
+                                                "date": "Friday",
+                                                "participants": [
+                                                    "Alice",
+                                                    "Bob"
+                                                ],
+                                                "city": [
+                                                    "Frankfurt"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "In the wild mountains of sugar lived an ant named Sarah."
+                                        },
+                                        {
+                                            "content": "{\"name\":\"Sarah\",\"place\":\"Wild Mountains of Sugar\"}",
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "parsed": {
+                                                "name": "Sarah",
+                                                "place": "Wild Mountains of Sugar"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "children": [
+                            {
+                                "id": "prompt_f941cf7bbebf4880896f94acf36baa92",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "prompt_c4962163b86f434487f0b088d3c2063f",
+                                "text": "Check a prompt without response format.",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "Alice stays in Frankfurt."
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Name of the person",
+                                                        "title": "Name",
+                                                        "type": "string"
+                                                    },
+                                                    "place": {
+                                                        "description": "Place of the person",
+                                                        "title": "Place",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "place"
+                                                ],
+                                                "title": "Info",
+                                                "type": "object"
+                                            }
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": "No tool provided."
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Alice",
+                                                    "place": "Frankfurt"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "{\"name\":\"Alice\",\"place\":\"Frankfurt\"}"
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": "No suggestions."
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_36f2272e2bc74d8f876d3cf0589a62aa",
+                                "text": "Response Structure Example",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Name of the event",
+                                                        "title": "Name",
+                                                        "type": "string"
+                                                    },
+                                                    "date": {
+                                                        "description": "Date on which the event takes place.",
+                                                        "title": "Date",
+                                                        "type": "string"
+                                                    },
+                                                    "participants": {
+                                                        "description": "Names of participants.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": "Participants",
+                                                        "type": "array"
+                                                    },
+                                                    "city": {
+                                                        "description": "City where the event takes place.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": "City",
+                                                        "type": "array"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "date",
+                                                    "participants",
+                                                    "city"
+                                                ],
+                                                "title": "CalendarEvent",
+                                                "type": "object"
+                                            }
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": "No tool provided."
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Science Fair",
+                                                    "date": "Friday",
+                                                    "participants": [
+                                                        "Alice",
+                                                        "Bob"
+                                                    ],
+                                                    "city": [
+                                                        "Frankfurt"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "{\"name\":\"Science Fair\",\"date\":\"Friday\",\"participants\":[\"Alice\",\"Bob\"],\"city\":[\"Frankfurt\"]}"
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": "No suggestions."
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_aec125016115468ebfd8ddaa227098ec",
+                                "text": "Check a prompt without response format.",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "In the wild mountains of sugar lived an ant named Sarah."
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": {
+                                                "properties": {
+                                                    "name": {
+                                                        "description": "Name of the person",
+                                                        "title": "Name",
+                                                        "type": "string"
+                                                    },
+                                                    "place": {
+                                                        "description": "Place of the person",
+                                                        "title": "Place",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "place"
+                                                ],
+                                                "title": "Info",
+                                                "type": "object"
+                                            }
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": "No tool provided."
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "name": "Sarah",
+                                                    "place": "Wild Mountains of Sugar"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "{\"name\":\"Sarah\",\"place\":\"Wild Mountains of Sugar\"}"
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": "No suggestions."
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
