@@ -30,6 +30,9 @@ class Conversation:
     def from_prompts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
+        for prompt in prompts:
+            if not isinstance(prompt, UserPrompt):
+                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
         if system_prompt:
             if type(system_prompt) == str:
                 system_prompt = SystemPrompt(system_prompt)
@@ -47,7 +50,7 @@ class Conversation:
                 raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
             
             formatter = PromptFormatter(role=prompt_file.role, **fmt_kwargs)
-            prompt = getattr(formatter, prompt.file_name)
+            prompt = getattr(formatter, prompt_file.file_name)
             prompts.append(prompt)
         
         return cls.from_prompts(*prompts, system_prompt=system_prompt)
