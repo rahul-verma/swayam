@@ -36,7 +36,7 @@ class Conversation:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
         if system_prompt:
             if type(system_prompt) == str:
-                system_prompt = SystemPrompt(system_prompt)
+                system_prompt = SystemPrompt(text=system_prompt)
             elif not isinstance(system_prompt, SystemPrompt):
                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
             
