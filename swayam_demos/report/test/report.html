@@ -523,6 +523,543 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "id": "conversation_aec835f2cc614552870916083b541da7",
+                        "text": "Conversation",
+                        "data": {
+                            "content": [
+                                {
+                                    "heading": "Conversation ID",
+                                    "content": "conversation_aec835f2cc614552870916083b541da7"
+                                },
+                                {
+                                    "heading": "Message History",
+                                    "content": [
+                                        "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/report/test/json/conversation_aec835f2cc614552870916083b541da7_context.json",
+                                        {
+                                            "role": "system",
+                                            "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "What is the weather in Berlin"
+                                        },
+                                        {
+                                            "content": null,
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "tool_calls": [
+                                                {
+                                                    "id": "call_XZ8Ko5w9m6dCCZ77e6FO4XYa",
+                                                    "function": {
+                                                        "arguments": "{\"location\":\"Berlin\"}",
+                                                        "name": "WeatherInfo"
+                                                    },
+                                                    "type": "function"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "role": "tool",
+                                            "content": "\"28\\u00b0C\"",
+                                            "tool_call_id": "call_XZ8Ko5w9m6dCCZ77e6FO4XYa"
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "What is 7 *30 + 13?\n"
+                                        },
+                                        {
+                                            "content": null,
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "tool_calls": [
+                                                {
+                                                    "id": "call_ZCDo20dsUMUawyuJG7e6WsNv",
+                                                    "function": {
+                                                        "arguments": "{\"expression\":\"7 * 30 + 13\"}",
+                                                        "name": "Calculator"
+                                                    },
+                                                    "type": "function"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "role": "tool",
+                                            "content": "223",
+                                            "tool_call_id": "call_ZCDo20dsUMUawyuJG7e6WsNv"
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is a sample text with a@b.com and c@d.com addresses```\n\"\"\"\n"
+                                        },
+                                        {
+                                            "content": null,
+                                            "refusal": null,
+                                            "role": "assistant",
+                                            "tool_calls": [
+                                                {
+                                                    "id": "call_O5MQvPfj2Pq1cpDqZeCOgK8O",
+                                                    "function": {
+                                                        "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
+                                                        "name": "EmailSearch"
+                                                    },
+                                                    "type": "function"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "role": "tool",
+                                            "content": "[\"a@b.com\", \"c@d.com\"]",
+                                            "tool_call_id": "call_O5MQvPfj2Pq1cpDqZeCOgK8O"
+                                        },
+                                        {
+                                            "role": "user",
+                                            "content": "In the wild mountains of sugar lived an ant named Sarah."
+                                        },
+                                        {
+                                            "content": "That's a charming start to a story! Would you like to continue the tale about Sarah the ant, or do you have a specific question or request related to it?",
+                                            "refusal": null,
+                                            "role": "assistant"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "children": [
+                            {
+                                "id": "prompt_793247a9f07c4d2893feddef9ade2e23",
+                                "text": "System Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "You are a helpful assistant who deliberates and provides useful answers to my queries."
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "prompt_9c196fddeee949f2977481d7fb359a33",
+                                "text": "Check a prompt without tools.",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "What is the weather in Berlin"
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": "Not specified."
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": {
+                                                "WeatherInfo": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "WeatherInfo",
+                                                        "description": "Get the current weather in a given location",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "location": {
+                                                                    "description": "Location to get weather information for",
+                                                                    "title": "Location",
+                                                                    "type": "string"
+                                                                },
+                                                                "unit": {
+                                                                    "description": "Unit of temperature",
+                                                                    "enum": [
+                                                                        "celsius",
+                                                                        "fahrenheit"
+                                                                    ],
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "location"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [
+                                                    {
+                                                        "id": "call_XZ8Ko5w9m6dCCZ77e6FO4XYa",
+                                                        "function": {
+                                                            "arguments": "{\"location\":\"Berlin\"}",
+                                                            "name": "WeatherInfo"
+                                                        },
+                                                        "type": "function"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "No response content was returned by the LLM. Check the response meta-data for more details."
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": {
+                                                "call_XZ8Ko5w9m6dCCZ77e6FO4XYa": {
+                                                    "name": "WeatherInfo",
+                                                    "arguments": {
+                                                        "location": "Berlin"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Tool Response:  WeatherInfo",
+                                            "content": {
+                                                "tool_id": "call_XZ8Ko5w9m6dCCZ77e6FO4XYa",
+                                                "response": "28\u00b0C"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_6f0f9a1dae0c48559b45c36e6ac312a0",
+                                "text": "Tools Example2",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "What is 7 *30 + 13?\n"
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": "Not specified."
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": {
+                                                "WeatherInfo": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "WeatherInfo",
+                                                        "description": "Get the current weather in a given location",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "location": {
+                                                                    "description": "Location to get weather information for",
+                                                                    "title": "Location",
+                                                                    "type": "string"
+                                                                },
+                                                                "unit": {
+                                                                    "description": "Unit of temperature",
+                                                                    "enum": [
+                                                                        "celsius",
+                                                                        "fahrenheit"
+                                                                    ],
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "location"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "Calculator": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "Calculator",
+                                                        "description": "Evaluates a mathematical expression",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "expression": {
+                                                                    "description": "The expression to be evaluated.",
+                                                                    "title": "Expression",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "expression"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "EmailSearch": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "EmailSearch",
+                                                        "description": "Searches email addresses in a given text",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "text": {
+                                                                    "description": "The target text in which emails are to be searched.",
+                                                                    "title": "Text",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "text"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [
+                                                    {
+                                                        "id": "call_ZCDo20dsUMUawyuJG7e6WsNv",
+                                                        "function": {
+                                                            "arguments": "{\"expression\":\"7 * 30 + 13\"}",
+                                                            "name": "Calculator"
+                                                        },
+                                                        "type": "function"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "No response content was returned by the LLM. Check the response meta-data for more details."
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": {
+                                                "call_ZCDo20dsUMUawyuJG7e6WsNv": {
+                                                    "name": "Calculator",
+                                                    "arguments": {
+                                                        "expression": "7 * 30 + 13"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Tool Response:  Calculator",
+                                            "content": {
+                                                "tool_id": "call_ZCDo20dsUMUawyuJG7e6WsNv",
+                                                "response": 223
+                                            }
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_762aa2360da4425db68f47b73591e76e",
+                                "text": "Tools Example3",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "\"\"\"Find whether there is an email address in the following text marked with triple backticks \n  ```This is a sample text with a@b.com and c@d.com addresses```\n\"\"\"\n"
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": "Not specified."
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": {
+                                                "WeatherInfo": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "WeatherInfo",
+                                                        "description": "Get the current weather in a given location",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "location": {
+                                                                    "description": "Location to get weather information for",
+                                                                    "title": "Location",
+                                                                    "type": "string"
+                                                                },
+                                                                "unit": {
+                                                                    "description": "Unit of temperature",
+                                                                    "enum": [
+                                                                        "celsius",
+                                                                        "fahrenheit"
+                                                                    ],
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "location"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "Calculator": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "Calculator",
+                                                        "description": "Evaluates a mathematical expression",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "expression": {
+                                                                    "description": "The expression to be evaluated.",
+                                                                    "title": "Expression",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "expression"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "EmailSearch": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "EmailSearch",
+                                                        "description": "Searches email addresses in a given text",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "text": {
+                                                                    "description": "The target text in which emails are to be searched.",
+                                                                    "title": "Text",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "text"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [
+                                                    {
+                                                        "id": "call_O5MQvPfj2Pq1cpDqZeCOgK8O",
+                                                        "function": {
+                                                            "arguments": "{\"text\":\"This is a sample text with a@b.com and c@d.com addresses\"}",
+                                                            "name": "EmailSearch"
+                                                        },
+                                                        "type": "function"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "No response content was returned by the LLM. Check the response meta-data for more details."
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": {
+                                                "call_O5MQvPfj2Pq1cpDqZeCOgK8O": {
+                                                    "name": "EmailSearch",
+                                                    "arguments": {
+                                                        "text": "This is a sample text with a@b.com and c@d.com addresses"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Tool Response:  EmailSearch",
+                                            "content": {
+                                                "tool_id": "call_O5MQvPfj2Pq1cpDqZeCOgK8O",
+                                                "response": [
+                                                    "a@b.com",
+                                                    "c@d.com"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_7c6e3db62dc54675ac23a7af73d57c26",
+                                "text": "Check prompt without tool (irrelevant global).",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "In the wild mountains of sugar lived an ant named Sarah."
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": "Not specified."
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": {
+                                                "WeatherInfo": {
+                                                    "type": "function",
+                                                    "function": {
+                                                        "name": "WeatherInfo",
+                                                        "description": "Get the current weather in a given location",
+                                                        "parameters": {
+                                                            "properties": {
+                                                                "location": {
+                                                                    "description": "Location to get weather information for",
+                                                                    "title": "Location",
+                                                                    "type": "string"
+                                                                },
+                                                                "unit": {
+                                                                    "description": "Unit of temperature",
+                                                                    "enum": [
+                                                                        "celsius",
+                                                                        "fahrenheit"
+                                                                    ],
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "location"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant"
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "That's a charming start to a story! Would you like to continue the tale about Sarah the ant, or do you have a specific question or request related to it?"
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": "No suggestions."
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             }

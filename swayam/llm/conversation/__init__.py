@@ -39,6 +39,19 @@ class Conversation:
                 system_prompt = SystemPrompt(system_prompt)
             elif not isinstance(system_prompt, SystemPrompt):
                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
+            
+        from swayam import Tool, Structure
+        if response_format is not None and type(response_format) is str:
+            response_format = Structure.import_structure(response_format)
+        if tools is not None:
+            output_tools = []
+            for tool in tools:
+                if type(tool) is str:
+                    output_tools.append(Tool.import_tool(tool))
+                else:
+                    output_tools.append(tool)
+            tools = output_tools
+
         return LLMConversation(*prompts, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
     
     @classmethod
