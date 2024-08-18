@@ -40,7 +40,7 @@ class PromptFileLoader:
     def __getattr__(self, name):
         return PromptFile(role=self._role, file_name=name)
 
-class PromptFileFinder(ABC):   
+class PromptFileFinder(ABC):
     
     def __init__(self):
         pass

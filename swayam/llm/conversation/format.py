@@ -28,7 +28,7 @@ class ConversationFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
+    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompt_files) == 0:
             raise ValueError("No prompts provided.")
         prompts = []
@@ -39,6 +39,16 @@ class ConversationFormatter:
             formatter = PromptFormatter(role=prompt_file.role, **self.__fmt_kwargs)
             prompt = getattr(formatter, prompt_file.file_name)
             prompts.append(prompt)
+            
+        if system_prompt:
+            if not isinstance(prompt_file, PromptFile):
+                raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
+            elif not system_prompt.role == "system":
+                raise ValueError(f"Invalid prompt role: {prompt_file.role}. Should be a system prompt.")
+            system_formatter = PromptFormatter(role=system_prompt.role, **self.__fmt_kwargs)
+            system_prompt = getattr(system_formatter, system_prompt.file_name)
+            if not isinstance(system_prompt, SystemPrompt):
+                raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
         
         from swayam import Conversation
         return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
