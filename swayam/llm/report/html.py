@@ -189,7 +189,7 @@ class HtmlReporter(Reporter):
         log_debug("Begin: Reporting Prompt.")
         prompt_node = {
                 "id": "prompt_" + uuid4().hex,
-                "text": f"{role} Prompt",
+                "text": f"{prompt.purpose}",
                 "icon": "jstree-file",
                 "data": {
                             "content": [{

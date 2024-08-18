@@ -79,14 +79,7 @@ class ConsoleReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
-        print ("Total Context Length (Previous Request-Response Pairs):", int((len(context.messages)-1)/2))
-        # if not context.messages:
-        #     print("Context Messages: None")
-        # else:
-        #     print("Context Messages:")
-        #     pprint(context.messages)
-        print("-" * 80)
-
+        pass
         
     def report_response(self, prompt, response:LLMResponse) -> None:
         """
