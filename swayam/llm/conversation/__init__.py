@@ -20,6 +20,8 @@ from typing import Union
 
 from tarkash import log_debug
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.file import PromptFile
+from swayam.llm.prompt.format import PromptFormatter
 from .conversation import LLMConversation
 
 class Conversation:
@@ -27,13 +29,28 @@ class Conversation:
     @classmethod
     def from_prompts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
         if len(prompts) == 0:
-            raise ValueError("No prompts provided, returning an empty conversation")
+            raise ValueError("No prompts provided.")
         if system_prompt:
             if type(system_prompt) == str:
                 system_prompt = SystemPrompt(system_prompt)
             elif not isinstance(system_prompt, SystemPrompt):
                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
         return LLMConversation(*prompts, system_prompt=system_prompt)
+    
+    @classmethod
+    def from_prompt_files(cls, *prompt_files:PromptFile, system_prompt:Union[str,SystemPrompt]=None, **fmt_kwargs) -> LLMConversation:
+        if len(prompt_files) == 0:
+            raise ValueError("No prompts provided.")
+        prompts = []
+        for prompt_file in prompt_files:
+            if not isinstance(prompt_file, PromptFile):
+                raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
+            
+            formatter = PromptFormatter(role=prompt_file.role, **fmt_kwargs)
+            prompt = getattr(formatter, prompt.file_name)
+            prompts.append(prompt)
+        
+        return cls.from_prompts(*prompts, system_prompt=system_prompt)
     
     @classmethod
     def from_texts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:

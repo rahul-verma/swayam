@@ -46,7 +46,7 @@ class PromptDir(ABC):
         tools = None
         if type(content) is str:
             text = content
-            purpose = cls._create_purpose_from_file_name(name)
+            purpose = cls.create_purpose_from_file_name(name)
         elif type(content) is dict:
             if "prompt" not in content:
                 raise ValueError(f"Prompt file {name} does not contain a prompt key")  
@@ -81,6 +81,9 @@ class PromptDir(ABC):
         if name == "formatter":
             from .format import FormatterMediator
             return FormatterMediator(role=role)
+        elif name == "file":
+            from .file import PromptFile
+            return PromptFile(role=role)
 
         file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
         return PromptDir.create_prompt_from_content(name, file.content)

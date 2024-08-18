@@ -108,6 +108,7 @@ class Mediator(TarkashObject):
                     self.listener.report_tool_response(tool_response)
                     response_messages.append(tool_response)
                     conversation.context.append_tool_response(tool_response)
+                    self.listener.report_context(conversation.context)
             else: 
                 response_messages = output_message
 

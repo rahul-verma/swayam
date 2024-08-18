@@ -23,7 +23,7 @@ from swayam.llm.structure.structure import ResponseStructure
 
 class Prompt:
     user = UserPromptDir()
-    system = SystemPromptDir() 
+    system = SystemPromptDir()
     
     @classmethod
     def user_prompt(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> UserPrompt:
