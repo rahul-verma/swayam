@@ -90,5 +90,5 @@ class Swayam:
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
         from swayam import Prompt
-        user_prompt = Prompt.user_prompt(prompt)
+        user_prompt = Prompt.text(prompt)
         return cls._SWAYAM_SINGLETON.router.execute(user_prompt, reset_context=reset_context)

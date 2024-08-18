@@ -21,13 +21,14 @@ from typing import Union
 from tarkash import log_debug
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.file import PromptFile
-from swayam.llm.prompt.format import PromptFormatter
+from .format import ConversationFormatter
 from .conversation import LLMConversation
+from swayam.llm.structure.structure import ResponseStructure
 
 class Conversation:
     
     @classmethod
-    def from_prompts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
+    def prompts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
         for prompt in prompts:
@@ -38,26 +39,17 @@ class Conversation:
                 system_prompt = SystemPrompt(system_prompt)
             elif not isinstance(system_prompt, SystemPrompt):
                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
-        return LLMConversation(*prompts, system_prompt=system_prompt)
+        return LLMConversation(*prompts, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
     
     @classmethod
-    def from_prompt_files(cls, *prompt_files:PromptFile, system_prompt:Union[str,SystemPrompt]=None, **fmt_kwargs) -> LLMConversation:
-        if len(prompt_files) == 0:
-            raise ValueError("No prompts provided.")
-        prompts = []
-        for prompt_file in prompt_files:
-            if not isinstance(prompt_file, PromptFile):
-                raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
-            
-            formatter = PromptFormatter(role=prompt_file.role, **fmt_kwargs)
-            prompt = getattr(formatter, prompt_file.file_name)
-            prompts.append(prompt)
-        
-        return cls.from_prompts(*prompts, system_prompt=system_prompt)
-    
-    @classmethod
-    def from_texts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None) -> LLMConversation:
+    def texts(cls, *prompts:UserPrompt, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
         for prompt in prompts:
             if type(prompt) is not str:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
-        return cls.from_prompts(*[UserPrompt(text=prompt) for prompt in prompts], system_prompt=system_prompt)
+        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], system_prompt=system_prompt,  image=image, response_format=response_format, tools=tools)
+    
+    @classmethod
+    def formatter(self, **fmt_kwargs):
+        return ConversationFormatter(**fmt_kwargs)
+    
+    

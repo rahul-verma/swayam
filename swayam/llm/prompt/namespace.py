@@ -73,18 +73,11 @@ class PromptDir(ABC):
                         tools.append(Tool.import_tool(tool))
 
         from swayam import Prompt
-        return Prompt.user_prompt(text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+        return Prompt.text(text, purpose=purpose, image=image, response_format=response_format, tools=tools)
         
     def __getattr__(self, name):
         role = self.__dict__["_role"]
         from tarkash import YamlFile        
-        if name == "formatter":
-            from .format import FormatterMediator
-            return FormatterMediator(role=role)
-        elif name == "file":
-            from .file import PromptFileFinder
-            return PromptFileFinder(role=role)
-
         file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
         return PromptDir.create_prompt_from_content(name, file.content)
         

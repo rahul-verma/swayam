@@ -48,6 +48,20 @@ class BasePrompt(ABC):
         if tools is not None:
             self.__tool_definitions = [tool.definition for tool in tools]
             self.__tool_dict = {tool.name: tool for tool in tools}
+            
+    def suggest_image(self, image):
+        if not self.image:
+            self.image = image
+            
+    def suggest_response_format(self, response_format):
+        if not self.response_format:
+            self.__response_format = response_format
+            
+    def suggest_tools(self, tools):
+        if not self.tools:
+            self.__tools = tools
+            self.__tool_definitions = [tool.definition for tool in tools]
+            self.__tool_dict = {tool.name: tool for tool in tools}
         
     @property
     def purpose(self):

@@ -29,8 +29,13 @@ class PromptFormatter:
         return PromptDir.create_prompt_from_content(name, content)
 
 class FormatterMediator:
-    def __init__(self, *, role):
-        self.__role = role
+    def __init__(self, **fmt_kwargs):
+        self.__fmt_kwargs = fmt_kwargs
         
-    def __call__(self, **kwargs):
-        return PromptFormatter(role=self.__role, **kwargs)
+    @property
+    def user(self):
+        return PromptFormatter(role="user", **self.__fmt_kwargs)
+    
+    @property
+    def system(self):
+        return PromptFormatter(role="system", **self.__fmt_kwargs)

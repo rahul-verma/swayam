@@ -20,13 +20,16 @@ from typing import Union
 from .types import UserPrompt, SystemPrompt
 from .namespace import UserPromptDir, SystemPromptDir
 from swayam.llm.structure.structure import ResponseStructure
+from .format import FormatterMediator
+from .file import PromptFileFinder
 
 class Prompt:
     user = UserPromptDir()
     system = SystemPromptDir()
+    file = PromptFileFinder()
     
     @classmethod
-    def user_prompt(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> UserPrompt:
+    def text(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> UserPrompt:
         from swayam import Tool, Structure
         if response_format is not None and type(response_format) is str:
             response_format = Structure.import_structure(response_format)
@@ -40,3 +43,7 @@ class Prompt:
             tools = output_tools
                 
         return UserPrompt(text=text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+    
+    @classmethod
+    def formatter(cls, **fmt_kwargs):
+        return FormatterMediator(**fmt_kwargs)

@@ -1,0 +1,4 @@
+image: data/images/tom_jerry.jpeg
+
+prompt: |
+  What is Tom doing in the picture? Explain in 200 words.

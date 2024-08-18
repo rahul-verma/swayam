@@ -43,7 +43,7 @@ class Router:
     def __execute_user_prompt(self, user_prompt):
         from swayam import Conversation
         log_debug(f"Converting UserPrompt to Conversation.")
-        conversation = Conversation.from_prompts(user_prompt)
+        conversation = Conversation.prompts(user_prompt)
         return self.__execute_conversation(conversation)
     
     def __execute_conversation(self, conversation):
@@ -68,17 +68,26 @@ class Router:
         if not conversation.is_new() and conversation.has_system_prompt():
             raise ValueError("As it is continued conversation, the system prompt is already set in the context. So, the context found in this conversation is going to be ignored. Review.")
             
+        from swayam.llm.tool.response import ToolResponse
         log_debug(f"Executing Conversation with ConversationAgent.")
+        def process_output(in_data):
+            if in_data.content:
+                return in_data.content
+            elif isinstance(in_data, ToolResponse):
+                return in_data.content
+            elif "tool_calls" in in_data and in_data["tool_calls"]:
+                return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
+                
         output = agent.execute(conversation)
         if type(output) is list:
             if len(output) == 1:
-                return output[0]
+                return process_output(output[0])
             elif len(output) == 0:
                 return None
             else:
-                return output
+                return [process_output(o) in output]
         else:
-            return output
+            return process_output(output)
                 
     
     def execute(self, executable, reset_context=True, show_in_browser=False):

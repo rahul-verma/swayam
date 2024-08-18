@@ -32,12 +32,24 @@ class PromptFile:
     def file_name(self):
         return self.__file_name
 
-class PromptFileFinder(ABC):   
+class PromptFileLoader:
     
     def __init__(self, *, role):
         self._role = role
         
     def __getattr__(self, name):
-        return PromptFile(role=self.__dict__["_role"], file_name=name)
+        return PromptFile(role=self._role, file_name=name)
+
+class PromptFileFinder(ABC):   
+    
+    def __init__(self):
+        pass
+        
+    @property
+    def user(self):
+        return PromptFileLoader(role="user")
+    @property
+    def system(self):
+        return PromptFileLoader(role="system")
         
         

@@ -16,19 +16,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any
+from typing import Any, Union
 
 from tarkash import log_debug
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from .context import PromptContext
+from swayam.llm.structure.structure import ResponseStructure
 
 class LLMConversation:
     
-    def __init__(self, *prompts:Prompt, system_prompt:SystemPrompt=None, content:PromptContext=None) -> Any:
+    def __init__(self, *prompts:Prompt, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> Any:
         self.__prompts = list(prompts)
         self.__context = None
         self.__system_prompt = system_prompt
+        
+        # the image is appended only to the first prompt.
+        if image:
+            prompts[0].suggest_image(image)
+        
+        # Tools and response format are suggested to all prompts.            
+        for prompt in prompts:
+            if response_format:
+                prompt.suggest_response_format(response_format)
+                
+            if tools:
+                prompt.suggest_tools(tools)
     
     def is_new(self):
         return len(self.__context) == 0
@@ -67,7 +80,7 @@ class LLMConversation:
         description = f"{indent}Conversation (Length: {len(self)})\n"
         
         for prompt in self.__prompts:
-            if isinstance(prompt, Conversation):
+            if isinstance(prompt, LLMConversation):
                 description += prompt.describe(level + 1)
             else:
                 description += f"{indent}  {type(prompt).__name__}\n"
