@@ -41,7 +41,8 @@ class HtmlReporter(Reporter):
         # For JSON Data
         
         # Don't store the run_id, always get it from config.
-        self.__base_path = os.path.join(Tarkash.get_option_value(TarkashOption.REPORT_DIR), str(self.__report_config.run_id))
+        report_dir = Tarkash.get_option_value(TarkashOption.REPORT_DIR)
+        self.__base_path = os.path.join(report_dir, str(self.__report_config.run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         self.__json_messages_path = self.__base_path + "/json"

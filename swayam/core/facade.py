@@ -36,7 +36,6 @@ class _SwayamSingleton:
             "PROMPT_DIR": ("definition/prompt", "path"),
             "CONVERSATION_DIR": ("definition/conversation", "path"),
             "TASK_DIR": ("definition/task", "path"),
-            "REPORT_DIR": ("report", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }
