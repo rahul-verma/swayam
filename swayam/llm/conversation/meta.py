@@ -19,4 +19,5 @@
 class ConversationMeta(type):
     
     def __getattr__(cls, name):
-        raise AttributeError(f"ConversationMeta has no attribute {name}")
+        from .namespace import ConversationDir
+        return ConversationDir.load_conversation_from_file(name)
