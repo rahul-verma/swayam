@@ -37,17 +37,25 @@ class ConversationDir:
         user_prompts = None
         
         if type(content) is not dict:
-            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system, user, purpose, image, output_structure, tools]")    
+            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, user_prompts, purpose, image, output_structure, tools]")    
         
-        if "user" not in content:
-            raise ValueError(f"A conversation file must contain a 'user' key with a list of prompts.")    
+        if "user_prompts" not in content:
+            raise ValueError(f"A conversation file must contain a 'user_prompts' key with a list of prompts.")    
         
-        if type(content["user"]) is not list:
-            raise ValueError(f"The user key in a conversation file must contain a list. Found: {type(content['user'])}")    
+        if type(content["user_prompts"]) is not list:
+            raise ValueError(f"The user_prompts key in a conversation file must contain a list. Found: {type(content['user_prompts'])}")    
             
         user_prompts = []
-        for prompt in content["user"]:
-            user_prompts.append(Prompt.text(prompt))            
+        for prompt in content["user_prompts"]:
+            if type(prompt) is str:
+                user_prompts.append(Prompt.text(prompt))
+            elif not isinstance(prompt, dict):
+                raise ValueError(f"Invalid format of user prompt in conversation file: {name}. Expected a string or a dictionary. Found: {type(prompt)}")
+            else:
+                if "text" not in prompt:
+                    raise ValueError(f"Each user prompt in a conversation file must contain a 'text' key with the prompt text. Found: {prompt}")
+                text = prompt.pop("text")
+                user_prompts.append(Prompt.text(text, **prompt))            
 
         from swayam import Conversation
         """

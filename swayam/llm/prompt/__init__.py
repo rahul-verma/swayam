@@ -33,7 +33,7 @@ class Prompt(metaclass=PromptMeta):
             output_tools = []
             for tool in tools:
                 if type(tool) is str:
-                    output_tools.append(Tool.import_tool(tool))
+                    output_tools.append(getattr(Tool, tool))
                 else:
                     output_tools.append(tool)
             tools = output_tools
