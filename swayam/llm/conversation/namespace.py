@@ -55,10 +55,23 @@ class ConversationDir:
                 raise ValueError(f"Invalid format of user prompt in conversation file: {name}. Expected a string or a dictionary. Found: {type(prompt)}")      
 
         from swayam import Conversation
+        
+        fmt_kwargs ={
+            "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
+            "system_prompt": content.get("system_prompt", None),
+            "image": content.get("image", None),
+            "output_structure": content.get("output_structure", None),
+            "tools": content.get("tools", None)
+        }
         """
         *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None)
         """
-        return Conversation.prompts(*user_prompts)
+        for key, allowed_type in [("purpose", str), ("image", str), ("output_structure",str), ("tools", list)]:
+            if key in content:
+                if type(content[key]) is not allowed_type:
+                    raise ValueError(f"Invalid format of '{key}' key in conversation file: {name}. Expected a {allowed_type}. Found: {type(content[key])}")
+                
+        return Conversation.prompts(*user_prompts, **fmt_kwargs)
     @classmethod    
     def load_conversation_from_file(cls, name):
         from tarkash import YamlFile        

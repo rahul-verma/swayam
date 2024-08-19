@@ -28,7 +28,7 @@ class ConversationFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+    def prompt_files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompt_files) == 0:
             raise ValueError("No prompts provided.")
         prompts = []
@@ -52,3 +52,10 @@ class ConversationFormatter:
         
         from swayam import Conversation
         return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+    
+    def __getattr__(self, name):
+        from .namespace import ConversationDir
+        import yaml
+        with open(ConversationDir.get_path_for_conversation(name=name)) as f:
+            content = yaml.safe_load(f.read().format(**self.__fmt_kwargs))
+        return ConversationDir.create_conversation_from_content(name, content)
