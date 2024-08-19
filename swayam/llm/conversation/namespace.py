@@ -44,18 +44,15 @@ class ConversationDir:
         
         if type(content["user_prompts"]) is not list:
             raise ValueError(f"The user_prompts key in a conversation file must contain a list. Found: {type(content['user_prompts'])}")    
+        
+        from swayam.llm.prompt.namespace import PromptDir
             
         user_prompts = []
-        for prompt in content["user_prompts"]:
-            if type(prompt) is str:
-                user_prompts.append(Prompt.text(prompt))
+        for index, prompt in enumerate(content["user_prompts"]):
+            if type(prompt) in (str, dict):
+                user_prompts.append(PromptDir.create_prompt_from_content("user", f"{name}_prompt_{index+1}", prompt))
             elif not isinstance(prompt, dict):
-                raise ValueError(f"Invalid format of user prompt in conversation file: {name}. Expected a string or a dictionary. Found: {type(prompt)}")
-            else:
-                if "text" not in prompt:
-                    raise ValueError(f"Each user prompt in a conversation file must contain a 'text' key with the prompt text. Found: {prompt}")
-                text = prompt.pop("text")
-                user_prompts.append(Prompt.text(text, **prompt))            
+                raise ValueError(f"Invalid format of user prompt in conversation file: {name}. Expected a string or a dictionary. Found: {type(prompt)}")      
 
         from swayam import Conversation
         """

@@ -51,7 +51,7 @@ class PromptDir(ABC):
             if "text" not in content:
                 raise ValueError(f"Prompt file {name} does not contain a text key")  
             else:
-                text = content["prompt"]
+                text = content["text"]
             if "purpose" in content:
                 purpose = content["purpose"].strip()
             else:
