@@ -34,51 +34,33 @@ class ConversationDir:
     @classmethod
     def create_conversation_from_content(cls, name, content):
         
-        def load_prompts_from_direct_content(prompts):
+        def load_prompts_from_direct_content(role, prompts):
             from swayam.llm.prompt.namespace import PromptDir
-                
-            user_prompts = []
+
+            prompt_objects = []
             for index, prompt in enumerate(prompts):
+                counter = ""
+                if role == "user":
+                    counter = f"_{index+1}"
                 if type(prompt) in (str, dict):
-                    user_prompts.append(PromptDir.create_prompt_from_content("user", f"{name}_prompt_{index+1}", prompt))
+                    prompt_objects.append(PromptDir.create_prompt_from_content(role, f"{name}_{role}_prompt{counter}", prompt))
                 else:
                     raise ValueError(f"Invalid format of user prompt in conversation file: {name}. Expected a string or a dictionary. Found: {type(prompt)}")
-            return user_prompts       
+            return prompt_objects       
         
-        def load_prompts_from_definitions(definitions):
+        def load_prompts_from_definitions(role, definitions):
+            from swayam import Prompt
             from swayam.llm.prompt.namespace import UserPromptDir
                 
-            user_prompts = []
+            prompt_objects = []
             for index, definition in enumerate(definitions):
                 if type(definition) is str:
-                    user_prompts.append(getattr(UserPromptDir(), definition))
+                    prompt_objects.append(getattr(getattr(Prompt, role), definition))
                 else:
                     raise ValueError(f"Invalid format of prompt definition in conversation file: {name}. Expected a string. Found: {type(definition)}") 
-            return user_prompts        
+            return prompt_objects        
             
             
-        from swayam import Prompt
-        user_prompts = None
-        
-        if type(content) is not dict:
-            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, prompts, definitions, purpose, image, output_structure, tools]")  
-        
-        if "prompts" in content and "definitions" in content:
-            raise ValueError(f"A conversation file cannot contain both 'prompts' and 'definitions' keys. Choose one.")
-        
-        if "prompts" in content:
-            if type(content["prompts"]) is not list:
-                raise ValueError(f"The user_prompts key in a conversation file must contain a list. Found: {type(content['user_prompts'])}") 
-            user_prompts = load_prompts_from_direct_content(content["prompts"])
-        elif "definitions" in content:
-            if type(content["definitions"]) is not list:
-                raise ValueError(f"The definitions key in a conversation file must contain a list. Found: {type(content['definitions'])}") 
-            user_prompts = load_prompts_from_definitions(content["definitions"])
-        else:
-            raise ValueError(f"A conversation file must contain either a 'prompts' or 'definitions' key.") 
-
-        from swayam import Conversation
-        
         fmt_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
             "system_prompt": content.get("system_prompt", None),
@@ -86,6 +68,44 @@ class ConversationDir:
             "output_structure": content.get("output_structure", None),
             "tools": content.get("tools", None)
         }
+        
+        if type(content) is not dict:
+            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, user_prompts, user_prompt_defs, purpose, image, output_structure, tools]")  
+        
+        if "user_prompts" in content and "user_prompt_defs" in content:
+            raise ValueError(f"A conversation file cannot contain both 'user_prompts' and 'user_prompt_defs' keys. Choose one.")
+        
+        if "system_prompt" in content and "system_prompt_def" in content:
+            raise ValueError(f"A conversation file cannot contain both 'system_prompt' and 'system_prompt_def' keys. Choose one.")
+        
+        # System Prompt
+        if fmt_kwargs["system_prompt"] is not None and type(fmt_kwargs["system_prompt"]) is not str:
+            raise ValueError(f"Invalid format of 'system_prompt' key in conversation file: {name}. Expected a string. Found: {type(fmt_kwargs['system_prompt'])}")
+        
+        if "system_prompt" in content:
+            if type(content["system_prompt"]) is not str:
+                raise ValueError(f"The system_prompt key in a conversation file must be a string. Found: {type(content['system_prompt'])}") 
+            fmt_kwargs["system_prompt"] = load_prompts_from_direct_content("system", [content["system_prompt"]])[0]
+        elif "system_prompt_def" in content:
+            if type(content["system_prompt_def"]) is not str:
+                raise ValueError(f"The system_prompt_def key in a conversation file must be a string. Found: {type(content['system_prompt_def'])}") 
+            fmt_kwargs["system_prompt"]  = load_prompts_from_definitions("system", [content["system_prompt_def"]])[0]
+            
+        from swayam import Prompt
+        user_prompts = None
+        
+        if "user_prompts" in content:
+            if type(content["user_prompts"]) is not list:
+                raise ValueError(f"The user_prompts key in a conversation file must contain a list. Found: {type(content['user_prompts'])}") 
+            user_prompts = load_prompts_from_direct_content("user", content["user_prompts"])
+        elif "user_prompt_defs" in content:
+            if type(content["user_prompt_defs"]) is not list:
+                raise ValueError(f"The user_prompt_defs key in a conversation file must contain a list. Found: {type(content['user_prompt_defs'])}") 
+            user_prompts = load_prompts_from_definitions("user", content["user_prompt_defs"])
+        else:
+            raise ValueError(f"A conversation file must contain either a 'user_prompts' or 'user_prompt_defs' key.") 
+
+        from swayam import Conversation        
         """
         *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None)
         """

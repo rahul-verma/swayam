@@ -4,6 +4,6 @@ image: data/images/tom_jerry.jpeg
 tools: [WeatherInfo]
 #output_structure: GeneralStructure
 
-prompts:
+user_prompts:
   - Who is in the picture?
   - What is the weather in Berlin?

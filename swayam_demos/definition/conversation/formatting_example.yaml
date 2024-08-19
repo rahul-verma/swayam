@@ -1,6 +1,6 @@
 purpose: Demo Dynamic Conversation
 
-prompts:
+user_prompts:
   - I am planning a trip to {city} in {month}. Create a list of places worth seeing there.
   - purpose: Get details for {task}
     text: What should I keep in mind from the perspective of {task}?
