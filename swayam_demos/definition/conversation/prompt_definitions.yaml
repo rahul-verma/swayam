@@ -1,0 +1,5 @@
+purpose: Using Prompt Definitions
+
+definitions:
+  - trip_command
+  - trip_query
