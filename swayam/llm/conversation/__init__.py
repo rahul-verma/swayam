@@ -43,12 +43,12 @@ class Conversation(metaclass=ConversationMeta):
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
-            output_structure = Structure.import_structure(output_structure)
+            output_structure = getattr(Structure, output_structure)
         if tools is not None:
             output_tools = []
             for tool in tools:
                 if type(tool) is str:
-                    output_tools.append(Tool.import_tool(tool))
+                    output_tools.append(getattr(Tool, tool))
                 else:
                     output_tools.append(tool)
             tools = output_tools
