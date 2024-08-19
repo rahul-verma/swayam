@@ -1,4 +1,4 @@
-prompt: |
+text: |
   """Find whether there is an email address in the following text marked with triple backticks 
     ```This is a sample text with a@b.com and c@d.com addresses```
   """

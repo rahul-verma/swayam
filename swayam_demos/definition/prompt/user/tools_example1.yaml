@@ -1,4 +1,4 @@
-prompt: |
+text: |
   What's the weather like in Boston?
 
 tools: 

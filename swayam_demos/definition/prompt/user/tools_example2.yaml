@@ -1,4 +1,4 @@
-prompt: |
+text: |
   What is 7 *30 + 13?
 
 tools: 

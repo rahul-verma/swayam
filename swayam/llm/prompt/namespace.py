@@ -48,8 +48,8 @@ class PromptDir(ABC):
             text = content
             purpose = cls._create_purpose_from_file_name(name)
         elif type(content) is dict:
-            if "prompt" not in content:
-                raise ValueError(f"Prompt file {name} does not contain a prompt key")  
+            if "text" not in content:
+                raise ValueError(f"Prompt file {name} does not contain a text key")  
             else:
                 text = content["prompt"]
             if "purpose" in content:

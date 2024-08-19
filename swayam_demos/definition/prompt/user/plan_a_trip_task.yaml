@@ -1,4 +1,4 @@
 purpose: |
   Get details for {task}
-prompt: |
+text: |
   What should I keep in mind from the perspective of {task}?
