@@ -15,3 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pydantic import BaseModel, Field
+from swayam import Structure
+
+class PathModel(BaseModel):
+    path:str = Field(..., description="Path to the file or directory", example="/home/user/file.txt")
+    
+Path = Structure.build(PathModel)

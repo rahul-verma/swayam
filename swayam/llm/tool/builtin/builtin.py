@@ -15,17 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+from swayam import Tool, Structure
+from swayam.function.file_system import *
+from swayam.llm.structure.builtin import Path
 
-def list_files(path:str):
-    file_paths = []
-    
-    # Walk through the directory tree
-    for dirpath, _, filenames in os.walk(path):
-        for filename in filenames:
-            # Construct absolute file path
-            file_path = os.path.join(dirpath, filename)
-            file_paths.append(file_path)
-    
-    return file_paths
-
+ListFiles = Tool.build("ListFiles", 
+                         target=list_files, 
+                         desc="Recursively lists the full path pf files in the provided directory path.",
+                         call_structure=Path
+)
