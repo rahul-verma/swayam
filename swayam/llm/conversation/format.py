@@ -41,14 +41,19 @@ class ConversationFormatter:
             prompts.append(prompt)
             
         if system_prompt:
-            if not isinstance(prompt_file, PromptFile):
-                raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
+            if not isinstance(prompt_file, PromptFile) and not isinstance(prompt_file, SystemPrompt):
+                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a SystemPrompt or PromptFile object.")  
             elif not system_prompt.role == "system":
-                raise ValueError(f"Invalid prompt role: {prompt_file.role}. Should be a system prompt.")
-            system_formatter = PromptFormatter(role=system_prompt.role, **self.__fmt_kwargs)
-            system_prompt = getattr(system_formatter, system_prompt.file_name)
-            if not isinstance(system_prompt, SystemPrompt):
-                raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
+                raise ValueError(f"Invalid prompt role: {system_prompt.role}. Should be a system prompt.")
+            
+            if isinstance(system_prompt, PromptFile):
+                system_formatter = PromptFormatter(role=system_prompt.role, **self.__fmt_kwargs)
+                system_prompt = getattr(system_formatter, system_prompt.file_name)
+                if not isinstance(system_prompt, SystemPrompt):
+                    raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
+            else:
+                # If a system prompt is provided directly, it is NOT formatted.
+                pass
         
         from swayam import Conversation
         return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
@@ -58,4 +63,4 @@ class ConversationFormatter:
         import yaml
         with open(ConversationDir.get_path_for_conversation(name=name)) as f:
             content = yaml.safe_load(f.read().format(**self.__fmt_kwargs))
-        return ConversationDir.create_conversation_from_content(name, content)
+        return ConversationDir.create_conversation_from_content(name, content, **self.__fmt_kwargs)

@@ -1,7 +1,7 @@
 system_prompt_def: |
-  friend
+  trip_persona
 
-purpose: Using System Prompt Def
+purpose: Using Dynamic System Prompt Def
 
 user_prompt_defs:
   - trip_command

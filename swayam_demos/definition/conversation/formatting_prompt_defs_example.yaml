@@ -1,0 +1,5 @@
+purpose: Demo Dynamic Conversation
+
+user_prompt_defs:
+  - plan_a_trip
+  - plan_a_trip_task
