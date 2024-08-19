@@ -26,7 +26,7 @@ class ConversationDir:
     def get_path_for_conversation(cls, *, name):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
-        return os.path.join(Tarkash.get_option_value(SwayamOption.CONVERSATION_ROOT_DIR), f"{name}.yaml")
+        return os.path.join(Tarkash.get_option_value(SwayamOption.CONVERSATION_DIR), f"{name}.yaml")
     @classmethod
     def _create_purpose_from_file_name(cls, name):
         return name.replace("_", " ").lower().title()

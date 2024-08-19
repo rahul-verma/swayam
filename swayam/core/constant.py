@@ -21,27 +21,18 @@ class SwayamOption(Enum):
     '''
         Represents all built-in configuration options for Swayam.
     '''
-    
-    PROJECT_NAME = auto()
-    '''Name of the project.'''
-    
-    PROJECT_ROOT_DIR = auto()
-    '''Root Directory for Structure Files'''
         
-    PROMPT_ROOT_DIR = auto()
+    PROMPT_DIR = auto()
     '''Root Directory for Prompt Files'''
     
-    CONVERSATION_ROOT_DIR = auto()
+    CONVERSATION_DIR = auto()
     '''Root Directory for Conversation Files'''
     
-    TASK_ROOT_DIR = auto()
+    TASK_DIR = auto()
     '''Root Directory for Task Files'''
     
-    PLAN_ROOT_DIR = auto()
+    PLAN_DIR = auto()
     '''Root Directory for Plan Files'''
-    
-    REPORT_ROOT_DIR = auto()
-    '''Root Directory for Prompt Files'''
     
     LLM_PROVIDER = auto()
     '''Default LLM Provider name.'''

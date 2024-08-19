@@ -20,8 +20,7 @@ import importlib
 class StructureMeta(type):
     
     def __getattr__(cls, name):
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
+        from tarkash import Tarkash, TarkashOption
+        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
         structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
         return getattr(structure_module, name)

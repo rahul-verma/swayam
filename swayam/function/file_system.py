@@ -18,6 +18,10 @@
 import os
 
 def list_files(path:str):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Directory '{path}' does not exist.")
+    if not os.path.isdir(path):
+        raise FileNotFoundError(f"'{path}' is not a directory.")
     file_paths = []
     
     # Walk through the directory tree
@@ -28,4 +32,3 @@ def list_files(path:str):
             file_paths.append(file_path)
     
     return file_paths
-

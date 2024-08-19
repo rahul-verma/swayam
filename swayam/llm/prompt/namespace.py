@@ -29,15 +29,13 @@ class PromptDir(ABC):
     def get_path_for_prompt(cls, *, role, name):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
-        return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_ROOT_DIR), role, f"{name}.yaml")
+        return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_DIR), role, f"{name}.yaml")
     @classmethod
     def _create_purpose_from_file_name(cls, name):
         return name.replace("_", " ").lower().title()
     
     @classmethod
     def create_prompt_from_content(cls, role, name, content):
-        from tarkash import Tarkash, YamlFile
-        from swayam.core.constant import SwayamOption
         from swayam import Tool, Structure
         text = None
         purpose = None

@@ -24,18 +24,37 @@ from swayam.llm.conversation import Conversation
 
 @singleton
 class _SwayamSingleton:
+        
+    def get_project_dir(self):
+        return self.__project_dir
     
-    def init(self):  
+    def __register_config_with_tarkash(self):
         from tarkash import Tarkash
-        Tarkash.init()      
+        reg_config = {
+            "STRUCTURE_DIR": ("definition/structure", "path"),
+            "TOOL_DIR": ("definition/tool", "path"),
+            "PROMPT_DIR": ("definition/prompt", "path"),
+            "CONVERSATION_DIR": ("definition/conversation", "path"),
+            "TASK_DIR": ("definition/task", "path"),
+            "REPORT_DIR": ("report", "path"),
+            "LLM_PROVIDER": "openai",
+            "LLM_MODEL": "gpt-4o-mini"
+        }
+        Tarkash.register_framework_config_defaults("swayam", reg_config)
+    
+    def init(self):   
+        from tarkash import Tarkash, TarkashOption
+        # Swayam's initialisation depends on Tarkash.init() called  by the creator of the final project using the Traksh based stack of libs.
+    
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
+        self.__project_dir = Tarkash.get_option_value(TarkashOption.PROJECT_DIR)
+        
+        self.__register_config_with_tarkash()
+        
+        # Create default router
         from swayam.llm.router import Router
         #print("Creating default router...")
         self.__default_router = Router(display=True, report_html=False)
-        
-        # Making project importable
-        from swayam.core.constant import SwayamOption
-        sys.path.append(os.path.join(Tarkash.get_option_value(SwayamOption.PROJECT_ROOT_DIR), ".."))
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
