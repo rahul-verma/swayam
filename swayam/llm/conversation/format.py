@@ -21,14 +21,14 @@ from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
 from .conversation import LLMConversation
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
 
 class ConversationFormatter:
     
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
+    def files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompt_files) == 0:
             raise ValueError("No prompts provided.")
         prompts = []
@@ -51,4 +51,4 @@ class ConversationFormatter:
                 raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
         
         from swayam import Conversation
-        return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
+        return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)

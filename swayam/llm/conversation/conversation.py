@@ -22,11 +22,11 @@ from tarkash import log_debug
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from .context import PromptContext
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
 
 class LLMConversation:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
@@ -40,8 +40,8 @@ class LLMConversation:
         
         # Tools and response format are suggested to all prompts.            
         for prompt in prompts:
-            if response_format:
-                prompt.suggest_response_format(response_format)
+            if output_structure:
+                prompt.suggest_output_structure(output_structure)
                 
             if tools:
                 prompt.suggest_tools(tools)

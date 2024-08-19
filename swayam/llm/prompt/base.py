@@ -19,18 +19,18 @@ from copy import deepcopy
 from typing import Any
 
 from abc import ABC, abstractmethod
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
 
 
 class BasePrompt(ABC):
     
-    def __init__(self, *, role, text, purpose=None, image=None, response_format:ResponseStructure=None, tools=None) -> Any:
+    def __init__(self, *, role, text, purpose=None, image=None, output_structure:IOStructure=None, tools=None) -> Any:
         self.__role = role
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = f"{role.title()} Prompt"
         self.__content = text
-        self.__response_format = response_format
+        self.__output_structure = output_structure
         self.__tools = tools
         
         self.__message = {
@@ -53,9 +53,9 @@ class BasePrompt(ABC):
         if not self.image:
             self.image = image
             
-    def suggest_response_format(self, response_format):
-        if not self.response_format:
-            self.__response_format = response_format
+    def suggest_output_structure(self, output_structure):
+        if not self.output_structure:
+            self.__output_structure = output_structure
             
     def suggest_tools(self, tools):
         if not self.tools:
@@ -68,8 +68,8 @@ class BasePrompt(ABC):
         return self.__purpose
             
     @property
-    def response_format(self):
-        return self.__response_format
+    def output_structure(self):
+        return self.__output_structure
     @property
     def tools(self):
         return tuple(self.__tools) if self.__tools else None

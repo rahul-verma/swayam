@@ -15,24 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import importlib
 
-from abc import abstractmethod
-from typing import List
-
-class Model:
-        
-    @staticmethod
-    def create_client(*, config, prompt_config):
-        from .openai import OpenAIClient
-        model_classes = {
-            "openai": OpenAIClient
-        }
-        
-        return model_classes[config.provider](config.model, **prompt_config.model_kwargs)
-        
-    @staticmethod
-    def gpt_4o_mini(**kwargs):    
-        return Model.create_client("openai", "gpt-4o-mini", **kwargs)
-        
+class ToolMeta(type):
     
+    def __getattr__(cls, name):
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
+        tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
+        return getattr(tool_module, name)

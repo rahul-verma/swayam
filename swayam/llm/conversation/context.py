@@ -22,21 +22,21 @@ class PromptContext:
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
         self.__reportable_messages = []
-        self.__expected_response_format = None
+        self.__expected_output_structure = None
         
     def reset(self):
         self.__messages = []
         self.__reportable_messages = []
         
     @property
-    def expected_response_format(self):
-        if not self.__expected_response_format:
+    def expected_output_structure(self):
+        if not self.__expected_output_structure:
             return None
-        return json.loads(self.__expected_response_format.schema_json())
+        return json.loads(self.__expected_output_structure.schema_json())
     
-    @expected_response_format.setter
-    def expected_response_format(self, value):
-        self.__expected_response_format = value
+    @expected_output_structure.setter
+    def expected_output_structure(self, value):
+        self.__expected_output_structure = value
         
     @property
     def messages(self):

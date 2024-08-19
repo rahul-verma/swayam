@@ -15,10 +15,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel, create_model, Field
+import json
 from enum import Enum
 from typing import *
 
+from pydantic import BaseModel, create_model, Field
+
+
 # Define a base class `Structure` that inherits from `BaseModel`
-class ResponseStructure(BaseModel):
-    pass
+class IOStructure:
+    
+    def __init__(self, model:BaseModel):
+        self.__data_model = model
+        
+    @property
+    def data_model(self):
+        return self.__data_model
+
+    @property
+    def definition(self):
+        data_schema = self.data_model.model_json_schema()
+        for _, property in data_schema["properties"].items():
+            property.pop("title")
+            if "enum" in property:
+                property.pop("default")
+        return data_schema
+    
+    def __call__(self, **fields):
+        return self.__data_model(**fields)

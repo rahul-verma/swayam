@@ -218,15 +218,15 @@ class HtmlReporter(Reporter):
                         "content": item["local_path"]
                 })
         
-        expected_response_format = prompt.response_format
-        if expected_response_format is None:
-            expected_response_format = "Not specified."
+        expected_output_structure = prompt.output_structure
+        if expected_output_structure is None:
+            expected_output_structure = "Not specified."
         else:
-            expected_response_format = json.loads(expected_response_format.schema_json())
+            expected_output_structure = expected_output_structure.data_model.model_json_schema()
 
         prompt_content_node.append({
                     "heading": "Expected Response Format",
-                    "content": expected_response_format
+                    "content": expected_output_structure
                 })
         
         provided_tools = prompt.tool_dict

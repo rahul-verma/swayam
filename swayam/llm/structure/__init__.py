@@ -15,24 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib
+from pydantic import BaseModel
+from .meta import StructureMeta
 
-class Structure:
+class Structure(metaclass=StructureMeta):
     
     @classmethod
-    def builder(cls, name:str):
+    def build(cls, model:BaseModel):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
         :param name: Name of the structure
         """
-        from .builder import StructureBuilder
-        return StructureBuilder(name)
-    
-    @classmethod
-    def import_structure(self, name:str):
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
-        structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
-        return getattr(structure_module, name)
+        from .structure import IOStructure
+        return IOStructure(model)
+        

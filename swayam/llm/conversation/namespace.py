@@ -15,24 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 
-from abc import abstractmethod
-from typing import List
-
-class Model:
         
-    @staticmethod
-    def create_client(*, config, prompt_config):
-        from .openai import OpenAIClient
-        model_classes = {
-            "openai": OpenAIClient
-        }
         
-        return model_classes[config.provider](config.model, **prompt_config.model_kwargs)
-        
-    @staticmethod
-    def gpt_4o_mini(**kwargs):    
-        return Model.create_client("openai", "gpt-4o-mini", **kwargs)
-        
-    

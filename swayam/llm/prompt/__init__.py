@@ -18,21 +18,17 @@
 from typing import Union
 
 from .types import UserPrompt, SystemPrompt
-from .namespace import UserPromptDir, SystemPromptDir
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
 from .format import FormatterMediator
-from .file import PromptFileFinder
+from .meta import PromptMeta
 
-class Prompt:
-    user = UserPromptDir()
-    system = SystemPromptDir()
-    file = PromptFileFinder()
+class Prompt(metaclass=PromptMeta):
     
     @classmethod
-    def text(cls, text, *, purpose:str=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None, role:str="user") -> UserPrompt:
+    def text(cls, text, *, purpose:str=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, role:str="user") -> UserPrompt:
         from swayam import Tool, Structure
-        if response_format is not None and type(response_format) is str:
-            response_format = Structure.import_structure(response_format)
+        if output_structure is not None and type(output_structure) is str:
+            output_structure = getattr(Structure, output_structure)
         if tools is not None:
             output_tools = []
             for tool in tools:
@@ -42,7 +38,7 @@ class Prompt:
                     output_tools.append(tool)
             tools = output_tools
                 
-        return UserPrompt(text=text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+        return UserPrompt(text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(cls, **fmt_kwargs):

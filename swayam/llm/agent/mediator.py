@@ -88,7 +88,7 @@ class Mediator(TarkashObject):
             log_debug("Finished processing prompt...")
 
             log_debug("Executing prompt...")
-            response = self.__client.execute_messages(messages=conversation.context.messages, response_format=prompt.response_format, tools=prompt.tools)
+            response = self.__client.execute_messages(messages=conversation.context.messages, output_structure=prompt.output_structure, tools=prompt.tools)
             log_debug("Handling Response.")
             output_message = response.choices[0].message
             llm_response = LLMResponse(output_message)

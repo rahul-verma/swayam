@@ -15,66 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from swayam.llm.structure.structure import IOStructure
+from .meta import ToolMeta
 
-import importlib
-import json
-
-class Tool:
-    
-    def __init__(self, name, *, target, desc, tool_structure):
-        self.__name = name
-        self.__target = target
-        self.__target.__name__ = self.__target.__name__
-        self.__desc = desc
-        self.__tool_structure = tool_structure
-        
-    @property
-    def name(self):
-        return self.__name
-    
-    @property
-    def target_name(self):
-        return self.__target.__name__
-    
-    @property
-    def desc(self):
-        return self.__desc
-    
-    @property
-    def definition(self):
-        data_schema = json.loads(self.__tool_structure.schema_json())
-        data_schema.pop("title")
-        for _, property in data_schema["properties"].items():
-            if "enum" in property:
-                property.pop("title")
-                property.pop("default")
-        schema = {
-            "type": "function",
-            "function":{
-                "name": self.__name,
-                "description": self.__desc,
-                "parameters": data_schema
-            }}
-        return schema
-    
-    def __call__(self, **fields):
-        structure = self.__tool_structure(**fields)
-        from .response import ToolResponse
-        
-        output = self.__target(**structure.dict())
-        return ToolResponse(self, output)
+class Tool(metaclass=ToolMeta):
     
     @classmethod
-    def builder(cls, name, *, target, desc:str=None, **fields):
-        from .builder import ToolBuilder
-        return ToolBuilder(name, target=target, desc=desc, **fields)
-    
-    @classmethod
-    def import_tool(self, name:str):
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        project_name = Tarkash.get_option_value(SwayamOption.PROJECT_NAME)
-        tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
-        return getattr(tool_module, name)
+    def build(cls, name, *, target, desc:str=None, call_structure:IOStructure=None):
+        from .tool import LLMTool
+        return LLMTool(name, target=target, desc=desc, call_structure=call_structure)
+        
     
     

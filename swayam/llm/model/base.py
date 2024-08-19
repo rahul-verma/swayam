@@ -17,22 +17,29 @@
 
 import os
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import List
 
-class Model:
-        
-    @staticmethod
-    def create_client(*, config, prompt_config):
-        from .openai import OpenAIClient
-        model_classes = {
-            "openai": OpenAIClient
-        }
-        
-        return model_classes[config.provider](config.model, **prompt_config.model_kwargs)
-        
-    @staticmethod
-    def gpt_4o_mini(**kwargs):    
-        return Model.create_client("openai", "gpt-4o-mini", **kwargs)
+class LLMClient(ABC):
+    
+    def __init__(self, *, provider:str, model:str, **kwargs):
+        self._provider = provider
+        self._model_name = model
+        self._model_kwargs = kwargs
+        self._client = None
+        self._create_client()
+    
+    @property
+    def model_name(self):
+        return self._model_name
+    
+    @abstractmethod
+    def _create_client(self):
+        pass
+    
+    @abstractmethod
+    def execute_messages(self, *, messages, output_structure=None, tools=None):
+        pass
+
         
     

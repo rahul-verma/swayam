@@ -18,7 +18,7 @@
 from .base import BasePrompt
 from tarkash import log_debug
 from typing import Any, Union
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
 
 class SystemPrompt(BasePrompt):
     
@@ -26,5 +26,5 @@ class SystemPrompt(BasePrompt):
         super().__init__(role="system", text=text)
 
 class UserPrompt(BasePrompt):
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, response_format:ResponseStructure=None, tools:list=None) -> Any:
-        super().__init__(role="user", text=text, purpose=purpose, image=image, response_format=response_format, tools=tools)
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:IOStructure=None, tools:list=None) -> Any:
+        super().__init__(role="user", text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)

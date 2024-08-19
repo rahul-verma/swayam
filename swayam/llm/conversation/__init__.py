@@ -23,12 +23,13 @@ from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from .format import ConversationFormatter
 from .conversation import LLMConversation
-from swayam.llm.structure.structure import ResponseStructure
+from swayam.llm.structure.structure import IOStructure
+from .meta import ConversationMeta
 
-class Conversation:
+class Conversation(metaclass=ConversationMeta):
     
     @classmethod
-    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
+    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
         for prompt in prompts:
@@ -41,8 +42,8 @@ class Conversation:
                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
             
         from swayam import Tool, Structure
-        if response_format is not None and type(response_format) is str:
-            response_format = Structure.import_structure(response_format)
+        if output_structure is not None and type(output_structure) is str:
+            output_structure = Structure.import_structure(output_structure)
         if tools is not None:
             output_tools = []
             for tool in tools:
@@ -52,14 +53,14 @@ class Conversation:
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, response_format=response_format, tools=tools)
+        return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
-    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, response_format:Union[str, ResponseStructure]=None, tools:list=None) -> LLMConversation:
+    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         for prompt in prompts:
             if type(prompt) is not str:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
-        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, response_format=response_format, tools=tools)
+        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):
