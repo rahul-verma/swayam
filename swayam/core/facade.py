@@ -50,10 +50,10 @@ class _SwayamSingleton:
         
         self.__register_config_with_tarkash()
         
-        # Create default router
-        from swayam.llm.router import Router
-        #print("Creating default router...")
-        self.__default_router = Router(display=True, report_html=False)
+        # Create default agent
+        from swayam.llm.agent.simple import SimpleAgent
+        #print("Creating default agent...")
+        self.__default_agent = SimpleAgent(display=True, report_html=False)
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
@@ -68,8 +68,23 @@ class _SwayamSingleton:
         return self.__join_paths(self.get_swayam_root_dir(), "res", file_name)
     
     @property
-    def router(self):
-        return self.__default_router
+    def default_agent(self):
+        return self.__default_agent
+    
+    def agent(self, display=False, report_html=True, run_id=None):
+        """
+        Creates an Agent.
+        
+        Args:
+            display (bool, optional): If True, the agent will display the console output. Defaults to False.
+            report_html (bool, optional): If True, the agent will create a report in HTML format. Defaults to True.
+            run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
+
+        Returns:
+            SimpleAgent: A simple agent that executes a parts of or complete directive.
+        """
+        from swayam.llm.agent.simple import SimpleAgent
+        return SimpleAgent(display=display, report_html=report_html, run_id=run_id)
 
 class Swayam:
     '''
@@ -109,4 +124,20 @@ class Swayam:
             raise TypeError("Prompt should be a string")
         from swayam import Prompt
         user_prompt = Prompt.text(prompt)
-        return cls._SWAYAM_SINGLETON.router.execute(user_prompt, reset_context=reset_context)
+        return cls._SWAYAM_SINGLETON.default_agent.execute(user_prompt, reset_context=reset_context)
+    
+    
+    @classmethod
+    def agent(cls, display=False, report_html=True, run_id=None):
+        """
+        Creates an Agent.
+        
+        Args:
+            display (bool, optional): If True, the agent will display the console output. Defaults to False.
+            report_html (bool, optional): If True, the agent will create a report in HTML format. Defaults to True.
+            run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
+
+        Returns:
+            SimpleAgent: A simple agent that executes a parts of or complete directive.
+        """
+        return cls._SWAYAM_SINGLETON.agent(display=display, report_html=report_html, run_id=run_id)

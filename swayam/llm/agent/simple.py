@@ -18,7 +18,7 @@
 from datetime import datetime
 from tarkash import log_debug
 
-class Router:
+class SimpleAgent:
     
     def __init__(self, display=False, report_html=True, run_id=None):
         from swayam.llm.conversation.context import PromptContext
@@ -29,7 +29,11 @@ class Router:
             self.__report_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
         else:
             self.__report_config._run_id = str(run_id)
-        log_debug("Router initialized.")
+            
+        from swayam.llm.report.listener import AgentListener
+        log_debug(f"Creating Listener")
+        self.__listener = AgentListener(self.__report_config)
+        log_debug("Agent initialized.")
         
     def __prepare_for_execution(self, *, reset_context, show_in_browser):
         if reset_context:
@@ -47,12 +51,12 @@ class Router:
         return self.__execute_conversation(conversation)
     
     def __execute_conversation(self, conversation):
-        from swayam.llm.agent.conversation import ConversationAgent
+        from swayam.llm.executor.conversation import ConversationExecutor
         # Set context of conversation
         conversation.context = self.__context
         
         log_debug(f"Executing Conversation with ConversationAgent.")
-        agent = ConversationAgent(report_config=self.__report_config)
+        agent = ConversationExecutor(listener=self.__listener)
         
         # If a the context is non-empty then the system prompt is already set in it.
         log_debug(f"New context-free conversation?", conversation.is_new())
@@ -79,6 +83,7 @@ class Router:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
         output = agent.execute(conversation)
+        
         if type(output) is list:
             if len(output) == 1:
                 return process_output(output[0])
@@ -92,13 +97,13 @@ class Router:
     
     def execute(self, executable, reset_context=True, show_in_browser=False):
         """
-        Executes a compatible object.
+        Executes a part of or complete directive.
         
-        The Router can execute any of the following types of objects:
+        The Agent can execute any of the following types of objects:
         - A User Prompt object
-        - A Conversation object: Not supported yet
+        - A Conversation object
         - A Task object: Not supported yet
-        - A Plan object: Not supported yet
+        - A Directive object: Not supported yet
         
         Args:
             executable: The object to execute.
@@ -106,17 +111,21 @@ class Router:
             show_in_browser: If True, the HTML report will be displayed in the browser. Default is False.
         """
         
-        log_debug(f"Executing Router executable object of type {type(executable)}.")
+        log_debug(f"Executing Agent executable object of type {type(executable)}.")
         self.__prepare_for_execution(reset_context=reset_context, show_in_browser=show_in_browser)
         
         from swayam.llm.prompt.types import UserPrompt
         from swayam.llm.conversation.conversation import LLMConversation
         
         if not isinstance(executable, (UserPrompt, LLMConversation)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of UserPrompt, LLMConversation, Task, or Plan.")
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of UserPrompt, LLMConversation, Task, or Directive.")
         
+        output = None
         if isinstance(executable, UserPrompt):
             log_debug(f"Converting UserPrompt to LLMConversation.")
-            return self.__execute_user_prompt(executable)
+            output = self.__execute_user_prompt(executable)
         elif isinstance(executable, LLMConversation):
-            self.__execute_conversation(executable)
+            output = self.__execute_conversation(executable)
+            
+        self.__listener.finish()
+        return output

@@ -15,57 +15,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import json
-from pprint import pprint
-from pydantic import BaseModel
-from tarkash import TarkashObject, log_info, log_debug
-from swayam.llm.prompt.response import LLMResponse
+from typing import Union
 
-class Mediator(TarkashObject):    
-    """
-    Executes the prompt and returns the result.
-    """
-    
-    def __init__(self, *, model_config, prompt_config, listener):
-        tobj_kwargs = dict()
-        tobj_kwargs["model_config"] = model_config
-        tobj_kwargs["prompt_config"] = prompt_config
-        super().__init__(**tobj_kwargs)
-        self.__model_config = model_config
-        self.__prompt_config = prompt_config
-        self.__listener = listener
-        self.__client = None
-        self.__load()
-        
-    @property
-    def model_config(self):
-        return self.__model_config
-    
-    @property
-    def prompt_config(self):
-        return self.__prompt_config
-    
-    @property
-    def listener(self):
-        return self.__listener
-        
-    def __load(self):
+from tarkash import log_debug
+
+from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.prompt.response import LLMResponse
+from .base import BaseLLMExecutor
+
+class ConversationExecutor(BaseLLMExecutor):
+
+    def __init__(self, *, listener:str, model:str = None, name:str = "Conversation Executor", provider:str = None, temperature=0, system_prompt: Union[str,SystemPrompt]=None, **kwargs):
+        super().__init__(listener=listener, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
+        log_debug(f"Conversation Executor {name} created")
+
+    def load(self):
         from swayam.llm.model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, *, conversation):
+    def execute(self, conversation):
         '''
-            Runs the prompt text and returns the result.
-        '''
-        
-        # For multiple calls across Swayam or Router execute calls, context can be maintained through the setting of reset_context.
-        # For the same context, there can be only one SystemPrompt which could be already executed.
-        # At this stage this can be known from conversation.context length.
-        # If the context is not empty, don't use the system prompt.
-        log_debug("Processing system prompt...")
-        
+        Runs the conversation and returns the result.
+        '''        
         # For an extended conversation, the system prompt is already executed in one of the previous conversations.
+        
+        print(f"Executing Conversation with {len(conversation)} prompt(s).")
         self.listener.report_begin_conversation(conversation)
         if conversation.has_system_prompt():
             conversation.system_prompt.process_for_report()
@@ -112,4 +86,5 @@ class Mediator(TarkashObject):
             else: 
                 response_messages = output_message
 
+        log_debug(f"Finished Conversation") 
         return response_messages

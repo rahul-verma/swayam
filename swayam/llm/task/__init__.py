@@ -1,3 +1,4 @@
+
 # This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
@@ -15,55 +16,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from tarkash import log_debug
-from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.converse import Conversation
-from swayam.llm.conversation.context import PromptContext
-
 class Task:
-    """
-    Represents a sequence of conversations, commonly in the same context.
-    """
+    pass
+
+# from typing import Union
+
+# from tarkash import log_debug
+# from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+# from swayam.llm.prompt.file import PromptFile
+# from .format import ConversationFormatter
+# from .conversation import LLMConversation
+# from swayam.llm.structure.structure import IOStructure
+# from .meta import ConversationMeta
+
+# class Task(metaclass=TaskMeta):
     
-    def __init__(self, *conversations, system_prompt=None, same_context=True):
-        self.__conversations = []
-        self.__system_prompt = system_prompt
-        self.__same_context = same_context
-        if conversations:
-            for conversation in conversations:
-                self.append(conversation)
-        self.__context = PromptContext()
-        
-    def append(self, node):
-        message = None
-        if isinstance(node, Conversation):
-            message = node
-        else:
-            message = Conversation.load_message(node)._get_first_child()
-        if isinstance (message, Prompt):
-            message = Conversation(message)
-        # First node
-        if self.__same_context and len(self.__conversations) == 0:
-            message.set_system_prompt(self.__system_prompt) 
-        if not self.__same_context:
-            message.set_system_prompt(self.__system_prompt)
-        self.__conversations.append(message)
+#     @classmethod
+#     def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+#         if len(prompts) == 0:
+#             raise ValueError("No prompts provided.")
+#         for prompt in prompts:
+#             if not isinstance(prompt, UserPrompt):
+#                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
+#         if system_prompt:
+#             if type(system_prompt) == str:
+#                 system_prompt = SystemPrompt(text=system_prompt)
+#             elif not isinstance(system_prompt, SystemPrompt):
+#                 raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
+            
+#         from swayam import Tool, Structure
+#         if output_structure is not None and type(output_structure) is str:
+#             output_structure = getattr(Structure, output_structure)
+#         if tools is not None:
+#             output_tools = []
+#             for tool in tools:
+#                 if type(tool) is str:
+#                     output_tools.append(getattr(Tool, tool))
+#                 else:
+#                     output_tools.append(tool)
+#             tools = output_tools
 
-    def __iter__(self):
-        self.__index = -1
-        return self
-
-    def __next__(self):
-        self.__index += 1
-        try:
-            if not self.__same_context:
-                self.__context = PromptContext()
-            conversation = self.__conversations[self.__index]
-            conversation.context = self.__context
-            log_debug("Context Length: ", len(self.__context.messages))
-            return conversation
-        except IndexError:
-            self.__index = -1
-            raise StopIteration()
-        
+#         return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+    
+#     @classmethod
+#     def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+#         for prompt in prompts:
+#             if type(prompt) is not str:
+#                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
+#         return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools)
+    
+#     @classmethod
+#     def formatter(self, **fmt_kwargs):
+#         return ConversationFormatter(**fmt_kwargs)
+    
+    

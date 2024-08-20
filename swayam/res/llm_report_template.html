@@ -143,7 +143,7 @@
     <div class="middle-section">
         <!-- Left Pane for jsTree -->
         <div class="left-pane" id="leftPane">
-            <div id="jstree_router" class="treeview"></div>
+            <div id="jstree_agent" class="treeview"></div>
         </div>
 
         <!-- Resizer Handle -->
@@ -227,7 +227,7 @@
         const jsonData = $$SWAYAM_JSON_DATA$$;
 
         $(document).ready(function() {
-            $('#jstree_router').jstree({
+            $('#jstree_agent').jstree({
                 'core': {
                     'data': jsonData
                 },
@@ -242,9 +242,9 @@
             });
         
             // These functions deal with enabling single click expansion of a node.
-            $('#jstree_router').on("click", ".jstree-anchor", function (e) {
+            $('#jstree_agent').on("click", ".jstree-anchor", function (e) {
                 e.preventDefault();
-                var instance = $('#jstree_router').jstree(true);
+                var instance = $('#jstree_agent').jstree(true);
                 var node = instance.get_node(e.target);
         
                 // Single-click toggle for the clicked node
@@ -257,15 +257,15 @@
         }
             });
         
-            $('#jstree_router').on("dblclick.jstree", function (e) {
+            $('#jstree_agent').on("dblclick.jstree", function (e) {
                 e.stopPropagation();
             });
         
             // Handle node selection
-            $('#jstree_router').on("changed.jstree", function (e, data) {
+            $('#jstree_agent').on("changed.jstree", function (e, data) {
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
-                    const node = $('#jstree_router').jstree(true).get_node(nodeId);
+                    const node = $('#jstree_agent').jstree(true).get_node(nodeId);
                     let detailsContent = `<h2>${node.text}</h2>`;
                     const content = node.data.content;
             

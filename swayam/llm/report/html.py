@@ -349,7 +349,7 @@ class HtmlReporter(Reporter):
         """
         Finishes report creation.
         """
-        # !!!Should always be referred from reporting_config as it is a global object updated by Router from one execution to another.
+        # !!!Should always be referred from reporting_config as it is a global object updated by Agent from one execution to another.
         log_debug("Showing report in browser", self.__report_config.show_in_browser)
         if self.__report_config.show_in_browser:        
             webbrowser.open("file://" + self.__html_report_path)

@@ -16,19 +16,8 @@
 # limitations under the License.
 
 
-import os
-import sys
-
-def __join_paths(*paths):
-    return os.path.abspath(os.path.join(*paths))
-
-__root_dir = __join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
-sys.path.insert(0, __root_dir)
-
-from swayam.core.facade import Swayam
-from swayam.llm.agent import Agent
-from swayam.llm.prompt import Prompt
-from swayam.llm.conversation import Conversation
-from swayam.llm.task import Task
-from swayam.llm.structure import Structure
-from swayam.llm.tool import Tool
+class TaskMeta(type):
+    
+    def __getattr__(cls, name):
+        from .namespace import TaskDir
+        return TaskDir.load_task_from_file(name)
