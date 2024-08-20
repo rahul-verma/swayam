@@ -26,6 +26,8 @@ from pydantic import BaseModel, create_model, Field
 
 
 def iterator(data_object, output_structure):
+    if callable(data_object):
+        data_object = data_object()
     for data in data_object:
         yield output_structure(**data).dict()
 
