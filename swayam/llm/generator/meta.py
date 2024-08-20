@@ -15,12 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import importlib
 
-class TaskMeta(type):
+class GeneratorMeta(type):
     
     def __getattr__(cls, name):
-        if name == "repeater":
-            from .repeater import ConversationFileRepeater
-            return ConversationFileRepeater
-        from .namespace import TaskDir
-        return TaskDir.load_task_from_file(name)
+        from tarkash import Tarkash, TarkashOption
+        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
+        generator_module = importlib.import_module(f"{project_name}.lib.hook.generator")
+        return getattr(generator_module, name)

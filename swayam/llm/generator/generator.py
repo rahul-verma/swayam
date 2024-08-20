@@ -15,12 +15,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from enum import Enum
+from typing import *
 
-class TaskMeta(type):
+from pydantic import BaseModel, create_model, Field
+
+
+# Define a base class `Structure` that inherits from `BaseModel`
+
+
+def iterator(data_object, output_structure):
+    for data in data_object:
+        yield output_structure(**data).dict()
+
+class MapGenerator:
     
-    def __getattr__(cls, name):
-        if name == "repeater":
-            from .repeater import ConversationFileRepeater
-            return ConversationFileRepeater
-        from .namespace import TaskDir
-        return TaskDir.load_task_from_file(name)
+    def __init__(self, name, *, data_object, output_structure):
+        self.__name = name
+        self.__data_object = data_object
+        self.__output_structure = output_structure
+ 
+    def __iter__(self):
+        return iterator(self.__data_object, self.__output_structure)
