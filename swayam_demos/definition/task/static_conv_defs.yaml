@@ -1,0 +1,6 @@
+tools:
+    - Calculator
+
+conversation_defs:
+  - conv1_task
+  - conv2_task

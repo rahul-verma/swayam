@@ -60,7 +60,7 @@ class TaskDir:
             
             return Task.conversations(*conversation_objects, **task_kwargs)
         
-        def load_conversations_from_definitions(role, definitions):
+        def load_conversations_from_definitions(definitions):
             
             for index, definition in enumerate(definitions):
                 if type(definition) is not str:
@@ -69,13 +69,13 @@ class TaskDir:
             if fmt_kwargs:
                 conversation_files = []
                 for index, definition in enumerate(definitions):
-                    conversation_files.append(getattr(getattr(Conversation.file, role), definition.strip()))
+                    conversation_files.append(getattr(Conversation.file, definition.strip()))
                 return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files, **task_kwargs)
             else:
                 conversation_objects = []
                 for index, definition in enumerate(definitions):
-                    conversation_objects.append(getattr(getattr(Prompt, role), definition.strip()))
-                return Task.prompts(*conversation_objects, **task_kwargs) 
+                    conversation_objects.append(getattr(Conversation, definition.strip()))
+                return Task.conversations(*conversation_objects, **task_kwargs) 
             
         task_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
