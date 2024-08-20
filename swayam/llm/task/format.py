@@ -62,8 +62,8 @@ class TaskFormatter:
         return Task.conversations(*conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
-        from .namespace import ConversationDir
+        from .namespace import TaskDir
         import yaml
-        with open(ConversationDir.get_path_for_conversation(name=name)) as f:
+        with open(TaskDir.get_path_for_task(name=name)) as f:
             content = yaml.safe_load(f.read().format(**self.__fmt_kwargs))
-        return ConversationDir.create_conversation_from_content(name, content, **self.__fmt_kwargs)
+        return TaskDir.create_task_from_content(name, content, **self.__fmt_kwargs)

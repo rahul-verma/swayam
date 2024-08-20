@@ -1,0 +1,12 @@
+tools:
+    - Calculator
+
+conversations:
+  - prompts:
+      - Ask from me 2 numbers
+      - {i} and {j}
+      - Add them
+  - prompts:
+      - Ask from me 2 numbers
+      - {i} and {j}
+      - Multiply them
