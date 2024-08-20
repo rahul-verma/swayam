@@ -1,0 +1,5 @@
+tools:
+    - Calculator
+
+conversation_defs:
+  - formatting_prompt_defs_example
