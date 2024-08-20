@@ -27,19 +27,14 @@ from swayam.llm.structure.structure import IOStructure
 class LLMTask:
     
     def __init__(self, *conversations:LLMConversation, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
-        self.__prompts = list(conversations)
+        self.__conversations = list(conversations)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Task"
         self.__context = None
         self.__system_prompt = system_prompt
-        
-        # the image is appended only to the first prompt.
-        if image:
-            conversations[0].suggest_image(image)
-        
-        # Tools and response format are suggested to all prompts.            
-        for conversation in conversations:
+           
+        for conversation in self.__conversations:
             if image:
                 conversation.suggest_image(image)
                 

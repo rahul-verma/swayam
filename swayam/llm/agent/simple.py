@@ -93,7 +93,12 @@ class SimpleAgent:
                 return [process_output(o) in output]
         else:
             return process_output(output)
-                
+        
+    def __execute_task(self, task):
+        output = None
+        for conversation in task:
+            output = self.__execute_conversation(conversation)
+        return output
     
     def execute(self, executable, reset_context=True, show_in_browser=False):
         """
@@ -116,9 +121,10 @@ class SimpleAgent:
         
         from swayam.llm.prompt.types import UserPrompt
         from swayam.llm.conversation.conversation import LLMConversation
+        from swayam.llm.task.task import LLMTask
         
-        if not isinstance(executable, (UserPrompt, LLMConversation)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of UserPrompt, LLMConversation, Task, or Directive.")
+        if not isinstance(executable, (UserPrompt, LLMConversation, LLMTask)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of UserPrompt, LLMConversation, LLMTask, or Directive.")
         
         output = None
         if isinstance(executable, UserPrompt):
@@ -126,6 +132,8 @@ class SimpleAgent:
             output = self.__execute_user_prompt(executable)
         elif isinstance(executable, LLMConversation):
             output = self.__execute_conversation(executable)
+        elif isinstance(executable, LLMTask):
+            output = self.__execute_task(executable)
             
         self.__listener.finish()
         return output

@@ -23,6 +23,7 @@ from tarkash import log_debug
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.conversation.conversation import LLMConversation
+from .task import LLMTask
 from swayam.llm.structure.structure import IOStructure
 
 from .format import TaskFormatter
@@ -31,12 +32,12 @@ from .meta import TaskMeta
 class Task(metaclass=TaskMeta):
     
     @classmethod
-    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
-        if len(prompts) == 0:
-            raise ValueError("No prompts provided.")
-        for prompt in prompts:
-            if not isinstance(prompt, UserPrompt):
-                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
+    def conversations(cls, *conversations:LLMConversation, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
+        if len(conversations) == 0:
+            raise ValueError("No conversations provided.")
+        for conversation in conversations:
+            if not isinstance(conversation, LLMConversation):
+                raise ValueError(f"Invalid conversation type: {type(conversation)}. Should be an LLMConversation object.")
         if system_prompt:
             if type(system_prompt) == str:
                 system_prompt = SystemPrompt(text=system_prompt)
@@ -55,17 +56,8 @@ class Task(metaclass=TaskMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
-    
-    @classmethod
-    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
-        for prompt in prompts:
-            if type(prompt) is not str:
-                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
-        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools)
+        return LLMTask(*conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):
-        return ConversationFormatter(**fmt_kwargs)
-    
-    
+        return TaskFormatter(**fmt_kwargs)
