@@ -17,28 +17,30 @@
 
 from typing import Union
 
+from swayam.llm.conversation.file import ConversationFile
+from swayam.llm.conversation.format import ConversationFormatter
+from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
-from .conversation import LLMConversation
 from swayam.llm.structure.structure import IOStructure
 
-class ConversationFormatter:
+class TaskFormatter:
     
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def prompt_files(self, *prompt_files:PromptFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
-        if len(prompt_files) == 0:
-            raise ValueError("No prompts provided.")
-        prompts = []
-        for prompt_file in prompt_files:
-            if not isinstance(prompt_file, PromptFile):
-                raise ValueError(f"Invalid prompt type: {type(prompt_file)}. Should be a PromptFile object.")  
+    def conversation_files(self, *conversation_files:ConversationFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+        if len(conversation_files) == 0:
+            raise ValueError("No conversations provided.")
+        conversations = []
+        for conversation_file in conversation_files:
+            if not isinstance(conversation_file, ConversationFile):
+                raise ValueError(f"Invalid conversation type: {type(conversation_file)}. Should be a ConversationFile object.")  
             
-            formatter = PromptFormatter(role=prompt_file.role, **self.__fmt_kwargs)
-            prompt = getattr(formatter, prompt_file.file_name)
-            prompts.append(prompt)
+            formatter = ConversationFormatter(**self.__fmt_kwargs)
+            conversation = getattr(formatter, conversation_file.file_name)
+            conversations.append(conversation)
             
         if system_prompt:
             if not isinstance(system_prompt, PromptFile) and not isinstance(system_prompt, SystemPrompt):
@@ -56,7 +58,7 @@ class ConversationFormatter:
                 pass
         
         from swayam import Conversation
-        return Conversation.prompts(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        return Task.coversations(*conversation, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
         from .namespace import ConversationDir

@@ -19,44 +19,35 @@
 from typing import Any, Union
 
 from tarkash import log_debug
-from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import SystemPrompt, UserPrompt
-from .context import PromptContext
+from swayam.llm.conversation.conversation import LLMConversation
+from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.conversation.context import PromptContext
 from swayam.llm.structure.structure import IOStructure
 
-class LLMConversation:
+class LLMTask:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
-        self.__prompts = list(prompts)
+    def __init__(self, *conversations:LLMConversation, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+        self.__prompts = list(conversations)
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = "Conversation"
-        self.__context = context
+            self.__purpose = "Task"
+        self.__context = None
         self.__system_prompt = system_prompt
-        self.__image = image
-        self.__output_structure = output_structure
-        self.__tools = tools
-        self.__make_image_suggestions()
-        self.__make_structure_suggestions()
-        self.__make_tool_suggestions()
         
-
-    def __make_image_suggestions(self):
         # the image is appended only to the first prompt.
-        if self.__image:
-            self.__prompts[0].suggest_image(self.__image)
+        if image:
+            conversations[0].suggest_image(image)
         
-    def __make_structure_suggestions(self):
         # Tools and response format are suggested to all prompts.            
-        for prompt in self.__prompts:
-            if self.__image:
-                prompt.suggest_output_structure(self.__output_structure)
+        for conversation in conversations:
+            if image:
+                conversation.suggest_image(image)
                 
-    def __make_tool_suggestions(self):
-        # Tools and response format are suggested to all prompts.            
-        for prompt in self.__prompts:
-            if self.__tools:
-                prompt.suggest_tools(self.__tools) 
+            if output_structure:
+                conversation.suggest_output_structure(output_structure)
+                
+            if tools:
+                conversation.suggest_tools(tools)
     
     def is_new(self):
         return len(self.__context) == 0
@@ -84,11 +75,11 @@ class LLMConversation:
     def context(self, context:PromptContext):
         self.__context = context
         
-    def append(self, prompt:Prompt):
-        self.__prompts.append(prompt)
+    def append(self, conversation:LLMConversation):
+        self.__prompts.append(conversation)
         
     def __len__(self):
-        return len(self.__prompts)
+        return len(self.__conversations)
         
     def describe(self, level=0):
         """
@@ -98,16 +89,13 @@ class LLMConversation:
         indent = " " * level
         description = f"{indent}Conversation (Length: {len(self)})\n"
         
-        for prompt in self.__prompts:
-            if isinstance(prompt, LLMConversation):
-                description += prompt.describe(level + 1)
-            else:
-                description += f"{indent}  {type(prompt).__name__}\n"
+        for conversation in self.__conversations:
+            description += conversation.describe(level + 1)
         
         return description
     
     @property
-    def _prompts(self):
+    def _conversations(self):
         return self.__prompts
         
     def __iter__(self):
@@ -117,27 +105,10 @@ class LLMConversation:
     def __next__(self):
         self.__index += 1
         try:
-            return self.__prompts[self.__index]
+            return self.__conversations[self.__index]
         except IndexError:
             self.__index = -1
             raise StopIteration()
         
     def _get_first_child(self):
-        return self.__prompts[0]
-    
-
-    def suggest_image(self, image):
-        if not self.__image:
-            self.__image = image
-        self.__make_image_suggestions()
-            
-    def suggest_output_structure(self, output_structure):
-        if not self.__output_structure:
-            self.__output_structure = output_structure
-        self.__make_structure_suggestions()
-            
-    def suggest_tools(self, tools):
-        if not self.__tools:
-            self.__tools = tools
-        self.__make_tool_suggestions()
-            
+        return self.__conversations[0]

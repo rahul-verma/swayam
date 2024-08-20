@@ -1,4 +1,4 @@
-user_prompts:
+prompts:
   - I am planning a trip to Berlin in June. Create a list of places worth seeing there.
   - image: data/images/5EModel.png
     text: |

@@ -3,6 +3,6 @@ system_prompt_def: |
 
 purpose: Using System Prompt Def
 
-user_prompt_defs:
+prompt_defs:
   - trip_command
   - trip_query

@@ -87,10 +87,10 @@ class ConversationDir:
         }
         
         if type(content) is not dict:
-            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, user_prompts, user_prompt_defs, purpose, image, output_structure, tools]")  
+            raise TypeError(f"Invalid format of conversation file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, prompts, prompt_defs, purpose, image, output_structure, tools]")  
         
-        if "user_prompts" in content and "user_prompt_defs" in content:
-            raise ValueError(f"A conversation file cannot contain both 'user_prompts' and 'user_prompt_defs' keys. Choose one.")
+        if "prompts" in content and "prompt_defs" in content:
+            raise ValueError(f"A conversation file cannot contain both 'prompts' and 'prompt_defs' keys. Choose one.")
         
         if "system_prompt" in content and "system_prompt_def" in content:
             raise ValueError(f"A conversation file cannot contain both 'system_prompt' and 'system_prompt_def' keys. Choose one.")
@@ -116,16 +116,16 @@ class ConversationDir:
                 if type(content[key]) is not allowed_type:
                     raise ValueError(f"Invalid format of '{key}' key in conversation file: {name}. Expected a {allowed_type}. Found: {type(content[key])}")
         
-        if "user_prompts" in content:
-            if type(content["user_prompts"]) is not list:
-                raise ValueError(f"The user_prompts key in a conversation file must contain a list. Found: {type(content['user_prompts'])}") 
-            return load_prompts_from_direct_content("user", content["user_prompts"])
-        elif "user_prompt_defs" in content:
-            if type(content["user_prompt_defs"]) is not list:
-                raise ValueError(f"The user_prompt_defs key in a conversation file must contain a list. Found: {type(content['user_prompt_defs'])}") 
-            return load_prompts_from_definitions("user", content["user_prompt_defs"])
+        if "prompts" in content:
+            if type(content["prompts"]) is not list:
+                raise ValueError(f"The prompts key in a conversation file must contain a list. Found: {type(content['prompts'])}") 
+            return load_prompts_from_direct_content("user", content["prompts"])
+        elif "prompt_defs" in content:
+            if type(content["prompt_defs"]) is not list:
+                raise ValueError(f"The prompt_defs key in a conversation file must contain a list. Found: {type(content['prompt_defs'])}") 
+            return load_prompts_from_definitions("user", content["prompt_defs"])
         else:
-            raise ValueError(f"A conversation file must contain either a 'user_prompts' or 'user_prompt_defs' key.") 
+            raise ValueError(f"A conversation file must contain either a 'prompts' or 'prompt_defs' key.") 
 
     @classmethod    
     def load_conversation_from_file(cls, name):

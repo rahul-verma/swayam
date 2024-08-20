@@ -3,6 +3,6 @@ system_prompt: |
 
 purpose: Using Dynamic System Prompt String
 
-user_prompt_defs:
+prompt_defs:
   - trip_command
   - trip_query

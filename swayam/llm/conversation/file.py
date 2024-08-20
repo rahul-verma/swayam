@@ -16,17 +16,28 @@
 # limitations under the License.
 
 import os
+import importlib
+from abc import ABC, abstractmethod
 
-def list_files(path:str):
-    from tarkash import Directory
-    directory = Directory(path, should_exist=True)
-    file_paths = []
+class ConversationFile:
     
-    # Walk through the directory tree
-    for dirpath, _, filenames in os.walk(directory.full_path):
-        for filename in filenames:
-            # Construct absolute file path
-            file_path = os.path.join(dirpath, filename)
-            file_paths.append(file_path)
+    def __init__(self, *, role, file_name):
+        self.__role = role
+        self.__file_name = file_name
+        
+    @property
+    def role(self):
+        return self.__role
+    @property
+    def file_name(self):
+        return self.__file_name
+
+class ConversationFileLoader:
     
-    return file_paths
+    def __init__(self):
+        pass
+        
+    def __getattr__(self, name):
+        return ConversationFile(file_name=name)
+        
+        

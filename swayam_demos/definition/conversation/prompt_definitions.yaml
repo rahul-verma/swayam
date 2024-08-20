@@ -1,5 +1,5 @@
 purpose: Using Prompt Definitions
 
-user_prompt_defs:
+prompt_defs:
   - trip_command
   - trip_query
