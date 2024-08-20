@@ -68,11 +68,11 @@ class HtmlReporter(Reporter):
         
         # So far the report has only one plan node with one task node.
 
-    def __get_plan_children_node(self):
+    def __get_directive_children_node(self):
         return self.__json_data[-1]["children"]
     
     def __get_task_children_node(self):
-        return self.__get_plan_children_node()[-1]["children"]
+        return self.__get_directive_children_node()[-1]["children"]
     
     def __get_conversation_node(self):
         return self.__get_task_children_node()[-1]
@@ -104,37 +104,36 @@ class HtmlReporter(Reporter):
         """
         
         if self.__json_data == []:
-            # Add Plan Node
+            # Add Directive Node
             self.__json_data.append({
-                                    "id": "plan_node_" + uuid4().hex,
-                                    "text": "Plan",
+                                    "id": "directive_node_" + uuid4().hex,
+                                    "text": "Directive",
                                     "children": []   
                                 })
             
             # The Task node
-            self.__get_plan_children_node().append({
+            self.__get_directive_children_node().append({
                                         "id": "task_node_" + uuid4().hex,
                                         "text": "Task",
                                         "children": []
                                     })
-        
-        if conversation.is_new():
-            conversation_id = "conversation_" + uuid4().hex
-            self.__get_task_children_node().append({
-                                        "id": conversation_id,
-                                        "text": f"{conversation.purpose}",
-                                        "data": {
-                                            "content": [{
-                                                    "heading": "Conversation ID",
-                                                    "content": conversation_id
-                                                },
-                                                {
-                                                    "heading": "Message History",
-                                                    "content": []
-                                                }
-                                        ]},
-                                        "children": []
-                                    })
+
+        conversation_id = "conversation_" + uuid4().hex
+        self.__get_task_children_node().append({
+                                    "id": conversation_id,
+                                    "text": f"{conversation.purpose}",
+                                    "data": {
+                                        "content": [{
+                                                "heading": "Conversation ID",
+                                                "content": conversation_id
+                                            },
+                                            {
+                                                "heading": "Message History",
+                                                "content": []
+                                            }
+                                    ]},
+                                    "children": []
+                                })
             
     def report_system_prompt(self, prompt:Prompt) -> None:
         """
@@ -167,6 +166,11 @@ class HtmlReporter(Reporter):
         Args:
             context (PromptContext): Context object with all input messages.
         """
+        
+        if self.__json_data == []:
+            from swayam import Conversation
+            self.report_begin_conversation(Conversation.texts("Hi"))
+        
         log_debug("Begin: Reporting Context.")
         context_file_path = self.__json_messages_path + "/" + self.__get_conversation_node()["id"] + "_context.json"
         context_json = json.dumps(context.reportable_messages, indent=4)

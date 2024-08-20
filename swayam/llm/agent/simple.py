@@ -35,11 +35,7 @@ class SimpleAgent:
         self.__listener = AgentListener(self.__report_config)
         log_debug("Agent initialized.")
         
-    def __prepare_for_execution(self, *, reset_context, show_in_browser):
-        if reset_context:
-            log_debug("Resetting context...")
-            self.__context.reset()
-
+    def __prepare_for_execution(self, *, show_in_browser):
         log_debug(f"Setting show_in_browser to {show_in_browser}.")
         self.__report_config.show_in_browser = show_in_browser
         
@@ -47,13 +43,22 @@ class SimpleAgent:
     def __execute_user_prompt(self, user_prompt):
         from swayam import Conversation
         log_debug(f"Converting UserPrompt to Conversation.")
-        conversation = Conversation.prompts(user_prompt)
+        conversation = Conversation.prompts(user_prompt, reset_context=False)
+        conversation.extends_previous_conversation = True
         return self.__execute_conversation(conversation)
     
     def __execute_conversation(self, conversation):
+        from swayam.llm.conversation.context import PromptContext
         from swayam.llm.executor.conversation import ConversationExecutor
+        if conversation.reset_context:
+            self.__context.reset()
+
         # Set context of conversation
-        conversation.context = self.__context
+        if not conversation.standalone:
+            conversation.context = self.__context
+        else:
+            # Set empty context
+            conversation.context = PromptContext()
         
         log_debug(f"Executing Conversation with ConversationAgent.")
         agent = ConversationExecutor(listener=self.__listener)
@@ -100,7 +105,7 @@ class SimpleAgent:
             output = self.__execute_conversation(conversation)
         return output
     
-    def execute(self, executable, reset_context=True, show_in_browser=False):
+    def execute(self, executable, show_in_browser=False):
         """
         Executes a part of or complete directive.
         
@@ -112,21 +117,24 @@ class SimpleAgent:
         
         Args:
             executable: The object to execute.
-            reset_context: If True, the context will be reset before executing the object. Default is True.
             show_in_browser: If True, the HTML report will be displayed in the browser. Default is False.
         """
         
         log_debug(f"Executing Agent executable object of type {type(executable)}.")
-        self.__prepare_for_execution(reset_context=reset_context, show_in_browser=show_in_browser)
+        self.__prepare_for_execution(show_in_browser=show_in_browser)
         
         from swayam.llm.prompt.types import UserPrompt
         from swayam.llm.conversation.conversation import LLMConversation
         from swayam.llm.task.task import LLMTask
         
-        if not isinstance(executable, (UserPrompt, LLMConversation, LLMTask)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of UserPrompt, LLMConversation, LLMTask, or Directive.")
+        if not isinstance(executable, (str, UserPrompt, LLMConversation, LLMTask)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMConversation, LLMTask, or Directive.")
         
         output = None
+        if isinstance(executable, str):
+            from swayam.llm.prompt import Prompt
+            log_debug(f"Converting user prompt string to LLMConversation.")
+            output = self.__execute_user_prompt(Prompt.text(executable))
         if isinstance(executable, UserPrompt):
             log_debug(f"Converting UserPrompt to LLMConversation.")
             output = self.__execute_user_prompt(executable)

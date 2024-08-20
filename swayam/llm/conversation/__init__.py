@@ -29,7 +29,7 @@ from .meta import ConversationMeta
 class Conversation(metaclass=ConversationMeta):
     
     @classmethod
-    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True) -> LLMConversation:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
         for prompt in prompts:
@@ -53,14 +53,14 @@ class Conversation(metaclass=ConversationMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        return LLMConversation(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone)
     
     @classmethod
-    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True) -> LLMConversation:
         for prompt in prompts:
             if type(prompt) is not str:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
-        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools)
+        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

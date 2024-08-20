@@ -83,7 +83,9 @@ class ConversationDir:
             "system_prompt": content.get("system_prompt", None),
             "image": content.get("image", None),
             "output_structure": content.get("output_structure", None),
-            "tools": content.get("tools", None)
+            "tools": content.get("tools", None),
+            "reset_context": content.get("reset_context", True),
+            "standalone": content.get("standalone", False),
         }
         
         if type(content) is not dict:

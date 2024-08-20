@@ -41,13 +41,15 @@ class ConversationExecutor(BaseLLMExecutor):
         # For an extended conversation, the system prompt is already executed in one of the previous conversations.
         
         print(f"Executing Conversation with {len(conversation)} prompt(s).")
-        self.listener.report_begin_conversation(conversation)
-        if conversation.has_system_prompt():
-            conversation.system_prompt.process_for_report()
-            self.listener.report_system_prompt(conversation.system_prompt)
-            
-            conversation.context.append_prompt(conversation.system_prompt)
-            self.listener.report_context(conversation.context)
+        if not conversation.extends_previous_conversation:
+            self.listener.report_begin_conversation(conversation)
+            if conversation.is_new():
+                if conversation.has_system_prompt():
+                    conversation.system_prompt.process_for_report()
+                    self.listener.report_system_prompt(conversation.system_prompt)
+                    
+                    conversation.context.append_prompt(conversation.system_prompt)
+                    self.listener.report_context(conversation.context)
         log_debug("Finished processing system prompt.")
         
         for prompt in conversation:

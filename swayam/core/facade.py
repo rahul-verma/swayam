@@ -103,7 +103,7 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, prompt:str, *, reset_context:bool=False):
+    def execute(cls, prompt:str):
         """
         A simple facade to default LLM Model, resulting in one a prompt being executed.
         
@@ -115,16 +115,13 @@ class Swayam:
         
         Args:
             prompt (str): The prompt to be executed
-            reset_context (bool, optional): If True, the context is reset. Defaults to False (All executions use same context).
 
         Returns:
             (str): Returns the message from the LLM.
         """
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
-        from swayam import Prompt
-        user_prompt = Prompt.text(prompt)
-        return cls._SWAYAM_SINGLETON.default_agent.execute(user_prompt, reset_context=reset_context)
+        return cls._SWAYAM_SINGLETON.default_agent.execute(prompt)
     
     
     @classmethod

@@ -26,7 +26,7 @@ from swayam.llm.structure.structure import IOStructure
 
 class LLMConversation:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
@@ -40,6 +40,38 @@ class LLMConversation:
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
         
+        # Depends on how it was created. When it is a single prompt conversation created for an execute call of Agent, it is treated as a continuation of the previous conversation.
+        self.__extends_previous_conversation = False
+        
+        # If True, it gets an empty context value. Has no impact on context of the follow-up conversations.
+        self.__standalone = standalone
+        
+        # If True, it resets the parent's context for itself. The subsequent conversation receives the context that it results in.
+        self.__reset_context = reset_context
+        
+    @property
+    def standalone(self):
+        return self.__standalone
+    
+    @property
+    def reset_context(self):
+        return self.__reset_context
+        
+    @property
+    def extends_previous_conversation(self):
+        return self.__extends_previous_conversation
+    
+    @extends_previous_conversation.setter
+    def extends_previous_conversation(self, value:bool):
+        self.__extends_previous_conversation = value
+        
+    @property
+    def extends_previous_conversation(self):
+        return self.__extends_previous_conversation
+    
+    @extends_previous_conversation.setter
+    def extends_previous_conversation(self, value:bool):
+        self.__extends_previous_conversation = value
 
     def __make_image_suggestions(self):
         # the image is appended only to the first prompt.
