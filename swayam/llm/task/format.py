@@ -18,7 +18,6 @@
 from typing import Union
 
 from swayam.llm.conversation.file import ConversationFile
-from swayam.llm.conversation.format import ConversationFormatter
 from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
@@ -31,6 +30,8 @@ class TaskFormatter:
         self.__fmt_kwargs = fmt_kwargs
 
     def conversation_files(self, *conversation_files:ConversationFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
+        from swayam.llm.conversation.format import ConversationFormatter
+        
         if len(conversation_files) == 0:
             raise ValueError("No conversations provided.")
         conversations = []
@@ -57,8 +58,8 @@ class TaskFormatter:
                 # If a system prompt is provided directly, it is NOT formatted.
                 pass
         
-        from swayam import Conversation
-        return Task.coversations(*conversation, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        from swayam import Task
+        return Task.conversations(*conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
         from .namespace import ConversationDir

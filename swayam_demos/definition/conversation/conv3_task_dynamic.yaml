@@ -1,0 +1,7 @@
+tools: [Calculator]
+
+prompts:
+  - Ask from me 2 numbers
+  - {i} and {j}
+  - Add them
+

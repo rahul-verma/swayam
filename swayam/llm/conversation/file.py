@@ -21,13 +21,9 @@ from abc import ABC, abstractmethod
 
 class ConversationFile:
     
-    def __init__(self, *, role, file_name):
-        self.__role = role
+    def __init__(self, *, file_name):
         self.__file_name = file_name
-        
-    @property
-    def role(self):
-        return self.__role
+
     @property
     def file_name(self):
         return self.__file_name

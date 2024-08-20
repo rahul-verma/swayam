@@ -19,5 +19,9 @@
 class ConversationMeta(type):
     
     def __getattr__(cls, name):
+        from .file import ConversationFileLoader
+        if name == "file":
+            return ConversationFileLoader()
+        
         from .namespace import ConversationDir
         return ConversationDir.load_conversation_from_file(name)
