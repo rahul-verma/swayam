@@ -15,18 +15,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+from swayam import Tool, Structure
+from swayam.llm.structure.builtin import *
 
-def list_files(path:str):
+import os
+import re
+
+def list_files(*, dir_path:str, file_name_pattern:str=None):
     from tarkash import Directory
-    directory = Directory(path, should_exist=True)
-    file_paths = []
+    directory = Directory(dir_path, should_exist=True)
+    files_info_list = []
     
     # Walk through the directory tree
     for dirpath, _, filenames in os.walk(directory.full_path):
         for filename in filenames:
             # Construct absolute file path
+            if file_name_pattern is not None and not re.match(file_name_pattern, filename):
+                continue
             file_path = os.path.join(dirpath, filename)
-            file_paths.append(file_path)
+            files_info_list.append(FileInfo(file_name=filename, file_path=file_path))
     
-    return file_paths
+    return files_info_list
+
+DirEnumerator = Tool.build("DirEnumerator", 
+                         target=list_files, 
+                         desc="Recursively lists the full path of files in the provided directory path.",
+                         input_structure=DirPathWithFileFilter,
+                         output_structure=FileInfo,
+                         atomic=False
+)

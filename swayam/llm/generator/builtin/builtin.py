@@ -1,4 +1,4 @@
-# This file is a part of Swayam
+# This file is a part of Tarkash
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,10 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel, Field
-from swayam import Structure
+import os
 
-class PathModel(BaseModel):
-    path:str = Field(..., description="Path to the file or directory", example="/home/user/file.txt")
-    
-Path = Structure.build(PathModel)
+from swayam.llm.tool.builtin import *
+        
+FileInfoInDir =  DirEnumerator.as_generator("FileInfoInDir")
+FileContentInDir = FileReader.as_generator("FileContentInDir")
+

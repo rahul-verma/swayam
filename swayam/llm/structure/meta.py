@@ -20,7 +20,14 @@ import importlib
 class StructureMeta(type):
     
     def __getattr__(cls, name):
-        from tarkash import Tarkash, TarkashOption
-        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-        structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
-        return getattr(structure_module, name)
+        try:
+            from tarkash import Tarkash, TarkashOption
+            project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
+            structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
+            return getattr(structure_module, name)
+        except AttributeError:
+            try:
+                structure_module = importlib.import_module("swayam.llm.structure.builtin")
+                return getattr(structure_module, name)
+            except AttributeError:
+                raise ImportError(f"The structure {name} is neither defined in the project, nor defined by Swayam.")

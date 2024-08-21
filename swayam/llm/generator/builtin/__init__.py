@@ -1,4 +1,4 @@
-# This file is a part of Swayam
+# This file is a part of Tarkash
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,12 +15,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam import Tool, Structure
-from swayam.function.file_system import *
-from swayam.llm.structure.builtin import Path
-
-ListFiles = Tool.build("ListFiles", 
-                         target=list_files, 
-                         desc="Recursively lists the full path pf files in the provided directory path.",
-                         call_structure=Path
-)
+from .builtin import FileInfoInDir
+from .builtin import FileContentInDir

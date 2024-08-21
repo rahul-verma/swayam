@@ -21,7 +21,7 @@ from .meta import StructureMeta
 class Structure(metaclass=StructureMeta):
     
     @classmethod
-    def build(cls, model:BaseModel):
+    def build(cls, name, model:BaseModel):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 

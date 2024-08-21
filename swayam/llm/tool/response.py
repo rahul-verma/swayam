@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from uuid import uuid4
+
 class ToolResponse:
     
     def __init__(self, tool, result):
@@ -22,7 +24,7 @@ class ToolResponse:
         self.__tool_name = tool.name
         self.__tool_definition = tool.definition
         self.__result = result
-        self.__tool_id = None
+        self.__tool_id = uuid4()
     
     @property
     def tool_id(self):

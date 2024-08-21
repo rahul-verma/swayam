@@ -15,15 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.structure.structure import IOStructure
-from .meta import ToolMeta
+from .builtin import DirPath
+from .builtin import FilePath
+from .builtin import DirPathWithFileFilter
+from .builtin import FileInfo
+from .builtin import FileContent
 
-class Tool(metaclass=ToolMeta):
-    
-    @classmethod
-    def build(cls, name, *, target, desc:str=None, input_structure:IOStructure=None, output_structure:IOStructure=None, atomic=True):
-        from .tool import LLMTool
-        return LLMTool(name, target=target, desc=desc, input_structure=input_structure, output_structure=output_structure, atomic=atomic)
-        
-    
-    

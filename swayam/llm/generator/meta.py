@@ -20,7 +20,14 @@ import importlib
 class GeneratorMeta(type):
     
     def __getattr__(cls, name):
-        from tarkash import Tarkash, TarkashOption
-        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-        generator_module = importlib.import_module(f"{project_name}.lib.hook.generator")
-        return getattr(generator_module, name)
+        try:
+            from tarkash import Tarkash, TarkashOption
+            project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
+            generator_module = importlib.import_module(f"{project_name}.lib.hook.generator")
+            return getattr(generator_module, name)
+        except AttributeError:
+            try:
+                generator_module = importlib.import_module("swayam.llm.generator.builtin")
+                return getattr(generator_module, name)
+            except AttributeError:
+                raise ImportError(f"The generator {name} is neither defined in the project, nor defined by Swayam.")

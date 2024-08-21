@@ -15,15 +15,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.structure.structure import IOStructure
-from .meta import ToolMeta
+from swayam import Tool, Structure
+from swayam.llm.structure.builtin import *
 
-class Tool(metaclass=ToolMeta):
-    
-    @classmethod
-    def build(cls, name, *, target, desc:str=None, input_structure:IOStructure=None, output_structure:IOStructure=None, atomic=True):
-        from .tool import LLMTool
-        return LLMTool(name, target=target, desc=desc, input_structure=input_structure, output_structure=output_structure, atomic=atomic)
-        
-    
-    
+import os
+import re
+
+def read_file(*, path:str):
+    from tarkash import FlatFile
+    file = FlatFile(path)
+    return FileContent(file_name=os.path.basename(path), file_path=file.full_path, file_content=file.content)
+
+FileReader = Tool.build("FileReader", 
+                         target=read_file, 
+                         desc="Returns the contents of file (in text mode).",
+                         input_structure=FilePath,
+                         output_structure=FileContent
+)

@@ -21,6 +21,15 @@ from typing import *
 
 from pydantic import BaseModel, create_model, Field
 
+class IOStructureObject:
+    
+    def __init__(self, structure, instance):
+        self.__structure = structure
+        self.__instance = instance
+        
+    def as_dict(self):
+        return self.__instance.model_dump()
+
 
 # Define a base class `Structure` that inherits from `BaseModel`
 class IOStructure:
@@ -42,4 +51,4 @@ class IOStructure:
         return data_schema
     
     def __call__(self, **fields):
-        return self.__data_model(**fields)
+        return IOStructureObject(self, self.__data_model(**fields))
