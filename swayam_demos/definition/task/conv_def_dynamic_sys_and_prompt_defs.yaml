@@ -1,0 +1,4 @@
+purpose: Using Dynamic System as well as Prompt Defs
+
+conversation_defs:
+  - system_prompt_dyn_string_dynamic_prompts

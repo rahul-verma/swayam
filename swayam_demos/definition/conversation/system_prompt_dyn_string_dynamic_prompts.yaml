@@ -1,0 +1,7 @@
+system_prompt_def: trip_persona
+
+purpose: Using Dynamic System as well as Prompt Defs
+
+prompt_defs:
+  - plan_a_trip
+  - plan_a_trip_task

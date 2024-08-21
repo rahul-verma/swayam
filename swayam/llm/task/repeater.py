@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 from typing import Union
 
 from tarkash import log_debug
@@ -34,7 +35,9 @@ class DynamicConversationFile:
         out = []
         iterator = iter(self.__generator)
         for data in iterator:
-            out.append(getattr(ConversationFormatter(**data), self.__file_name))
+            fmt_dict = copy.deepcopy(fmt_kwargs)
+            fmt_dict.update(data)
+            out.append(getattr(ConversationFormatter(**fmt_dict), self.__file_name))
         return out    
 
 class ConversationFileRepeater:

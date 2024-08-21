@@ -31,17 +31,21 @@ class TaskFormatter:
 
     def conversation_files(self, *conversation_files:ConversationFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         from swayam.llm.conversation.format import ConversationFormatter
+        from swayam.llm.task.repeater import DynamicConversationFile
         
         if len(conversation_files) == 0:
             raise ValueError("No conversations provided.")
         conversations = []
         for conversation_file in conversation_files:
-            if not isinstance(conversation_file, ConversationFile):
-                raise ValueError(f"Invalid conversation type: {type(conversation_file)}. Should be a ConversationFile object.")  
-            
-            formatter = ConversationFormatter(**self.__fmt_kwargs)
-            conversation = getattr(formatter, conversation_file.file_name)
-            conversations.append(conversation)
+            if isinstance (conversation_file, DynamicConversationFile):
+                out_conversations = conversation_file.create_conversations(**self.__fmt_kwargs)
+                conversations.extend(out_conversations)
+            elif isinstance(conversation_file, ConversationFile):
+                formatter = ConversationFormatter(**self.__fmt_kwargs)
+                conversation = getattr(formatter, conversation_file.file_name)
+                conversations.append(conversation)
+            else:
+                raise ValueError(f"Invalid conversation type: {type(conversation_file)}. Should be a ConversationFile object.") 
             
         if system_prompt:
             if not isinstance(system_prompt, PromptFile) and not isinstance(system_prompt, SystemPrompt):
