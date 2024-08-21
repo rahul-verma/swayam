@@ -25,18 +25,29 @@ from pydantic import BaseModel, create_model, Field
 # Define a base class `Structure` that inherits from `BaseModel`
 
 
-def iterator(data_object, output_structure):
+def iterator(data_object, output_structure, data_object_kwargs):
     if callable(data_object):
-        data_object = data_object()
+        data_object = data_object(**data_object_kwargs)
     for data in data_object:
         yield output_structure(**data).dict()
-
+        
 class MapGenerator:
+    
+    def __init__(self, name, *, data_object, output_structure, **data_object_kwargs):
+            self.__name = name
+            self.__data_object = data_object
+            self.__output_structure = output_structure
+            self.__data_object_kwargs = data_object_kwargs
+ 
+    def __iter__(self):
+        return iterator(self.__data_object, self.__output_structure, self.__data_object_kwargs)
+
+class MapGeneratorCreator:
     
     def __init__(self, name, *, data_object, output_structure):
         self.__name = name
         self.__data_object = data_object
         self.__output_structure = output_structure
  
-    def __iter__(self):
-        return iterator(self.__data_object, self.__output_structure)
+    def __call__(self, **kwargs):
+        return MapGenerator(self.__name, data_object=self.__data_object, output_structure=self.__output_structure, **kwargs)

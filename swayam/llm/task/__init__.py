@@ -39,9 +39,9 @@ class Task(metaclass=TaskMeta):
         out_conversations = []
         for conversation in conversations:
             if isinstance (conversation, DynamicConversationFile):
-                out_conversations = conversation.create_conversations()
+                out_conversations.extend(conversation.create_conversations())
             elif isinstance(conversation, LLMConversation):
-                out_conversations = conversations
+                out_conversations.append(conversations)
             else:
                 raise ValueError(f"Invalid conversation type: {type(conversation)}. Should be an LLMConversation or DynamicConversationFile object.")
         if system_prompt:
@@ -62,6 +62,7 @@ class Task(metaclass=TaskMeta):
                     output_tools.append(tool)
             tools = output_tools
 
+        print(len(out_conversations))
         return LLMTask(*out_conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod

@@ -27,6 +27,13 @@ class Generator(metaclass=GeneratorMeta):
 
         :param name: Name of the structure
         """
-        from .generator import MapGenerator
-        return MapGenerator(name, data_object=data_object, output_structure=output_structure)
+        from .generator import MapGeneratorCreator
+        return MapGeneratorCreator(name, data_object=data_object, output_structure=output_structure)
+    
+    @classmethod
+    def create_generator_from_content(cls, *, generator, args=None):
+        from swayam import Generator
+        if args == None:
+            args = {}
+        return getattr(Generator, generator)(**args)
         

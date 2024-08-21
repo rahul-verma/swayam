@@ -51,9 +51,11 @@ class TaskDir:
                 return getattr(getattr(Prompt, "system"), definition.strip())
         
         def load_conversations_from_direct_content(conversations):
+            from swayam import Generator
+            
             conversation_objects = []
             for index, conversation in enumerate(conversations):
-                if type(conversation) in (str, dict):
+                if type(conversation) in (dict,):
                     conversation_objects.append(ConversationDir.create_conversation_from_content(f"{name}_conversation{index+1}", conversation))
                 else:
                     raise ValueError(f"Invalid format of conversation in task file: {name}. Expected a string or a dictionary. Found: {type(conversation)}")
@@ -63,19 +65,28 @@ class TaskDir:
         def load_conversations_from_definitions(definitions):
             
             for index, definition in enumerate(definitions):
-                if type(definition) is not str:
-                    raise ValueError(f"Invalid format of conversation definition in task file: {name}. Expected a string. Found: {type(definition)}")
+                if type(definition) not in (str, dict):
+                    raise ValueError(f"Invalid format of conversation definition in task file: {name}. Expected a string or a dictionary. Found: {type(definition)}")
                 
+            conversation_files_or_objects = []
+            for index, definition in enumerate(definitions):
+                if type(definition) is str:
+                    if fmt_kwargs:
+                        # Load Raw Files
+                        conversation_files_or_objects.append(getattr(Conversation.file, definition.strip()))
+                    else:
+                        # Load as Objects
+                        conversation_files_or_objects.append(getattr(Conversation, definition.strip()))
+                elif type(definition) is dict:
+                    if "repeat" in definition:
+                        from swayam import Generator
+                        generator = Generator.create_generator_from_content(**definition["repeat"])
+                        conversation_files_or_objects.append(getattr(Task.repeater(generator=generator), definition["name"].strip()))
+
             if fmt_kwargs:
-                conversation_files = []
-                for index, definition in enumerate(definitions):
-                    conversation_files.append(getattr(Conversation.file, definition.strip()))
-                return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files, **task_kwargs)
+                return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files_or_objects, **task_kwargs)
             else:
-                conversation_objects = []
-                for index, definition in enumerate(definitions):
-                    conversation_objects.append(getattr(Conversation, definition.strip()))
-                return Task.conversations(*conversation_objects, **task_kwargs) 
+                return Task.conversations(*conversation_files_or_objects, **task_kwargs) 
             
         task_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
