@@ -17,7 +17,6 @@
 
 from .builtin import DirPath
 from .builtin import FilePath
-from .builtin import DirPathWithFileFilter
 from .builtin import FileInfo
 from .builtin import FileContent
 

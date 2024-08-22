@@ -22,7 +22,7 @@ from tarkash import log_debug
 from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.prompt.types import SystemPrompt
 from swayam.llm.conversation.context import PromptContext
-from swayam.llm.structure.structure import IOStructure
+from swayam.structure.structure import IOStructure
 
 class LLMTask:
     

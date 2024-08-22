@@ -19,7 +19,7 @@ import json
 from pydantic import BaseModel
 from swayam import Structure
 
-class LLMTool:
+class StructuredTool:
     
     def __init__(self, name, *, target, desc, input_structure, output_structure, atomic=True):
         self.__name = name
@@ -61,7 +61,7 @@ class LLMTool:
     @classmethod
     def call_tool_compatible_callable(cls, *, kallable, input_structure, output_structure, atomic=False, **kwargs):
         structure = input_structure(**kwargs)
-        from swayam.llm.structure.structure import IOStructureObject
+        from swayam.structure.structure import IOStructureObject
         
         output = kallable(**structure.as_dict())
         
@@ -87,12 +87,12 @@ class LLMTool:
     
     def __call__(self, **kwargs):
         from .response import ToolResponse
-        result = LLMTool.call_tool_compatible_callable(kallable=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, atomic=self.__atomic, **kwargs)
+        result = StructuredTool.call_tool_compatible_callable(kallable=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, atomic=self.__atomic, **kwargs)
             
         return ToolResponse(self, result)
         
     def as_generator(self, name=None):
         if name is None:
             name = self.__name + "_Generator"
-        from swayam.llm.generator.generator import MapGeneratorCreator
-        return MapGeneratorCreator(name, data_object=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, from_tool=True)
+        from swayam.generator.generator import StructuredGeneratorCreator
+        return StructuredGeneratorCreator(name, data_object=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, from_tool=True)

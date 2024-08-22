@@ -40,7 +40,7 @@ class ConversationExecutor(BaseLLMExecutor):
         '''        
         # For an extended conversation, the system prompt is already executed in one of the previous conversations.
         
-        print(f"Executing Conversation with {len(conversation)} prompt(s).")
+        log_debug(f"Executing Conversation with {len(conversation)} prompt(s).")
         if not conversation.extends_previous_conversation:
             self.listener.report_begin_conversation(conversation)
             if conversation.is_new():

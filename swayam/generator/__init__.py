@@ -27,10 +27,10 @@ class Generator(metaclass=GeneratorMeta):
 
         :param name: Name of the structure
         """
-        from .generator import MapGeneratorCreator
+        from .generator import StructuredGeneratorCreator
         if callable(data_object) and input_structure is None:
             raise ValueError("Input structure is required if data_object is a callable.")
-        return MapGeneratorCreator(name, data_object=data_object, input_structure=input_structure, output_structure=output_structure)
+        return StructuredGeneratorCreator(name, data_object=data_object, input_structure=input_structure, output_structure=output_structure)
     
     @classmethod
     def create_generator_from_content(cls, *, generator, args=None):

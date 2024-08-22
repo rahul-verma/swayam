@@ -16,7 +16,7 @@
 # limitations under the License.
 
 from swayam import Tool, Structure
-from swayam.llm.structure.builtin import *
+from swayam.structure.builtin import *
 
 import os
 import re
@@ -40,7 +40,7 @@ def list_files(*, dir_path:str, file_name_pattern:str=None):
 DirEnumerator = Tool.build("DirEnumerator", 
                          target=list_files, 
                          desc="Recursively lists the full path of files in the provided directory path.",
-                         input_structure=DirPathWithFileFilter,
+                         input_structure=DirPath,
                          output_structure=FileInfo,
                          atomic=False
 )

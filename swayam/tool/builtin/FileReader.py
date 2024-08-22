@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,10 +15,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from swayam import Tool, Structure
+from swayam.structure.builtin import *
+
 import os
+import re
 
-from swayam.llm.tool.builtin import *
-        
-FileInfoInDir =  DirEnumerator.as_generator("FileInfoInDir")
-FileContentInDir = FileReader.as_generator("FileContentInDir")
+def read_file(*, path:str):
+    from tarkash import FlatFile
+    file = FlatFile(path)
+    return FileContent(file_name=os.path.basename(path), file_path=file.full_path, file_content=file.content)
 
+FileReader = Tool.build("FileReader", 
+                         target=read_file, 
+                         desc="Returns the contents of file (in text mode).",
+                         input_structure=FilePath,
+                         output_structure=FileContent
+)

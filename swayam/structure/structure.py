@@ -19,7 +19,7 @@ import json
 from enum import Enum
 from typing import *
 
-from pydantic import BaseModel, create_model, Field
+from pydantic import BaseModel
 
 class IOStructureObject:
     

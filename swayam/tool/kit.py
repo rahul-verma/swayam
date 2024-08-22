@@ -17,7 +17,7 @@
 
 import json
 
-class LLMToolkit:
+class StructuredToolkit:
     
     def __init__(self):
         pass

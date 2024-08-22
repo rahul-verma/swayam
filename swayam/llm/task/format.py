@@ -22,7 +22,7 @@ from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
-from swayam.llm.structure.structure import IOStructure
+from swayam.structure.structure import IOStructure
 
 class TaskFormatter:
     

@@ -27,13 +27,10 @@ dir_path_field = Field(..., description="Full or Project Relative Path of the di
 
 class DirPathModel(BaseModel):
     dir_path:str = Field(..., description=dir_name_field.description, examples=dir_name_field.examples)
+    file_filter_pattern:str = Field(default=None, description="Regular Expression pattern to filter (include) the files", examples=".*\.txt")
     
 class FilePathModel(BaseModel):
-    file_path:str = Field(..., description=file_path_field.description, examples=file_path_field.examples)
-    
-class DirPathWithFileFilterModel(BaseModel):
-    dir_path:str = Field(..., description=dir_path_field.description, examples=file_path_field.examples)
-    file_name_pattern:str = Field(..., description="Regular Expression pattern to filter (include) the files", examples=".*\.txt")
+    file_path:str = Field(..., description=file_path_field.description, examples=file_path_field.examples)    
 
 class FileInfoModel(BaseModel):
     file_name:str = Field(..., description=file_name_field.description, examples=file_name_field.examples)
@@ -46,6 +43,5 @@ class FileContentModel(BaseModel):
 
 DirPath = Structure.build("DirPath", model=DirPathModel)
 FilePath = Structure.build("FilePath", model=FilePathModel)
-DirPathWithFileFilter = Structure.build("DirPathWithFileFilter", model=DirPathWithFileFilterModel)
 FileInfo = Structure.build("FileInfo", model=FileInfoModel)  
 FileContent = Structure.build("FileContent", model=FileContentModel)

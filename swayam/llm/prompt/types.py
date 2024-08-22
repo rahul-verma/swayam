@@ -18,7 +18,7 @@
 from .base import BasePrompt
 from tarkash import log_debug
 from typing import Any, Union
-from swayam.llm.structure.structure import IOStructure
+from swayam.structure.structure import IOStructure
 
 class SystemPrompt(BasePrompt):
     

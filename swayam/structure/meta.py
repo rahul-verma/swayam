@@ -17,17 +17,17 @@
 
 import importlib
 
-class ToolMeta(type):
+class StructureMeta(type):
     
     def __getattr__(cls, name):
         try:
             from tarkash import Tarkash, TarkashOption
             project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
-            return getattr(tool_module, name)
+            structure_module = importlib.import_module(f"{project_name}.lib.hook.structure")
+            return getattr(structure_module, name)
         except AttributeError:
             try:
-                tool_module = importlib.import_module("swayam.llm.tool.builtin")
-                return getattr(tool_module, name)
+                structure_module = importlib.import_module("swayam.structure.builtin")
+                return getattr(structure_module, name)
             except AttributeError:
-                raise ImportError(f"The tool {name} is neither defined in the project, nor defined by Swayam.")
+                raise ImportError(f"The structure {name} is neither defined in the project, nor defined by Swayam.")

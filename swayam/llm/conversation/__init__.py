@@ -23,7 +23,7 @@ from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from .format import ConversationFormatter
 from .conversation import LLMConversation
-from swayam.llm.structure.structure import IOStructure
+from swayam.structure.structure import IOStructure
 from .meta import ConversationMeta
 
 class Conversation(metaclass=ConversationMeta):
