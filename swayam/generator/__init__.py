@@ -17,25 +17,45 @@
 
 from pydantic import BaseModel
 from .meta import GeneratorMeta
+from swayam.structure.structure import IOStructureObjectList
 
 class Generator(metaclass=GeneratorMeta):
     
     @classmethod
-    def build(cls, name, *, data_object, output_structure, input_structure=None):
+    def data(cls, name, *, data, io_structure):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
         :param name: Name of the structure
         """
         from .generator import StructuredGeneratorCreator
-        if callable(data_object) and input_structure is None:
-            raise ValueError("Input structure is required if data_object is a callable.")
-        return StructuredGeneratorCreator(name, data_object=data_object, input_structure=input_structure, output_structure=output_structure)
+        if type(data) not in (IOStructureObjectList, list):
+            raise ValueError("Expected a list or IOStructureObjectList.")
+        return StructuredGeneratorCreator(name, data_object=data, input_structure=io_structure.composite_structure, output_structure=io_structure)
     
     @classmethod
-    def create_generator_from_content(cls, *, generator, args=None):
+    def callable(cls, name, *, kallable, input_structure, output_structure):
+        """
+        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
+
+        :param name: Name of the structure
+        """
+        from .generator import StructuredGeneratorCreator
+        if not callable(kallable):
+            raise ValueError("Expected a callable object.")
+        return StructuredGeneratorCreator(name, data_object=kallable, input_structure=input_structure, output_structure=output_structure)
+    
+    def tool(self, *, tool, name=None):
+        if name is None:
+            name = tool.name + "_Generator"
+        from .generator import StructuredGeneratorCreator
+        print(tool.target, tool.input_structure, tool.output_structure)
+        return StructuredGeneratorCreator(name, data_object=tool.target, input_structure=tool.input_structure, output_structure=tool.output_structure)
+    
+    @classmethod
+    def execute_name(cls, *, content, args=None):
         from swayam import Generator
         if args == None:
             args = {}
-        return getattr(Generator, generator)(**args)
+        return getattr(Generator, content)(**args)
         

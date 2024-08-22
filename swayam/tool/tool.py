@@ -21,14 +21,14 @@ from swayam import Structure
 
 class StructuredTool:
     
-    def __init__(self, name, *, target, description, input_structure, output_structure, atomic=True):
+    def __init__(self, name, *, target, description, input_structure, output_structure, none_text:str):
         self.__name = name
         self.__target = target
         self.__target.__name__ = self.__target.__name__
         self.__description = description
         self.__input_structure = input_structure
         self.__output_structure = output_structure
-        self.__atomic = atomic
+        self.__none_text = none_text
         
     @property
     def name(self):
@@ -39,12 +39,20 @@ class StructuredTool:
         return self.__target.__name__
     
     @property
-    def description(self):
-        return self.__description
+    def target(self):
+        return self.__target
     
     @property
-    def is_atomic(self):
-        return self.__atomic
+    def input_structure(self):
+        return self.__input_structure
+    
+    @property
+    def output_structure(self):
+        return self.__output_structure
+    
+    @property
+    def description(self):
+        return self.__description
     
     @property
     def definition(self):
@@ -59,13 +67,13 @@ class StructuredTool:
         return schema
     
     @classmethod
-    def call_tool_compatible_callable(cls, *, kallable, input_structure, output_structure, atomic=False, **kwargs):
+    def call_tool_compatible_callable(cls, *, kallable, input_structure, output_structure,  none_text, **kwargs):
         structure = input_structure(**kwargs)
-        from swayam.structure.structure import IOStructureObject
+        from swayam.structure.structure import IOStructureObject, IOStructureObjectList
         
         output = kallable(**structure.as_dict())
         
-        if atomic:
+        if output_structure.is_atomic():
             if type(output) not in (dict, IOStructureObject):
                 raise TypeError("The return value of an atomic tool function must be a dictionary or a Structure object.")
             if not isinstance(output, IOStructureObject):
@@ -73,26 +81,15 @@ class StructuredTool:
             else:
                 return output.as_dict()
         else:
-            if type(output) is not list:
-                raise TypeError("The return value of a non-atomic tool function, generator-compatible function must be a list.")
-            updated_output = []
-            for item in output:
-                if not isinstance(item, IOStructureObject):
-                    updated_output.append(output_structure(**item).as_dict())
-                else:
-                    updated_output.append(item.as_dict())
-            
-            result = updated_output
-            return result
+            if type(output) not in (list, IOStructureObjectList):
+                raise TypeError("The return value of a non-atomic tool function, generator-compatible function must be a list or IOStructureObjectList.")
+            if not isinstance(output, IOStructureObjectList):
+                return output_structure(*output).as_list()
+            else:
+                return output.as_list()
     
     def __call__(self, **kwargs):
         from .response import ToolResponse
-        result = StructuredTool.call_tool_compatible_callable(kallable=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, atomic=self.__atomic, **kwargs)
+        result = StructuredTool.call_tool_compatible_callable(kallable=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, none_text=self.__none_text, **kwargs)
             
         return ToolResponse(self, result)
-        
-    def as_generator(self, name=None):
-        if name is None:
-            name = self.__name + "_Generator"
-        from swayam.generator.generator import StructuredGeneratorCreator
-        return StructuredGeneratorCreator(name, data_object=self.__target, input_structure=self.__input_structure, output_structure=self.__output_structure, from_tool=True)

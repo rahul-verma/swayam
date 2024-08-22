@@ -15,8 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .builtin import DirPath
-from .builtin import FilePath
-from .builtin import FileInfo
-from .builtin import FileContent
+from .builtin import *
+from .result import *
 

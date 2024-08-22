@@ -42,6 +42,6 @@ class FileContentModel(BaseModel):
     file_content: str = Field(..., description="Content of the file")
 
 DirPath = Structure.build("DirPath", model=DirPathModel)
-FilePath = Structure.build("FilePath", model=FilePathModel)
-FileInfo = Structure.build("FileInfo", model=FileInfoModel)  
-FileContent = Structure.build("FileContent", model=FileContentModel)
+FilePath, FilePathList  = Structure.build("FilePath", model=FilePathModel, return_composite=True)
+FileInfo, FileInfoList = Structure.build("FileInfo", model=FileInfoModel, return_composite=True)  
+FileContent, FileContentList = Structure.build("FileContent", model=FileContentModel, return_composite=True)

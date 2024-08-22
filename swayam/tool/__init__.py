@@ -21,9 +21,9 @@ from .meta import ToolMeta
 class Tool(metaclass=ToolMeta):
     
     @classmethod
-    def build(cls, name, *, target, description:str=None, input_structure:IOStructure=None, output_structure:IOStructure=None, atomic=True):
+    def build(cls, name, *, target, description:str=None, input_structure:IOStructure=None, output_structure:IOStructure=None, atomic=True, none_text:str=None):
         from .tool import StructuredTool
-        return StructuredTool(name, target=target, description=description, input_structure=input_structure, output_structure=output_structure, atomic=atomic)
+        return StructuredTool(name, target=target, description=description, input_structure=input_structure, output_structure=output_structure, none_text=none_text)
         
     
     

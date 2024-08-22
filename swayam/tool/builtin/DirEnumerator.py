@@ -16,7 +16,6 @@
 # limitations under the License.
 
 from swayam import Tool, Structure
-from swayam.structure.builtin import *
 
 import os
 import re
@@ -27,20 +26,20 @@ def list_files(*, dir_path:str, file_filter_pattern:str=None):
     files_info_list = []
     
     # Walk through the directory tree
+    files_info_list = Structure.FileInfoList()
     for dirpath, _, filenames in os.walk(directory.full_path):
         for filename in filenames:
             # Construct absolute file path
             if file_filter_pattern is not None and not re.match(file_filter_pattern, filename):
                 continue
             file_path = os.path.join(dirpath, filename)
-            files_info_list.append(FileInfo(file_name=filename, file_path=file_path))
+            files_info_list.append(Structure.FileInfo(file_name=filename, file_path=file_path))
     
     return files_info_list
 
 DirEnumerator = Tool.build("DirEnumerator", 
                          target=list_files, 
                          description="Recursively lists the full path of files in the provided directory path.",
-                         input_structure=DirPath,
-                         output_structure=FileInfo,
-                         atomic=False
+                         input_structure=Structure.DirPath,
+                         output_structure=Structure.FileInfoList,
 )

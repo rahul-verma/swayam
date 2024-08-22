@@ -27,13 +27,16 @@ from pydantic import BaseModel, create_model, Field
 def iterator(name, *, data_object, input_structure, output_structure, from_tool=False, **data_object_kwargs):
     from swayam.tool.tool import StructuredTool
     
-    if from_tool:
-        data_object = StructuredTool.call_tool_compatible_callable(kallable=data_object, input_structure=input_structure, output_structure=output_structure, **data_object_kwargs)
-    elif callable(data_object):
-        call_structure = input_structure(**data_object_kwargs)
-        data_object = data_object(**call_structure.as_dict())
-    for data in data_object:
-        yield data
+    output_iterable = None
+    
+    if callable(data_object):
+        kallable = data_object
+        args = input_structure(**data_object_kwargs).as_dict()
+        output_iterable = kallable(**args)
+    else:
+        output_iterable = input_structure(*data_object).as_list() 
+    for output in output_iterable:
+        yield output
         
 class StructuredGenerator:
     

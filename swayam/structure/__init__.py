@@ -23,7 +23,7 @@ from .meta import StructureMeta
 class Structure(metaclass=StructureMeta):
     
     @classmethod
-    def build(cls, name, model:BaseModel):
+    def build(cls, name, model:BaseModel, return_composite=False):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
@@ -36,5 +36,15 @@ class Structure(metaclass=StructureMeta):
                 items=(List[input_model], ...)
             )
         from .structure import IOStructure, IOStructureList
-        return IOStructure(name, model), IOStructureList(f'{name}List', create_list_model(model))
+        
+        # Generators derive the list model automatically. So, a composite structure is always created.
+        atomic_model = model
+        composite_model = create_list_model(model)
+        composite_structure = IOStructureList(f'{name}List', atomic_model=atomic_model, composite_model=composite_model)
+        atomic_structure = IOStructure(name, model, composite_structure)
+        
+        if return_composite:
+            return atomic_structure, composite_structure
+        else:
+            return atomic_structure
         

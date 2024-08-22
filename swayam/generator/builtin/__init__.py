@@ -17,7 +17,9 @@
 
 from swayam.tool.builtin import *
 from .builtin.DirFileContent import DirFileContent   
+from swayam.generator import Generator
+from swayam import Tool
 
-DirFileInfo =  DirEnumerator.as_generator("DirFileInfo")
+DirFileInfo =  Generator.tool("DirFileInfo", tool=Tool.DirEnumerator)
 
 

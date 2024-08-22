@@ -20,27 +20,24 @@ from pydantic import BaseModel, Field
 
 from swayam import Structure
 
-class NumericResultModel(BaseModel):
-    result: Union[int, float] = Field(..., title="Numeric Result", description="A numeric result (int or float)")
+class NumericOutputModel(BaseModel):
+    output: Union[int, float] = Field(..., title="Numeric Output", description="A numeric output (int or float)")
 
-class NumericListResultModel(BaseModel):
-    result: list[Union[int, float]] = Field(..., title="Numeric List Result", description="A numeric list result (int or float)")
+class NumericListOutputModel(BaseModel):
+    output: list[Union[int, float]] = Field(..., title="Numeric List Output", description="A numeric list output (int or float)")
 
-class StringResultModel(BaseModel):
-    result: str = Field(..., title="String Result", description="A string result")
+class StringOutputModel(BaseModel):
+    output: str = Field(..., title="String Output", description="A string output")
 
-class StringListResultModel(BaseModel):
-    result: list[str] = Field(..., title="String List Result", description="A list of string results")
+class StringListOutputModel(BaseModel):
+    output: list[str] = Field(..., title="String List Output", description="A list of string outputs")
 
-class BoolResultModel(BaseModel):
-    result: bool = Field(..., title="Boolean Result", description="A boolean result")
+class BoolOutputModel(BaseModel):
+    output: bool = Field(..., title="Boolean Output", description="A boolean output")
 
-class BoolListResultModel(BaseModel):
-    result: list[bool] = Field(..., title="Boolean List Result", description="A list of boolean results")
+class BoolListOutputModel(BaseModel):
+    output: list[bool] = Field(..., title="Boolean List Output", description="A list of boolean outputs")
     
-NumericResult = Structure.build("NumericResult", model=NumericResultModel)
-NumericListResult = Structure.build("NumericListResult", model=NumericListResultModel)
-StringResult = Structure.build("StringResult", model=StringResultModel)
-StringListResult = Structure.build("StringListResult", model=StringListResultModel)
-BoolResult = Structure.build("BoolResult", model=BoolResultModel)
-BoolListResult = Structure.build("BoolListResult", model=BoolListResultModel)
+NumericOutput, NumericOutputList = Structure.build("NumericOutput", model=NumericOutputModel, return_composite=True)
+StringOutput, StringOutputList = Structure.build("StringOutput", model=StringOutputModel, return_composite=True)
+BoolOutput, BoolOutputList = Structure.build("BoolOutput", model=BoolOutputModel, return_composite=True)

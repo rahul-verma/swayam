@@ -23,8 +23,8 @@ def get_content_for_all_files(*, dir_path, file_filter_pattern=None):
     for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern).content:
         yield Tool.FileReader(file_path=file_info["file_path"]).content["file_content"]
 
-DirFileContent = Generator.build("DirFileContent", 
-                                 data_object=get_content_for_all_files,
+DirFileContent = Generator.callable("DirFileContent", 
+                                 kallable=get_content_for_all_files,
                                  input_structure=Structure.DirPath, 
                                  output_structure=Structure.FileContent)
 

@@ -62,7 +62,6 @@ class Task(metaclass=TaskMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        print(len(out_conversations))
         return LLMTask(*out_conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
