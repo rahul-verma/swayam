@@ -49,13 +49,5 @@ class Generator(metaclass=GeneratorMeta):
         if name is None:
             name = tool.name + "_Generator"
         from .generator import StructuredGeneratorCreator
-        print(tool.target, tool.input_structure, tool.output_structure)
         return StructuredGeneratorCreator(name, data_object=tool.target, input_structure=tool.input_structure, output_structure=tool.output_structure)
-    
-    @classmethod
-    def execute_name(cls, *, content, args=None):
-        from swayam import Generator
-        if args == None:
-            args = {}
-        return getattr(Generator, content)(**args)
         

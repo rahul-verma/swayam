@@ -19,8 +19,5 @@
 class TaskMeta(type):
     
     def __getattr__(cls, name):
-        if name == "repeater":
-            from .repeater import ConversationFileRepeater
-            return ConversationFileRepeater
         from .namespace import TaskDir
         return TaskDir.load_task_from_file(name)

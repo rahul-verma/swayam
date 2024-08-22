@@ -31,7 +31,7 @@ class TaskFormatter:
 
     def conversation_files(self, *conversation_files:ConversationFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMConversation:
         from swayam.llm.conversation.format import ConversationFormatter
-        from swayam.llm.task.repeater import DynamicConversationFile
+        from swayam.llm.conversation.repeater import DynamicConversationFile
         
         if len(conversation_files) == 0:
             raise ValueError("No conversations provided.")

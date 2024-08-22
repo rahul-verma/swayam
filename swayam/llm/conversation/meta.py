@@ -22,6 +22,9 @@ class ConversationMeta(type):
         from .file import ConversationFileLoader
         if name == "file":
             return ConversationFileLoader()
+        elif name == "repeater":
+            from .repeater import ConversationFileRepeater
+            return ConversationFileRepeater
         
         from .namespace import ConversationDir
         return ConversationDir.load_conversation_from_file(name)

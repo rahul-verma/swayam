@@ -80,8 +80,11 @@ class TaskDir:
                 elif type(definition) is dict:
                     if "repeat" in definition:
                         from swayam import Generator
-                        generator = Generator.create_generator_from_content(**definition["repeat"])
-                        conversation_files_or_objects.append(getattr(Task.repeater(generator=generator), definition["name"].strip()))
+                        gdict = {"generator":None, "args":{}}
+                        gdict.update(definition["repeat"])
+                        generator_name = definition["repeat"].get("generator", None)
+                        generator = getattr(Generator, generator_name)(**gdict["args"])
+                        conversation_files_or_objects.append(getattr(Conversation.repeater(generator=generator), definition["name"].strip()))
 
             if fmt_kwargs:
                 return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files_or_objects, **task_kwargs)
