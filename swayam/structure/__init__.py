@@ -15,7 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, create_model
 from .meta import StructureMeta
 
 class Structure(metaclass=StructureMeta):
@@ -27,6 +29,12 @@ class Structure(metaclass=StructureMeta):
 
         :param name: Name of the structure
         """
-        from .structure import IOStructure
-        return IOStructure(model)
+        
+        def create_list_model(input_model):
+            return create_model(
+                f'{model.__name__}List',
+                items=(List[input_model], ...)
+            )
+        from .structure import IOStructure, IOStructureList
+        return IOStructure(name, model), IOStructureList(f'{name}List', create_list_model(model))
         

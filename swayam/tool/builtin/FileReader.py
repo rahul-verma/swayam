@@ -28,7 +28,7 @@ def read_file(*, file_path:str):
 
 FileReader = Tool.build("FileReader", 
                          target=read_file, 
-                         desc="Returns the contents of file (in text mode).",
+                         description="Returns the contents of file (in text mode).",
                          input_structure=FilePath,
                          output_structure=FileContent
 )

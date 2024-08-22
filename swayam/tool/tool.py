@@ -21,11 +21,11 @@ from swayam import Structure
 
 class StructuredTool:
     
-    def __init__(self, name, *, target, desc, input_structure, output_structure, atomic=True):
+    def __init__(self, name, *, target, description, input_structure, output_structure, atomic=True):
         self.__name = name
         self.__target = target
         self.__target.__name__ = self.__target.__name__
-        self.__desc = desc
+        self.__description = description
         self.__input_structure = input_structure
         self.__output_structure = output_structure
         self.__atomic = atomic
@@ -39,8 +39,8 @@ class StructuredTool:
         return self.__target.__name__
     
     @property
-    def desc(self):
-        return self.__desc
+    def description(self):
+        return self.__description
     
     @property
     def is_atomic(self):
@@ -53,7 +53,7 @@ class StructuredTool:
             "type": "function",
             "function":{
                 "name": self.__name,
-                "description": self.__desc,
+                "description": self.__description,
                 "parameters": data_schema
             }}
         return schema

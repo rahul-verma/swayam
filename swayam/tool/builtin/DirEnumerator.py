@@ -39,7 +39,7 @@ def list_files(*, dir_path:str, file_filter_pattern:str=None):
 
 DirEnumerator = Tool.build("DirEnumerator", 
                          target=list_files, 
-                         desc="Recursively lists the full path of files in the provided directory path.",
+                         description="Recursively lists the full path of files in the provided directory path.",
                          input_structure=DirPath,
                          output_structure=FileInfo,
                          atomic=False

@@ -25,16 +25,27 @@ class IOStructureObject:
     
     def __init__(self, structure, instance):
         self.__structure = structure
-        self.__instance = instance
+        self.__model_instance = instance
         
     def as_dict(self):
-        return self.__instance.model_dump()
+        print(self.__model_instance)
+        return self.__model_instance.model_dump()
+    
+class IOStructureObjectList:
+    def __init__(self, structure, *items):
+        self.__structure = structure
+        self.__instances = self.__structure.data_model(items=items).items
+        self.__structures = [IOStructureObject(structure, item) for item in self.__instances]
+        
+    def as_list(self):
+        return [structure.as_dict() for structure in self.__structures]
 
 
 # Define a base class `Structure` that inherits from `BaseModel`
 class IOStructure:
     
-    def __init__(self, model:BaseModel):
+    def __init__(self, name, model:BaseModel):
+        self.__name__ = name
         self.__data_model = model
         
     @property
@@ -52,3 +63,26 @@ class IOStructure:
     
     def __call__(self, **fields):
         return IOStructureObject(self, self.__data_model(**fields))
+    
+
+class IOStructureList:
+    
+    def __init__(self, name, model:BaseModel):
+        self.__name__ = name
+        self.__data_model = model
+        
+    @property
+    def data_model(self):
+        return self.__data_model
+
+    @property
+    def definition(self):
+        data_schema = self.data_model.model_json_schema()
+        for _, property in data_schema["properties"].items():
+            property.pop("title")
+            if "enum" in property:
+                property.pop("default")
+        return data_schema
+    
+    def __call__(self, *items):
+        return IOStructureObjectList(self, *items)
