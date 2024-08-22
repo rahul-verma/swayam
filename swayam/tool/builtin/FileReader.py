@@ -21,10 +21,10 @@ from swayam.structure.builtin import *
 import os
 import re
 
-def read_file(*, path:str):
+def read_file(*, file_path:str):
     from tarkash import FlatFile
-    file = FlatFile(path)
-    return FileContent(file_name=os.path.basename(path), file_path=file.full_path, file_content=file.content)
+    file = FlatFile(file_path)
+    return FileContent(file_name=os.path.basename(file_path), file_path=file.full_path, file_content=file.content)
 
 FileReader = Tool.build("FileReader", 
                          target=read_file, 

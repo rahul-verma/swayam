@@ -21,7 +21,7 @@ from swayam.structure.builtin import *
 import os
 import re
 
-def list_files(*, dir_path:str, file_name_pattern:str=None):
+def list_files(*, dir_path:str, file_filter_pattern:str=None):
     from tarkash import Directory
     directory = Directory(dir_path, should_exist=True)
     files_info_list = []
@@ -30,7 +30,7 @@ def list_files(*, dir_path:str, file_name_pattern:str=None):
     for dirpath, _, filenames in os.walk(directory.full_path):
         for filename in filenames:
             # Construct absolute file path
-            if file_name_pattern is not None and not re.match(file_name_pattern, filename):
+            if file_filter_pattern is not None and not re.match(file_filter_pattern, filename):
                 continue
             file_path = os.path.join(dirpath, filename)
             files_info_list.append(FileInfo(file_name=filename, file_path=file_path))

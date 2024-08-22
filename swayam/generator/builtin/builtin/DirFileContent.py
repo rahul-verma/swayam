@@ -15,9 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.tool.builtin import *
-from .builtin.DirFileContent import DirFileContent   
+import os
+from swayam import Generator, Structure
 
-DirFileInfo =  DirEnumerator.as_generator("DirFileInfo")
+def get_content_for_all_files(*, dir_path, file_filter_pattern=None):
+    from swayam import Tool
+    for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern).content:
+        yield Tool.FileReader(file_path=file_info["file_path"]).content["file_content"]
 
+DirFileContent = Generator.build("DirFileContent", 
+                                 data_object=get_content_for_all_files,
+                                 input_structure=Structure.DirPath, 
+                                 output_structure=Structure.FileContent)
 
