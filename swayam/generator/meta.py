@@ -26,12 +26,8 @@ class GeneratorMeta(type):
             generator_module = importlib.import_module(f"{project_name}.lib.hook.generator")
             return getattr(generator_module, name)
         except AttributeError as e:
-            print(e)
-            import traceback
-            traceback.print_exc()
             try:
                 generator_module = importlib.import_module("swayam.generator.builtin")
                 return getattr(generator_module, name)
             except AttributeError as e:
-                print(e)
                 raise ImportError(f"The generator {name} is neither defined in the project, nor defined by Swayam.")

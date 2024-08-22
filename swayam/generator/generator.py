@@ -20,6 +20,7 @@ from enum import Enum
 from typing import *
 
 from pydantic import BaseModel, create_model, Field
+from swayam.structure.structure import IOStructureObject
 
 
 # Define a base class `Structure` that inherits from `BaseModel`
@@ -36,6 +37,8 @@ def iterator(name, *, data_object, input_structure, output_structure, from_tool=
     else:
         output_iterable = input_structure(*data_object).as_list() 
     for output in output_iterable:
+        if isinstance(output, IOStructureObject):
+            output = output.as_dict()
         yield output
         
 class StructuredGenerator:

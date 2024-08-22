@@ -15,6 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .DirEnumerator import DirEnumerator
-from .FileReader import FileReader
-from .FileWriter import FileWriter
+from swayam import Tool, Structure
+from swayam.structure.builtin import *
+
+import os
+import re
+
+def write_file(*, file_name:str, file_path:str, file_content:str):
+    from tarkash import FlatFile
+    with open(file_path, "w") as file:
+        file.write(file_content)
+    return Structure.BoolOutput(output=True)
+
+FileWriter = Tool.build("FileWriter", 
+                         target=write_file, 
+                         description="Writes the File to the disk with the name provided..",
+                         input_structure=Structure.FileContent,
+                         output_structure=Structure.BoolOutput
+)

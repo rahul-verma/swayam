@@ -21,7 +21,10 @@ from swayam import Generator, Structure
 def get_content_for_all_files(*, dir_path, file_filter_pattern=None):
     from swayam import Tool
     for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern).content:
-        yield Tool.FileReader(file_path=file_info["file_path"]).content["file_content"]
+        yield Structure.FileContent(
+            file_name=file_info["file_name"],
+            file_path=file_info["file_path"], 
+            file_content=Tool.FileReader(file_path=file_info["file_path"]).content["file_content"])
 
 DirFileContent = Generator.callable("DirFileContent", 
                                  kallable=get_content_for_all_files,

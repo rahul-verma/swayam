@@ -84,7 +84,8 @@ class TaskDir:
                         gdict.update(definition["repeat"])
                         generator_name = definition["repeat"].get("generator", None)
                         generator = getattr(Generator, generator_name)(**gdict["args"])
-                        conversation_files_or_objects.append(getattr(Conversation.repeater(generator=generator), definition["name"].strip()))
+                        dynamic_file = (getattr(Conversation.repeater(generator=generator), definition["name"].strip()))
+                        conversation_files_or_objects.append(dynamic_file)
 
             if fmt_kwargs:
                 return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files_or_objects, **task_kwargs)

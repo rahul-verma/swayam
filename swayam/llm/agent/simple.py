@@ -50,6 +50,7 @@ class SimpleAgent:
     def __execute_conversation(self, conversation):
         from swayam.llm.conversation.context import PromptContext
         from swayam.llm.executor.conversation import ConversationExecutor
+
         if conversation.reset_context:
             self.__context.reset()
 
@@ -95,7 +96,7 @@ class SimpleAgent:
             elif len(output) == 0:
                 return None
             else:
-                return [process_output(o) in output]
+                return [process_output(o) for o in output]
         else:
             return process_output(output)
         

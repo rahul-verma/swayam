@@ -34,16 +34,19 @@ class Task(metaclass=TaskMeta):
     
     @classmethod
     def conversations(cls, *conversations:LLMConversation, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
+        print("dfjkdfhjkdfghjk", conversations)
         if len(conversations) == 0:
             raise ValueError("No conversations provided.")
         out_conversations = []
         for conversation in conversations:
             if isinstance (conversation, DynamicConversationFile):
-                out_conversations.extend(conversation.create_conversations())
+                repeated_conversations = conversation.create_conversations()
+                out_conversations.extend(repeated_conversations)
             elif isinstance(conversation, LLMConversation):
-                out_conversations.append(conversations)
+                out_conversations.append(conversation)
             else:
                 raise ValueError(f"Invalid conversation type: {type(conversation)}. Should be an LLMConversation or DynamicConversationFile object.")
+            
         if system_prompt:
             if type(system_prompt) == str:
                 system_prompt = SystemPrompt(text=system_prompt)
@@ -61,7 +64,6 @@ class Task(metaclass=TaskMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-
         return LLMTask(*out_conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
