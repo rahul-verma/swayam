@@ -15,10 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .directive import LLMDirective
-
-class Directive:
+class LLMDirective:
     
-    @classmethod
-    def dummy(cls):
-        return LLMDirective()
+    def __init__(self):
+        self.__purpose = "Directive"
+        
+    @property
+    def purpose(self):
+        return self.__purpose

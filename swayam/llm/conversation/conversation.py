@@ -21,21 +21,22 @@ from typing import Any, Union
 from tarkash import log_debug
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt, UserPrompt
-from .context import PromptContext
+from .context import ConversationContext
 from swayam.structure.structure import IOStructure
 
 class LLMConversation:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:ConversationContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Conversation"
-        self.__context = context
+        self.__agent_context = context
         self.__system_prompt = system_prompt
         self.__image = image
         self.__output_structure = output_structure
         self.__tools = tools
+        self.__store_response_as = store_response_as
         self.__make_image_suggestions()
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
@@ -48,6 +49,14 @@ class LLMConversation:
         
         # If True, it resets the parent's context for itself. The subsequent conversation receives the context that it results in.
         self.__reset_context = reset_context
+        
+    @property
+    def should_store_response(self):
+        return self.__store_response_as is not None
+    
+    @property
+    def response_storage_name(self):
+        return self.__store_response_as
         
     @property
     def standalone(self):
@@ -91,7 +100,7 @@ class LLMConversation:
                 prompt.suggest_tools(self.__tools) 
     
     def is_new(self):
-        return len(self.__context) == 0
+        return len(self.__agent_context.conversation_context) == 0
         
     def has_system_prompt(self):
         return self.__system_prompt is not None
@@ -110,11 +119,11 @@ class LLMConversation:
         
     @property
     def context(self):
-        return self.__context
+        return self.__agent_context
     
     @context.setter
-    def context(self, context:PromptContext):
-        self.__context = context
+    def context(self, context:ConversationContext):
+        self.__agent_context = context
         
     def append(self, prompt:Prompt):
         self.__prompts.append(prompt)

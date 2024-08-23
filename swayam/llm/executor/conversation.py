@@ -40,38 +40,45 @@ class ConversationExecutor(BaseLLMExecutor):
         '''        
         # For an extended conversation, the system prompt is already executed in one of the previous conversations.
         
+        conversation_context = conversation.context.conversation_context
+        
         log_debug(f"Executing Conversation with {len(conversation)} prompt(s).")
         if not conversation.extends_previous_conversation:
             self.listener.report_begin_conversation(conversation)
             if conversation.is_new():
                 if conversation.has_system_prompt():
+                    # For dynamic variables in Agent store
+                    conversation.context.format_prompt(conversation.system_prompt)
                     conversation.system_prompt.process_for_report()
                     self.listener.report_system_prompt(conversation.system_prompt)
                     
-                    conversation.context.append_prompt(conversation.system_prompt)
-                    self.listener.report_context(conversation.context)
+                    conversation_context.append_prompt(conversation.system_prompt)
+                    self.listener.report_context(conversation_context)
         log_debug("Finished processing system prompt.")
         
         for prompt in conversation:
             log_debug("Processing prompt...")
+            # For dynamic variables in Agent store
+            conversation.context.format_prompt(prompt)
             prompt.process_for_report()
             
-            self.listener.report_context(conversation.context)
+            self.listener.report_context(conversation_context)
             
-            conversation.context.append_prompt(prompt)
-            self.listener.report_context(conversation.context)
+            # Appending happens via the Agent Context so that dynamic variables can be considered.
+            conversation_context.append_prompt(prompt)
+            self.listener.report_context(conversation_context)
             
             self.listener.report_prompt(prompt)
             log_debug("Finished processing prompt...")
 
             log_debug("Executing prompt...")
-            response = self.__client.execute_messages(messages=conversation.context.messages, output_structure=prompt.output_structure, tools=prompt.tools)
+            response = self.__client.execute_messages(messages=conversation_context.messages, output_structure=prompt.output_structure, tools=prompt.tools)
             log_debug("Handling Response.")
             output_message = response.choices[0].message
             llm_response = LLMResponse(output_message)
             
-            conversation.context.append_assistant_response(llm_response.as_dict())
-            self.listener.report_context(conversation.context)
+            conversation_context.append_assistant_response(llm_response.as_dict())
+            self.listener.report_context(conversation_context)
             
             self.listener.report_response(prompt, llm_response)
 
@@ -84,10 +91,18 @@ class ConversationExecutor(BaseLLMExecutor):
                     tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
                     self.listener.report_tool_response(tool_response)
                     response_messages.append(tool_response)
-                    conversation.context.append_tool_response(tool_response)
-                    self.listener.report_context(conversation.context)
+                    conversation_context.append_tool_response(tool_response)
+                    self.listener.report_context(conversation_context)
             else: 
                 response_messages = output_message
+                
+        if conversation.should_store_response:
+            stored_message = response_messages
+            if type(response_messages) is list:
+                stored_message = response_messages[-1]
+            stored_message = stored_message.to_dict()
+            if "content" in stored_message and stored_message["content"]:
+                conversation.context.store[conversation.response_storage_name] = stored_message["content"]
 
         log_debug(f"Finished Conversation") 
         return response_messages

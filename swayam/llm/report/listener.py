@@ -17,7 +17,7 @@
 
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.conversation.context import PromptContext
+from swayam.llm.conversation.context import ConversationContext
 
 class AgentListener:
     
@@ -62,12 +62,12 @@ class AgentListener:
         for reporter in self.__reporters:
             reporter.report_prompt(prompt)
     
-    def report_context(self, context:PromptContext) -> None:
+    def report_context(self, context:ConversationContext) -> None:
         """
         Broadcasts the context details.
 
         Args:
-            context (PromptContext): Context object with all input messages.
+            context (ConversationContext): Context object with all input messages.
         """
         for reporter in self.__reporters:
             reporter.report_context(context)

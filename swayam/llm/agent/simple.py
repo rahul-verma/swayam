@@ -17,12 +17,12 @@
 
 from datetime import datetime
 from tarkash import log_debug
+from .context import AgentContext
 
 class SimpleAgent:
     
     def __init__(self, display=False, report_html=True, run_id=None):
-        from swayam.llm.conversation.context import PromptContext
-        self.__context = PromptContext()
+        self.__context = AgentContext()
         from swayam.llm.config.report import ReportConfig
         self.__report_config = ReportConfig(display=display, report_html=report_html, show_in_browser=False)
         if not run_id:
@@ -48,18 +48,18 @@ class SimpleAgent:
         return self.__execute_conversation(conversation)
     
     def __execute_conversation(self, conversation):
-        from swayam.llm.conversation.context import PromptContext
+        from swayam.llm.conversation.context import ConversationContext
         from swayam.llm.executor.conversation import ConversationExecutor
 
         if conversation.reset_context:
-            self.__context.reset()
+            self.__context.reset_conversation_context()
 
         # Set context of conversation
         if not conversation.standalone:
             conversation.context = self.__context
         else:
             # Set empty context
-            conversation.context = PromptContext()
+            conversation.context = AgentContext()
         
         log_debug(f"Executing Conversation with ConversationAgent.")
         agent = ConversationExecutor(listener=self.__listener)

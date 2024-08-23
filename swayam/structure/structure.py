@@ -55,6 +55,9 @@ class IOStructureObjectList:
         
     def as_list(self):
         return [instance.model_dump() for instance in self.__instances]
+    
+    def __iter__(self):
+        return iter(self.__instances)
 
 
 # Define a base class `Structure` that inherits from `BaseModel`

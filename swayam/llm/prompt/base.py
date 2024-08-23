@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 from copy import deepcopy
 from typing import Any
 
@@ -37,17 +39,60 @@ class BasePrompt(ABC):
             "role": self.__role,
             "content": self.__content
         }
+        
         if image:
             self.image = image
         else:
             self.__image = None
             self.__image_path = None
-            
+
         self.__tool_definitions = None
         self.__tool_dict = {}
         if tools is not None:
             self.__tool_definitions = [tool.definition for tool in tools]
             self.__tool_dict = {tool.name: tool for tool in tools}
+            
+    def dynamic_format(self, store):
+        updated_content = self.__message["content"]
+        if self.image:
+            updated_content = updated_content[0]["text"]
+        import re
+        for key, value in store.items():
+            if value is None:
+                value = ""
+            elif type(value) in (dict, list):
+                value = json.dumps(value, indent=4)
+            updated_content = re.sub(r"\$" + key + r"\$", value, updated_content)
+        # Any leftovers, to assign an initial value of empty string
+        updated_content = re.sub(r"\$.*?\$", "", updated_content)
+        
+        if not self.image:
+            self.__message = {
+                "role": self.__role,
+                "content": updated_content
+            }
+        else:
+            self.__message["content"][0]["text"] = updated_content 
+        # if self.image:
+        #     print(self.__message["content"][0])
+        #     store["json_data"]
+        # if not self.image:
+        #     self.__reportable_message = deepcopy(self.__message)
+        #     self.__reportable_text = self.__message["content"]
+        # else:
+        #     self.__reportable_message = deepcopy(self.__message)
+        #     temp_content = self.__reportable_message["content"]
+        #     self.__reportable_text = temp_content
+        #     if type(temp_content) == list:
+        #         for item in temp_content:
+        #             if item["type"] == "text":
+        #                 self.__reportable_text = item["text"]
+        #                 del item["text"]
+        #             elif item["type"] == "image_url":
+        #                 prefix = self.__image.as_data_url.split(",")[0]
+        #                 item["description"] = f"{prefix}, <Base64 encoded content of {self.__image_path}>."
+        #                 item["local_path"] = self.__image_path
+        #                 del item["image_url"]
             
     def suggest_image(self, image):
         if not self.image:

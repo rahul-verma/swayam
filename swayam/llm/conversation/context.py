@@ -17,7 +17,7 @@
 
 import json
 
-class PromptContext:
+class ConversationContext:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
@@ -48,10 +48,10 @@ class PromptContext:
     @property
     def reportable_messages(self):
         return self.__reportable_messages
-        
+    
     def append_prompt(self, prompt):
         self.__messages.append(prompt.message)
-        self.__reportable_messages.append(prompt.message)
+        self.__reportable_messages.append(prompt.reportable_message)
         
     def append_assistant_response(self, *messages):
         for message in messages:

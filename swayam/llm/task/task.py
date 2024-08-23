@@ -21,12 +21,12 @@ from typing import Any, Union
 from tarkash import log_debug
 from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.conversation.context import PromptContext
+from swayam.llm.conversation.context import ConversationContext
 from swayam.structure.structure import IOStructure
 
 class LLMTask:
     
-    def __init__(self, *conversations:LLMConversation, purpose:str=None, system_prompt:SystemPrompt=None, content:PromptContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *conversations:LLMConversation, purpose:str=None, system_prompt:SystemPrompt=None, content:ConversationContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__conversations = list(conversations)
         self.__purpose = purpose
         if self.__purpose is None:
@@ -67,7 +67,7 @@ class LLMTask:
         return self.__context
     
     @context.setter
-    def context(self, context:PromptContext):
+    def context(self, context:ConversationContext):
         self.__context = context
         
     def append(self, conversation:LLMConversation):

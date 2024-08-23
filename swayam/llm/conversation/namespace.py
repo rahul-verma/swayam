@@ -86,6 +86,7 @@ class ConversationDir:
             "tools": content.get("tools", None),
             "reset_context": content.get("reset_context", True),
             "standalone": content.get("standalone", False),
+            "store_response_as": content.get("store_response_as", None),
         }
         
         if type(content) is not dict:

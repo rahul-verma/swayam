@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import os, time
 from .base import LLMClient
 
 class OpenAIClient(LLMClient):
@@ -28,20 +28,40 @@ class OpenAIClient(LLMClient):
         
     def execute_messages(self, *, messages, output_structure=None, tools=None):
         from pprint import pprint
+        import openai
         if tools:
             tools =[tool.definition for tool in tools]
 
-        if output_structure is None:
-            return self._client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                tools=tools,
-                **self._model_kwargs
-            )
-        else:
-            return self._client.beta.chat.completions.parse(
-                model=self.model_name,
-                messages=messages,
-                response_format=output_structure.data_model,
-                **self._model_kwargs
-            )
+
+        for attempt in range(5):  # Retry up to 5 times
+            try:
+                if output_structure is None:
+                    return self._client.chat.completions.create(
+                        model=self.model_name,
+                        messages=messages,
+                        tools=tools,
+                        **self._model_kwargs
+                    )
+                else:
+                    return self._client.beta.chat.completions.parse(
+                        model=self.model_name,
+                        messages=messages,
+                        response_format=output_structure.data_model,
+                        **self._model_kwargs
+                    )
+                break  # Exit the loop if the request was successful
+            
+            except openai.APIConnectionError as e:
+                print(f"APIConnectionError: {e}. Retrying in 2 seconds...")
+                print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+                time.sleep(2)
+            except openai.RateLimitError as e:
+                print("A 429 status code was received; we should back off a bit as we have hit a rate limit.")
+                print("Sleeping for 60 seconds...")
+                time.sleep(60)
+            except openai.APIStatusError as e:
+                print("A non-200-range status code was received. Retrying in 2 seconds...")
+                print(e.status_code)
+                print(e.response)
+                time.sleep(2)
+                

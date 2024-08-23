@@ -23,13 +23,14 @@ import re
 
 def write_file(*, file_name:str, file_path:str, file_content:str):
     from tarkash import FlatFile
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "w") as file:
         file.write(file_content)
-    return Structure.BoolOutput(output=True)
+    return Structure.StringOutput(output="success")
 
 FileWriter = Tool.build("FileWriter", 
                          target=write_file, 
                          description="Writes the File to the disk with the name provided..",
                          input_structure=Structure.FileContent,
-                         output_structure=Structure.BoolOutput
+                         output_structure=Structure.StringOutput
 )

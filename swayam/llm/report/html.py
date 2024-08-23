@@ -25,7 +25,7 @@ import copy
 from tarkash import log_debug
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.conversation.context import PromptContext
+from swayam.llm.conversation.context import ConversationContext
 from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.report import Reporter
 
@@ -159,12 +159,12 @@ class HtmlReporter(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
-    def report_context(self, context:PromptContext) -> None:
+    def report_context(self, context:ConversationContext) -> None:
         """
         Reports the context details.
 
         Args:
-            context (PromptContext): Context object with all input messages.
+            context (ConversationContext): Context object with all input messages.
         """
         
         if self.__json_data == []:

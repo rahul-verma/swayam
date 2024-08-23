@@ -34,7 +34,6 @@ class Task(metaclass=TaskMeta):
     
     @classmethod
     def conversations(cls, *conversations:LLMConversation, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
-        print("dfjkdfhjkdfghjk", conversations)
         if len(conversations) == 0:
             raise ValueError("No conversations provided.")
         out_conversations = []
