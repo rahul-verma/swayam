@@ -100,7 +100,11 @@ class ConversationExecutor(BaseLLMExecutor):
             stored_message = response_messages
             if type(response_messages) is list:
                 stored_message = response_messages[-1]
-            stored_message = stored_message.to_dict()
+            from swayam.tool.response import ToolResponse
+            if isinstance(stored_message, ToolResponse):
+                stored_message = stored_message.content
+            else:
+                stored_message = stored_message.to_dict()
             if "content" in stored_message and stored_message["content"]:
                 conversation.context.store[conversation.response_storage_name] = stored_message["content"]
 
