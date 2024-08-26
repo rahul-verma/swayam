@@ -21,7 +21,7 @@ from copy import deepcopy
 from typing import Any
 
 from abc import ABC, abstractmethod
-from swayam.structure.structure import IOStructure
+from swayam.inject.structure.structure import IOStructure
 
 
 class BasePrompt(ABC):

@@ -18,7 +18,7 @@
 from typing import Union
 
 from .types import UserPrompt, SystemPrompt
-from swayam.structure.structure import IOStructure
+from swayam.inject.structure.structure import IOStructure
 from .format import FormatterMediator
 from .meta import PromptMeta
 

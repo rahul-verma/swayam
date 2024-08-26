@@ -78,7 +78,7 @@ class SimpleAgent:
         if not conversation.is_new() and conversation.has_system_prompt():
             raise ValueError("As it is continued conversation, the system prompt is already set in the context. So, the context found in this conversation is going to be ignored. Review.")
             
-        from swayam.tool.response import ToolResponse
+        from swayam.inject.tool.response import ToolResponse
         log_debug(f"Executing Conversation with ConversationAgent.")
         def process_output(in_data):
             if in_data.content:

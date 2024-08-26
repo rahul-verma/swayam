@@ -29,6 +29,7 @@ from swayam.core.facade import Swayam
 from swayam.llm.prompt import Prompt
 from swayam.llm.conversation import Conversation
 from swayam.llm.task import Task
-from swayam.structure import Structure
-from swayam.tool import Tool
-from swayam.generator import Generator
+from swayam.inject.structure import Structure
+from swayam.inject.tool import Tool
+from swayam.inject.generator import Generator
+from swayam.inject.parser import Parser

@@ -100,7 +100,7 @@ class ConversationExecutor(BaseLLMExecutor):
             stored_message = response_messages
             if type(response_messages) is list:
                 stored_message = response_messages[-1]
-            from swayam.tool.response import ToolResponse
+            from swayam.inject.tool.response import ToolResponse
             if isinstance(stored_message, ToolResponse):
                 stored_message = stored_message.content
             else:

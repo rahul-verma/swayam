@@ -60,6 +60,8 @@ class HtmlReporter(Reporter):
         if not os.path.exists(self.__json_path):
             log_debug("It's a new report.")
             self.__json_data = []
+            with open(self.__json_path, 'w') as f:
+                f.write("[]")
         else:
             log_debug("Found existing report.")
             with open(self.__json_path, 'r') as f:

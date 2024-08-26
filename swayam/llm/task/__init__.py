@@ -25,7 +25,7 @@ from swayam.llm.prompt.file import PromptFile
 from swayam.llm.conversation.conversation import LLMConversation
 from swayam.llm.conversation.repeater import DynamicConversationFile
 from .task import LLMTask
-from swayam.structure.structure import IOStructure
+from swayam.inject.structure.structure import IOStructure
 
 from .format import TaskFormatter
 from .meta import TaskMeta
