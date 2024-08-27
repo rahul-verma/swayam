@@ -26,11 +26,11 @@ class ToolMeta(type):
         try:
             from tarkash import Tarkash, TarkashOption
             project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            tool_module = importlib.import_module(f"{project_name}.lib.hook.tool")
+            tool_module = importlib.import_module(f"{project_name}.lib.inject.tool")
             return getattr(tool_module, name)
         except (StructureNotFoundError, NameError) as e:
             raise ToolImportError(name, import_error_message=str(e))
-        except AttributeError as e:
+        except (ModuleNotFoundError, AttributeError) as e:
             pass
         
         try:

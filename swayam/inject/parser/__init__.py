@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from json import JSONDecodeError
 from .meta import ParserMeta
 from .parser import TextContentParser, JsonContentParser, StructuredParser
 from .error import *
@@ -22,7 +24,7 @@ from .error import *
 class Parser(metaclass=ParserMeta):
     
     @classmethod
-    def text(cls, name, *, kallable, output_structure):
+    def text(cls, name, *, kallable, output_structure, input_structure=None):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
@@ -30,12 +32,16 @@ class Parser(metaclass=ParserMeta):
 
         :param name: Name of the parser
         """
+
         if not callable(kallable):
             raise ParserArgIsNotCallableError(name, kallable=kallable)
-        return TextContentParser(name, kallable=kallable, output_structure=output_structure)
+        return TextContentParser(name, 
+                                 kallable=kallable, 
+                                 input_structure=input_structure,
+                                 output_structure=output_structure)
     
     @classmethod
-    def json(cls, name, *, kallable, content_structure, output_structure):
+    def json(cls, name, *, kallable, input_structure=None, content_structure=None, output_structure=None):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
@@ -45,5 +51,5 @@ class Parser(metaclass=ParserMeta):
         """
         if not callable(kallable):
             raise ParserArgIsNotCallableError(name, kallable=kallable)
-        return JsonContentParser(name, kallable=kallable, content_structure=content_structure, output_structure=output_structure)
+        return JsonContentParser(name, kallable=kallable, content_structure=content_structure, input_structure=input_structure, output_structure=output_structure)
         

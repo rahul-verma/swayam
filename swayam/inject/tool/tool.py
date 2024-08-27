@@ -82,7 +82,6 @@ class StructuredTool:
                 return output.as_dict()
         else:
             if type(output) not in (list, IOStructureObjectList):
-                print(kallable.__name__, output)
                 raise TypeError("The return value of a non-atomic tool function, generator-compatible function must be a list or IOStructureObjectList.")
             if not isinstance(output, IOStructureObjectList):
                 return output_structure(*output).as_list()

@@ -43,3 +43,8 @@ class ParserInputStructureInvalidError(InjectableObjectError):
     
     def __init__(self, name, tool):
         super().__init__(_NAME, name, message=f"Input structure is invalid for the tool '{tool.name}' for creating a parser. Found >>{tool.input_structure.__class__.__name__}<<. Expected: TextContent or JsonContent.")
+        
+class ParserNoMatchError(InjectableObjectError):
+    
+    def __init__(self, name, message):
+        super().__init__(_NAME, name, message=f"Parser did not find any match. {message}")

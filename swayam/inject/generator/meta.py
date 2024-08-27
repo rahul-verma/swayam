@@ -27,11 +27,11 @@ class GeneratorMeta(type):
         try:
             from tarkash import Tarkash, TarkashOption
             project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            generator_module = importlib.import_module(f"{project_name}.lib.hook.generator")
+            generator_module = importlib.import_module(f"{project_name}.lib.inject.generator")
             return getattr(generator_module, name)
-        except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
+        except (StructureNotFoundError, ToolNotFoundError, NameError, ) as e:
             raise GeneratorImportError(name, import_error_message=str(e))
-        except AttributeError as e:
+        except (ModuleNotFoundError, AttributeError) as e:
             pass
         
         try:

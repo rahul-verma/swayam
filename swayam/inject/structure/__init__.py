@@ -17,7 +17,7 @@
 
 from typing import List
 
-from pydantic import BaseModel, create_model, field_validator
+from pydantic import BaseModel, create_model, field_validator, Field
 from .meta import StructureMeta
 
 class Structure(metaclass=StructureMeta):
@@ -31,10 +31,22 @@ class Structure(metaclass=StructureMeta):
         """
         
         def create_list_model(input_model):
-            return create_model(
-                f'{model.__name__}List',
-                items=(List[input_model], []),  # Set default to an empty list
+            # def ensure_list(cls, v):
+            #     if not isinstance(v, list):
+            #         return [v]
+            #     return v
+
+            # Create the dynamic model with the validator attached
+            ListModel = create_model(
+                f'{input_model.__name__}List',
+                items=(List[input_model], Field(default_factory=list)),
+                # __validators__={
+                #     'items': field_validator('items', mode='before')(ensure_list)
+                # }
             )
+            
+            return ListModel
+        
         from .structure import IOStructure, IOStructureList
         
         # Generators derive the list model automatically. So, a composite structure is always created.

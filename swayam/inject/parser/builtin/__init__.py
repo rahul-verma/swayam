@@ -15,6 +15,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirEnumerator import *
-from .injectable.FileReader import *
-from .injectable.FileWriter import *
+from .injectable.CodeBlockExtractor import *
+from .injectable.JPathExtractor import *

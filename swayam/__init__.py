@@ -18,6 +18,8 @@
 
 import os
 import sys
+import warnings
+warnings.filterwarnings("ignore")
 
 def __join_paths(*paths):
     return os.path.abspath(os.path.join(*paths))

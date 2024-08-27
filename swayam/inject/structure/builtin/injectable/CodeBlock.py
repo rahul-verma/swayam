@@ -15,6 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirEnumerator import *
-from .injectable.FileReader import *
-from .injectable.FileWriter import *
+from typing import Union
+from pydantic import BaseModel, Field
+
+from swayam import Structure
+
+class CodeBlockModel(BaseModel):
+    content: str = Field(..., title="Text Content", description="Text Content of Code or Markdown or Plain text.")
+    language: str = Field(default="markdown", title="Code Language", description="Language for the code block. E.g. python, javascript, etc. If not provided, it will be assumed to be plain text and type is set to markdown.")
+
+CodeBlock, CodeBlockList = Structure.build("CodeBlock", model=CodeBlockModel, return_composite=True)

@@ -42,7 +42,7 @@ class IOStructureObject:
 class IOStructureObjectList:
     def __init__(self, structure, *items):
         self.__structure = structure
-        self.__instances = self.__structure.data_model(items=items).items       
+        self.__instances = self.__structure.data_model(items=list(items)).items       
         
     def append(self, item):
         if not isinstance(item, IOStructureObject):
@@ -68,6 +68,10 @@ class IOStructure:
         self.__name = name
         self.__data_model = model
         self.__composite_structure = composite_structure
+        
+    @property
+    def name(self):
+        return self.__name
         
     @property
     def data_model(self):
@@ -98,10 +102,13 @@ class IOStructure:
 class IOStructureList:
     
     def __init__(self, name, atomic_model:BaseModel, composite_model:BaseModel):
-        self.__name__ = name
+        self.__name = name
         self.__atomic_model = atomic_model
         self.__composite_model = composite_model
         
+    @property
+    def name(self):
+        return self.__name
     @property
     def atomic_model(self):
         return self.__data_model

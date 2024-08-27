@@ -27,7 +27,7 @@ class ParserMeta(type):
         try:
             from tarkash import Tarkash, TarkashOption
             project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            parser_module = importlib.import_module(f"{project_name}.lib.hook.condition")
+            parser_module = importlib.import_module(f"{project_name}.lib.inject.condition")
             return getattr(parser_module, name)
         except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
             raise ConditionImportError(name, import_error_message=str(e))
