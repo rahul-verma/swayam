@@ -15,16 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel
-from swayam.inject.structure.builtin import BoolOutput
-from .meta import ParserMeta
+from .meta import ConditionMeta
 from .condition import StructuredCondition
 from .error import *
 
-class Condition(metaclass=ParserMeta):
+class Condition(metaclass=ConditionMeta):
     
     @classmethod
-    def callable(cls, name, *, kallable, input_structure):
+    def callable(cls, name, *, kallable):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
@@ -32,12 +30,5 @@ class Condition(metaclass=ParserMeta):
         """
         if not callable(kallable):
             raise ConditionArgIsNotCallableError(name, kallable)
-        return StructuredCondition(name, kallable=kallable, input_structure=input_structure, output_structure=BoolOutput)
-    
-    def tool(self, *, tool, name=None):
-        if tool.output_structure is not BoolOutput:
-            raise ConditionOutputStructureInvalidError(name, tool)
-        if name is None:
-            name = tool.name + "_Condition"
-        return StructuredCondition(name, data_object=tool.target, input_structure=tool.input_structure, output_structure=BoolOutput)
+        return StructuredCondition(name, kallable=kallable)
         

@@ -19,7 +19,7 @@ import importlib
 
 from .error import *
 
-class ParserMeta(type):
+class ConditionMeta(type):
     
     def __getattr__(cls, name):
         from swayam.inject.structure.error import StructureNotFoundError
@@ -27,19 +27,19 @@ class ParserMeta(type):
         try:
             from tarkash import Tarkash, TarkashOption
             project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            parser_module = importlib.import_module(f"{project_name}.lib.inject.condition")
-            return getattr(parser_module, name)
-        except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
+            condition_module = importlib.import_module(f"{project_name}.lib.inject.condition")
+            return getattr(condition_module, name)
+        except (StructureNotFoundError, NameError) as e:
             raise ConditionImportError(name, import_error_message=str(e))
-        except AttributeError as e:
+        except (ModuleNotFoundError, AttributeError) as e:
             pass
         
         try:
-            parser_module = importlib.import_module("swayam.inject.condition.builtin")
-            return getattr(parser_module, name)
+            condition_module = importlib.import_module("swayam.inject.condition.builtin")
+            return getattr(condition_module, name)
         except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
             raise ConditionImportError(name, import_error_message=str(e))
         except AttributeError as e:
             pass
-        
+
         raise ConditionNotFoundError(name)

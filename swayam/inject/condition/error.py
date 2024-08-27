@@ -36,5 +36,5 @@ class ConditionArgIsNotCallableError(InjectedObjectCallableArgError):
         
 class ConditionOutputStructureInvalidError(InjectableObjectError):
     
-    def __init__(self, name, tool):
-        super().__init__(_NAME, name, message=f"Output structure is invalid for the tool '{tool.name}' for creating a condition. Found >>{tool.output_structure.__class__.__name__}<<. Expected: BoolOutput.")
+    def __init__(self, name, kallable, output_type):
+        super().__init__(_NAME, name, message=f"Output type is invalid for the kallable '{kallable.__name__}' for creating a condition. Found return type as >>{output_type}<<. Expected: boolean.")

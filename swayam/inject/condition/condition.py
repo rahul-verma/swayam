@@ -22,37 +22,22 @@ from typing import *
 from pydantic import BaseModel, create_model, Field
 from swayam.inject.structure.structure import IOStructureObject, IOStructureObjectList
 
-class StructuredParser:
+from .error import *
+
+class StructuredCondition:
     
-    def __init__(self, name, *, kallable, input_structure, output_structure):
+    def __init__(self, name, *, kallable):
         self.__name = name
         self.__kallable = kallable
-        self.__input_structure = input_structure
-        self.__output_structure = output_structure
-        self.__prompt = None
-        
-    @property
-    def prompt(self):
-        return self.__prompt
-    
-    @prompt.setter
-    def prompt(self, prompt):
-        self.__prompt = prompt
  
     def __call__(self, **kwargs):
         from swayam.inject.tool.tool import StructuredTool
-    
-        output_iterable = None
-
-        args = self.__input_structure(**kwargs).as_dict()
-        output = self.__kallable(**args)
-
-        if isinstance(output, IOStructureObject):
-            output = output.as_dict()["output"]
-        else:
-            output = self.__output_structure(**output).as_dict()["output"]
         
-        self.prompt.append_condition_output(output)
-        return output
+        output = self.__kallable(**kwargs)
+        
+        if not isinstance(output, bool):
+            raise ConditionOutputStructureInvalidError(self.__name, output)
+    
+        return {'output': output}
 
         
