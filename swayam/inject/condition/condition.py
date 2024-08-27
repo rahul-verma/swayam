@@ -29,11 +29,20 @@ class StructuredCondition:
     def __init__(self, name, *, kallable):
         self.__name = name
         self.__kallable = kallable
+        self.__store = None
+        
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store
  
     def __call__(self, **kwargs):
         from swayam.inject.tool.tool import StructuredTool
         
-        output = self.__kallable(**kwargs)
+        output = self.__kallable(condition=self, **kwargs)
         
         if not isinstance(output, bool):
             raise ConditionOutputStructureInvalidError(self.__name, output)

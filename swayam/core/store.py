@@ -1,3 +1,4 @@
+
 # This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
@@ -15,31 +16,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.core.store import Store
-
-class AgentContext:
+class Store:
     
     def __init__(self):
-        from swayam.llm.conversation.context import ConversationContext
-        self.__conversation_context = ConversationContext()
-        self.__store = Store()
-        
-    @property
-    def conversation_context(self):
-        return self.__conversation_context
-        
-    def reset_conversation_context(self):
-        self.__conversation_context.reset()
+        self.__storage = {}
         
     def reset(self):
-        self.__conversation_context.reset()
-        self.__store.reset()
+        self.__storage = {}
         
-    @property
-    def store(self):
-        return self.__store
+    def __getitem__(self, key):
+        return self.__storage[key]
     
-    def format_prompt(self, prompt):
-        prompt.dynamic_format(self.store)
-        
+    def __setitem__(self, key, value):
+        self.__storage[key] = value
     
+    def items(self):
+        # Return an iterable of key-value pairs
+        return self.__storage.items()
+    
+    def __iter__(self):
+        # Iterator to allow unpacking
+        return iter(self.__storage)
