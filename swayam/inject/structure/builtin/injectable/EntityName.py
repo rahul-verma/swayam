@@ -15,19 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
-from json import JSONDecodeError
-from typing import Union
-from pydantic import BaseModel, Field, field_serializer
+from typing import List
 
+from pydantic import BaseModel, Field
 from swayam import Structure
 
-from .JsonContent import JsonContentModel
-
-## The methods used here are meant to prevent serialization warnings.
-class JsonContentFilterModel(JsonContentModel):
+class EntityNameModel(BaseModel):
+    entity_name:str = Field(..., description="Name of the entity", examples=["Swayam", "UserTable"])
     
-    jpath: str = Field(..., title="Jpath", description="JQuert path to find element(s) in the JSON content")
-    strict: bool = Field(True, title="Strict Match", description="If True, raise an error if the JPath does not exist in the JSON content")
+class EntityNamesModel(BaseModel):
+    entity_names: List[str] = Field(..., description="Name of the entity", examples=[["Swayam", "UserTable"]])
     
-JsonContentFilter = Structure.build("JsonContentFilter", model=JsonContentFilterModel)
+EntityName = Structure.build("Name", model=EntityNameModel) 
+EntityNames = Structure.build("Names", model=EntityNamesModel)

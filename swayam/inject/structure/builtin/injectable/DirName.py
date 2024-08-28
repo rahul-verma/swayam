@@ -16,16 +16,15 @@
 # limitations under the License.
 
 from typing import List
-from pydantic import BaseModel, Field
 
+from pydantic import BaseModel, Field
 from swayam import Structure
 
-class CodeBlockModel(BaseModel):
-    code_block: str = Field(..., title="Text Content", description="Text Content of Code or Markdown or Plain text.")
-    language: str = Field(default="markdown", title="Code Language", description="Language for the code block. E.g. python, javascript, etc. If not provided, it will be assumed to be plain text and type is set to markdown.")
+class DirNameModel(BaseModel):
+    dir_name:str = Field(..., description="Name of the directory", examples=["tools"])
     
-class CodeBlocksModel(BaseModel):
-    code_blocks: List[CodeBlockModel] = Field(..., title="Code Blocks", description="List of Code Blocks.")
-
-CodeBlock = Structure.build("CodeBlock", model=CodeBlockModel)
-CodeBlocks = Structure.build("CodeBlocks", model=CodeBlocksModel)
+class DirNamesModel(BaseModel):
+    dir_names:List[str] = Field(..., description="Names of directories", examples=[["tools", "config"]])
+    
+DirName = Structure.build("DirName", model=DirNameModel)
+DirNames  = Structure.build("DirNames", model=DirNamesModel)

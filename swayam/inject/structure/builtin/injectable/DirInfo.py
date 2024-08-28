@@ -15,13 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
+from typing import List
 
 from pydantic import BaseModel, Field
 from swayam import Structure
 
-file_name_field = Field(..., description="Name of the file", examples=["file.txt"])
-file_path_field = Field(..., description="Full or Project Relative Path of the file. Must include file name.", examples=["/home/user/file.txt", "user/file.txt"])
-
-dir_name_field = Field(..., description="Name of the directory", examples=["tools"])
-dir_path_field = Field(..., description="Full or Project Relative Path of the directory", examples=["/project/home/user", "user/test"])
+class DirInfoModel(BaseModel):
+    dir_name:str = Field(..., description="Name of the directory", examples=["tools"])
+    dir_path:str = Field(..., description="Full or Project Relative Path of the directory", examples=["/project/home/user", "user/test"])
+    
+class DirsInfoModel(BaseModel):
+    files: List[DirInfoModel] = Field(..., description="List of FileInfoModel objects")
+    
+DirInfo = Structure.build("DirInfo", model=DirInfoModel) 
+DirsInfo = Structure.build("DirsInfo", model=DirsInfoModel)

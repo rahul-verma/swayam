@@ -15,14 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
+from typing import List
 
 from pydantic import BaseModel, Field
 from swayam import Structure
-from ._fields import *
 
 class FileInfoModel(BaseModel):
-    file_name:str = Field(..., description=file_name_field.description, examples=file_name_field.examples)
-    file_path:str = Field(..., description=file_path_field.description, examples=file_path_field.examples)
+    file_name:str = Field(..., description="Name of the file", examples=["file.txt"])
+    file_path:str = Field(..., description="Full or Project Relative Path of the file. Must include file name.", examples=["/home/user/file.txt", "user/file.txt"]) 
     
-FileInfo, FileInfoList = Structure.build("FileInfo", model=FileInfoModel, return_composite=True)  
+class FilesInfoModel(BaseModel):
+    files: List[FileInfoModel] = Field(..., description="List of FileInfoModel objects")
+    
+FileInfo = Structure.build("FileInfo", model=FileInfoModel) 
+FilesInfo = Structure.build("FilesInfo", model=FilesInfoModel)

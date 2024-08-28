@@ -20,20 +20,5 @@ import importlib
 class StructureMeta(type):
     
     def __getattr__(cls, name):
-        try:
-            from tarkash import Tarkash, TarkashOption
-            project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            structure_module = importlib.import_module(f"{project_name}.lib.inject.structure")
-            return getattr(structure_module, name)
-        except (ModuleNotFoundError, AttributeError) as e:
-            pass
-        
-        try:
-            structure_module = importlib.import_module("swayam.inject.structure.builtin")
-            return getattr(structure_module, name)
-        except AttributeError as e:
-            print (e)
-            pass
-        
-        from .error import StructureNotFoundError
-        raise StructureNotFoundError(name)
+        from swayam.inject import Injectable
+        return Injectable.load_module("Structure", name)

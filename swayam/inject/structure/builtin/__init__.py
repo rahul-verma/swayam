@@ -16,18 +16,20 @@
 # limitations under the License.
 
 
+from .injectable._basic import *
 from .injectable.CodeBlock import *
-from .injectable.ContentCodeBlockFilter import *
+from .injectable.CodeBlockFilter import *
+from .injectable.DirInfo import *
+from .injectable.DirName import *
 from .injectable.DirPath import *
+from .injectable.DirPathFilter import *
 from .injectable.Empty import *
-from .injectable.FileContent import *
+from .injectable.EntityName import *
 from .injectable.FileInfo import *
 from .injectable.FileName import *
 from .injectable.FilePath import *
-from .injectable.JsonContent import *
-from .injectable.JsonContentFilter import *
-from .injectable.Name import *
-from .injectable.output import *
+from .injectable.SerialisedJsonFilter import *
+from .injectable.SerializedJson import *
 from .injectable.Snippet import *
-from .injectable.TextContent import *
+from .injectable.TextFileContent import *
 

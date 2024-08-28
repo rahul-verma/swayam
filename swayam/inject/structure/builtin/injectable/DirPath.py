@@ -15,14 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
-
 from pydantic import BaseModel, Field
 from swayam import Structure
-from ._fields import *
 
 class DirPathModel(BaseModel):
-    dir_path:str = Field(..., description=dir_name_field.description, examples=dir_name_field.examples)
-    file_filter_pattern:Union[str,None] = Field(default=None, description="Regular Expression pattern to filter (include) the files. Default is None.", examples=".*\.txt")
+    dir_path:str = Field(..., description="Full or Project Relative Path of the directory", examples=["/project/home/user", "user/test"])
     
-DirPath, DirPathList = Structure.build("DirPath", model=DirPathModel, return_composite=True)
+DirPath = Structure.build("DirPath", model=DirPathModel)

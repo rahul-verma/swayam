@@ -15,14 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union, List
-from pydantic import BaseModel, Field
+import json
+from json import JSONDecodeError
+from typing import Union
+from pydantic import BaseModel, Field, field_serializer
 
 from swayam import Structure
 
-class ContentCodeBlockFilterModel(BaseModel):
-    content: str = Field(..., title="Text Content", description="Source text content")
-    languages: List[str] = Field(default=None, title="Language filter", description="Language for filtering the code blocks in text. E.g. python, javascript, etc. If not provided, it will be assumed to be plain text and type is set to markdown.")
-    strict: bool = Field(True, title="Strict Match", description="If True, raise an error if no code block is found in the content")
+from .SerializedJson import SerializedJsonModel
 
-ContentCodeBlockFilter = Structure.build("CodeBlock", model=ContentCodeBlockFilterModel)
+## The methods used here are meant to prevent serialization warnings.
+class SerializedJsonFilterModel(SerializedJsonModel):
+    
+    jpath: str = Field(..., title="Jpath", description="JQuery path to find element(s) in the JSON content")
+    strict: bool = Field(True, title="Strict Match", description="If True, raise an error if the JPath does not exist in the JSON content")
+    
+SerializedJsonContentFilter = Structure.build("SerializedJsonFilter", model=SerializedJsonFilterModel)

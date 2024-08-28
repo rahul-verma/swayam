@@ -45,30 +45,30 @@ class Injectable:
                 return self.__module_name
     
         type = type.lower()
-        from swayam.inject import Injectable
+        from tarkash import Tarkash, TarkashOption
+        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
+            
         module_name = f"{project_name}.lib.inject.{type.lower()}"
         try:
-            from tarkash import Tarkash, TarkashOption
-            project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            generator_module = importlib.import_module(module_name)
-            return getattr(generator_module, name)
+            injectable_module = importlib.import_module(module_name)
+            return getattr(injectable_module, name)
         except InjectableObjectError as e:
-            this_object = InjectableClass(type, module=module_name, name=name)
+            this_object = InjectableClass(type, module_name=module_name, name=name)
             raise InjectableNameImportError(this_object, error=str(e))
         except (ModuleNotFoundError, AttributeError) as e:
             pass
         
-        module_name = "swayam.inject.generator.builtin"
+        module_name = f"swayam.inject.{type.lower()}.builtin"
         try:
-            generator_module = importlib.import_module(module_name)
-            return getattr(generator_module, name)
+            injectable_module = importlib.import_module(module_name)
+            return getattr(injectable_module, name)
         except InjectableObjectError as e:
-            this_object = InjectableClass(type, module=module_name, name=name)
+            this_object = InjectableClass(type, module_name=module_name, name=name)
             raise InjectableNameImportError(this_object, error=str(e))
         except AttributeError as e:
             pass
         
-        raise InjectableNameNotFoundError(InjectableClass(type, module=module_name, name=name))
+        raise InjectableNameNotFoundError(InjectableClass(type, module_name=None, name=name))
     
     @classmethod
     def validate_callable_definition(cls, injectable):

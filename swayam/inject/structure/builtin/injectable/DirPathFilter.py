@@ -19,8 +19,9 @@ from typing import Union
 
 from pydantic import BaseModel, Field
 from swayam import Structure
+from .DirPath import DirPathModel
 
-class Name(BaseModel):
-    name:str = Field(..., description="Name of the entity", examples=["Swayam", "UserTable"])
+class DirPathFilterModel(DirPathModel):
+    file_filter_pattern:Union[str,None] = Field(default=None, description="Regular Expression pattern to filter (include) the files. Default is None.", examples=".*\.txt")
     
-Name, NameList  = Structure.build("FilePath", model=Name, return_composite=True)
+DirPathFilter = Structure.build("DirPathFilter", model=DirPathModel)

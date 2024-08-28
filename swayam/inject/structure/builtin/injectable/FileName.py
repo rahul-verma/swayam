@@ -15,13 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
+from typing import List
 
 from pydantic import BaseModel, Field
 from swayam import Structure
-from ._fields import *
 
 class FileNameModel(BaseModel):
-    file_name:str = Field(..., description=file_name_field.description, examples=file_name_field.examples)
+    file_name:str = Field(..., description="Name of the file", examples=["file.txt"])
     
-FileName, FileNameList  = Structure.build("FileName", model=FileNameModel, return_composite=True)
+class FileNamesModel(BaseModel):
+    file_names:List[str] = Field(..., description="Names of files", examples=["file1.txt", "file2.txt"])
+    
+FileName = Structure.build("FileName", model=FileNameModel)
+FileNames  = Structure.build("FileNames", model=FileNamesModel)
