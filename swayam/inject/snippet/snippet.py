@@ -15,12 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 from enum import Enum
-from typing import *
-
-from pydantic import BaseModel, create_model, Field
+from swayam.inject.structure import Structure
 from swayam.inject.structure.structure import IOStructureObject, IOStructureObjectList
+
+from .error import *
+
+kallable = callable
 
 class StructuredSnippet:
     
@@ -56,4 +57,23 @@ class StructuredSnippet:
         
         self.prompt.append_output(output)
 
+        
+class StructuredSnippetCreator:
+    
+    def __init__(self, name, *, callable):
+        self.__name = name
+        
+        if not kallable(callable):
+            raise SnippetArgIsNotCallableError(self.__name, callable=callable)
+        self.__callable = callable
+
+    def __call__(self):
+        output = self.__callable(caller=self)
+        if not isinstance(output, IOStructureObject):
+            raise SnippetCallableOutputError(self.__name, actual_object=output)
+        elif output.struct_name != "Snippet":
+            raise SnippetCallableOutputError(self.__name, actual_name=output.name)
+        else:
+            return StructuredSnippet(**output.as_dict())
+        
         

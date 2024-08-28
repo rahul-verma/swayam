@@ -29,6 +29,11 @@ class SnippetImportError(InjectedNameImportError):
     def __init__(self, name, *, import_error_message):
         super().__init__(_NAME, name, import_error_message=import_error_message)
         
+class SnippetArgIsNotCallableError(InjectedObjectCallableArgError):
+    
+    def __init__(self, name, callable):
+        super().__init__(_NAME, name, kallable=callable)
+        
 class SnippetDefinitionFormatError(InjectableObjectError):
     
     def __init__(self, name, *, path, error):
@@ -38,3 +43,8 @@ class SnippetDefinitionNotFoundError(InjectableObjectError):
     
     def __init__(self, name, *, path):
         super().__init__(_NAME, name, "There is neither a directory nor a YAML file with the name {name} at path {path}.")
+        
+class SnippetCallableOutputError(InjectableObjectCallableOutputError):
+    
+    def __init__(self, name, *, actual_object):
+        super().__init__(_NAME, name, actual_object=actual_object, expected_type="Structure.Snippet")

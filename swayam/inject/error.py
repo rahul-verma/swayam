@@ -34,3 +34,8 @@ class InjectedObjectCallableArgError(InjectableObjectError):
     
     def __init__(self, type, name, *, kallable):
         super().__init__(type, name, kallable, f"Got object >>{kallable} of type >>{type(kallable)}<<. Expected callable.")
+        
+class InjectableObjectCallableOutputError(InjectableObjectError):
+    
+    def __init__(self, type, name, *, kallable, expected_type, actual_object):
+        super().__init__(_NAME, name, kallable, f"Expected callable >>{kallable}<< to return object of type >>{expected_type}<<. Got >>{actual_object}<< of type >>{type(actual_object)} instead.")

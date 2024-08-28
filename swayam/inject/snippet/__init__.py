@@ -17,10 +17,11 @@
 
 from pydantic import BaseModel
 from .meta import SnippetMeta
-from .snippet import StructuredSnippet
+from .snippet import StructuredSnippetCreator
 from .error import *
 
 class Snippet(metaclass=SnippetMeta):
     
-    pass
-        
+    @classmethod
+    def build(cls, name, *, callable):
+        return StructuredSnippetCreator(name=name, callable=callable)()

@@ -67,7 +67,9 @@ Note: Pydantic behaves funny with unpacking of keyword args when the values are 
 ### Snippet
 
 - You can define a snippet as a definition file (text or dict) directly under /snippet or any sub-directory. **Snippet.file[.path.to.snippet].<Name>**.
-
+- You can also define as a Python callable and use **Snippet.build**. Rules for callable:
+    - Takes one kwarg: **caller** and no other arg.
+    - The return type must be **Structure.Snippet** 
 
 ### Setter
 

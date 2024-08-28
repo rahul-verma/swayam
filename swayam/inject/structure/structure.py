@@ -29,6 +29,10 @@ class IOStructureObject:
         self.__model_instance = instance
         
     @property
+    def struct_name(self):
+        return self.__structure.name
+        
+    @property
     def data_model(self):
         return self.__structure.data_model
     
@@ -42,7 +46,11 @@ class IOStructureObject:
 class IOStructureObjectList:
     def __init__(self, structure, *items):
         self.__structure = structure
-        self.__instances = self.__structure.data_model(items=list(items)).items       
+        self.__instances = self.__structure.data_model(items=list(items)).items      
+        
+    @property
+    def struct_name(self):
+        return self.__structure.name 
         
     def append(self, item):
         if not isinstance(item, IOStructureObject):
