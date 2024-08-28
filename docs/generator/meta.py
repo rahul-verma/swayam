@@ -15,22 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+import importlib
 
-from pydantic import BaseModel, create_model, field_validator, Field
-from .meta import StructureMeta
-from .structure import IOStructure
+from swayam.inject.error import *
 
-class Structure(metaclass=StructureMeta):
+class GeneratorMeta(type):
     
-    @classmethod
-    def build(cls, name, model:BaseModel):
-        """
-        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
-
-        args:
-            name(str): Name of the structure
-            model(BaseModel): The encapsulated Pydantic Data Model
-        """
-        return IOStructure(name, model=model)
-        
+    def __getattr__(cls, name):
+        pass

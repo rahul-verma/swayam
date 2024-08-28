@@ -15,22 +15,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-
-from pydantic import BaseModel, create_model, field_validator, Field
-from .meta import StructureMeta
-from .structure import IOStructure
-
-class Structure(metaclass=StructureMeta):
-    
-    @classmethod
-    def build(cls, name, model:BaseModel):
-        """
-        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
-
-        args:
-            name(str): Name of the structure
-            model(BaseModel): The encapsulated Pydantic Data Model
-        """
-        return IOStructure(name, model=model)
-        
+# from .injectable.CodeBlockExtractor import *
+# from .injectable.JPathExtractor import *

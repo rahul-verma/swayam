@@ -17,25 +17,52 @@
 
 class InjectableObjectError(Exception):
     
-    def __init__(self, type, name, message):
-        super().__init__(f"{type} >>{name}<<: {message}")
+    def __init__(self, injectable, error):
+        super().__init__(f"{injectable.type} >>{injectable.name}<<: {error}")
 
-class InjectedNameNotFoundError(InjectableObjectError):
+class InjectableNameNotFoundError(InjectableObjectError):
     
-    def __init__(self, type, name):
-        super().__init__(type, name, "Neither defined in the project, nor defined by Swayam.")
+    def __init__(self, injectable):
+        super().__init__(injectable, "Neither defined in the project, nor defined by Swayam.")
         
-class InjectedNameImportError(InjectableObjectError):
+class  InjectableNameImportError(InjectableObjectError):
     
-    def __init__(self, type, name, *, import_error_message):
-        super().__init__(type, name, f"Object was found, but could not be imported. Error: {import_error_message}. Check definition for {type} >>{name}<< for spelling/casing errors, else check your project hook lib.")
+    def __init__(self, injectable, *, error):
+        name = f"Module: {injectable.module_name}.{injectable.name}"
+        super().__init__(injectable, f"Object was found, but could not be imported. Error: {error}. Check definition for {injectable.type} >>{name}<< for spelling/casing errors, else check your project hook lib.")
         
-class InjectedObjectCallableArgError(InjectableObjectError):
+class InjectableNotCallableError(InjectableObjectError):
     
-    def __init__(self, type, name, *, kallable):
-        super().__init__(type, name, kallable, f"Got object >>{kallable} of type >>{type(kallable)}<<. Expected callable.")
+    def __init__(self, injectable):
+        super().__init__(injectable, f"Got object >>{injectable.callable} of type >>{type(injectable.callable)}<<. Expected a callable object.")
         
-class InjectableObjectCallableOutputError(InjectableObjectError):
+class InjectableInvalidInputError(InjectableObjectError):
     
-    def __init__(self, type, name, *, kallable, expected_type, actual_object):
-        super().__init__(_NAME, name, kallable, f"Expected callable >>{kallable}<< to return object of type >>{expected_type}<<. Got >>{actual_object}<< of type >>{type(actual_object)} instead.")
+    def __init__(self, injectable, *, provided_input):
+        super().__init__(injectable, message=f"The provided input is >>{provided_input}<<. Expected: {injectable.input_structure.definition!r}.")
+        
+class InjectableInvalidCallableDefinitionError(InjectableObjectError):
+    
+    def __init__(self, injectable):
+        super().__init__(injectable, message=f"Unexpected {injectable.callable} definition. Expected a callable definition with these keyword-only arguments: {injectable.keywords!r}.")
+        
+class InjectableCallError(InjectableObjectError):
+
+    def __init__(self, injectable, *, error):
+            super().__init__(injectable, message=f"A run-time error happened when {injectable.callable} was called. Error: {error}")
+        
+class InjectableInvalidOutputError(InjectableObjectError):
+    
+    def __init__(self, injectable, *, output):
+        super().__init__(injectable, f"Expected callable >>{injectable.callable}<< to return object of type >>{injectable.output_structure}<<. Got >>{output}<< of type >>{type(output)} instead.")
+        
+class InjectableDefinitionNotFoundError(InjectableObjectError):
+    
+    def __init__(self, injectable, definition):
+        super().__init__(injectable, "There is neither a directory nor a YAML file with the name {definition.name} at path {definition.path}.")
+        
+class InjectableDefinitionFormatError(InjectableObjectError):
+    
+    def __init__(self, injectable, *, error):
+        super().__init__(injectable, f"Unexpected format of YAML in definition at {injectable.path}. Error: {error}")
+        

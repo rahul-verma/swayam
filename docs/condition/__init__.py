@@ -15,22 +15,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from .meta import ConditionMeta
+from .condition import StructuredCondition
+from .error import *
 
-from pydantic import BaseModel, create_model, field_validator, Field
-from .meta import StructureMeta
-from .structure import IOStructure
+kallable = callable
 
-class Structure(metaclass=StructureMeta):
+class Condition(metaclass=ConditionMeta):
     
     @classmethod
-    def build(cls, name, model:BaseModel):
+    def callable(cls, name, *, callable):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
-        args:
-            name(str): Name of the structure
-            model(BaseModel): The encapsulated Pydantic Data Model
+        :param name: Name of the condition
         """
-        return IOStructure(name, model=model)
+        if not jcallable(callable):
+            raise ConditionArgIsNotCallableError(name, callable)
+        return StructuredCondition(name, callable=callable)
         

@@ -17,18 +17,7 @@
 
 from swayam.inject.error import *
 
-_NAME = "Structure"
-
-class StructureNotFoundError(InjectedNameNotFoundError):
-    
-    def __init__(self, name):
-        super().__init__(_NAME, name)
-        
-class StructureImportError(InjectedNameImportError):
-    
-    def __init__(self, name, *, import_error_message):
-        super().__init__(_NAME, name, import_error_message=import_error_message) 
-        
 class StructureValidationError(InjectableObjectError):
-    def __init__(self, name, *, message):
-        super().__init__(_NAME, name, message=f"Validation error: {message}") 
+    
+    def __init__(self, structure, *, provided_input, error):
+        super().__init__(structure, error=f"Invalid input data for creating structure. Expected: {structure.definition}. Provided input: {provided_input}. Error: {error}")

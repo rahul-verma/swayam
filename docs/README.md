@@ -62,7 +62,7 @@ Note: Pydantic behaves funny with unpacking of keyword args when the values are 
 ### Condition
 
 - Basic condition
-- Condition kallable has access to Condition object, for which a Store can be set.
+- Condition callable has access to Condition object, for which a Store can be set.
 
 ### Snippet
 

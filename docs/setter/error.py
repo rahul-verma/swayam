@@ -15,22 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from swayam.inject.error import *
 
-from pydantic import BaseModel, create_model, field_validator, Field
-from .meta import StructureMeta
-from .structure import IOStructure
+_NAME = "Parser"
 
-class Structure(metaclass=StructureMeta):
+class ParserNotFoundError(InjectableNameNotFoundError):
     
-    @classmethod
-    def build(cls, name, model:BaseModel):
-        """
-        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
-
-        args:
-            name(str): Name of the structure
-            model(BaseModel): The encapsulated Pydantic Data Model
-        """
-        return IOStructure(name, model=model)
+    def __init__(self, name):
+        super().__init__(_NAME, name)
         
+class ParserImportError( InjectableNameImportError):
+    
+    def __init__(self, name, *, import_error_message):
+        super().__init__(_NAME, name, import_error_message=import_error_message)
+        
+class ParserArgIsNotCallableError(InjectableCallableIsNotCallableError):
+    
+    def __init__(self, name, callable):
+        super().__init__(_NAME, name, callable=callable)
