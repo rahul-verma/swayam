@@ -28,5 +28,6 @@ from .injectable.JsonContent import *
 from .injectable.JsonContentFilter import *
 from .injectable.Name import *
 from .injectable.output import *
+from .injectable.Snippet import *
 from .injectable.TextContent import *
 

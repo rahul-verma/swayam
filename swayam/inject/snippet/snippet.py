@@ -22,22 +22,19 @@ from typing import *
 from pydantic import BaseModel, create_model, Field
 from swayam.inject.structure.structure import IOStructureObject, IOStructureObjectList
 
-class StructuredParser:
+class StructuredSnippet:
     
-    def __init__(self, name, *, kallable, input_structure, output_structure):
-        self.__name = name
-        self.__kallable = kallable
-        self.__input_structure = input_structure
-        self.__output_structure = output_structure
-        self.__prompt = None
+    def __init__(self, *, purpose, text):
+        self.__purpose = purpose
+        self.__text = text
         
     @property
-    def prompt(self):
-        return self.__prompt
+    def purpose(self):
+        return self.__purpose
     
-    @prompt.setter
-    def prompt(self, prompt):
-        self.__prompt = prompt
+    @property
+    def text(self):
+        return self.__text
  
     def __call__(self, **kwargs):
         from swayam.inject.tool.tool import StructuredTool

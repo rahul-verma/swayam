@@ -61,11 +61,12 @@ Note: Pydantic behaves funny with unpacking of keyword args when the values are 
 
 ### Condition
 
-Exists
+- Basic condition
+- Condition kallable has access to Condition object, for which a Store can be set.
 
 ### Snippet
 
-Exists
+- You can define a snippet as a definition file (text or dict) directly under /snippet or any sub-directory. **Snippet.file[.path.to.snippet].<Name>**.
 
 
 ### Setter

@@ -16,17 +16,39 @@
 # limitations under the License.
 
 import os
+import importlib
+
 from .error import *
+from .namespace import *
     
 class SnippetMeta(type):
     
-    @classmethod
-    def get_path_for_conversation(cls, *, name):
-        from tarkash import Tarkash, YamlFile
-        from swayam.core.constant import SwayamOption
-        return os.path.join(Tarkash.get_option_value(SwayamOption.SNIPPET_DIR), f"{name}.yaml")
-    
     def __getattr__(cls, name):
-        from tarkash import YamlFile        
-        contents = YamlFile(cls.get_path_for_conversation(name=name)).content
-        return contents
+        from tarkash import Tarkash, TarkashOption
+        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
+        from swayam.inject.structure.error import StructureNotFoundError
+        from swayam.inject.tool.error import ToolNotFoundError
+        
+        if name == "file":
+            from .namespace import SnippetDir
+            from tarkash import Tarkash
+            from swayam.core.constant import SwayamOption
+            return SnippetDir(Tarkash.get_option_value(SwayamOption.SNIPPET_DIR))
+
+        try:
+            snippet_module = importlib.import_module(f"{project_name}.lib.inject.snippet")
+            return getattr(snippet_module, name)
+        except (StructureNotFoundError, NameError) as e:
+            raise SnippetImportError(name, import_error_message=str(e))
+        except (ModuleNotFoundError, AttributeError) as e:
+            pass
+        
+        try:
+            snippet_module = importlib.import_module("swayam.inject.snippet.builtin")
+            return getattr(snippet_module, name)
+        except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
+            raise SnippetImportError(name, import_error_message=str(e))
+        except AttributeError as e:
+            pass
+
+        raise SnippetNotFoundError(name)

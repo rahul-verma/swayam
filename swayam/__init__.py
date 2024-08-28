@@ -36,3 +36,4 @@ from swayam.inject.tool import Tool
 from swayam.inject.generator import Generator
 from swayam.inject.parser import Parser
 from swayam.inject.condition import Condition
+from swayam.inject.snippet import Snippet

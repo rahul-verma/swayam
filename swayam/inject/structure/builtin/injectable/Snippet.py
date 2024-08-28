@@ -15,12 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel
-from .meta import SnippetMeta
-from .snippet import StructuredSnippet
-from .error import *
+from typing import Union
+from pydantic import BaseModel, Field
 
-class Snippet(metaclass=SnippetMeta):
+from swayam import Structure
+
+class SnippetModel(BaseModel):
+    purpose: str = Field(..., title="Snippet Purpose", description="A statement describing the purpose of the snippet.")
+    text: str = Field(..., title="Text Content", description="Text content")
     
-    pass
-        
+Snippet = Structure.build("Snippet", model=SnippetModel)

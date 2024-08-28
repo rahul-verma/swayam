@@ -21,6 +21,9 @@ class SwayamOption(Enum):
     '''
         Represents all built-in configuration options for Swayam.
     '''
+    
+    SNIPPET_DIR = auto()
+    '''Root Directory for Snippet Files'''
         
     PROMPT_DIR = auto()
     '''Root Directory for Prompt Files'''
@@ -31,7 +34,7 @@ class SwayamOption(Enum):
     TASK_DIR = auto()
     '''Root Directory for Task Files'''
     
-    PLAN_DIR = auto()
+    DIRECTIVE_DIR = auto()
     '''Root Directory for Plan Files'''
     
     LLM_PROVIDER = auto()

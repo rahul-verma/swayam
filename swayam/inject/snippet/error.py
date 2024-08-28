@@ -17,24 +17,24 @@
 
 from swayam.inject.error import *
 
-_NAME = "Condition"
+_NAME = "Snippet"
 
-class ConditionNotFoundError(InjectedNameNotFoundError):
+class SnippetNotFoundError(InjectedNameNotFoundError):
     
     def __init__(self, name):
         super().__init__(_NAME, name)
         
-class ConditionImportError(InjectedNameImportError):
+class SnippetImportError(InjectedNameImportError):
     
     def __init__(self, name, *, import_error_message):
         super().__init__(_NAME, name, import_error_message=import_error_message)
         
-class ConditionArgIsNotCallableError(InjectedObjectCallableArgError):
+class SnippetDefinitionFormatError(InjectableObjectError):
     
-    def __init__(self, name, kallable):
-        super().__init__(_NAME, name, kallable=kallable)
+    def __init__(self, name, *, path, error):
+        super().__init__(_NAME, name, f"Unexpected format of YAML in definition at {path}. Error: {error}")
         
-class ConditionOutputStructureInvalidError(InjectableObjectError):
+class SnippetDefinitionNotFoundError(InjectableObjectError):
     
-    def __init__(self, name, tool):
-        super().__init__(_NAME, name, message=f"Output structure is invalid for the tool '{tool.name}' for creating a condition. Found >>{tool.output_structure.__class__.__name__}<<. Expected: BoolOutput.")
+    def __init__(self, name, *, path):
+        super().__init__(_NAME, name, "There is neither a directory nor a YAML file with the name {name} at path {path}.")
