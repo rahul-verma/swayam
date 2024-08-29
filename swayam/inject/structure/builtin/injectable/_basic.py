@@ -20,31 +20,31 @@ from pydantic import BaseModel, Field
 
 from swayam import Structure
 
-class NumericModel(BaseModel):
-    content: Union[int, float] = Field(..., title="Numeric Content", description="A numeric content (int or float)")
+class NumericValueModel(BaseModel):
+    value: Union[int, float] = Field(..., title="Numeric Content", description="A numeric content (int or float)")
     
-class NumericsModel(BaseModel):
-    content: list[Union[int, float]] = Field(..., title="Numeric List Content", description="A list of numeric contents (int or float)")
+class NumericValuesModel(BaseModel):
+    values: list[Union[int, float]] = Field(..., title="Numeric List Content", description="A list of numeric contents (int or float)")
 
-class StringModel(BaseModel):
-    content: str = Field(..., title="String content", description="A string content")
+class StringValueModel(BaseModel):
+    value: str = Field(..., title="String content", description="A string content")
 
-class StringsModel(BaseModel):
-    content: list[str] = Field(..., title="String List Content", description="A list of string contents")
+class StringValuesModel(BaseModel):
+    values: list[str] = Field(..., title="String List Content", description="A list of string contents")
 
-class BoolModel(BaseModel):
-    content: bool = Field(..., title="Boolean Content", description="A boolean content")
+class BoolValueModel(BaseModel):
+    value: bool = Field(..., title="Boolean Content", description="A boolean content")
 
-class BoolsModel(BaseModel):
-    content: list[bool] = Field(..., title="Boolean List Content", description="A list of boolean contents")
+class BoolValuesModel(BaseModel):
+    values: list[bool] = Field(..., title="Boolean List Content", description="A list of boolean contents")
     
-class NullModel(BaseModel):
-    content: None = Field(None, title="None Content", description="A None content")
+class NoneValueModel(BaseModel):
+    value: None = Field(None, title="None Content", description="A None content")
     
-Numeric = Structure.build("Numeric", model=NumericModel)
-Numerics = Structure.build("Numerics", model=NumericsModel)
-String = Structure.build("String", model=StringModel)
-Strings = Structure.build("Strings", model=StringsModel)
-Bool = Structure.build("Bool", model=BoolModel)
-Bools = Structure.build("Bools", model=BoolsModel)
-Null = Structure.build("Null", model=NullModel)
+NumericValue = Structure.build("NumericValue", model=NumericValueModel)
+NumericValues = Structure.build("NumericValues", model=NumericValuesModel)
+StringValue = Structure.build("StringValue", model=StringValueModel)
+StringValues = Structure.build("StringValues", model=StringValuesModel)
+BoolValue = Structure.build("BoolValue", model=BoolValueModel)
+BoolValues = Structure.build("BoolValues", model=BoolValuesModel)
+NoneValue = Structure.build("NoneValue", model=NoneValueModel)

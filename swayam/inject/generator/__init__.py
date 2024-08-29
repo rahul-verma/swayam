@@ -17,18 +17,19 @@
 
 from pydantic import BaseModel
 from .meta import GeneratorMeta
+from swayam import Structure
 
 kallable = callable
 
 class Generator(metaclass=GeneratorMeta):
     
     @classmethod
-    def build(cls, name, *, callable, input_structure, output_structure, allow_none_output=False):
+    def build(cls, name, *, callable, output_structure, input_structure=None, allow_none_output=False):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
         :param name: Name of the structure
         """
         from .generator import StructuredGenerator
-        return StructuredGenerator(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
+        return StructuredGenerator(name, callable=callable, output_structure=output_structure, input_structure=input_structure, allow_none_output=allow_none_output)
         

@@ -33,7 +33,7 @@ class Injectable:
         return f"File: {frame.filename}, Line: {frame.lineno}, Function: {frame.name}, Code: {frame.line}"
     
     @classmethod
-    def load_module(cls, type, name, caller_file=None):
+    def load_from_module(cls, type, name, caller_file=None):
     
         type = type.lower()
         from tarkash import Tarkash, TarkashOption
@@ -74,7 +74,6 @@ class Injectable:
     def create_metadata_object(cls, *, type, name, module_name=None):
         class InjectableClass:
             def __init__(self, type, name, module_name):
-                print(type)
                 self.__type = type.lower().title()
                 self.__name = name
                 self.__module_name = module_name

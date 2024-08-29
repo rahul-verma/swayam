@@ -18,6 +18,7 @@
 from swayam.inject.injectable import StructuredInjectableWithCallable
 from swayam.inject.structure.structure import IOStructureObject
 from swayam.inject.error import InjectableInvalidOutputError
+from swayam import Structure
 from .error import *
 
 # Define a base class `Structure` that inherits from `BaseModel`
@@ -32,7 +33,7 @@ def iterator(caller, iterable):
         from swayam import Structure
         if not isinstance(output, IOStructureObject):
             if output is None and caller.allow_none_output:
-                    return Structure.Null().as_dict()
+                    return Structure.NoneValue().as_dict()
             raise InjectableInvalidOutputError(caller, output=output)
         elif not isinstance(output.model_instance, caller.output_structure.data_model):
             # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
@@ -45,6 +46,8 @@ def iterator(caller, iterable):
 class StructuredGenerator(StructuredInjectableWithCallable):
     
     def __init__(self, name, *, callable, input_structure, output_structure, allow_none_output=False):
+        if input_structure is None:
+            input_structure = Structure.Empty
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
         
     def validate_output(self, output):

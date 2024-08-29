@@ -17,20 +17,17 @@
 
 from .meta import ConditionMeta
 from .condition import StructuredCondition
-from .error import *
 
 kallable = callable
 
 class Condition(metaclass=ConditionMeta):
     
     @classmethod
-    def callable(cls, name, *, callable):
+    def build(cls, name, *, callable, input_structure=None):
         """
-        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
-
+        Buils a Condition Injectable object.
+        
         :param name: Name of the condition
         """
-        if not jcallable(callable):
-            raise ConditionArgIsNotCallableError(name, callable)
-        return StructuredCondition(name, callable=callable)
+        return StructuredCondition(name, callable=callable, input_structure=input_structure)
         

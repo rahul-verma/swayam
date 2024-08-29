@@ -66,6 +66,7 @@ An Injectable is:
 - Typical usage: Looping.
 - always define input/output structure on a generator basis.
 - allow_none_output tweaks the default where the encapsulated callable is allowed to return None.
+- Input structure can be empty.
 
 ### Condition
 
@@ -86,10 +87,6 @@ An Injectable is:
 
 Note: Pydantic behaves funny with unpacking of keyword args when the values are themselves dictionaries. So, I had to remove the notion of a generic JsonContent Model. in future, might handle this within the Structure hierarchy.
 
-### Setter
+### Resource
 
-To Do
-
-### Cleaner
-
-To Do
+a single callable with yield (pytest) style. to do.

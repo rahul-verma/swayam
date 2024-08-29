@@ -104,13 +104,14 @@ class StructuredInjectableWithCallable(StructuredInjectable):
     def validate_output(self, output):
         if not isinstance(output, IOStructureObject):
             if output is None and self.allow_none_output:
-                    return Structure.Null().as_dict()
+                return Structure.NoneValue()
             raise InjectableInvalidOutputError(self, output=output)
         elif not isinstance(output.model_instance, self.output_structure.data_model):
             # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
             raise InjectableInvalidOutputError(self, output=output.name)
+        return output
 
     def __call__(self, **kwargs):
         output = self.call_encapsulated_callable(**kwargs)     
-        self.validate_output(output)
+        output = self.validate_output(output)
         return output.as_dict()

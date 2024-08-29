@@ -24,4 +24,4 @@ class ToolMeta(type):
     
     def __getattr__(cls, name):
         from swayam.inject import Injectable
-        return Injectable.load_module("Tool", name, caller_file= get_caller_module_file_location())
+        return Injectable.load_from_module("Tool", name, caller_file= get_caller_module_file_location())

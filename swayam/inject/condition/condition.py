@@ -15,12 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.core.caller import get_caller_module_file_location
+from swayam import Structure
+from swayam.inject.injectable import StructuredInjectableWithCallable
 
-from swayam.inject.error import *
-
-class GeneratorMeta(type):
+class StructuredCondition(StructuredInjectableWithCallable):
     
-    def __getattr__(cls, name):
-        from swayam.inject import Injectable
-        return Injectable.load_from_module("Generator", name, caller_file= get_caller_module_file_location())
+    def __init__(self, name, *, callable, input_structure):
+        if input_structure is None:
+            input_structure = Structure.Empty
+        super().__init__(name, callable=callable, input_structure=input_structure, output_structure=Structure.BoolValue)
+
+        
