@@ -15,9 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
+import inspect
 
-class StructuredToolkit:
-    
-    def __init__(self):
-        pass
+def get_caller_module_file_location():
+
+    # Get the current stack
+    stack = inspect.stack()
+
+    # Function 0: This function
+    # Function 1: Inquirer
+    # Function 2: Caller
+    caller_frame = stack[2]
+
+    # Get the filename of the caller's module
+    return caller_frame.filename

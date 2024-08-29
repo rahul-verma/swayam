@@ -24,8 +24,45 @@ kallable = callable
 class Injectable:
     
     @classmethod
-    def load_module(cls, type, name):
+    def load_module(cls, type, name, caller_file=None):
+    
+        type = type.lower()
+        from tarkash import Tarkash, TarkashOption
+        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
         
+        def raise_import_exception(e):
+            this_object = cls.create_metadata_object(type=type, name=name, module_name=module_name)
+            raise InjectableImportError(this_object, error=str(e))
+        
+        for module_name in [
+            f"{project_name}.lib.inject.{type.lower()}", f"swayam.inject.{type.lower()}.builtin"]: 
+            try:
+                injectable_module = importlib.import_module(module_name)
+                return getattr(injectable_module, name)
+            except ModuleNotFoundError as e:
+                # Check with this error is for the current injectable type
+                if e.name.endswith(f".lib.inject.{type.lower()}"):
+                    pass
+                else:
+                    import traceback
+                    # Extract the stack trace as a list of FrameSummary objects
+                    frame = traceback.extract_tb(e.__traceback__)[-1]
+                    frame_str = f"File: {frame.filename}, Line: {frame.lineno}, Function: {frame.name}, Code: {frame.line}"
+                    raise_import_exception(e.msg + f". Check: {frame_str}")
+            except InjectableObjectError as e:
+                raise_import_exception(e)
+            except AttributeError as e:
+                if e.name == name:
+                    pass
+                else:
+                    raise_import_exception(e)  
+            except Exception as e:
+                raise_import_exception(e)       
+
+        raise InjectableNotFoundError(
+                                cls.create_metadata_object(type=type, name=name), caller_file=caller_file)
+    @classmethod
+    def create_metadata_object(cls, *, type, name, module_name=None):
         class InjectableClass:
             def __init__(self, type, name, module_name):
                 self.__type = type.lower().title()
@@ -43,32 +80,7 @@ class Injectable:
             @property
             def module_name(self):
                 return self.__module_name
-    
-        type = type.lower()
-        from tarkash import Tarkash, TarkashOption
-        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-            
-        module_name = f"{project_name}.lib.inject.{type.lower()}"
-        try:
-            injectable_module = importlib.import_module(module_name)
-            return getattr(injectable_module, name)
-        except InjectableObjectError as e:
-            this_object = InjectableClass(type, module_name=module_name, name=name)
-            raise InjectableNameImportError(this_object, error=str(e))
-        except (ModuleNotFoundError, AttributeError) as e:
-            pass
-        
-        module_name = f"swayam.inject.{type.lower()}.builtin"
-        try:
-            injectable_module = importlib.import_module(module_name)
-            return getattr(injectable_module, name)
-        except InjectableObjectError as e:
-            this_object = InjectableClass(type, module_name=module_name, name=name)
-            raise InjectableNameImportError(this_object, error=str(e))
-        except AttributeError as e:
-            pass
-        
-        raise InjectableNameNotFoundError(InjectableClass(type, module_name=None, name=name))
+        return InjectableClass(type=type, name=name, module_name=module_name)
     
     @classmethod
     def validate_callable_definition(cls, injectable):
@@ -79,6 +91,10 @@ class Injectable:
         # Get the signature of the function
         signature = inspect.signature(injectable.callable)
         
+        for param in signature.parameters.values():
+            if param.kind != inspect.Parameter.KEYWORD_ONLY:
+                raise InjectableInvalidCallableDefinitionError(injectable, error="Found non-keyword arguments in definition.")
+            
         # Extract keyword-only arguments
         keyword_only_params = [
             param for param in signature.parameters.values()
@@ -90,12 +106,22 @@ class Injectable:
         
         # Check if all parameters are keyword-only and match the expected names
         if not keyword_only_names == set(injectable.allowed_keywords):
-            raise 
+            raise InjectableInvalidCallableDefinitionError(injectable, error=f"Found {keyword_only_names} in definition.")
         
     @classmethod
     def call(cls, injectable, **kwargs):
+        from swayam.inject.structure.structure import IOStructureObject
         try:
-            return injectable.callable(caller=injectable, **kwargs)
+            output = injectable.callable(caller=injectable, **kwargs)
         except Exception as e:
             raise InjectableCallError(injectable, error=e)
+        else:        
+            if not isinstance(output, IOStructureObject):
+                raise InjectableInvalidOutputError(injectable, output=output)
+            elif output.structure.name != injectable.output_structure.name:
+                raise InjectableInvalidOutputError(injectable, output=output.name)
+            else:
+                return output.as_dict()
+        
+        
         

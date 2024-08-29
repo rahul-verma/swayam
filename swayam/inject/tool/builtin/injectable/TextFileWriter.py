@@ -21,16 +21,16 @@ from swayam.inject.structure.builtin import *
 import os
 import re
 
-def write_file(*, file_name:str, file_path:str, file_content:str):
+def write_file(*, caller, file_name:str, file_path:str, file_content:str):
     from tarkash import FlatFile
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "w") as file:
         file.write(file_content)
-    return Structure.StringOutput(output="success")
+    return Structure.String(content="success")
 
-FileWriter = Tool.build("FileWriter", 
-                         target=write_file, 
+TextFileWriter = Tool.build("TextFileWriter", 
+                         callable=write_file, 
                          description="Writes the File to the disk with the name provided..",
-                         input_structure=Structure.FileContent,
-                         output_structure=Structure.StringOutput
+                         input_structure=Structure.TextFileContent,
+                         output_structure=Structure.String
 )

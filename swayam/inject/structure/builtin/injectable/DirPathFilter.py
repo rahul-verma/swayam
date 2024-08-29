@@ -24,4 +24,4 @@ from .DirPath import DirPathModel
 class DirPathFilterModel(DirPathModel):
     file_filter_pattern:Union[str,None] = Field(default=None, description="Regular Expression pattern to filter (include) the files. Default is None.", examples=".*\.txt")
     
-DirPathFilter = Structure.build("DirPathFilter", model=DirPathModel)
+DirPathFilter = Structure.build("DirPathFilter", model=DirPathFilterModel)

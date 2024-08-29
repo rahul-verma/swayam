@@ -21,14 +21,17 @@ from swayam.inject.structure.builtin import *
 import os
 import re
 
-def read_file(*, file_path:str):
+def read_file(*, caller, file_path:str):
     from tarkash import FlatFile
     file = FlatFile(file_path)
-    return FileContent(file_name=os.path.basename(file_path), file_path=file.full_path, file_content=file.content)
+    return Structure.TextFileContent(
+        file_name=os.path.basename(file_path), 
+        file_path=file.full_path, 
+        file_content=file.content)
 
-FileReader = Tool.build("FileReader", 
-                         target=read_file, 
+TextFileReader = Tool.build("TextFileReader", 
+                         callable=read_file, 
                          description="Returns the contents of file (in text mode).",
-                         input_structure=FilePath,
-                         output_structure=FileContent
+                         input_structure=Structure.FilePath,
+                         output_structure=Structure.TextFileContent
 )

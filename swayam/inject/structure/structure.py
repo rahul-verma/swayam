@@ -64,6 +64,10 @@ class IOStructure:
     @property
     def data_model(self):
         return self.__data_model
+    
+    @property
+    def keys(self):
+        return self.__data_model.model_fields.keys()
 
     @property
     def definition(self):

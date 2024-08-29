@@ -15,15 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.structure.structure import IOStructure
-from .meta import ToolMeta
+import importlib
 
-class Tool(metaclass=ToolMeta):
+from swayam.inject.error import *
+from swayam.core.caller import get_caller_module_file_location
+
+class ToolMeta(type):
     
-    @classmethod
-    def build(cls, name, *, target, description:str, input_structure:IOStructure, output_structure:IOStructure):
-        from .tool import StructuredTool
-        return StructuredTool(name, 
-                              target=target, 
-                              description=description, input_structure=input_structure,
-                              output_structure=output_structure)
+    def __getattr__(cls, name):
+        from swayam.inject import Injectable
+        return Injectable.load_module("Tool", name, caller_file= get_caller_module_file_location())

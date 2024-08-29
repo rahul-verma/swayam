@@ -20,26 +20,26 @@ from swayam import Tool, Structure
 import os
 import re
 
-def list_files(*, dir_path:str, file_filter_pattern:str=None):
+def list_files(*, caller, dir_path:str, file_filter_pattern:str=None):
     from tarkash import Directory
     directory = Directory(dir_path, should_exist=True)
     files_info_list = []
     
     # Walk through the directory tree
-    files_info_list = Structure.FileInfoList()
+    files_info_list = []
     for dirpath, _, filenames in os.walk(directory.full_path):
         for filename in filenames:
             # Construct absolute file path
             if file_filter_pattern is not None and not re.match(file_filter_pattern, filename):
                 continue
             file_path = os.path.join(dirpath, filename)
-            files_info_list.append(Structure.FileInfo(file_name=filename, file_path=file_path))
+            files_info_list.append(Structure.FileInfo(file_name=filename, file_path=file_path).as_dict())
     
-    return files_info_list
+    return Structure.FilesInfo(files=files_info_list)
 
 DirEnumerator = Tool.build("DirEnumerator", 
-                         target=list_files, 
+                         callable=list_files, 
                          description="Recursively lists the full path of files in the provided directory path.",
-                         input_structure=Structure.DirPath,
-                         output_structure=Structure.FileInfoList,
+                         input_structure=Structure.DirPathFilter,
+                         output_structure=Structure.FilesInfo,
 )

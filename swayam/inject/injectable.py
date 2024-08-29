@@ -15,40 +15,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from uuid import uuid4
-
-class ToolResponse:
+class StructuredInjectable:
     
-    def __init__(self, tool, result):
-        self.__tool = tool
-        self.__tool_name = tool.name
-        self.__tool_definition = tool.definition
-        self.__result = result
-        self.__tool_id = uuid4()
-    
-    @property
-    def tool_id(self):
-        return self.__tool_id
-    
-    @tool_id.setter
-    def tool_id(self, value):
-        self.__tool_id = value    
+    def __init__(self, name, *, input_structure, output_structure):
+        self.__type = self.__class__.__name__
+        self.__name = name
+        self.__input_structure = input_structure
+        self.__output_structure = output_structure
         
     @property
-    def tool(self):
-        return self.__tool
+    def type(self):
+        return self.__type
     
     @property
-    def tool_name(self):
-        return self.__tool.name
+    def name(self):
+        return self.__name
     
     @property
-    def definition(self):
-        return self.__tool_definition
+    def input_structure(self):
+        return self.__input_structure
     
     @property
-    def content(self):
-        return self.__result
+    def output_structure(self):
+        return self.__output_structure
     
-    def __repr__(self):
-        return f"ToolResponse: {self.content}"
+    @property
+    def allowed_keywords(self):
+        from_data_model = list(self.__input_structure.keys)
+        from_data_model.insert(0, "caller")
+        return from_data_model

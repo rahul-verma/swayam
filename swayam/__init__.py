@@ -32,7 +32,7 @@ from swayam.llm.prompt import Prompt
 from swayam.llm.conversation import Conversation
 from swayam.llm.task import Task
 from swayam.inject.structure import Structure
-# from swayam.inject.tool import Tool
+from swayam.inject.tool import Tool
 # from swayam.inject.generator import Generator
 # from swayam.inject.parser import Parser
 # from swayam.inject.condition import Condition

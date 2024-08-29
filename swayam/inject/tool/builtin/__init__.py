@@ -15,12 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
-from swayam.inject.error import *
-from swayam.core.caller import get_caller_module_file_location
-
-class StructureMeta(type):
-    
-    def __getattr__(cls, name):
-        from swayam.inject import Injectable
-        return Injectable.load_module("Structure", name, get_caller_module_file_location())
+from .injectable.DirEnumerator import *
+from .injectable.TextFileReader import *
+from .injectable.TextFileWriter import *

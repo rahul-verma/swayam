@@ -15,6 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirEnumerator import *
-from .injectable.FileReader import *
-from .injectable.FileWriter import *
+from swayam.inject.structure.structure import IOStructure
+from .meta import ToolMeta
+
+class Tool(metaclass=ToolMeta):
+    
+    @classmethod
+    def build(cls, name, *, callable, 
+              description:str, 
+              input_structure:IOStructure, 
+              output_structure:IOStructure):
+        from .tool import StructuredTool
+        return StructuredTool(name, 
+                              callable=callable, 
+                              description=description, input_structure=input_structure,
+                              output_structure=output_structure)

@@ -17,52 +17,66 @@
 
 class InjectableObjectError(Exception):
     
-    def __init__(self, injectable, error):
+    def __init__(self, injectable, *, error):
+        self.__type = injectable.type
+        self.__name = injectable.name
         super().__init__(f"{injectable.type} >>{injectable.name}<<: {error}")
-
-class InjectableNameNotFoundError(InjectableObjectError):
-    
-    def __init__(self, injectable):
-        super().__init__(injectable, "Neither defined in the project, nor defined by Swayam.")
         
-class  InjectableNameImportError(InjectableObjectError):
+    @property
+    def injectable_type(self):
+        return self.__type
+    
+    @property
+    def injectable_name(self):
+        return self.__name
+
+class InjectableNotFoundError(InjectableObjectError):
+    
+    def __init__(self, injectable, *, caller_file=None):
+        if caller_file is not None:
+            suffix = f"Further Info: The >>{injectable.type}.{injectable.name}<< call originated from the file {caller_file}."
+        else:
+            suffix = ""
+        super().__init__(injectable, error=f"Neither defined in the project, nor defined by Swayam. {suffix}")
+        
+class  InjectableImportError(InjectableObjectError):
     
     def __init__(self, injectable, *, error):
         name = f"Module: {injectable.module_name}.{injectable.name}"
-        super().__init__(injectable, f"Object was found, but could not be imported. Error: {error}. Check definition for {injectable.type} >>{name}<< for spelling/casing errors, else check your project hook lib.")
+        super().__init__(injectable, error=f"Object was found, but could not be imported. Check definition for {injectable.type} >>{name}<< for spelling/casing errors. The error might originate in another place in your injection lib, rather than the {injectable.type.lower()} {injectable.name}. Check your project injection lib. Error: {error}")
         
 class InjectableNotCallableError(InjectableObjectError):
     
     def __init__(self, injectable):
-        super().__init__(injectable, f"Got object >>{injectable.callable} of type >>{type(injectable.callable)}<<. Expected a callable object.")
+        super().__init__(injectable, error=f"Got object >>{injectable.callable} of type >>{injectable.callable.__name__}<<. Expected a callable object.")
         
 class InjectableInvalidInputError(InjectableObjectError):
     
     def __init__(self, injectable, *, provided_input):
-        super().__init__(injectable, message=f"The provided input is >>{provided_input}<<. Expected: {injectable.input_structure.definition!r}.")
+        super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: {injectable.input_structure.name!r}.")
         
 class InjectableInvalidCallableDefinitionError(InjectableObjectError):
     
-    def __init__(self, injectable):
-        super().__init__(injectable, message=f"Unexpected {injectable.callable} definition. Expected a callable definition with these keyword-only arguments: {injectable.keywords!r}.")
+    def __init__(self, injectable, *, error):
+        super().__init__(injectable, error=f"Unexpected {injectable.callable} definition. Expected a callable definition with these keyword-only arguments: {injectable.allowed_keywords!r}. Error: {error}")
         
 class InjectableCallError(InjectableObjectError):
 
     def __init__(self, injectable, *, error):
-            super().__init__(injectable, message=f"A run-time error happened when {injectable.callable} was called. Error: {error}")
+            super().__init__(injectable, error=f"A run-time error happened when {injectable.callable.__name__} was called. Error: {error}")
         
 class InjectableInvalidOutputError(InjectableObjectError):
     
     def __init__(self, injectable, *, output):
-        super().__init__(injectable, f"Expected callable >>{injectable.callable}<< to return object of type >>{injectable.output_structure}<<. Got >>{output}<< of type >>{type(output)} instead.")
+        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>{injectable.output_structure.name}<<. Got >>{str(output)}<< of type >>{type(output)} instead.")
         
 class InjectableDefinitionNotFoundError(InjectableObjectError):
     
     def __init__(self, injectable, definition):
-        super().__init__(injectable, "There is neither a directory nor a YAML file with the name {definition.name} at path {definition.path}.")
+        super().__init__(injectable, error="There is neither a directory nor a YAML file with the name {definition.name} at path {definition.path}.")
         
 class InjectableDefinitionFormatError(InjectableObjectError):
     
     def __init__(self, injectable, *, error):
-        super().__init__(injectable, f"Unexpected format of YAML in definition at {injectable.path}. Error: {error}")
+        super().__init__(injectable, error=f"Unexpected format of YAML in definition at {injectable.path}. Error: {error}")
         
