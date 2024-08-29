@@ -38,9 +38,13 @@ class BoolModel(BaseModel):
 class BoolsModel(BaseModel):
     content: list[bool] = Field(..., title="Boolean List Content", description="A list of boolean contents")
     
+class NullModel(BaseModel):
+    content: None = Field(None, title="None Content", description="A None content")
+    
 Numeric = Structure.build("Numeric", model=NumericModel)
 Numerics = Structure.build("Numerics", model=NumericsModel)
 String = Structure.build("String", model=StringModel)
 Strings = Structure.build("Strings", model=StringsModel)
 Bool = Structure.build("Bool", model=BoolModel)
 Bools = Structure.build("Bools", model=BoolsModel)
+Null = Structure.build("Null", model=NullModel)

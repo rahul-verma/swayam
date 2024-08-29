@@ -15,26 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.injectable import StructuredInjectable
+from swayam.inject.injectable import StructuredInjectableWithCallable
 
-class StructuredTool(StructuredInjectable):
+class StructuredTool(StructuredInjectableWithCallable):
     
-    def __init__(self, name, *, callable, description, input_structure, output_structure):
-        super().__init__(name, input_structure=input_structure, output_structure=output_structure)
-        self.__callable = callable
-        self.__callable_name = self.__callable.__name__
+    def __init__(self, name, *, callable, description, input_structure, output_structure, allow_none_output=False):
+        super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
         self.__description = description
-        from swayam.inject import Injectable
-        Injectable.validate_callable_definition(self)
-    
-    @property
-    def callable_name(self):
-        return self.__callable_name
-    
-    @property
-    def callable(self):
-        return self.__callable
-    
+        
     @property
     def description(self):
         return self.__description
@@ -50,7 +38,3 @@ class StructuredTool(StructuredInjectable):
                 "parameters": data_schema
             }}
         return schema
-    
-    def __call__(self, **kwargs):
-        from swayam.inject import Injectable
-        return Injectable.call(self, **kwargs)

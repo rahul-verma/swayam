@@ -24,9 +24,11 @@ class Tool(metaclass=ToolMeta):
     def build(cls, name, *, callable, 
               description:str, 
               input_structure:IOStructure, 
-              output_structure:IOStructure):
+              output_structure:IOStructure,
+              allow_none_output=False):
         from .tool import StructuredTool
         return StructuredTool(name, 
                               callable=callable, 
                               description=description, input_structure=input_structure,
-                              output_structure=output_structure)
+                              output_structure=output_structure,
+                              allow_none_output=allow_none_output)

@@ -53,7 +53,7 @@ class InjectableNotCallableError(InjectableObjectError):
 class InjectableInvalidInputError(InjectableObjectError):
     
     def __init__(self, injectable, *, provided_input):
-        super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: {injectable.input_structure.name!r}.")
+        super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: >>Structure.{injectable.input_structure.name}<<.")
         
 class InjectableInvalidCallableDefinitionError(InjectableObjectError):
     
@@ -68,7 +68,7 @@ class InjectableCallError(InjectableObjectError):
 class InjectableInvalidOutputError(InjectableObjectError):
     
     def __init__(self, injectable, *, output):
-        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>{injectable.output_structure.name}<<. Got >>{str(output)}<< of type >>{type(output)} instead.")
+        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Structure.{injectable.output_structure.name}<<. Got >>{str(output)}<< of type >>{type(output)} instead.")
         
 class InjectableDefinitionNotFoundError(InjectableObjectError):
     

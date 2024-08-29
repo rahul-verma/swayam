@@ -31,6 +31,10 @@ class IOStructureObject:
         self.__model_instance = instance
         
     @property
+    def name(self):
+        return self.__structure.name
+        
+    @property
     def structure(self):
         return self.__structure
         
