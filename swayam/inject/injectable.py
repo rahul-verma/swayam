@@ -19,8 +19,9 @@ kallable = callable
 
 import inspect
 from .error import *
-from swayam.inject import Injectable
 from swayam import Structure
+from swayam.inject.structure.structure import IOStructureObject
+from swayam.inject import Injectable
 class StructuredInjectable:
     
     def __init__(self, name, *, input_structure, output_structure):
@@ -90,22 +91,26 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         # Check if all parameters are keyword-only and match the expected names
         if not keyword_only_names == set(self.allowed_keywords):
             raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
-    def __call__(self, **kwargs):
-        from swayam.inject.structure.structure import IOStructureObject
+        
+    def call_encapsulated_callable(self, **kwargs):
         try:
-            output = self.callable(caller=self, **kwargs)
+            return self.callable(caller=self, **kwargs)
         except Exception as e:
             import traceback
             frame = traceback.extract_tb(e.__traceback__)[-1]
             frame_str = Injectable.extract_caller_from_frame(frame)
             raise InjectableCallError(self, error=str(e) + f". Check: {frame_str}")
-        else:      
-            if not isinstance(output, IOStructureObject):
-                if output is None and self.allow_none_output:
+        
+    def validate_output(self, output):
+        if not isinstance(output, IOStructureObject):
+            if output is None and self.allow_none_output:
                     return Structure.Null().as_dict()
-                raise InjectableInvalidOutputError(self, output=output)
-            elif not isinstance(output.model_instance, self.output_structure.data_model):
-                # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
-                raise InjectableInvalidOutputError(self, output=output.name)
-            else:
-                return output.as_dict()
+            raise InjectableInvalidOutputError(self, output=output)
+        elif not isinstance(output.model_instance, self.output_structure.data_model):
+            # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
+            raise InjectableInvalidOutputError(self, output=output.name)
+
+    def __call__(self, **kwargs):
+        output = self.call_encapsulated_callable(**kwargs)     
+        self.validate_output(output)
+        return output.as_dict()

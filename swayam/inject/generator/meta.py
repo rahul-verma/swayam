@@ -15,11 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib
+from swayam.core.caller import get_caller_module_file_location
 
 from swayam.inject.error import *
 
 class GeneratorMeta(type):
     
     def __getattr__(cls, name):
-        pass
+        from swayam.inject import Injectable
+        return Injectable.load_module("Generator", name, caller_file= get_caller_module_file_location())

@@ -18,16 +18,17 @@
 import os
 from swayam import Generator, Structure
 
-def get_content_for_all_files(*, dir_path, file_filter_pattern=None):
+def get_content_for_all_files(*, caller, dir_path, file_filter_pattern=None):
     from swayam import Tool
-    for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern).content:
-        yield Structure.FileContent(
+    for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
+        yield Structure.TextFileContent(
             file_name=file_info["file_name"],
             file_path=file_info["file_path"], 
-            file_content=Tool.FileReader(file_path=file_info["file_path"]).content["file_content"])
+            file_content=Tool.TextFileReader(
+                file_path=file_info["file_path"])["file_content"])
 
-DirFileContent = Generator.callable("DirFileContent", 
+DirFileContent = Generator.build("DirFileContent", 
                                  callable=get_content_for_all_files,
-                                 input_structure=Structure.DirPath, 
-                                 output_structure=Structure.FileContent)
+                                 input_structure=Structure.DirPathFilter, 
+                                 output_structure=Structure.TextFileContent)
 

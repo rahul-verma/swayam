@@ -18,5 +18,17 @@
 from swayam.inject.generator import Generator
 from swayam import Tool
 
-DirFileInfo =  Generator.tool("DirFileInfo", tool=Tool.DirEnumerator)
+import os
+from swayam import Generator, Structure
+
+def get_file_info(*, caller, dir_path, file_filter_pattern=None):
+    from swayam import Tool
+    for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
+        print(file_info)
+        yield Structure.FileInfo(**file_info)
+
+DirFileInfo = Generator.build("DirFileInfo", 
+                                 callable=get_file_info,
+                                 input_structure=Structure.DirPathFilter, 
+                                 output_structure=Structure.FileInfo)
 

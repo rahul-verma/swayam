@@ -62,7 +62,10 @@ An Injectable is:
 
 ### Generator
 
-Exists
+- Used to define a specific kind of tool which when iterated over produces structures of the same kind.
+- Typical usage: Looping.
+- always define input/output structure on a generator basis.
+- allow_none_output tweaks the default where the encapsulated callable is allowed to return None.
 
 ### Condition
 
