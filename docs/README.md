@@ -62,7 +62,7 @@ An Injectable is:
 
 ### Generator
 
-- Used to define a specific kind of tool which when iterated over produces structures of the same kind.
+- Used to define a specific kind of injectable which when iterated over produces structures of the same kind.
 - Typical usage: Looping.
 - always define input/output structure on a generator basis.
 - allow_none_output tweaks the default where the encapsulated callable is allowed to return None.
@@ -70,8 +70,10 @@ An Injectable is:
 
 ### Condition
 
-- Basic condition
-- Condition callable has access to Condition object, for which a Store can be set.
+- Used to define a specific kind of injectable which always returns a **Structure.BoolValue**.
+- Typical usage: Checking a condition for decision making.
+- always define input structure on a generator basis.
+- Input structure can be empty.
 
 ### Snippet
 

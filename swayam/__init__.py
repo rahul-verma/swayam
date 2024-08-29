@@ -35,5 +35,5 @@ from swayam.inject.structure import Structure
 from swayam.inject.tool import Tool
 from swayam.inject.generator import Generator
 from swayam.inject.condition import Condition
-# from swayam.inject.snippet import Snippet
+from swayam.inject.snippet import Snippet
 # from swayam.inject.parser import Parser

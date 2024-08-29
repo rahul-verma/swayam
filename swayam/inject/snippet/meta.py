@@ -18,7 +18,6 @@
 import os
 import importlib
 
-from .error import *
 from .namespace import *
     
 class SnippetMeta(type):
@@ -26,14 +25,12 @@ class SnippetMeta(type):
     def __getattr__(cls, name):
         from tarkash import Tarkash, TarkashOption
         project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-        from swayam.inject.structure.error import StructureNotFoundError
-        from swayam.inject.tool.error import ToolNotFoundError
         
-        if name == "file":
-            from .namespace import SnippetDir
+        if name == "ns":
+            from .namespace import SnippetNamespace
             from tarkash import Tarkash
             from swayam.core.constant import SwayamOption
-            return SnippetDir(Tarkash.get_option_value(SwayamOption.SNIPPET_DIR))
+            return SnippetNamespace(Tarkash.get_option_value(SwayamOption.SNIPPET_DIR))
 
         try:
             snippet_module = importlib.import_module(f"{project_name}.lib.inject.snippet")

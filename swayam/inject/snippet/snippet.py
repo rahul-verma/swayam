@@ -15,29 +15,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 from enum import Enum
-from typing import *
-
-from pydantic import BaseModel, create_model, Field
+from swayam.inject.structure import Structure
 from swayam.inject.structure.structure import IOStructureObject
 
-class StructuredParser:
+kallable = callable
+
+class StructuredSnippet:
     
-    def __init__(self, name, *, callable, input_structure, output_structure):
-        self.__name = name
-        self.__callable = callable
-        self.__input_structure = input_structure
-        self.__output_structure = output_structure
-        self.__prompt = None
+    def __init__(self, *, purpose, text):
+        self.__purpose = purpose
+        self.__text = text
         
     @property
-    def prompt(self):
-        return self.__prompt
+    def purpose(self):
+        return self.__purpose
     
-    @prompt.setter
-    def prompt(self, prompt):
-        self.__prompt = prompt
+    @property
+    def text(self):
+        return self.__text
  
     def __call__(self, **kwargs):
         from swayam.inject.tool.tool import StructuredTool
@@ -55,7 +51,25 @@ class StructuredParser:
             else:
                 output = self.__output_structure(**output).as_list()
         
-        self.prompt.append_parser_output(output)
-        return output
+        self.prompt.append_output(output)
 
+        
+class StructuredSnippetCreator:
+    
+    def __init__(self, name, *, callable):
+        self.__name = name
+        
+        if not kallable(callable):
+            raise SnippetArgIsNotCallableError(self.__name, callable=callable)
+        self.__callable = callable
+
+    def __call__(self):
+        output = self.__callable(caller=self)
+        if not isinstance(output, IOStructureObject):
+            raise SnippetCallableOutputError(self.__name, actual_object=output)
+        elif output.struct_name != "Snippet":
+            raise SnippetCallableOutputError(self.__name, actual_name=output.name)
+        else:
+            return StructuredSnippet(**output.as_dict())
+        
         
