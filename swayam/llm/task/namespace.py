@@ -33,50 +33,50 @@ class TaskDir:
     
     @classmethod
     def create_task_from_content(cls, name, content, **fmt_kwargs):
-        from swayam import Task, Conversation, Prompt
-        from swayam.llm.prompt.namespace import PromptDir
-        from swayam.llm.prompt.format import PromptFormatter
-        from swayam.llm.conversation.namespace import ConversationDir
-        from swayam.llm.conversation.format import ConversationFormatter
+        from swayam import Task, Action, Request
+        from swayam.llm.request.namespace import RequestDir
+        from swayam.llm.request.format import RequestFormatter
+        from swayam.llm.action.namespace import ActionDir
+        from swayam.llm.action.format import ActionFormatter
         
-        def load_system_prompt_from_direct_content(prompt):
-            return PromptDir.create_prompt_from_content("system", f"{name}_system_prompt", prompt)
+        def load_system_request_from_direct_content(request):
+            return RequestDir.create_request_from_content("system", f"{name}_system_request", request)
         
-        def load_system_prompt_from_definition(definition):                
+        def load_system_request_from_definition(definition):                
             if fmt_kwargs:
-                prompt_file = getattr(getattr(Prompt.file, "system"), definition.strip())
-                system_formatter = PromptFormatter(role="system", **fmt_kwargs)
-                return getattr(system_formatter, prompt_file.file_name)
+                request_file = getattr(getattr(Request.file, "system"), definition.strip())
+                system_formatter = RequestFormatter(role="system", **fmt_kwargs)
+                return getattr(system_formatter, request_file.file_name)
             else:
-                return getattr(getattr(Prompt, "system"), definition.strip())
+                return getattr(getattr(Request, "system"), definition.strip())
         
-        def load_conversations_from_direct_content(conversations):
+        def load_actions_from_direct_content(actions):
             from swayam import Generator
             
-            conversation_objects = []
-            for index, conversation in enumerate(conversations):
-                if type(conversation) in (dict,):
-                    conversation_objects.append(ConversationDir.create_conversation_from_content(f"{name}_conversation{index+1}", conversation))
+            action_objects = []
+            for index, action in enumerate(actions):
+                if type(action) in (dict,):
+                    action_objects.append(ActionDir.create_action_from_content(f"{name}_action{index+1}", action))
                 else:
-                    raise ValueError(f"Invalid format of conversation in task file: {name}. Expected a string or a dictionary. Found: {type(conversation)}")
+                    raise ValueError(f"Invalid format of action in task file: {name}. Expected a string or a dictionary. Found: {type(action)}")
             
-            return Task.conversations(*conversation_objects, **task_kwargs)
+            return Task.actions(*action_objects, **task_kwargs)
         
-        def load_conversations_from_definitions(definitions):
+        def load_actions_from_definitions(definitions):
             
             for index, definition in enumerate(definitions):
                 if type(definition) not in (str, dict):
-                    raise ValueError(f"Invalid format of conversation definition in task file: {name}. Expected a string or a dictionary. Found: {type(definition)}")
+                    raise ValueError(f"Invalid format of action definition in task file: {name}. Expected a string or a dictionary. Found: {type(definition)}")
                 
-            conversation_files_or_objects = []
+            action_files_or_objects = []
             for index, definition in enumerate(definitions):
                 if type(definition) is str:
                     if fmt_kwargs:
                         # Load Raw Files
-                        conversation_files_or_objects.append(getattr(Conversation.file, definition.strip()))
+                        action_files_or_objects.append(getattr(Action.file, definition.strip()))
                     else:
                         # Load as Objects
-                        conversation_files_or_objects.append(getattr(Conversation, definition.strip()))
+                        action_files_or_objects.append(getattr(Action, definition.strip()))
                 elif type(definition) is dict:
                     if "repeat" in definition:
                         from swayam import Generator
@@ -84,55 +84,55 @@ class TaskDir:
                         gdict.update(definition["repeat"])
                         generator_name = definition["repeat"].get("generator", None)
                         generator = getattr(Generator, generator_name)(**gdict["args"])
-                        dynamic_file = (getattr(Conversation.repeater(generator=generator), definition["name"].strip()))
-                        conversation_files_or_objects.append(dynamic_file)
+                        dynamic_file = (getattr(Action.repeater(generator=generator), definition["name"].strip()))
+                        action_files_or_objects.append(dynamic_file)
 
             if fmt_kwargs:
-                return Task.formatter(**fmt_kwargs).conversation_files(*conversation_files_or_objects, **task_kwargs)
+                return Task.formatter(**fmt_kwargs).action_files(*action_files_or_objects, **task_kwargs)
             else:
-                return Task.conversations(*conversation_files_or_objects, **task_kwargs) 
+                return Task.actions(*action_files_or_objects, **task_kwargs) 
             
         task_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
-            "system_prompt": content.get("system_prompt", None),
+            "system_request": content.get("system_request", None),
             "image": content.get("image", None),
             "output_structure": content.get("output_structure", None),
             "tools": content.get("tools", None)
         }
         
         if type(content) is not dict:
-            raise TypeError(f"Invalid format of task file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, system_prompt_def, conversations, conversation_defs, purpose, image, output_structure, tools]")  
+            raise TypeError(f"Invalid format of task file: {name}. Expected a YAML dictionary with the allowed keys: [system_request, system_request_def, actions, action_defs, purpose, image, output_structure, tools]")  
         
-        if "conversations" in content and "conversation_defs" in content:
-            raise ValueError(f"A task file cannot contain both 'conversations' and 'conversation_defs' keys. Choose one.")
+        if "actions" in content and "action_defs" in content:
+            raise ValueError(f"A task file cannot contain both 'actions' and 'action_defs' keys. Choose one.")
         
-        if "system_prompt" in content and "system_prompt_def" in content:
-            raise ValueError(f"A task file cannot contain both 'system_prompt' and 'system_prompt_def' keys. Choose one.")
+        if "system_request" in content and "system_request_def" in content:
+            raise ValueError(f"A task file cannot contain both 'system_request' and 'system_request_def' keys. Choose one.")
         
-        if "system_prompt" in content:
-            if type(content["system_prompt"]) is not str:
-                raise ValueError(f"The system_prompt key in a conversation file must be a string. Found: {type(content['system_prompt'])}") 
-            task_kwargs["system_prompt"] = load_system_prompt_from_direct_content(content["system_prompt"])
-        elif "system_prompt_def" in content:
-            if type(content["system_prompt_def"]) is not str:
-                raise ValueError(f"The system_prompt_def key in a conversation file must be a string. Found: {type(content['system_prompt_def'])}") 
-            task_kwargs["system_prompt"]  = load_system_prompt_from_definition(content["system_prompt_def"])
+        if "system_request" in content:
+            if type(content["system_request"]) is not str:
+                raise ValueError(f"The system_request key in a action file must be a string. Found: {type(content['system_request'])}") 
+            task_kwargs["system_request"] = load_system_request_from_direct_content(content["system_request"])
+        elif "system_request_def" in content:
+            if type(content["system_request_def"]) is not str:
+                raise ValueError(f"The system_request_def key in a action file must be a string. Found: {type(content['system_request_def'])}") 
+            task_kwargs["system_request"]  = load_system_request_from_definition(content["system_request_def"])
 
         for key, allowed_type in [("purpose", str), ("image", str), ("output_structure",str), ("tools", list)]:
             if key in content:
                 if type(content[key]) is not allowed_type:
-                    raise ValueError(f"Invalid format of '{key}' key in conversation file: {name}. Expected a {allowed_type}. Found: {type(content[key])}")
+                    raise ValueError(f"Invalid format of '{key}' key in action file: {name}. Expected a {allowed_type}. Found: {type(content[key])}")
         
-        if "conversations" in content:
-            if type(content["conversations"]) is not list:
-                raise ValueError(f"The conversations key in a task file must contain a list. Found: {type(content['conversations'])}") 
-            return load_conversations_from_direct_content(content["conversations"])
-        elif "conversation_defs" in content:
-            if type(content["conversation_defs"]) is not list:
-                raise ValueError(f"The conversation_defs key in a task file must contain a list. Found: {type(content['conversation_defs'])}") 
-            return load_conversations_from_definitions(content["conversation_defs"])
+        if "actions" in content:
+            if type(content["actions"]) is not list:
+                raise ValueError(f"The actions key in a task file must contain a list. Found: {type(content['actions'])}") 
+            return load_actions_from_direct_content(content["actions"])
+        elif "action_defs" in content:
+            if type(content["action_defs"]) is not list:
+                raise ValueError(f"The action_defs key in a task file must contain a list. Found: {type(content['action_defs'])}") 
+            return load_actions_from_definitions(content["action_defs"])
         else:
-            raise ValueError(f"A task file must contain either a 'conversations' or 'conversation_defs' key.") 
+            raise ValueError(f"A task file must contain either a 'actions' or 'action_defs' key.") 
 
     @classmethod    
     def load_task_from_file(cls, name):

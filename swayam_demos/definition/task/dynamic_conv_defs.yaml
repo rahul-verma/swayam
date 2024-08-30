@@ -1,6 +1,6 @@
 tools:
     - Calculator
 
-conversation_defs:
+action_defs:
   - conv3_task_dynamic
   - conv4_task_dynamic

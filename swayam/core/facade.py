@@ -20,7 +20,7 @@ from pprint import pprint
 import typing
 
 from tarkash import singleton
-from swayam.llm.conversation import Conversation
+from swayam.llm.action import Action
 
 @singleton
 class _SwayamSingleton:
@@ -32,10 +32,10 @@ class _SwayamSingleton:
         from tarkash import Tarkash
         reg_config = {
             "SNIPPET_DIR": ("definition/snippet", "path"),
-            "PROMPT_DIR": ("definition/prompt", "path"),
-            "CONVERSATION_DIR": ("definition/conversation", "path"),
+            "REQUEST_DIR": ("definition/request", "path"),
+            "ACTION_DIR": ("definition/action", "path"),
             "TASK_DIR": ("definition/task", "path"),
-            "DIRECTIVE_DIR": ("definition/directive", "path"),
+            "STRATEGY_DIR": ("definition/strategy", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }
@@ -58,8 +58,8 @@ class _SwayamSingleton:
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
         
-    def run_prompt(self, prompt_text):
-        return prompt_text
+    def run_request(self, request_text):
+        return request_text
     
     def get_swayam_root_dir(self):
         return self.__root_dir
@@ -81,7 +81,7 @@ class _SwayamSingleton:
             run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
 
         Returns:
-            SimpleAgent: A simple agent that executes a parts of or complete directive.
+            SimpleAgent: A simple agent that executes a parts of or complete strategy.
         """
         from swayam.llm.agent.simple import SimpleAgent
         return SimpleAgent(display=display, report_html=report_html, run_id=run_id)
@@ -103,25 +103,25 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, prompt:str):
+    def execute(cls, request:str):
         """
-        A simple facade to default LLM Model, resulting in one a prompt being executed.
+        A simple facade to default LLM Model, resulting in one a request being executed.
         
         The goal is to provide a basic chatting experience.
         
         The default LLM Model is picked up from configuration.
         
-        This method is meant for simple usage where a user wants to execute one or more prompts.
+        This method is meant for simple usage where a user wants to execute one or more requests.
         
         Args:
-            prompt (str): The prompt to be executed
+            request (str): The request to be executed
 
         Returns:
             (str): Returns the message from the LLM.
         """
-        if type(prompt) is not str:
-            raise TypeError("Prompt should be a string")
-        return cls._SWAYAM_SINGLETON.default_agent.execute(prompt)
+        if type(request) is not str:
+            raise TypeError("Request should be a string")
+        return cls._SWAYAM_SINGLETON.default_agent.execute(request)
     
     
     @classmethod
@@ -135,6 +135,6 @@ class Swayam:
             run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
 
         Returns:
-            SimpleAgent: A simple agent that executes a parts of or complete directive.
+            SimpleAgent: A simple agent that executes a parts of or complete strategy.
         """
         return cls._SWAYAM_SINGLETON.agent(display=display, report_html=report_html, run_id=run_id)

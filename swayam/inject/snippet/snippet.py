@@ -51,7 +51,7 @@ class StructuredSnippet:
             else:
                 output = self.__output_structure(**output).as_list()
         
-        self.prompt.append_output(output)
+        self.request.append_output(output)
 
         
 class StructuredSnippetCreator:

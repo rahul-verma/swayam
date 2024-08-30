@@ -1,0 +1,5 @@
+purpose: Demo Dynamic Action
+
+request_defs:
+  - plan_a_trip
+  - plan_a_trip_task

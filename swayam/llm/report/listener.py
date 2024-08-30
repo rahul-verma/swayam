@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.conversation.context import ConversationContext
+from swayam.llm.request import Request
+from swayam.llm.request.types import SystemRequest
+from swayam.llm.action.context import ActionContext
 
 class AgentListener:
     
@@ -32,47 +32,47 @@ class AgentListener:
         if report_config.report_html:
             self.__reporters.append(HtmlReporter(config=report_config))
             
-    def report_begin_conversation(self, conversation) -> None:
+    def report_begin_action(self, action) -> None:
         """
-        Broadcasts the system prompt details.
+        Broadcasts the system request details.
         
         Args:
-            prompt (Prompt): The prompt to report.
+            request (Request): The request to report.
         """
         for reporter in self.__reporters:
-            reporter.report_begin_conversation(conversation)
+            reporter.report_begin_action(action)
             
-    def report_system_prompt(self, prompt:SystemPrompt) -> None:
+    def report_system_request(self, request:SystemRequest) -> None:
         """
-        Broadcasts the system prompt details.
+        Broadcasts the system request details.
         
         Args:
-            prompt (Prompt): The prompt to report.
+            request (Request): The request to report.
         """
         for reporter in self.__reporters:
-            reporter.report_system_prompt(prompt)
+            reporter.report_system_request(request)
 
-    def report_prompt(self, prompt:Prompt) -> None:
+    def report_request(self, request:Request) -> None:
         """
-        Broadcasts the prompt details.
+        Broadcasts the request details.
         
         Args:
-            prompt (Prompt): The prompt to report.
+            request (Request): The request to report.
         """
         for reporter in self.__reporters:
-            reporter.report_prompt(prompt)
+            reporter.report_request(request)
     
-    def report_context(self, context:ConversationContext) -> None:
+    def report_context(self, context:ActionContext) -> None:
         """
         Broadcasts the context details.
 
         Args:
-            context (ConversationContext): Context object with all input messages.
+            context (ActionContext): Context object with all input messages.
         """
         for reporter in self.__reporters:
             reporter.report_context(context)
  
-    def report_response(self, prompt, message:dict) -> None:
+    def report_response(self, request, message:dict) -> None:
         """
         Broadcasts the output message.
 
@@ -80,7 +80,7 @@ class AgentListener:
             message (dict): Response dict from LLM.
         """
         for reporter in self.__reporters:
-            reporter.report_response(prompt, message)
+            reporter.report_response(request, message)
             
     def report_tool_response(self, response) -> None:
         """

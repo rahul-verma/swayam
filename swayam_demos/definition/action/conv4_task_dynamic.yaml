@@ -1,0 +1,6 @@
+tools: [Calculator]
+
+requests:
+  - Ask from me 2 numbers
+  - {i} and {j}
+  - Multiply them

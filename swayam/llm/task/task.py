@@ -19,79 +19,79 @@
 from typing import Any, Union
 
 from tarkash import log_debug
-from swayam.llm.conversation.conversation import LLMConversation
-from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.conversation.context import ConversationContext
+from swayam.llm.action.action import LLMAction
+from swayam.llm.request.types import SystemRequest
+from swayam.llm.action.context import ActionContext
 from swayam.inject.structure.structure import IOStructure
 
 class LLMTask:
     
-    def __init__(self, *conversations:LLMConversation, purpose:str=None, system_prompt:SystemPrompt=None, content:ConversationContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
-        self.__conversations = list(conversations)
+    def __init__(self, *actions:LLMAction, purpose:str=None, system_request:SystemRequest=None, content:ActionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+        self.__actions = list(actions)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Task"
         self.__context = None
-        self.__system_prompt = system_prompt
+        self.__system_request = system_request
            
-        for conversation in self.__conversations:
+        for action in self.__actions:
             if image:
-                conversation.suggest_image(image)
+                action.suggest_image(image)
                 
             if output_structure:
-                conversation.suggest_output_structure(output_structure)
+                action.suggest_output_structure(output_structure)
                 
             if tools:
-                conversation.suggest_tools(tools)
+                action.suggest_tools(tools)
     
     def is_new(self):
         return len(self.__context) == 0
         
-    def has_system_prompt(self):
-        return self.__system_prompt is not None
+    def has_system_request(self):
+        return self.__system_request is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def system_prompt(self):
-        return self.__system_prompt
+    def system_request(self):
+        return self.__system_request
         
-    @system_prompt.setter
-    def system_prompt(self, system_prompt:SystemPrompt):
-        self.__system_prompt = system_prompt
+    @system_request.setter
+    def system_request(self, system_request:SystemRequest):
+        self.__system_request = system_request
         
     @property
     def context(self):
         return self.__context
     
     @context.setter
-    def context(self, context:ConversationContext):
+    def context(self, context:ActionContext):
         self.__context = context
         
-    def append(self, conversation:LLMConversation):
-        self.__prompts.append(conversation)
+    def append(self, action:LLMAction):
+        self.__requests.append(action)
         
     def __len__(self):
-        return len(self.__conversations)
+        return len(self.__actions)
         
     def describe(self, level=0):
         """
-        Returns a string describing the structure of the Conversation.
+        Returns a string describing the structure of the Action.
         Includes the length and a tree representation of the contained objects.
         """
         indent = " " * level
-        description = f"{indent}Conversation (Length: {len(self)})\n"
+        description = f"{indent}Action (Length: {len(self)})\n"
         
-        for conversation in self.__conversations:
-            description += conversation.describe(level + 1)
+        for action in self.__actions:
+            description += action.describe(level + 1)
         
         return description
     
     @property
-    def _conversations(self):
-        return self.__prompts
+    def _actions(self):
+        return self.__requests
         
     def __iter__(self):
         self.__index = -1
@@ -100,10 +100,10 @@ class LLMTask:
     def __next__(self):
         self.__index += 1
         try:
-            return self.__conversations[self.__index]
+            return self.__actions[self.__index]
         except IndexError:
             self.__index = -1
             raise StopIteration()
         
     def _get_first_child(self):
-        return self.__conversations[0]
+        return self.__actions[0]

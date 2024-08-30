@@ -40,46 +40,46 @@ class SimpleAgent:
         self.__report_config.show_in_browser = show_in_browser
         
         
-    def __execute_user_prompt(self, user_prompt):
-        from swayam import Conversation
-        log_debug(f"Converting UserPrompt to Conversation.")
-        conversation = Conversation.prompts(user_prompt, reset_context=False)
-        conversation.extends_previous_conversation = True
-        return self.__execute_conversation(conversation)
+    def __execute_user_request(self, user_request):
+        from swayam import Action
+        log_debug(f"Converting UserRequest to Action.")
+        action = Action.requests(user_request, reset_context=False)
+        action.extends_previous_action = True
+        return self.__execute_action(action)
     
-    def __execute_conversation(self, conversation):
-        from swayam.llm.conversation.context import ConversationContext
-        from swayam.llm.executor.conversation import ConversationExecutor
+    def __execute_action(self, action):
+        from swayam.llm.action.context import ActionContext
+        from swayam.llm.executor.action import ActionExecutor
 
-        if conversation.reset_context:
-            self.__context.reset_conversation_context()
+        if action.reset_context:
+            self.__context.reset_action_context()
 
-        # Set context of conversation
-        if not conversation.standalone:
-            conversation.context = self.__context
+        # Set context of action
+        if not action.standalone:
+            action.context = self.__context
         else:
             # Set empty context
-            conversation.context = AgentContext()
+            action.context = AgentContext()
         
-        log_debug(f"Executing Conversation with ConversationAgent.")
-        agent = ConversationExecutor(listener=self.__listener)
+        log_debug(f"Executing Action with ActionAgent.")
+        agent = ActionExecutor(listener=self.__listener)
         
-        # If a the context is non-empty then the system prompt is already set in it.
-        log_debug(f"New context-free conversation?", conversation.is_new())
-        log_debug(f"Conversation has an already assigned system prompt?", conversation.has_system_prompt()) 
-        if conversation.is_new() and not conversation.has_system_prompt():
-            log_debug(f"Setting default system prompt from the Agent.")
-            conversation.system_prompt = agent.system_prompt
+        # If a the context is non-empty then the system request is already set in it.
+        log_debug(f"New context-free action?", action.is_new())
+        log_debug(f"Action has an already assigned system request?", action.has_system_request()) 
+        if action.is_new() and not action.has_system_request():
+            log_debug(f"Setting default system request from the Agent.")
+            action.system_request = agent.system_request
             
-        log_debug("Validating conversation.")
-        if conversation.is_new() and not conversation.has_system_prompt():
-            raise ValueError("It's a new conversation, but no SystemPrompt was found. Review.")
+        log_debug("Validating action.")
+        if action.is_new() and not action.has_system_request():
+            raise ValueError("It's a new action, but no SystemRequest was found. Review.")
         
-        if not conversation.is_new() and conversation.has_system_prompt():
-            raise ValueError("As it is continued conversation, the system prompt is already set in the context. So, the context found in this conversation is going to be ignored. Review.")
+        if not action.is_new() and action.has_system_request():
+            raise ValueError("As it is continued action, the system request is already set in the context. So, the context found in this action is going to be ignored. Review.")
             
         from swayam.inject.tool.response import ToolResponse
-        log_debug(f"Executing Conversation with ConversationAgent.")
+        log_debug(f"Executing Action with ActionAgent.")
         def process_output(in_data):
             if in_data.content:
                 return in_data.content
@@ -88,7 +88,7 @@ class SimpleAgent:
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
-        output = agent.execute(conversation)
+        output = agent.execute(action)
         
         if type(output) is list:
             if len(output) == 1:
@@ -102,19 +102,19 @@ class SimpleAgent:
         
     def __execute_task(self, task):
         output = None
-        for conversation in task:
-            output = self.__execute_conversation(conversation)
+        for action in task:
+            output = self.__execute_action(action)
         return output
     
     def execute(self, executable, show_in_browser=False):
         """
-        Executes a part of or complete directive.
+        Executes a part of or complete strategy.
         
         The Agent can execute any of the following types of objects:
-        - A User Prompt object
-        - A Conversation object
+        - A User Request object
+        - A Action object
         - A Task object: Not supported yet
-        - A Directive object: Not supported yet
+        - A Strategy object: Not supported yet
         
         Args:
             executable: The object to execute.
@@ -124,23 +124,23 @@ class SimpleAgent:
         log_debug(f"Executing Agent executable object of type {type(executable)}.")
         self.__prepare_for_execution(show_in_browser=show_in_browser)
         
-        from swayam.llm.prompt.types import UserPrompt
-        from swayam.llm.conversation.conversation import LLMConversation
+        from swayam.llm.request.types import UserRequest
+        from swayam.llm.action.action import LLMAction
         from swayam.llm.task.task import LLMTask
         
-        if not isinstance(executable, (str, UserPrompt, LLMConversation, LLMTask)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMConversation, LLMTask, or Directive.")
+        if not isinstance(executable, (str, UserRequest, LLMAction, LLMTask)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserRequest, LLMAction, LLMTask, or Strategy.")
         
         output = None
         if isinstance(executable, str):
-            from swayam.llm.prompt import Prompt
-            log_debug(f"Converting user prompt string to LLMConversation.")
-            output = self.__execute_user_prompt(Prompt.text(executable))
-        if isinstance(executable, UserPrompt):
-            log_debug(f"Converting UserPrompt to LLMConversation.")
-            output = self.__execute_user_prompt(executable)
-        elif isinstance(executable, LLMConversation):
-            output = self.__execute_conversation(executable)
+            from swayam.llm.request import Request
+            log_debug(f"Converting user request string to LLMAction.")
+            output = self.__execute_user_request(Request.text(executable))
+        if isinstance(executable, UserRequest):
+            log_debug(f"Converting UserRequest to LLMAction.")
+            output = self.__execute_user_request(executable)
+        elif isinstance(executable, LLMAction):
+            output = self.__execute_action(executable)
         elif isinstance(executable, LLMTask):
             output = self.__execute_task(executable)
             

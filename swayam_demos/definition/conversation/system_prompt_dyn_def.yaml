@@ -1,8 +1,0 @@
-system_prompt_def: |
-  trip_persona
-
-purpose: Using Dynamic System Prompt Def
-
-prompt_defs:
-  - trip_command
-  - trip_query

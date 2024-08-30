@@ -1,0 +1,8 @@
+system_request_def: |
+  trip_persona
+
+purpose: Using Dynamic System Request Def
+
+request_defs:
+  - trip_command
+  - trip_query

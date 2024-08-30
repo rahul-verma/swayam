@@ -29,15 +29,15 @@ class StructuredParser:
         self.__callable = callable
         self.__input_structure = input_structure
         self.__output_structure = output_structure
-        self.__prompt = None
+        self.__request = None
         
     @property
-    def prompt(self):
-        return self.__prompt
+    def request(self):
+        return self.__request
     
-    @prompt.setter
-    def prompt(self, prompt):
-        self.__prompt = prompt
+    @request.setter
+    def request(self, request):
+        self.__request = request
  
     def __call__(self, **kwargs):
         from swayam.inject.tool.tool import StructuredTool
@@ -55,7 +55,7 @@ class StructuredParser:
             else:
                 output = self.__output_structure(**output).as_list()
         
-        self.prompt.append_parser_output(output)
+        self.request.append_parser_output(output)
         return output
 
         

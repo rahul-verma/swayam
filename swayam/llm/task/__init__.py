@@ -20,10 +20,10 @@
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.prompt.types import SystemPrompt, UserPrompt
-from swayam.llm.prompt.file import PromptFile
-from swayam.llm.conversation.conversation import LLMConversation
-from swayam.llm.conversation.repeater import DynamicConversationFile
+from swayam.llm.request.types import SystemRequest, UserRequest
+from swayam.llm.request.file import RequestFile
+from swayam.llm.action.action import LLMAction
+from swayam.llm.action.repeater import DynamicActionFile
 from .task import LLMTask
 from swayam.inject.structure.structure import IOStructure
 
@@ -33,24 +33,24 @@ from .meta import TaskMeta
 class Task(metaclass=TaskMeta):
     
     @classmethod
-    def conversations(cls, *conversations:LLMConversation, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
-        if len(conversations) == 0:
-            raise ValueError("No conversations provided.")
-        out_conversations = []
-        for conversation in conversations:
-            if isinstance (conversation, DynamicConversationFile):
-                repeated_conversations = conversation.create_conversations()
-                out_conversations.extend(repeated_conversations)
-            elif isinstance(conversation, LLMConversation):
-                out_conversations.append(conversation)
+    def actions(cls, *actions:LLMAction, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
+        if len(actions) == 0:
+            raise ValueError("No actions provided.")
+        out_actions = []
+        for action in actions:
+            if isinstance (action, DynamicActionFile):
+                repeated_actions = action.create_actions()
+                out_actions.extend(repeated_actions)
+            elif isinstance(action, LLMAction):
+                out_actions.append(action)
             else:
-                raise ValueError(f"Invalid conversation type: {type(conversation)}. Should be an LLMConversation or DynamicConversationFile object.")
+                raise ValueError(f"Invalid action type: {type(action)}. Should be an LLMAction or DynamicActionFile object.")
             
-        if system_prompt:
-            if type(system_prompt) == str:
-                system_prompt = SystemPrompt(text=system_prompt)
-            elif not isinstance(system_prompt, SystemPrompt):
-                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
+        if system_request:
+            if type(system_request) == str:
+                system_request = SystemRequest(text=system_request)
+            elif not isinstance(system_request, SystemRequest):
+                raise ValueError(f"Invalid system request type: {type(system_request)}. Should be a string or a SystemRequest object")
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
@@ -63,7 +63,7 @@ class Task(metaclass=TaskMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-        return LLMTask(*out_conversations, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        return LLMTask(*out_actions, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

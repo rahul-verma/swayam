@@ -25,16 +25,16 @@ class SwayamOption(Enum):
     SNIPPET_DIR = auto()
     '''Root Directory for Snippet Files'''
         
-    PROMPT_DIR = auto()
-    '''Root Directory for Prompt Files'''
+    REQUEST_DIR = auto()
+    '''Root Directory for Request Files'''
     
-    CONVERSATION_DIR = auto()
-    '''Root Directory for Conversation Files'''
+    ACTION_DIR = auto()
+    '''Root Directory for Action Files'''
     
     TASK_DIR = auto()
     '''Root Directory for Task Files'''
     
-    DIRECTIVE_DIR = auto()
+    STRATEGY_DIR = auto()
     '''Root Directory for Plan Files'''
     
     LLM_PROVIDER = auto()

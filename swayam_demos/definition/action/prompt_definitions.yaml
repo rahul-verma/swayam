@@ -1,0 +1,5 @@
+purpose: Using Request Definitions
+
+request_defs:
+  - trip_command
+  - trip_query

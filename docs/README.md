@@ -1,26 +1,29 @@
 
 
-## Prompt
+Swayam employs the STAR model of problem solving by Rahul Verma. It has the following high level components:
 
-Done
-- A prompt can be as simple as string.
-- Can be a complex object, with provisions for response format, tool calling, image attachment.
-- Should be definable in a YAML format.
+Strategy: A very high level view of the problem that you want to solve and a break-down into tasks. This largely involves human intellect with some usage of tooling.
+Task: Each task has a pertinent expected outcome to implement the strategy. This is where one would want to largely automate. Humans-in-the-loop is still recommended especially in the review of the task outcomes.
+Action: A step/stage in the achievement of a task. Also, acts as a proxy layer between what the task demands and who is solving the part of the problem this step/stage demands.
+Request: A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
+
+As of now, Swayam focuses on Requests handled by an LLM. Other forms of AI as well as supporting systems will be explored later.
+
+All building blocks of STAR are only expressed as definitions, with the only exception being a Request, which for an extremely simple situation does not need to be defined.
+
+## Request
 
 To Do
 
-- Reporting for all steps.
-
-## Conversation
-Done
+## Action
 
 To Do
-- Conversation as a package
-- Prompt Loop with Generator
+- Action as a package
+- Request Loop with Generator
 - Loop with a Condition based Generator
-- Conditional Prompt
-- Standalone Prompt: Possibly to another instance of same Model or a different one.
-- Dynamic Prompts. Prompts added on the fly.
+- Conditional Request
+- Standalone PRequestrompt: Possibly to another instance of same Model or a different one.
+- Dynamic Requests. Requests added on the fly.
 
 ## Task
 
@@ -28,11 +31,7 @@ To Do
 - Task as a package
 
 
-## Directive
-
-To Do
-
-## Plan
+## Strategy
 
 To Do
 

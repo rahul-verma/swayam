@@ -1,7 +1,7 @@
 tools:
   - Calculator
 
-conversation_defs:
+action_defs:
   - repeat:
       generator: TwoNumberGeneratorWithCallable
       args: 

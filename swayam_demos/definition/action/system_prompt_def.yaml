@@ -1,0 +1,8 @@
+system_request_def: |
+  friend
+
+purpose: Using System Request Def
+
+request_defs:
+  - trip_command
+  - trip_query
