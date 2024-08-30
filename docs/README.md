@@ -80,10 +80,8 @@ An Injectable is:
 
 ### Parser
 - Two types of parsers: Text and Json
-- Parser.text: the callable gets text input
-- Parser.json: the callable gets loaded Python object from a JSON string.
-
-Note: Pydantic behaves funny with unpacking of keyword args when the values are themselves dictionaries. So, I had to remove the notion of a generic JsonContent Model. in future, might handle this within the Structure hierarchy.
+- TextParser created using Parser.text: the callable gets text input. Default input_structure is Structure.TextContent. Allowed structures should inherit from its data model. Default output structure is Structure.StringValues. Allow none is false by default
+- JsonParser created using Parser.json: the callable gets loaded Python object from a JSON string. Default input_structure is Structure.JsonContent. Allowed structures should inherit from its data model. Allow none is false by default. Has an additional provision for validating the input content using schema_validator attribute.
 
 ### Resource
 

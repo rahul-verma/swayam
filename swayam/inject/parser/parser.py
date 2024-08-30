@@ -46,8 +46,6 @@ class JsonContentParser(StructuredParser):
             input_structure = Structure.TextContent
         elif not issubclass(input_structure.data_model, Structure.JsonContent.data_model):
             raise JsonParserIncompatibleInputStructureError(self)
-        if output_structure is None:
-            output_structure = Structure.StringValues
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
         self.__schema_validator = schema_validator
         
