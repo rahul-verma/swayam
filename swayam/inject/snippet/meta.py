@@ -19,33 +19,12 @@ import os
 import importlib
 
 from .namespace import *
+from swayam.namespace.meta import NamespaceMeta
     
-class SnippetMeta(type):
+class SnippetMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
-        from tarkash import Tarkash, TarkashOption
-        project_name = Tarkash.get_option_value(TarkashOption.PROJECT_NAME)
-        
-        if name == "ns":
-            from .namespace import SnippetNamespace
-            from tarkash import Tarkash
-            from swayam.core.constant import SwayamOption
-            return SnippetNamespace(Tarkash.get_option_value(SwayamOption.SNIPPET_DIR))
-
-        try:
-            snippet_module = importlib.import_module(f"{project_name}.lib.inject.snippet")
-            return getattr(snippet_module, name)
-        except (StructureNotFoundError, NameError) as e:
-            raise SnippetImportError(name, import_error_message=str(e))
-        except (ModuleNotFoundError, AttributeError) as e:
-            pass
-        
-        try:
-            snippet_module = importlib.import_module("swayam.inject.snippet.builtin")
-            return getattr(snippet_module, name)
-        except (StructureNotFoundError, ToolNotFoundError, NameError) as e:
-            raise SnippetImportError(name, import_error_message=str(e))
-        except AttributeError as e:
-            pass
-
-        raise SnippetNotFoundError(name)
+        from swayam.core.constant import SwayamOption
+        from .namespace import SnippetNamespace
+        cls.load_root_namespace(SwayamOption.SNIPPET_DIR, SnippetNamespace)
+        return getattr(cls.root, name)

@@ -27,7 +27,7 @@ class Namespace(ABC):
         self.__resolution = resolution
         self.__path = path
         if self.__resolution is None:
-            self.__resolution = f"{self.__type}.ns"
+            self.__resolution = f"{self.__type}"
         if not os.path.exists(path):
             raise NamespaceDoesNotExistError(self)
         elif not os.path.isdir(path):

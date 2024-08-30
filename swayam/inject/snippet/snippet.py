@@ -51,25 +51,4 @@ class StructuredSnippet:
             else:
                 output = self.__output_structure(**output).as_list()
         
-        self.request.append_output(output)
-
-        
-class StructuredSnippetCreator:
-    
-    def __init__(self, name, *, callable):
-        self.__name = name
-        
-        if not kallable(callable):
-            raise SnippetArgIsNotCallableError(self.__name, callable=callable)
-        self.__callable = callable
-
-    def __call__(self):
-        output = self.__callable(caller=self)
-        if not isinstance(output, IOStructureObject):
-            raise SnippetCallableOutputError(self.__name, actual_object=output)
-        elif output.struct_name != "Snippet":
-            raise SnippetCallableOutputError(self.__name, actual_name=output.name)
-        else:
-            return StructuredSnippet(**output.as_dict())
-        
-        
+        self.request.append_output(output)        

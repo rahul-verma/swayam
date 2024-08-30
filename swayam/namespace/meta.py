@@ -15,8 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from .meta import SnippetMeta
-
-class Snippet(metaclass=SnippetMeta):
-    pass
+class NamespaceMeta(type):
+    def __new__(cls, name, bases, class_dict):
+        class_dict['root'] = "NOT_SET"
+        return super(NamespaceMeta, cls).__new__(cls, name, bases, class_dict)
+    
+    def load_root_namespace(cls, option_name, namespace_class):
+        if cls.root == "NOT_SET":
+            from tarkash import Tarkash
+            cls.root = namespace_class(Tarkash.get_option_value(option_name))
