@@ -25,7 +25,7 @@ from swayam.inject.structure import Structure
 
 from swayam.inject.parser.parser import JsonContentParser
 
-def extract_with_jpath(*, parser, content, jpath:str, strict:str=True) -> str:
+def extract_with_jpath(*, store, content, jpath:str, strict:str=True) -> str:
     """
     Extracts part of a JSON object with JPath.
     
@@ -37,11 +37,11 @@ def extract_with_jpath(*, parser, content, jpath:str, strict:str=True) -> str:
     jsonpath_expr = jparse(jpath)
     matches = jsonpath_expr.find(content)
     if strict and not matches:
-        raise ParserNoMatchError(parser.name, f"JPath {jpath} used for extraction from {content!r}.")
+        raise Exception(f"No mmatch found using JPath {jpath} used for extraction from {content!r}.")
     return JsonContentList(*[{'content': json.dumps(match.value)} for match in matches])
 
 JPathExtractor = partial(JsonContentParser,
     "JPathExtractor",
     callable=extract_with_jpath,
-    input_structure=Structure.JsonContentFilter
+    input_structure=Structure.JsonContentParser
 )

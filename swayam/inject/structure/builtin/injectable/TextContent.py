@@ -15,14 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union, List
+from typing import Union
 from pydantic import BaseModel, Field
 
 from swayam import Structure
 
-class ContentCodeBlockFilterModel(BaseModel):
-    input_content: str = Field(..., title="Text Content", description="Source text content to be parsed")
-    languages: List[str] = Field(default=None, title="Language names for filtering", description="Language for filtering the code blocks in text. E.g. python, javascript, etc. If not provided, it will be assumed to be plain text and type is set to markdown.")
-    strict: bool = Field(True, title="Strict Match", description="If True, raise an error if no code block is found in the content")
-
-ContentCodeBlockFilter = Structure.build("ContentCodeBlockFilter", model=ContentCodeBlockFilterModel)
+class TextContentModel(BaseModel):
+    content: str = Field(..., title="Text Content", description="Text content with its meaning depending on the context it is used in.")
+    
+TextContent = Structure.build("TextContent", model=TextContentModel)

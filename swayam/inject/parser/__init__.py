@@ -15,10 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
-from json import JSONDecodeError
 from .meta import ParserMeta
-from .parser import TextContentParser, JsonContentParser, StructuredParser
+from .parser import TextContentParser, JsonContentParser
 from .error import *
 
 kallable = callable
@@ -26,7 +24,7 @@ kallable = callable
 class Parser(metaclass=ParserMeta):
     
     @classmethod
-    def text(cls, name, *, callable, output_structure, input_structure=None):
+    def text(cls, name, *, callable, output_structure=None, input_structure=None, allow_none_output=False):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
@@ -34,16 +32,14 @@ class Parser(metaclass=ParserMeta):
 
         :param name: Name of the parser
         """
-
-        if not kallable(callable):
-            raise ParserArgIsNotCallableError(name, callable=callable)
         return TextContentParser(name, 
                                  callable=callable, 
                                  input_structure=input_structure,
-                                 output_structure=output_structure)
+                                 output_structure=output_structure,
+                                 allow_none_output=allow_none_output)
     
     @classmethod
-    def json(cls, name, *, callable, input_structure=None, content_structure=None, output_structure=None):
+    def json(cls, name, *, callable, output_structure, input_structure=None, schema_validator=None, allow_none_output=False):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
@@ -51,7 +47,5 @@ class Parser(metaclass=ParserMeta):
 
         :param name: Name of the parser
         """
-        if not kallable(callable):
-            raise ParserArgIsNotCallableError(name, callable=callable)
-        return JsonContentParser(name, callable=callable, content_structure=content_structure, input_structure=input_structure, output_structure=output_structure)
+        return JsonContentParser(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output, schema_validator=schema_validator)
         

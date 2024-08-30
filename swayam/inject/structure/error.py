@@ -21,3 +21,8 @@ class StructureValidationError(InjectableObjectError):
     
     def __init__(self, structure, *, provided_input, error):
         super().__init__(structure, error=f"Invalid input data for creating structure. Expected: {structure.definition}. Provided input: {provided_input}. Error: {error}")
+        
+class StructureAttributeDoesNotExistError(InjectableObjectError):
+    
+    def __init__(self, structure, *, attribute):
+        super().__init__(structure, error=f"Attribute {attribute} does not exist in structure {structure}.")

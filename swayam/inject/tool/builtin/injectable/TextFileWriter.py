@@ -21,7 +21,7 @@ from swayam.inject.structure.builtin import *
 import os
 import re
 
-def write_file(*, caller, file_name:str, file_path:str, file_content:str):
+def write_file(, store, file_name:str, file_path:str, file_content:str):
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "w") as file:

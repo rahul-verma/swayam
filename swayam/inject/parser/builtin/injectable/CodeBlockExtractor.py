@@ -22,7 +22,7 @@ import json
 from swayam import Parser
 from swayam.inject.structure import Structure
 
-def extract_code_blocks(*, parser, content:str, languages:List[str]=None, strict=True) -> str:
+def extract_code_blocks(*, store, content:str, languages:List[str]=None, strict=True) -> str:
     """
     Extracts code blocks from an LLM response, supporting both Markdown and JSON.
     
@@ -50,18 +50,19 @@ def extract_code_blocks(*, parser, content:str, languages:List[str]=None, strict
                 continue
 
         if found_language:
-            extracted_content.append({"language": found_language, "content": content})
+            extracted_content.append(
+                {"language": found_language, "code_block":content}
+            )
         else:
-            extracted_content.append({"content": content})
-    
-    from swayam.inject.parser.error import ParserNoMatchError
+            extracted_content.append({"code_block": content})
+
     if strict and not extracted_content:
-        raise ParserNoMatchError(parser.name, f"No Code block was found in for languages {languages} in the following content:\n>>{content}<<.")
-    return extracted_content
+        raise Exception(f"No Code block was found in for languages {languages} in the following content:\n>>{content}<<.")
+    return Structure.CodeBlocks(code_blocks=extracted_content)
 
 CodeBlockExtractor = Parser.text(
     "CodeBlockExtractor",
     callable=extract_code_blocks,
-    input_structure=Structure.ContentCodeBlockFilter,
-    output_structure=Structure.CodeBlockList
+    input_structure=Structure.CodeBlockParser,
+    output_structure=Structure.CodeBlocks
 )

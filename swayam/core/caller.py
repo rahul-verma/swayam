@@ -25,7 +25,9 @@ def get_caller_module_file_location():
     # Function 0: This function
     # Function 1: Inquirer
     # Function 2: Caller
-    caller_frame = stack[2]
+    caller_frames = stack[2:]
+    if len(caller_frames) > 3:
+        caller_frames = caller_frames[:3]
 
     # Get the filename of the caller's module
-    return caller_frame.filename
+    return str([caller_frame.filename for caller_frame in caller_frames])

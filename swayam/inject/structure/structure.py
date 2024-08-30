@@ -48,6 +48,18 @@ class IOStructureObject:
         
     def as_dict(self):
         return self.__model_instance.model_dump()
+    
+    def __getattr__(self, key):
+        try:
+            return getattr(self.__model_instance, key)
+        except AttributeError as e:
+            raise StructureAttributeDoesNotExistError(self, key)
+        
+    def __getitem__(self, key):
+        try:
+            return getattr(self.__model_instance, key)
+        except AttributeError as e:
+            raise StructureAttributeDoesNotExistError(self, key)
 
 
 # Define a base class `Structure` that inherits from `BaseModel`

@@ -15,9 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.error import *
-        
-class ParserNoMatchError(InjectableObjectError):
+from swayam.core.caller import get_caller_module_file_location
+
+class ParserMeta(type):
     
-    def __init__(self, injectable, *, error):
-        super().__init__(injectable, message=f"Parser did not find any match. {error}")
+    def __getattr__(cls, name):
+        from swayam.inject import Injectable
+        return Injectable.load_from_module("Parser", name, caller_file= get_caller_module_file_location())

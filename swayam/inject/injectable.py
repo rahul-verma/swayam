@@ -29,6 +29,15 @@ class StructuredInjectable:
         self.__name = name
         self.__input_structure = input_structure
         self.__output_structure = output_structure
+        self.__store = dict()
+        
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, value):
+        self.__store = value
         
     @property
     def type(self):
@@ -49,7 +58,7 @@ class StructuredInjectable:
     @property
     def allowed_keywords(self):
         from_data_model = list(self.__input_structure.keys)
-        from_data_model.insert(0, "caller")
+        from_data_model.insert(0, "store")
         return from_data_model
     
 class StructuredInjectableWithCallable(StructuredInjectable):
@@ -92,9 +101,25 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         if not keyword_only_names == set(self.allowed_keywords):
             raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
         
+    def validate_inputs(self, **kwargs):
+        pass
+        
     def call_encapsulated_callable(self, **kwargs):
         try:
-            return self.callable(caller=self, **kwargs)
+            try:
+                updated_kwargs = self.input_structure(**kwargs).as_dict()
+            except Exception as e:
+                raise InjectableInvalidInputStructureError(self, provided_input=kwargs)
+            else:
+                try:
+                    self.validate_inputs(**updated_kwargs)
+                except Exception as e:
+                    import traceback
+                    frame = traceback.extract_tb(e.__traceback__)[-1]
+                    frame_str = Injectable.extract_caller_from_frame(frame)
+                    raise InjectableInvalidInputContentError(self, provided_input=kwargs, error=str(e) + f". Check: {frame_str}")
+                else:
+                    return self.callable(store=self.store, **updated_kwargs)
         except Exception as e:
             import traceback
             frame = traceback.extract_tb(e.__traceback__)[-1]

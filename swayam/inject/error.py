@@ -32,7 +32,7 @@ class InjectableObjectError(Exception):
 
 class InjectableNotFoundError(InjectableObjectError):
     
-    def __init__(self, injectable, *, caller_file=None):
+    def __init__(self, injectable, caller_file=None):
         if caller_file is not None:
             suffix = f"Further Info: The >>{injectable.type}.{injectable.name}<< call originated from the file {caller_file}."
         else:
@@ -50,10 +50,15 @@ class InjectableNotCallableError(InjectableObjectError):
     def __init__(self, injectable):
         super().__init__(injectable, error=f"Got object >>{injectable.callable} of type >>{injectable.callable.__name__}<<. Expected a callable object.")
         
-class InjectableInvalidInputError(InjectableObjectError):
+class InjectableInvalidInputStructureError(InjectableObjectError):
     
     def __init__(self, injectable, *, provided_input):
         super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: >>Structure.{injectable.input_structure.name}<<.")
+        
+class InjectableInvalidInputContentError(InjectableObjectError):
+        
+        def __init__(self, injectable, *, provided_input, error):
+            super().__init__(injectable, error=f"The provided input is structurally correct, but failed content validation. Provided Input: {provided_input}. Error: {error}")
         
 class InjectableInvalidCallableDefinitionError(InjectableObjectError):
     

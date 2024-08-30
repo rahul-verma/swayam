@@ -22,12 +22,12 @@ from pydantic import BaseModel, Field, field_serializer
 
 from swayam import Structure
 
-from .SerializedJson import SerializedJsonModel
+from .JsonContent import JsonContentModel
 
 ## The methods used here are meant to prevent serialization warnings.
-class SerializedJsonFilterModel(SerializedJsonModel):
+class JsonContentParserModel(JsonContentModel):
     
     jpath: str = Field(..., title="Jpath", description="JQuery path to find element(s) in the JSON content")
     strict: bool = Field(True, title="Strict Match", description="If True, raise an error if the JPath does not exist in the JSON content")
     
-SerializedJsonContentFilter = Structure.build("SerializedJsonFilter", model=SerializedJsonFilterModel)
+JsonContentParser = Structure.build("JsonContentParser", model=JsonContentParserModel)

@@ -18,7 +18,7 @@
 
 from .injectable._basic import *
 from .injectable.CodeBlock import *
-from .injectable.CodeBlockFilter import *
+from .injectable.CodeBlockParser import *
 from .injectable.DirInfo import *
 from .injectable.DirName import *
 from .injectable.DirPath import *
@@ -29,8 +29,9 @@ from .injectable.FileInfo import *
 from .injectable.FileName import *
 from .injectable.FilePath import *
 from .injectable.Result import *
-from .injectable.SerialisedJsonFilter import *
-from .injectable.SerializedJson import *
+from .injectable.JsonContentParser import *
+from .injectable.JsonContent import *
 from .injectable.Snippet import *
+from .injectable.TextContent import *
 from .injectable.TextFileContent import *
 
