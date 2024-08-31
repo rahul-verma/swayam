@@ -20,7 +20,7 @@ from swayam import Tool, Structure
 import os
 import re
 
-def list_files(, invoker, dir_path:str, file_filter_pattern:str=None):
+def list_files(*, invoker, dir_path:str, file_filter_pattern:str=None):
     from tarkash import Directory
     directory = Directory(dir_path, should_exist=True)
     files_info_list = []

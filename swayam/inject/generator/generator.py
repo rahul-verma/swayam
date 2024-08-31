@@ -17,7 +17,6 @@
 
 from swayam.inject.injectable import StructuredInjectableWithCallable
 from swayam.inject.structure.structure import IOStructureObject
-from swayam.inject.error import InjectableInvalidOutputError
 from swayam import Structure
 from .error import *
 

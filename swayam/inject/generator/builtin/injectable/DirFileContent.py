@@ -18,7 +18,7 @@
 import os
 from swayam import Generator, Structure
 
-def get_content_for_all_files(, invoker, dir_path, file_filter_pattern=None):
+def get_content_for_all_files(*, invoker, dir_path, file_filter_pattern=None):
     from swayam import Tool
     for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
         yield Structure.TextFileContent(

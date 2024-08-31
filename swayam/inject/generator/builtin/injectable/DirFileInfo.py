@@ -21,7 +21,7 @@ from swayam import Tool
 import os
 from swayam import Generator, Structure
 
-def get_file_info(, invoker, dir_path, file_filter_pattern=None):
+def get_file_info(*, invoker, dir_path, file_filter_pattern=None):
     from swayam import Tool
     for file_info in Tool.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
         print(file_info)
