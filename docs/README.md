@@ -81,7 +81,9 @@ An Injectable is:
 ### Parser
 - Two types of parsers: Text and Json
 - TextParser created using Parser.text: the callable gets text input. Default input_structure is Structure.TextContent. Allowed structures should inherit from its data model. Default output structure is Structure.StringValues. Allow none is false by default
-- JsonParser created using Parser.json: the callable gets loaded Python object from a JSON string. Default input_structure is Structure.JsonContent. Allowed structures should inherit from its data model. Allow none is false by default. Has an additional provision for validating the input content using schema_validator attribute.
+- JsonParser created using Parser.json: the callable gets loaded Python object from a JSON string. Default input_structure is Structure.JsonContent. Allowed structures should inherit from its data model. Allow none is false by default. Has an additional provision for validating the input content using content_structure attribute.
+
+Note that JPathExtracter uses the approach of partial functions, because at the time of creating an object of this, content_structure or output_structure is an unknown. 
 
 ### Resource
 

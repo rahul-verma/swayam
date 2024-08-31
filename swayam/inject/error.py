@@ -70,10 +70,15 @@ class InjectableCallError(InjectableObjectError):
     def __init__(self, injectable, *, error):
             super().__init__(injectable, error=f"A run-time error happened when {injectable.callable.__name__} was called. Error: {error}")
         
-class InjectableInvalidOutputError(InjectableObjectError):
+class InjectableOutputNotAStructureError(InjectableObjectError):
     
     def __init__(self, injectable, *, output):
-        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Structure.{injectable.output_structure.name}<<. Got >>{str(output)}<< of type >>{type(output)} instead.")
+        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Structure.{injectable.output_structure.name}<<. Got >>{str(output)}<< of type >>{type(output)} instead: {str(output)}.")
+    
+class InjectableInvalidOutputStructureError(InjectableObjectError):
+    
+    def __init__(self, injectable, *, output):
+        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Structure.{injectable.output_structure.name}<<. Got an output structure of type >>{output.name}<< instead with data: {str(output.as_dict())}.")
         
 class InjectableDefinitionNotFoundError(InjectableObjectError):
     

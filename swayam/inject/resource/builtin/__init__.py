@@ -15,21 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.error import *
-
-_NAME = "Parser"
-
-class ParserNotFoundError(InjectableDefinitionNotFoundError):
-    
-    def __init__(self, name):
-        super().__init__(_NAME, name)
-        
-class ParserImportError( InjectableImportError):
-    
-    def __init__(self, name, *, import_error_message):
-        super().__init__(_NAME, name, import_error_message=import_error_message)
-        
-class ParserArgIsNotCallableError(InjectableCallableIsNotCallableError):
-    
-    def __init__(self, name, callable):
-        super().__init__(_NAME, name, callable=callable)
+from .injectable.DirEnumerator import *
+from .injectable.TextFileReader import *
+from .injectable.TextFileWriter import *

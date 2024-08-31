@@ -101,7 +101,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         if not keyword_only_names == set(self.allowed_keywords):
             raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
         
-    def validate_inputs(self, **kwargs):
+    def validate_input_content(self, **kwargs):
         pass
         
     def call_encapsulated_callable(self, **kwargs):
@@ -112,7 +112,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
                 raise InjectableInvalidInputStructureError(self, provided_input=kwargs)
             else:
                 try:
-                    self.validate_inputs(**updated_kwargs)
+                    self.validate_input_content(**updated_kwargs)
                 except Exception as e:
                     import traceback
                     frame = traceback.extract_tb(e.__traceback__)[-1]
@@ -130,10 +130,10 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         if not isinstance(output, IOStructureObject):
             if output is None and self.allow_none_output:
                 return Structure.NoneValue()
-            raise InjectableInvalidOutputError(self, output=output)
+            raise InjectableOutputNotAStructureError(self, output=output)
         elif not isinstance(output.model_instance, self.output_structure.data_model):
             # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
-            raise InjectableInvalidOutputError(self, output=output.name)
+            raise InjectableInvalidOutputStructureError(self, output=output)
         return output
 
     def __call__(self, **kwargs):

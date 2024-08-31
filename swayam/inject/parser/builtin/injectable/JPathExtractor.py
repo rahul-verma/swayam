@@ -32,16 +32,16 @@ def extract_with_jpath(*, store, content, jpath:str, strict:str=True) -> str:
     Args:
         content (str): The response from the LLM containing code blocks.
     """
-    from swayam.inject.structure.builtin import JsonContentList
-    from swayam.inject.parser.error import ParserNoMatchError
     jsonpath_expr = jparse(jpath)
     matches = jsonpath_expr.find(content)
     if strict and not matches:
         raise Exception(f"No mmatch found using JPath {jpath} used for extraction from {content!r}.")
-    return JsonContentList(*[{'content': json.dumps(match.value)} for match in matches])
+    return Structure.JsonContent(content=[match.value for match in matches])
 
 JPathExtractor = partial(JsonContentParser,
     "JPathExtractor",
     callable=extract_with_jpath,
-    input_structure=Structure.JsonContentParser
+    input_structure=Structure.JsonContentParser,
+    output_structure=Structure.JsonContent,
+    content_structure=None
 )

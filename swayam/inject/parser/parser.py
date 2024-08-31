@@ -40,21 +40,22 @@ class TextContentParser(StructuredParser):
         
 class JsonContentParser(StructuredParser):
     
-    def __init__(self, name, *, callable, output_structure, input_structure=None, schema_validator=None, allow_none_output=False):
+    def __init__(self, name, *, callable, output_structure, input_structure=None,      content_structure=None, allow_none_output=False):
         from swayam.inject.structure.builtin import TextContent
         if input_structure is None:
-            input_structure = Structure.TextContent
+            input_structure = Structure.JsonContent
         elif not issubclass(input_structure.data_model, Structure.JsonContent.data_model):
             raise JsonParserIncompatibleInputStructureError(self)
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
-        self.__schema_validator = schema_validator
+        self.__content_structure = content_structure
         
     @property
     def content_structure(self):
         return self.__content_structure
     
-    def validate_inputs(self, **kwargs):
-        if self.__schema_validator:
-            self.__schema_validator(**kwargs)
+    def validate_input_content(self, **kwargs):
+        content = kwargs["content"]
+        if self.__content_structure:
+            self.__content_structure(**content)
     
     
