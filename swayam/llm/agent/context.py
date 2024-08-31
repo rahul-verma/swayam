@@ -20,26 +20,26 @@ from swayam.core.store import Store
 class AgentContext:
     
     def __init__(self):
-        from swayam.llm.action.context import ActionContext
-        self.__action_context = ActionContext()
+        from swayam.llm.expression.context import ExpressionContext
+        self.__expression_context = ExpressionContext()
         self.__store = Store()
         
     @property
-    def action_context(self):
-        return self.__action_context
+    def expression_context(self):
+        return self.__expression_context
         
-    def reset_action_context(self):
-        self.__action_context.reset()
+    def reset_expression_context(self):
+        self.__expression_context.reset()
         
     def reset(self):
-        self.__action_context.reset()
+        self.__expression_context.reset()
         self.__store.reset()
         
     @property
     def store(self):
         return self.__store
     
-    def format_request(self, request):
-        request.dynamic_format(self.store)
+    def format_prompt(self, prompt):
+        prompt.dynamic_format(self.store)
         
     

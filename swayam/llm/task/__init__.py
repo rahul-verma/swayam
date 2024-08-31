@@ -20,10 +20,10 @@
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.request.types import SystemRequest, UserRequest
-from swayam.llm.request.file import RequestFile
-from swayam.llm.action.action import LLMAction
-from swayam.llm.action.repeater import DynamicActionFile
+from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.file import PromptFile
+from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.expression.repeater import DynamicExpressionFile
 from .task import LLMTask
 from swayam.inject.structure.structure import IOStructure
 
@@ -33,24 +33,24 @@ from .meta import TaskMeta
 class Task(metaclass=TaskMeta):
     
     @classmethod
-    def actions(cls, *actions:LLMAction, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
-        if len(actions) == 0:
-            raise ValueError("No actions provided.")
-        out_actions = []
-        for action in actions:
-            if isinstance (action, DynamicActionFile):
-                repeated_actions = action.create_actions()
-                out_actions.extend(repeated_actions)
-            elif isinstance(action, LLMAction):
-                out_actions.append(action)
+    def expressions(cls, *expressions:LLMExpression, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
+        if len(expressions) == 0:
+            raise ValueError("No expressions provided.")
+        out_expressions = []
+        for expression in expressions:
+            if isinstance (expression, DynamicExpressionFile):
+                repeated_expressions = expression.create_expressions()
+                out_expressions.extend(repeated_expressions)
+            elif isinstance(expression, LLMExpression):
+                out_expressions.append(expression)
             else:
-                raise ValueError(f"Invalid action type: {type(action)}. Should be an LLMAction or DynamicActionFile object.")
+                raise ValueError(f"Invalid expression type: {type(expression)}. Should be an LLMExpression or DynamicExpressionFile object.")
             
-        if system_request:
-            if type(system_request) == str:
-                system_request = SystemRequest(text=system_request)
-            elif not isinstance(system_request, SystemRequest):
-                raise ValueError(f"Invalid system request type: {type(system_request)}. Should be a string or a SystemRequest object")
+        if system_prompt:
+            if type(system_prompt) == str:
+                system_prompt = SystemPrompt(text=system_prompt)
+            elif not isinstance(system_prompt, SystemPrompt):
+                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
@@ -63,7 +63,7 @@ class Task(metaclass=TaskMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-        return LLMTask(*out_actions, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools)
+        return LLMTask(*out_expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

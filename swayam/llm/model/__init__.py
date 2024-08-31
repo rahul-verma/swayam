@@ -23,13 +23,13 @@ from typing import List
 class Model:
         
     @staticmethod
-    def create_client(*, config, request_config):
+    def create_client(*, config, prompt_config):
         from .openai import OpenAIClient
         model_classes = {
             "openai": OpenAIClient
         }
         
-        return model_classes[config.provider](config.model, **request_config.model_kwargs)
+        return model_classes[config.provider](config.model, **prompt_config.model_kwargs)
         
     @staticmethod
     def gpt_4o_mini(**kwargs):    

@@ -15,16 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import BaseRequest
+from .base import BasePrompt
 from tarkash import log_debug
 from typing import Any, Union
 from swayam.inject.structure.structure import IOStructure
 
-class SystemRequest(BaseRequest):
+class SystemPrompt(BasePrompt):
     
     def __init__(self, *, text:str) -> Any:
         super().__init__(role="system", text=text)
 
-class UserRequest(BaseRequest):
+class UserPrompt(BasePrompt):
     def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:IOStructure=None, tools:list=None) -> Any:
         super().__init__(role="user", text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)

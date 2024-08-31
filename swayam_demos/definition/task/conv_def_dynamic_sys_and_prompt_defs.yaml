@@ -1,4 +1,4 @@
-purpose: Using Dynamic System as well as Request Defs
+purpose: Using Dynamic System as well as Prompt Defs
 
-action_defs:
-  - system_request_dyn_string_dynamic_requests
+expression_defs:
+  - system_prompt_dyn_string_dynamic_prompts

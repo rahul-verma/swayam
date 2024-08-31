@@ -1,12 +1,12 @@
 tools:
     - Calculator
 
-actions:
-  - requests:
+expressions:
+  - prompts:
       - Ask from me 2 numbers
       - 5 and 6
       - Add them
-  - requests:
+  - prompts:
       - Ask from me 2 numbers
       - 5 and 6
       - Multiply them

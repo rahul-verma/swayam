@@ -51,4 +51,4 @@ class StructuredSnippet:
             else:
                 output = self.__output_structure(**output).as_list()
         
-        self.request.append_output(output)        
+        self.prompt.append_output(output)        

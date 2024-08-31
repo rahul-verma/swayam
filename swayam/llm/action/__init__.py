@@ -19,27 +19,27 @@
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.request.types import SystemRequest, UserRequest
-from swayam.llm.request.file import RequestFile
-from .format import ActionFormatter
-from .action import LLMAction
+from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.file import PromptFile
+from .format import ExpressionFormatter
+from .expression import LLMExpression
 from swayam.inject.structure.structure import IOStructure
-from .meta import ActionMeta
+from .meta import ExpressionMeta
 
-class Action(metaclass=ActionMeta):
+class Expression(metaclass=ExpressionMeta):
     
     @classmethod
-    def requests(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMAction:
-        if len(requests) == 0:
-            raise ValueError("No requests provided.")
-        for request in requests:
-            if not isinstance(request, UserRequest):
-                raise ValueError(f"Invalid request type: {type(request)}. Should be a UserRequest object.")
-        if system_request:
-            if type(system_request) == str:
-                system_request = SystemRequest(text=system_request)
-            elif not isinstance(system_request, SystemRequest):
-                raise ValueError(f"Invalid system request type: {type(system_request)}. Should be a string or a SystemRequest object")
+    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMExpression:
+        if len(prompts) == 0:
+            raise ValueError("No prompts provided.")
+        for prompt in prompts:
+            if not isinstance(prompt, UserPrompt):
+                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
+        if system_prompt:
+            if type(system_prompt) == str:
+                system_prompt = SystemPrompt(text=system_prompt)
+            elif not isinstance(system_prompt, SystemPrompt):
+                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
@@ -53,15 +53,15 @@ class Action(metaclass=ActionMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMAction(*requests, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return LLMExpression(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
     
     @classmethod
-    def texts(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMAction:
-        for request in requests:
-            if type(request) is not str:
-                raise ValueError(f"Invalid request type: {type(request)}. Should be a string")
-        return cls.requests(*[UserRequest(text=request) for request in requests], purpose=purpose, system_request=system_request,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMExpression:
+        for prompt in prompts:
+            if type(prompt) is not str:
+                raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
+        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
     
     @classmethod
     def formatter(self, **fmt_kwargs):
-        return ActionFormatter(**fmt_kwargs)
+        return ExpressionFormatter(**fmt_kwargs)

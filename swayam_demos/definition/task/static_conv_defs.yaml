@@ -1,6 +1,6 @@
 tools:
     - Calculator
 
-action_defs:
+expression_defs:
   - conv1_task
   - conv2_task

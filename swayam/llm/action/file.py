@@ -19,7 +19,7 @@ import os
 import importlib
 from abc import ABC, abstractmethod
 
-class ActionFile:
+class ExpressionFile:
     
     def __init__(self, *, file_name):
         self.__file_name = file_name
@@ -28,12 +28,12 @@ class ActionFile:
     def file_name(self):
         return self.__file_name
 
-class ActionFileLoader:
+class ExpressionFileLoader:
     
     def __init__(self):
         pass
         
     def __getattr__(self, name):
-        return ActionFile(file_name=name)
+        return ExpressionFile(file_name=name)
         
         

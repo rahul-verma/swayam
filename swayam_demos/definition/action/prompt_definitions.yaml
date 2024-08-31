@@ -1,5 +1,5 @@
-purpose: Using Request Definitions
+purpose: Using Prompt Definitions
 
-request_defs:
+prompt_defs:
   - trip_command
   - trip_query

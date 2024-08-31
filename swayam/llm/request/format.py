@@ -15,18 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class RequestFormatter:
+class PromptFormatter:
     
     def __init__(self, *, role, **kwargs):
         self.__role = role
         self.__kwargs = kwargs
         
     def __getattr__(self, name):
-        from .namespace import RequestDir
+        from .namespace import PromptDir
         import yaml
-        with open(RequestDir.get_path_for_request(role=self.__role, name=name)) as f:
+        with open(PromptDir.get_path_for_prompt(role=self.__role, name=name)) as f:
             content = yaml.safe_load(f.read().format(**self.__kwargs))
-        return RequestDir.create_request_from_content(self.__role, name, content)
+        return PromptDir.create_prompt_from_content(self.__role, name, content)
 
 class FormatterMediator:
     def __init__(self, **fmt_kwargs):
@@ -34,8 +34,8 @@ class FormatterMediator:
         
     @property
     def user(self):
-        return RequestFormatter(role="user", **self.__fmt_kwargs)
+        return PromptFormatter(role="user", **self.__fmt_kwargs)
     
     @property
     def system(self):
-        return RequestFormatter(role="system", **self.__fmt_kwargs)
+        return PromptFormatter(role="system", **self.__fmt_kwargs)

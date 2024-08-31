@@ -1,7 +1,7 @@
-system_request_def: trip_persona
+system_prompt_def: trip_persona
 
-purpose: Using Dynamic System as well as Request Defs
+purpose: Using Dynamic System as well as Prompt Defs
 
-request_defs:
+prompt_defs:
   - plan_a_trip
   - plan_a_trip_task

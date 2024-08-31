@@ -19,34 +19,34 @@ import copy
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.request.types import SystemRequest, UserRequest
-from swayam.llm.request.file import RequestFile
-from swayam.llm.action.action import LLMAction
+from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.file import PromptFile
+from swayam.llm.expression.expression import LLMExpression
 from swayam.inject.structure.structure import IOStructure
 
-class DynamicActionFile:
+class DynamicExpressionFile:
     
     def __init__(self, *, file_name:str, generator):
         self.__file_name = file_name
         self.__generator = generator
         
-    def create_actions(self, **fmt_kwargs):
-        from swayam.llm.action.format import ActionFormatter
+    def create_expressions(self, **fmt_kwargs):
+        from swayam.llm.expression.format import ExpressionFormatter
         out = []
         iterator = iter(self.__generator)
         for data in iterator:
             fmt_dict = copy.deepcopy(fmt_kwargs)
             fmt_dict.update(data)
-            out.append(getattr(ActionFormatter(**fmt_dict), self.__file_name))
+            out.append(getattr(ExpressionFormatter(**fmt_dict), self.__file_name))
         return out    
 
-class ActionFileRepeater:
+class ExpressionFileRepeater:
     
     def __init__(self, *, generator):
         self.__generator = generator
         
     def __getattr__(self, name):
-        return DynamicActionFile(file_name=name, generator=self.__generator)
+        return DynamicExpressionFile(file_name=name, generator=self.__generator)
         
 
         

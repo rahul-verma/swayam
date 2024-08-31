@@ -1,9 +1,9 @@
-purpose: Providing Action Globals
+purpose: Providing Expression Globals
 
 image: data/images/tom_jerry.jpeg
 tools: [WeatherInfo]
 #output_structure: GeneralStructure
 
-requests:
+prompts:
   - Who is in the picture?
   - What is the weather in Berlin?

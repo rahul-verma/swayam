@@ -20,7 +20,7 @@ from pprint import pprint
 import typing
 
 from tarkash import singleton
-from swayam.llm.action import Action
+from swayam.llm.expression import Expression
 
 @singleton
 class _SwayamSingleton:
@@ -32,10 +32,10 @@ class _SwayamSingleton:
         from tarkash import Tarkash
         reg_config = {
             "SNIPPET_DIR": ("definition/snippet", "path"),
-            "REQUEST_DIR": ("definition/request", "path"),
-            "ACTION_DIR": ("definition/action", "path"),
+            "PROMPT_DIR": ("definition/prompt", "path"),
+            "EXPRESSION_DIR": ("definition/expression", "path"),
             "TASK_DIR": ("definition/task", "path"),
-            "STRATEGY_DIR": ("definition/strategy", "path"),
+            "STORY_DIR": ("definition/strategy", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }
@@ -58,8 +58,8 @@ class _SwayamSingleton:
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
         
-    def run_request(self, request_text):
-        return request_text
+    def run_prompt(self, prompt_text):
+        return prompt_text
     
     def get_swayam_root_dir(self):
         return self.__root_dir
@@ -103,25 +103,25 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, request:str):
+    def execute(cls, prompt:str):
         """
-        A simple facade to default LLM Model, resulting in one a request being executed.
+        A simple facade to default LLM Model, resulting in one a prompt being executed.
         
         The goal is to provide a basic chatting experience.
         
         The default LLM Model is picked up from configuration.
         
-        This method is meant for simple usage where a user wants to execute one or more requests.
+        This method is meant for simple usage where a user wants to execute one or more prompts.
         
         Args:
-            request (str): The request to be executed
+            prompt (str): The prompt to be executed
 
         Returns:
             (str): Returns the message from the LLM.
         """
-        if type(request) is not str:
-            raise TypeError("Request should be a string")
-        return cls._SWAYAM_SINGLETON.default_agent.execute(request)
+        if type(prompt) is not str:
+            raise TypeError("Prompt should be a string")
+        return cls._SWAYAM_SINGLETON.default_agent.execute(prompt)
     
     
     @classmethod

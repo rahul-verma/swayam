@@ -40,52 +40,52 @@ class SimpleAgent:
         self.__report_config.show_in_browser = show_in_browser
         
         
-    def __execute_user_request(self, user_request):
-        from swayam import Action
-        log_debug(f"Converting UserRequest to Action.")
-        action = Action.requests(user_request, reset_context=False)
-        action.extends_previous_action = True
-        return self.__execute_action(action)
+    def __execute_user_prompt(self, user_prompt):
+        from swayam import Expression
+        log_debug(f"Converting UserPrompt to Expression.")
+        expression = Expression.prompts(user_prompt, reset_context=False)
+        expression.extends_previous_expression = True
+        return self.__execute_expression(expression)
     
-    def __execute_action(self, action):
-        from swayam.llm.action.context import ActionContext
-        from swayam.llm.executor.action import ActionExecutor
+    def __execute_expression(self, expression):
+        from swayam.llm.expression.context import ExpressionContext
+        from swayam.llm.executor.expression import ExpressionExecutor
 
-        if action.reset_context:
-            self.__context.reset_action_context()
+        if expression.reset_context:
+            self.__context.reset_expression_context()
 
-        # Set context of action
-        if not action.standalone:
-            action.context = self.__context
+        # Set context of expression
+        if not expression.standalone:
+            expression.context = self.__context
         else:
             # Set empty context
-            action.context = AgentContext()
+            expression.context = AgentContext()
         
-        log_debug(f"Executing Action with ActionAgent.")
-        agent = ActionExecutor(listener=self.__listener)
+        log_debug(f"Executing Expression with ExpressionAgent.")
+        agent = ExpressionExecutor(listener=self.__listener)
         
-        # If a the context is non-empty then the system request is already set in it.
-        log_debug(f"New context-free action?", action.is_new())
-        log_debug(f"Action has an already assigned system request?", action.has_system_request()) 
-        if action.is_new() and not action.has_system_request():
-            log_debug(f"Setting default system request from the Agent.")
-            action.system_request = agent.system_request
+        # If a the context is non-empty then the system prompt is already set in it.
+        log_debug(f"New context-free expression?", expression.is_new())
+        log_debug(f"Expression has an already assigned system prompt?", expression.has_system_prompt()) 
+        if expression.is_new() and not expression.has_system_prompt():
+            log_debug(f"Setting default system prompt from the Agent.")
+            expression.system_prompt = agent.system_prompt
             
-        log_debug("Validating action.")
-        if action.is_new() and not action.has_system_request():
-            raise ValueError("It's a new action, but no SystemRequest was found. Review.")
+        log_debug("Validating expression.")
+        if expression.is_new() and not expression.has_system_prompt():
+            raise ValueError("It's a new expression, but no SystemPrompt was found. Review.")
         
-        if not action.is_new() and action.has_system_request():
-            raise ValueError("As it is continued action, the system request is already set in the context. So, the context found in this action is going to be ignored. Review.")
+        if not expression.is_new() and expression.has_system_prompt():
+            raise ValueError("As it is continued expression, the system prompt is already set in the context. So, the context found in this expression is going to be ignored. Review.")
 
-        log_debug(f"Executing Action with ActionAgent.")
+        log_debug(f"Executing Expression with ExpressionAgent.")
         def process_output(in_data):
             if in_data.content:
                 return in_data.content
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
-        output = agent.execute(action)
+        output = agent.execute(expression)
         
         if type(output) is list:
             if len(output) == 1:
@@ -99,8 +99,8 @@ class SimpleAgent:
         
     def __execute_task(self, task):
         output = None
-        for action in task:
-            output = self.__execute_action(action)
+        for expression in task:
+            output = self.__execute_expression(expression)
         return output
     
     def execute(self, executable, show_in_browser=False):
@@ -108,10 +108,10 @@ class SimpleAgent:
         Executes a part of or complete strategy.
         
         The Agent can execute any of the following types of objects:
-        - A User Request object
-        - A Action object
+        - A User Prompt object
+        - A Expression object
         - A Task object: Not supported yet
-        - A Strategy object: Not supported yet
+        - A Story object: Not supported yet
         
         Args:
             executable: The object to execute.
@@ -121,23 +121,23 @@ class SimpleAgent:
         log_debug(f"Executing Agent executable object of type {type(executable)}.")
         self.__prepare_for_execution(show_in_browser=show_in_browser)
         
-        from swayam.llm.request.types import UserRequest
-        from swayam.llm.action.action import LLMAction
+        from swayam.llm.prompt.types import UserPrompt
+        from swayam.llm.expression.expression import LLMExpression
         from swayam.llm.task.task import LLMTask
         
-        if not isinstance(executable, (str, UserRequest, LLMAction, LLMTask)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserRequest, LLMAction, LLMTask, or Strategy.")
+        if not isinstance(executable, (str, UserPrompt, LLMExpression, LLMTask)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMExpression, LLMTask, or Story.")
         
         output = None
         if isinstance(executable, str):
-            from swayam.llm.request import Request
-            log_debug(f"Converting user request string to LLMAction.")
-            output = self.__execute_user_request(Request.text(executable))
-        if isinstance(executable, UserRequest):
-            log_debug(f"Converting UserRequest to LLMAction.")
-            output = self.__execute_user_request(executable)
-        elif isinstance(executable, LLMAction):
-            output = self.__execute_action(executable)
+            from swayam.llm.prompt import Prompt
+            log_debug(f"Converting user prompt string to LLMExpression.")
+            output = self.__execute_user_prompt(Prompt.text(executable))
+        if isinstance(executable, UserPrompt):
+            log_debug(f"Converting UserPrompt to LLMExpression.")
+            output = self.__execute_user_prompt(executable)
+        elif isinstance(executable, LLMExpression):
+            output = self.__execute_expression(executable)
         elif isinstance(executable, LLMTask):
             output = self.__execute_task(executable)
             

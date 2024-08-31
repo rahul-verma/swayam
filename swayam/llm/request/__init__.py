@@ -17,15 +17,15 @@
 
 from typing import Union
 
-from .types import UserRequest, SystemRequest
+from .types import UserPrompt, SystemPrompt
 from swayam.inject.structure.structure import IOStructure
 from .format import FormatterMediator
-from .meta import RequestMeta
+from .meta import PromptMeta
 
-class Request(metaclass=RequestMeta):
+class Prompt(metaclass=PromptMeta):
     
     @classmethod
-    def text(cls, text, *, purpose:str=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, role:str="user") -> UserRequest:
+    def text(cls, text, *, purpose:str=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, role:str="user") -> UserPrompt:
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
             output_structure = getattr(Structure, output_structure)
@@ -38,7 +38,7 @@ class Request(metaclass=RequestMeta):
                     output_tools.append(tool)
             tools = output_tools
                 
-        return UserRequest(text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)
+        return UserPrompt(text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(cls, **fmt_kwargs):

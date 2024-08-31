@@ -17,11 +17,11 @@
 
 from typing import Union
 
-from swayam.llm.action.file import ActionFile
-from swayam.llm.action.action import LLMAction
-from swayam.llm.request.file import RequestFile
-from swayam.llm.request.types import SystemRequest, UserRequest
-from swayam.llm.request.format import RequestFormatter
+from swayam.llm.expression.file import ExpressionFile
+from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.prompt.file import PromptFile
+from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.format import PromptFormatter
 from swayam.inject.structure.structure import IOStructure
 
 class TaskFormatter:
@@ -29,41 +29,41 @@ class TaskFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def action_files(self, *action_files:ActionFile, purpose:str=None, system_request:RequestFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMAction:
-        from swayam.llm.action.format import ActionFormatter
-        from swayam.llm.action.repeater import DynamicActionFile
+    def expression_files(self, *expression_files:ExpressionFile, purpose:str=None, system_prompt:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMExpression:
+        from swayam.llm.expression.format import ExpressionFormatter
+        from swayam.llm.expression.repeater import DynamicExpressionFile
         
-        if len(action_files) == 0:
-            raise ValueError("No actions provided.")
-        actions = []
-        for action_file in action_files:
-            if isinstance (action_file, DynamicActionFile):
-                out_actions = action_file.create_actions(**self.__fmt_kwargs)
-                actions.extend(out_actions)
-            elif isinstance(action_file, ActionFile):
-                formatter = ActionFormatter(**self.__fmt_kwargs)
-                action = getattr(formatter, action_file.file_name)
-                actions.append(action)
+        if len(expression_files) == 0:
+            raise ValueError("No expressions provided.")
+        expressions = []
+        for expression_file in expression_files:
+            if isinstance (expression_file, DynamicExpressionFile):
+                out_expressions = expression_file.create_expressions(**self.__fmt_kwargs)
+                expressions.extend(out_expressions)
+            elif isinstance(expression_file, ExpressionFile):
+                formatter = ExpressionFormatter(**self.__fmt_kwargs)
+                expression = getattr(formatter, expression_file.file_name)
+                expressions.append(expression)
             else:
-                raise ValueError(f"Invalid action type: {type(action_file)}. Should be a ActionFile object.") 
+                raise ValueError(f"Invalid expression type: {type(expression_file)}. Should be a ExpressionFile object.") 
             
-        if system_request:
-            if not isinstance(system_request, RequestFile) and not isinstance(system_request, SystemRequest):
-                raise ValueError(f"Invalid system request type: {type(system_request)}. Should be a SystemRequest or RequestFile object.")  
-            elif not system_request.role == "system":
-                raise ValueError(f"Invalid request role: {system_request.role}. Should be a system request.")
+        if system_prompt:
+            if not isinstance(system_prompt, PromptFile) and not isinstance(system_prompt, SystemPrompt):
+                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a SystemPrompt or PromptFile object.")  
+            elif not system_prompt.role == "system":
+                raise ValueError(f"Invalid prompt role: {system_prompt.role}. Should be a system prompt.")
             
-            if isinstance(system_request, RequestFile):
-                system_formatter = RequestFormatter(role=system_request.role, **self.__fmt_kwargs)
-                system_request = getattr(system_formatter, system_request.file_name)
-                if not isinstance(system_request, SystemRequest):
-                    raise ValueError(f"There has been a critical framework issue in creating a system request.")
+            if isinstance(system_prompt, PromptFile):
+                system_formatter = PromptFormatter(role=system_prompt.role, **self.__fmt_kwargs)
+                system_prompt = getattr(system_formatter, system_prompt.file_name)
+                if not isinstance(system_prompt, SystemPrompt):
+                    raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
             else:
-                # If a system request is provided directly, it is NOT formatted.
+                # If a system prompt is provided directly, it is NOT formatted.
                 pass
 
         from swayam import Task
-        return Task.actions(*actions, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools)
+        return Task.expressions(*expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
         from .namespace import TaskDir

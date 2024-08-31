@@ -24,13 +24,13 @@ from abc import ABC, abstractmethod
 from swayam.inject.structure.structure import IOStructure
 
 
-class BaseRequest(ABC):
+class BasePrompt(ABC):
     
     def __init__(self, *, role, text, purpose=None, image=None, output_structure:IOStructure=None, tools=None) -> Any:
         self.__role = role
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = f"{role.title()} Request"
+            self.__purpose = f"{role.title()} Prompt"
         self.__content = text
         self.__output_structure = output_structure
         self.__tools = tools
@@ -134,7 +134,7 @@ class BaseRequest(ABC):
             tool_response.tool_id = tool_id
             return tool_response
         else:
-            raise ValueError(f"Tool {tool_name} not defined for this request.")
+            raise ValueError(f"Tool {tool_name} not defined for this prompt.")
 
     def process_for_report(self):
         
@@ -207,5 +207,5 @@ class BaseRequest(ABC):
 
     
     @property
-    def is_system_request(self):
+    def is_system_prompt(self):
         return self.__role == "system"

@@ -17,7 +17,7 @@
 
 import json
 
-class ActionContext:
+class ExpressionContext:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
@@ -49,9 +49,9 @@ class ActionContext:
     def reportable_messages(self):
         return self.__reportable_messages
     
-    def append_request(self, request):
-        self.__messages.append(request.message)
-        self.__reportable_messages.append(request.reportable_message)
+    def append_prompt(self, prompt):
+        self.__messages.append(prompt.message)
+        self.__reportable_messages.append(prompt.reportable_message)
         
     def append_assistant_response(self, *messages):
         for message in messages:

@@ -1,5 +1,5 @@
-purpose: Demo Dynamic Action
+purpose: Demo Dynamic Expression
 
-request_defs:
+prompt_defs:
   - plan_a_trip
   - plan_a_trip_task

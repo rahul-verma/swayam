@@ -1,5 +1,5 @@
 tools:
     - Calculator
 
-action_defs:
-  - formatting_request_defs_example
+expression_defs:
+  - formatting_prompt_defs_example

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class RequestConfig:
+class PromptConfig:
     
     def __init__(self, *, temperature=0, **kwargs):
         self._model_kwargs = dict()

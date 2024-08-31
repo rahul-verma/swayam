@@ -19,7 +19,7 @@ import os
 import importlib
 from abc import ABC, abstractmethod
 
-class RequestFile:
+class PromptFile:
     
     def __init__(self, *, role, file_name):
         self.__role = role
@@ -32,24 +32,24 @@ class RequestFile:
     def file_name(self):
         return self.__file_name
 
-class RequestFileLoader:
+class PromptFileLoader:
     
     def __init__(self, *, role):
         self._role = role
         
     def __getattr__(self, name):
-        return RequestFile(role=self._role, file_name=name)
+        return PromptFile(role=self._role, file_name=name)
 
-class RequestFileFinder(ABC):
+class PromptFileFinder(ABC):
     
     def __init__(self):
         pass
         
     @property
     def user(self):
-        return RequestFileLoader(role="user")
+        return PromptFileLoader(role="user")
     @property
     def system(self):
-        return RequestFileLoader(role="system")
+        return PromptFileLoader(role="system")
         
         

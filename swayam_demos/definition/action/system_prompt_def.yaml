@@ -1,8 +1,8 @@
-system_request_def: |
+system_prompt_def: |
   friend
 
-purpose: Using System Request Def
+purpose: Using System Prompt Def
 
-request_defs:
+prompt_defs:
   - trip_command
   - trip_query

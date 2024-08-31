@@ -1,12 +1,12 @@
 tools:
     - Calculator
 
-actions:
-  - requests:
+expressions:
+  - prompts:
       - Ask from me 2 numbers
       - {i} and {j}
       - Add them
-  - requests:
+  - prompts:
       - Ask from me 2 numbers
       - {i} and {j}
       - Multiply them

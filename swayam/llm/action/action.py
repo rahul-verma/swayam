@@ -19,20 +19,20 @@
 from typing import Any, Union
 
 from tarkash import log_debug
-from swayam.llm.request import Request
-from swayam.llm.request.types import SystemRequest, UserRequest
-from .context import ActionContext
+from swayam.llm.prompt import Prompt
+from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from .context import ExpressionContext
 from swayam.inject.structure.structure import IOStructure
 
-class LLMAction:
+class LLMExpression:
     
-    def __init__(self, *requests:Request, purpose:str=None, system_request:SystemRequest=None, context:ActionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> Any:
-        self.__requests = list(requests)
+    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:ExpressionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> Any:
+        self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = "Action"
+            self.__purpose = "Expression"
         self.__agent_context = context
-        self.__system_request = system_request
+        self.__system_prompt = system_prompt
         self.__image = image
         self.__output_structure = output_structure
         self.__tools = tools
@@ -41,13 +41,13 @@ class LLMAction:
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
         
-        # Depends on how it was created. When it is a single request action created for an execute call of Agent, it is treated as a continuation of the previous action.
-        self.__extends_previous_action = False
+        # Depends on how it was created. When it is a single prompt expression created for an execute call of Agent, it is treated as a continuation of the previous expression.
+        self.__extends_previous_expression = False
         
-        # If True, it gets an empty context value. Has no impact on context of the follow-up actions.
+        # If True, it gets an empty context value. Has no impact on context of the follow-up expressions.
         self.__standalone = standalone
         
-        # If True, it resets the parent's context for itself. The subsequent action receives the context that it results in.
+        # If True, it resets the parent's context for itself. The subsequent expression receives the context that it results in.
         self.__reset_context = reset_context
         
     @property
@@ -67,89 +67,89 @@ class LLMAction:
         return self.__reset_context
         
     @property
-    def extends_previous_action(self):
-        return self.__extends_previous_action
+    def extends_previous_expression(self):
+        return self.__extends_previous_expression
     
-    @extends_previous_action.setter
-    def extends_previous_action(self, value:bool):
-        self.__extends_previous_action = value
+    @extends_previous_expression.setter
+    def extends_previous_expression(self, value:bool):
+        self.__extends_previous_expression = value
         
     @property
-    def extends_previous_action(self):
-        return self.__extends_previous_action
+    def extends_previous_expression(self):
+        return self.__extends_previous_expression
     
-    @extends_previous_action.setter
-    def extends_previous_action(self, value:bool):
-        self.__extends_previous_action = value
+    @extends_previous_expression.setter
+    def extends_previous_expression(self, value:bool):
+        self.__extends_previous_expression = value
 
     def __make_image_suggestions(self):
-        # the image is appended only to the first request.
+        # the image is appended only to the first prompt.
         if self.__image:
-            self.__requests[0].suggest_image(self.__image)
+            self.__prompts[0].suggest_image(self.__image)
         
     def __make_structure_suggestions(self):
-        # Tools and response format are suggested to all requests.            
-        for request in self.__requests:
+        # Tools and response format are suggested to all prompts.            
+        for prompt in self.__prompts:
             if self.__image:
-                request.suggest_output_structure(self.__output_structure)
+                prompt.suggest_output_structure(self.__output_structure)
                 
     def __make_tool_suggestions(self):
-        # Tools and response format are suggested to all requests.            
-        for request in self.__requests:
+        # Tools and response format are suggested to all prompts.            
+        for prompt in self.__prompts:
             if self.__tools:
-                request.suggest_tools(self.__tools) 
+                prompt.suggest_tools(self.__tools) 
     
     def is_new(self):
-        return len(self.__agent_context.action_context) == 0
+        return len(self.__agent_context.expression_context) == 0
         
-    def has_system_request(self):
-        return self.__system_request is not None
+    def has_system_prompt(self):
+        return self.__system_prompt is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def system_request(self):
-        return self.__system_request
+    def system_prompt(self):
+        return self.__system_prompt
         
-    @system_request.setter
-    def system_request(self, system_request:SystemRequest):
-        self.__system_request = system_request
+    @system_prompt.setter
+    def system_prompt(self, system_prompt:SystemPrompt):
+        self.__system_prompt = system_prompt
         
     @property
     def context(self):
         return self.__agent_context
     
     @context.setter
-    def context(self, context:ActionContext):
+    def context(self, context:ExpressionContext):
         self.__agent_context = context
         
-    def append(self, request:Request):
-        self.__requests.append(request)
+    def append(self, prompt:Prompt):
+        self.__prompts.append(prompt)
         
     def __len__(self):
-        return len(self.__requests)
+        return len(self.__prompts)
         
     def describe(self, level=0):
         """
-        Returns a string describing the structure of the Action.
+        Returns a string describing the structure of the Expression.
         Includes the length and a tree representation of the contained objects.
         """
         indent = " " * level
-        description = f"{indent}Action (Length: {len(self)})\n"
+        description = f"{indent}Expression (Length: {len(self)})\n"
         
-        for request in self.__requests:
-            if isinstance(request, LLMAction):
-                description += request.describe(level + 1)
+        for prompt in self.__prompts:
+            if isinstance(prompt, LLMExpression):
+                description += prompt.describe(level + 1)
             else:
-                description += f"{indent}  {type(request).__name__}\n"
+                description += f"{indent}  {type(prompt).__name__}\n"
         
         return description
     
     @property
-    def _requests(self):
-        return self.__requests
+    def _prompts(self):
+        return self.__prompts
         
     def __iter__(self):
         self.__index = -1
@@ -158,13 +158,13 @@ class LLMAction:
     def __next__(self):
         self.__index += 1
         try:
-            return self.__requests[self.__index]
+            return self.__prompts[self.__index]
         except IndexError:
             self.__index = -1
             raise StopIteration()
         
     def _get_first_child(self):
-        return self.__requests[0]
+        return self.__prompts[0]
     
 
     def suggest_image(self, image):

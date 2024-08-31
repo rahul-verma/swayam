@@ -17,10 +17,10 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from swayam.llm.request import Request
-from swayam.llm.request.types import SystemRequest
-from swayam.llm.action.context import ActionContext
-from swayam.llm.request.response import LLMResponse
+from swayam.llm.prompt import Prompt
+from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.response import LLMResponse
 
 class Reporter(ABC):
     
@@ -28,32 +28,32 @@ class Reporter(ABC):
         pass
     
     @abstractmethod
-    def report_begin_action(self, action) -> None:
+    def report_begin_expression(self, expression) -> None:
         """
-        Broadcasts the system request details.
+        Broadcasts the system prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
         pass
     
     @abstractmethod
-    def report_request(self, request:Request) -> None:
+    def report_prompt(self, prompt:Prompt) -> None:
         """
-        Reports the request details.
+        Reports the prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
         pass
         
     @abstractmethod
-    def report_context(self, context:ActionContext) -> None:
+    def report_context(self, context:ExpressionContext) -> None:
         """
         Reports the context details.
 
         Args:
-            context (ActionContext): Context object with all input messages.
+            context (ExpressionContext): Context object with all input messages.
         """
         pass
 

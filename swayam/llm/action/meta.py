@@ -16,15 +16,15 @@
 # limitations under the License.
 
 
-class ActionMeta(type):
+class ExpressionMeta(type):
     
     def __getattr__(cls, name):
-        from .file import ActionFileLoader
+        from .file import ExpressionFileLoader
         if name == "file":
-            return ActionFileLoader()
+            return ExpressionFileLoader()
         elif name == "repeater":
-            from .repeater import ActionFileRepeater
-            return ActionFileRepeater
+            from .repeater import ExpressionFileRepeater
+            return ExpressionFileRepeater
         
-        from .namespace import ActionDir
-        return ActionDir.load_action_from_file(name)
+        from .namespace import ExpressionDir
+        return ExpressionDir.load_expression_from_file(name)

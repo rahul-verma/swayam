@@ -15,14 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .namespace import UserRequestDir, SystemRequestDir
-from .file import RequestFileFinder
+from .namespace import UserPromptDir, SystemPromptDir
+from .file import PromptFileFinder
 
-class RequestMeta(type):
+class PromptMeta(type):
     
     def __getattr__(cls, name):
         return {
-            "user": UserRequestDir,
-            "system": SystemRequestDir,
-            "file": RequestFileFinder
+            "user": UserPromptDir,
+            "system": SystemPromptDir,
+            "file": PromptFileFinder
         }[name]()

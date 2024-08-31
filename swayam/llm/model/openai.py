@@ -49,7 +49,7 @@ class OpenAIClient(LLMClient):
                         response_format=output_structure.data_model,
                         **self._model_kwargs
                     )
-                break  # Exit the loop if the request was successful
+                break  # Exit the loop if the prompt was successful
             
             except openai.APIConnectionError as e:
                 print(f"APIConnectionError: {e}. Retrying in 2 seconds...")

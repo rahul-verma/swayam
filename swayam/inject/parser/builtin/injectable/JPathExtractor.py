@@ -35,7 +35,7 @@ def extract_with_jpath(*, invoker, content, jpath:str, strict:str=True) -> str:
     jsonpath_expr = jparse(jpath)
     matches = jsonpath_expr.find(content)
     if strict and not matches:
-        raise Exception(f"No mmatch found using JPath {jpath} used for extraction from {content!r}.")
+        raise Exception(f"No mmatch found using JPath {jpath} used for extrexpression from {content!r}.")
     return Structure.JsonContent(content=[match.value for match in matches])
 
 JPathExtractor = partial(JsonContentParser,

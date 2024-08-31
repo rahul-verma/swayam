@@ -20,22 +20,22 @@ import importlib
 from abc import ABC, abstractmethod
 
 
-class RequestDir(ABC):   
+class PromptDir(ABC):   
     
     def __init__(self, *, role):
         self._role = role
         
     @classmethod
-    def get_path_for_request(cls, *, role, name):
+    def get_path_for_prompt(cls, *, role, name):
         from tarkash import Tarkash, YamlFile
         from swayam.core.constant import SwayamOption
-        return os.path.join(Tarkash.get_option_value(SwayamOption.REQUEST_DIR), role, f"{name}.yaml")
+        return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_DIR), role, f"{name}.yaml")
     @classmethod
     def _create_purpose_from_file_name(cls, name):
         return name.replace("_", " ").lower().title()
     
     @classmethod
-    def create_request_from_content(cls, role, name, content):
+    def create_prompt_from_content(cls, role, name, content):
         from swayam import Tool, Structure
         text = None
         purpose = None
@@ -47,7 +47,7 @@ class RequestDir(ABC):
             purpose = cls._create_purpose_from_file_name(name)
         elif type(content) is dict:
             if "text" not in content:
-                raise ValueError(f"Request file {name} does not contain a text key")  
+                raise ValueError(f"Prompt file {name} does not contain a text key")  
             else:
                 text = content["text"]
             if "purpose" in content:
@@ -70,25 +70,25 @@ class RequestDir(ABC):
                             tools = []
                         tools.append(getattr(Tool, tool))
 
-        from swayam import Request
-        from swayam.llm.request.types import SystemRequest
+        from swayam import Prompt
+        from swayam.llm.prompt.types import SystemPrompt
         if role == "user":
-            return Request.text(text, purpose=purpose, image=image, output_structure=output_structure, tools=tools, role=role)
+            return Prompt.text(text, purpose=purpose, image=image, output_structure=output_structure, tools=tools, role=role)
         else:
-            return SystemRequest(text=text)
+            return SystemPrompt(text=text)
         
     def __getattr__(self, name):
         role = self.__dict__["_role"]
         from tarkash import YamlFile        
-        file = YamlFile(RequestDir.get_path_for_request(role=role, name=name))
-        return RequestDir.create_request_from_content(role, name, file.content)
+        file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
+        return PromptDir.create_prompt_from_content(role, name, file.content)
 
-class UserRequestDir(RequestDir):
+class UserPromptDir(PromptDir):
     
     def __init__(self):
         super().__init__(role="user")
         
-class SystemRequestDir(RequestDir):
+class SystemPromptDir(PromptDir):
     
     def __init__(self):
         super().__init__(role="system")

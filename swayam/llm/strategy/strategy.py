@@ -15,10 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class LLMStrategy:
+class LLMStory:
     
     def __init__(self):
-        self.__purpose = "Strategy"
+        self.__purpose = "Story"
         
     @property
     def purpose(self):

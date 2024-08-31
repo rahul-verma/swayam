@@ -18,9 +18,9 @@ import os
 
 from pprint import pprint
 
-from swayam.llm.request import Request
-from swayam.llm.action.context import ActionContext
-from swayam.llm.request.response import LLMResponse
+from swayam.llm.prompt import Prompt
+from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.report import Reporter
     
 class ConsoleReporter(Reporter):
@@ -32,56 +32,56 @@ class ConsoleReporter(Reporter):
         return self.__enabled
     
 
-    def report_begin_action(self, action) -> None:
+    def report_begin_expression(self, expression) -> None:
         """
-        Broadcasts the system request details.
+        Broadcasts the system prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
         pass
     
-    def report_system_request(self, request:Request) -> None:
+    def report_system_prompt(self, prompt:Prompt) -> None:
         """
-        Reports the request details.
+        Reports the prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
-        self.report_request(request)
+        self.report_prompt(prompt)
 
-    def report_request(self, request:Request) -> None:
+    def report_prompt(self, prompt:Prompt) -> None:
         """
-        Reports the request details.
+        Reports the prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
         print("-" * 80)
-        print("Request:", f"(Role: {request.role})")
+        print("Prompt:", f"(Role: {prompt.role})")
         
         ## Should not print image
-        content = request.content
+        content = prompt.content
         if type(content) == list:
-            print(request.reportable_text)
+            print(prompt.reportable_text)
             print("=" * 100)
-            for item in request.reportable_content:
+            for item in prompt.reportable_content:
                 if item["type"] == "image_url":
                     print(item["local_path"])
         else:
-            print(request.content)
+            print(prompt.content)
         print("-" * 80)
 
-    def report_context(self, context:ActionContext) -> None:
+    def report_context(self, context:ExpressionContext) -> None:
         """
         Reports the context details.
 
         Args:
-            context (ActionContext): Context object with all input messages.
+            context (ExpressionContext): Context object with all input messages.
         """
         pass
         
-    def report_response(self, request, response:LLMResponse) -> None:
+    def report_response(self, prompt, response:LLMResponse) -> None:
         """
         Reports the LLM response.
 

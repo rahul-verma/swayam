@@ -24,9 +24,9 @@ import copy
 
 from tarkash import log_debug
 
-from swayam.llm.request import Request
-from swayam.llm.action.context import ActionContext
-from swayam.llm.request.response import LLMResponse
+from swayam.llm.prompt import Prompt
+from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.report import Reporter
 
 class HtmlReporter(Reporter):
@@ -76,17 +76,17 @@ class HtmlReporter(Reporter):
     def __get_task_children_node(self):
         return self.__get_strategy_children_node()[-1]["children"]
     
-    def __get_action_node(self):
+    def __get_expression_node(self):
         return self.__get_task_children_node()[-1]
     
-    def __get_action_children_node(self):
-        return self.__get_action_node()["children"]
+    def __get_expression_children_node(self):
+        return self.__get_expression_node()["children"]
 
-    def __get_request_content_node(self):
-        return self.__get_action_children_node()[-1]["data"]["content"]
+    def __get_prompt_content_node(self):
+        return self.__get_expression_children_node()[-1]["data"]["content"]
     
-    def increment_action_node(self):
-        self.__current_action_node_index += 1
+    def increment_expression_node(self):
+        self.__current_expression_node_index += 1
             
     def __update_report(self):
         json_str = json.dumps(self.__json_data, indent=4)
@@ -97,19 +97,19 @@ class HtmlReporter(Reporter):
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
             
-    def report_begin_action(self, action) -> None:
+    def report_begin_expression(self, expression) -> None:
         """
-        Broadcasts the system request details.
+        Broadcasts the system prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
         
         if self.__json_data == []:
-            # Add Strategy Node
+            # Add Story Node
             self.__json_data.append({
                                     "id": "strategy_node_" + uuid4().hex,
-                                    "text": "Strategy",
+                                    "text": "Story",
                                     "children": []   
                                 })
             
@@ -120,14 +120,14 @@ class HtmlReporter(Reporter):
                                         "children": []
                                     })
 
-        action_id = "action_" + uuid4().hex
+        expression_id = "expression_" + uuid4().hex
         self.__get_task_children_node().append({
-                                    "id": action_id,
-                                    "text": f"{action.purpose}",
+                                    "id": expression_id,
+                                    "text": f"{expression.purpose}",
                                     "data": {
                                         "content": [{
-                                                "heading": "Action ID",
-                                                "content": action_id
+                                                "heading": "Expression ID",
+                                                "content": expression_id
                                             },
                                             {
                                                 "heading": "Message History",
@@ -137,107 +137,107 @@ class HtmlReporter(Reporter):
                                     "children": []
                                 })
             
-    def report_system_request(self, request:Request) -> None:
+    def report_system_prompt(self, prompt:Prompt) -> None:
         """
-        Reports the system request details.
+        Reports the system prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
-        log_debug("Begin: Reporting System Request.")
+        log_debug("Begin: Reporting System Prompt.")
 
-        request_node = {
-                    "id": "request_" + uuid4().hex,
-                    "text": f"{request.purpose}",
+        prompt_node = {
+                    "id": "prompt_" + uuid4().hex,
+                    "text": f"{prompt.purpose}",
                     "icon": "jstree-file",
                     "data": {
                                 "content": [{
-                                                "heading": "Request Text",
-                                                "content" : request.reportable_text
+                                                "heading": "Prompt Text",
+                                                "content" : prompt.reportable_text
                                 }]
                     }
         }
-        self.__get_action_children_node().append(request_node)
+        self.__get_expression_children_node().append(prompt_node)
         self.__update_report()
-        log_debug("Finished: Reporting System Request.")
+        log_debug("Finished: Reporting System Prompt.")
             
-    def report_context(self, context:ActionContext) -> None:
+    def report_context(self, context:ExpressionContext) -> None:
         """
         Reports the context details.
 
         Args:
-            context (ActionContext): Context object with all input messages.
+            context (ExpressionContext): Context object with all input messages.
         """
         
         if self.__json_data == []:
-            from swayam import Action
-            self.report_begin_action(Action.texts("Hi"))
+            from swayam import Expression
+            self.report_begin_expression(Expression.texts("Hi"))
         
         log_debug("Begin: Reporting Context.")
-        context_file_path = self.__json_messages_path + "/" + self.__get_action_node()["id"] + "_context.json"
+        context_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_context.json"
         context_json = json.dumps(context.reportable_messages, indent=4)
         with open(context_file_path, 'w') as f:
             f.write(context_json)
         for_html = [
             {"heading": message["role"].title(), "content":message} for message in context.reportable_messages
         ]
-        self.__get_action_node()["data"]["content"][1]["content"] = [f"{context_file_path}"] + context.reportable_messages
+        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{context_file_path}"] + context.reportable_messages
      
         self.__update_report()
         log_debug("Finished: Reporting Context.")
 
-    def report_request(self, request:Request, role="User") -> None:
+    def report_prompt(self, prompt:Prompt, role="User") -> None:
         """
-        Reports the request details.
+        Reports the prompt details.
         
         Args:
-            request (Request): The request to report.
+            prompt (Prompt): The prompt to report.
         """
-        log_debug("Begin: Reporting Request.")
-        request_node = {
-                "id": "request_" + uuid4().hex,
-                "text": f"{request.purpose}",
+        log_debug("Begin: Reporting Prompt.")
+        prompt_node = {
+                "id": "prompt_" + uuid4().hex,
+                "text": f"{prompt.purpose}",
                 "icon": "jstree-file",
                 "data": {
                             "content": [{
-                                            "heading": "Request Text",
-                                            "content" : request.reportable_text
+                                            "heading": "Prompt Text",
+                                            "content" : prompt.reportable_text
                                 }]
                         },
                 "children": []
         }
             
-        self.__get_action_children_node().append(request_node)
-        request_content_node = self.__get_request_content_node()
+        self.__get_expression_children_node().append(prompt_node)
+        prompt_content_node = self.__get_prompt_content_node()
         
-        reportable_content = request.reportable_content
-        if type(request.reportable_content)  != list:
+        reportable_content = prompt.reportable_content
+        if type(prompt.reportable_content)  != list:
             reportable_content = [reportable_content]
 
         for item in reportable_content:
-            # As the text part of request is already the tree node, we skip the text item type.
+            # As the text part of prompt is already the tree node, we skip the text item type.
             if isinstance(item, str):
                 pass
             elif item["type"] == "image_url":
-                request_content_node.append({
+                prompt_content_node.append({
                         "heading": "Image Upload",
                         "content": item["local_path"]
                 })
         
-        expected_output_structure = request.output_structure
+        expected_output_structure = prompt.output_structure
         if expected_output_structure is None:
             expected_output_structure = "Not specified."
         else:
             expected_output_structure = expected_output_structure.data_model.model_json_schema()
 
-        request_content_node.append({
+        prompt_content_node.append({
                     "heading": "Expected Response Format",
                     "content": expected_output_structure
                 })
         
-        provided_tools = request.tool_dict
+        provided_tools = prompt.tool_dict
         if not provided_tools:
-            request_content_node.append({
+            prompt_content_node.append({
                     "heading": "Provided Tools",
                     "content": "No tool provided."
                 })
@@ -249,12 +249,12 @@ class HtmlReporter(Reporter):
             for tool in provided_tools.values():
                 tool_content_for_main_page["content"][tool.name] = tool.definition
                 
-            request_content_node.append(tool_content_for_main_page)
+            prompt_content_node.append(tool_content_for_main_page)
 
         self.__update_report()
-        log_debug("Finished: Reporting Request.")
+        log_debug("Finished: Reporting Prompt.")
         
-    def report_response(self, request, response:LLMResponse) -> None:
+    def report_response(self, prompt, response:LLMResponse) -> None:
         """
         Reports the LLM response.
 
@@ -276,23 +276,23 @@ class HtmlReporter(Reporter):
                         }
                     })
         
-        self.__get_request_content_node().append({
+        self.__get_prompt_content_node().append({
                     "heading": "Response Meta-Data",
                     "content": response
             })
         
         if content:
-            self.__get_request_content_node().append({
+            self.__get_prompt_content_node().append({
                             "heading": "Response Content",
                             "content": content
                         })
         else:
-            self.__get_request_content_node().append({
+            self.__get_prompt_content_node().append({
                     "heading": "Response Content",
                     "content": "No response content was returned by the LLM. Check the response meta-data for more details."
             })
             
-        # Appending non-LLM action requirements
+        # Appending non-LLM expression requirements
         if "tool_calls" in response and response["tool_calls"]:
             tool_response_for_main_page = {
                 "heading": "Tool Calls Suggested by LLM",
@@ -305,10 +305,10 @@ class HtmlReporter(Reporter):
                     "arguments": json.loads(tool["function"]["arguments"])
                 }
                 
-            self.__get_request_content_node().append(tool_response_for_main_page)           
+            self.__get_prompt_content_node().append(tool_response_for_main_page)           
             
         else:
-            self.__get_request_content_node().append(
+            self.__get_prompt_content_node().append(
                 {
                     "heading": "Tool Calls Suggested by LLM",
                     "content": "No suggestions."
@@ -339,7 +339,7 @@ class HtmlReporter(Reporter):
                             }
                         }
         
-        self.__get_request_content_node().append(
+        self.__get_prompt_content_node().append(
                 {
                     "heading": f"Tool Response:  {response.tool_name}",
                     "content": {

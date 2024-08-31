@@ -1,29 +1,30 @@
 
 
-Swayam employs the STAR model of problem solving by Rahul Verma. It has the following high level components:
+Swayam employs the STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
 
-Strategy: A very high level view of the problem that you want to solve and a break-down into tasks. This largely involves human intellect with some usage of tooling.
-Task: Each task has a pertinent expected outcome to implement the strategy. This is where one would want to largely automate. Humans-in-the-loop is still recommended especially in the review of the task outcomes.
-Action: A step/stage in the achievement of a task. Also, acts as a proxy layer between what the task demands and who is solving the part of the problem this step/stage demands.
-Request: A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
+Story: Captures the broad, overarching narrative or goal. It gives a sense of direction and purpose. This largely involves human intellect with some usage of tooling.
 
-As of now, Swayam focuses on Requests handled by an LLM. Other forms of AI as well as supporting systems will be explored later.
+Thought: Represents the conceptual phase where ideas and themes are developed from the Story. Still a human-focused phase with some assistance from tooling.
 
-All building blocks of STAR are only expressed as definitions, with the only exception being a Request, which for an extremely simple situation does not need to be defined.
+Expression: Bridges the abstract with the concrete, focusing on how Thoughts will be articulated or represented. A step/stage in the achievement of a thought becoming a reality. This is a proxy layer between what the thought is about and who is solving the part of the problem this step/stage demands.
 
-## Request
+Prompt: The most actionable part, where the specific tasks or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
 
-To Do
+All building blocks of STEP are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
 
-## Action
+## Prompt
 
 To Do
-- Action as a package
-- Request Loop with Generator
+
+## Expression
+
+To Do
+- Expression as a package
+- Prompt Loop with Generator
 - Loop with a Condition based Generator
-- Conditional Request
-- Standalone PRequestrompt: Possibly to another instance of same Model or a different one.
-- Dynamic Requests. Requests added on the fly.
+- Conditional Prompt
+- Standalone PPromptrompt: Possibly to another instance of same Model or a different one.
+- Dynamic Prompts. Prompts added on the fly.
 
 ## Task
 
@@ -31,7 +32,7 @@ To Do
 - Task as a package
 
 
-## Strategy
+## Story
 
 To Do
 
@@ -100,7 +101,7 @@ TO Do
 
 Here are the ideas:
 - model/< type > folders will contain model configs. E.g. model/llm for LLM Model configs. The options will be as provided by corresponding models apart from generic options like temperature. Needs to be investigated.
-- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for requests within a single model. The context management part has to be thought about.
+- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The context management part has to be thought about.
 
 
 ### Model /embed
