@@ -20,11 +20,17 @@ import importlib
 
 from .namespace import *
 from swayam.namespace.meta import NamespaceMeta
+from swayam.namespace.error import DefinitionNotFoundError
+from swayam.core.caller import get_caller_module_file_location
     
 class SnippetMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
         from .namespace import SnippetNamespace
-        cls.load_root_namespace(SwayamOption.SNIPPET_DIR, SnippetNamespace)
-        return getattr(cls.root, name)
+        try:
+            cls.load_root_namespace(SwayamOption.SNIPPET_DIR, SnippetNamespace)
+            return getattr(cls.root, name)
+        except DefinitionNotFoundError as e:
+            from swayam.inject import Injectable
+            return Injectable.load_from_module("Snippet", name, get_caller_module_file_location())

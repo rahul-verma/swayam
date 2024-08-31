@@ -15,4 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.think import *
+from swayam.inject.snippet.snippet import StructuredSnippet
+
+Think = StructuredSnippet(
+    purpose = "Adds text that suggests an LLM to mimic 'thinking'",
+    text = "Ruminate. Think step by step. No intro-outro please. When you don't know the answer, don't hallucinate. Just say 'I don't know'. Don't create facts. I am going to trust and make decisions based on your inputs. So, be honest. If you are not sure, say 'I am not sure'. If you are guessing, say 'I am guessing'. If you are assuming, say 'I am assuming.")
