@@ -77,13 +77,10 @@ class SimpleAgent:
         
         if not action.is_new() and action.has_system_request():
             raise ValueError("As it is continued action, the system request is already set in the context. So, the context found in this action is going to be ignored. Review.")
-            
-        from swayam.inject.tool.response import ToolResponse
+
         log_debug(f"Executing Action with ActionAgent.")
         def process_output(in_data):
             if in_data.content:
-                return in_data.content
-            elif isinstance(in_data, ToolResponse):
                 return in_data.content
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
