@@ -25,7 +25,7 @@ from swayam.inject.structure import Structure
 
 from swayam.inject.parser.parser import JsonContentParser
 
-def extract_with_jpath(*, store, content, jpath:str, strict:str=True) -> str:
+def extract_with_jpath(*, invoker, content, jpath:str, strict:str=True) -> str:
     """
     Extracts part of a JSON object with JPath.
     

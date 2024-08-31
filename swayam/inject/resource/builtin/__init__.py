@@ -1,4 +1,4 @@
-# This file is a part of Swayam
+# This file is a part of Tarkash
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirEnumerator import *
-from .injectable.TextFileReader import *
-from .injectable.TextFileWriter import *
+from .injectable.DirFileContent import *
+from .injectable.DirFileInfo import *
+
+

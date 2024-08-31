@@ -44,7 +44,7 @@ An Injectable is:
 - a named object that has a well defined purpose in a sequence of steps.
 - dicoverable using <InjectableType>.<InjectableName> syntax. For definition file based injectable it is <InjectableType>.file.<InjectableName>.
 - has an input-output structure protocol. A part of the protocol could be pre-defined by Swayam for certain injectables.
-- The callables encapsulated with injectables need to take only keyword arguments as determined by the input structure. In addition, they take a "caller" argument. This caller object is passed from Swayam's execution flow. WIP.
+- The callables encapsulated with injectables need to take only keyword arguments as determined by the input structure. In addition, they take a "invoker" argument. This caller object is passed from Swayam's execution flow. WIP.
 - The input to the callable as well as the output from the called is always as simple Python objects rather than the Structure objects themselves. Think of them as Validation pass-throughs.
 
 
@@ -83,8 +83,38 @@ An Injectable is:
 - TextParser created using Parser.text: the callable gets text input. Default input_structure is Structure.TextContent. Allowed structures should inherit from its data model. Default output structure is Structure.StringValues. Allow none is false by default
 - JsonParser created using Parser.json: the callable gets loaded Python object from a JSON string. Default input_structure is Structure.JsonContent. Allowed structures should inherit from its data model. Allow none is false by default. Has an additional provision for validating the input content using content_structure attribute.
 
-Note that JPathExtracter uses the approach of partial functions, because at the time of creating an object of this, content_structure or output_structure is an unknown. 
+Note that JPathExtractor uses the approach of partial functions, because at the time of creating an object of this, content_structure or output_structure is an unknown. 
 
 ### Resource
 
-a single callable with yield (pytest) style. to do.
+Resource is based on 2-yield statement based callable (or a custom callable which will be called twice) - once for setup and once for teardown. 
+
+Takes the input structure as an argument based on a resource basis. 
+
+Output structure for both the calls needs to be a Structure.Result object.
+
+
+### Model /llm
+
+TO Do
+
+Here are the ideas:
+- model/< type > folders will contain model configs. E.g. model/llm for LLM Model configs. The options will be as provided by corresponding models apart from generic options like temperature. Needs to be investigated.
+- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for requests within a single model. The context management part has to be thought about.
+
+
+### Model /embed
+- other models: model/embed for dealing with embeddings.
+- The compatibility of embedding models with llm models needs to be properly understood before architecting this in Swayam.
+
+
+### VectorDB
+
+To Do
+
+This should follow the implementation of Model / embed injectable.
+
+Most likely this would also mean that a concept fo Dynamic snippets would need to be developed to enable search results being made part of a prompt. 
+
+The role of Tool or a specific injectable for the purpose needs to be explored as well.
+All of this will be explored when RAG support needs to be integrated into Swayam.

@@ -58,7 +58,7 @@ class StructuredInjectable:
     @property
     def allowed_keywords(self):
         from_data_model = list(self.__input_structure.keys)
-        from_data_model.insert(0, "store")
+        from_data_model.insert(0, "invoker")
         return from_data_model
     
 class StructuredInjectableWithCallable(StructuredInjectable):
@@ -119,7 +119,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
                     frame_str = Injectable.extract_caller_from_frame(frame)
                     raise InjectableInvalidInputContentError(self, provided_input=kwargs, error=str(e) + f". Check: {frame_str}")
                 else:
-                    return self.callable(store=self.store, **updated_kwargs)
+                    return self.callable(invoker=self, **updated_kwargs)
         except Exception as e:
             import traceback
             frame = traceback.extract_tb(e.__traceback__)[-1]

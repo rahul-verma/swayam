@@ -26,7 +26,7 @@ from swayam.inject.structure.structure import IOStructure
 
 class LLMAction:
     
-    def __init__(self, *requests:Request, purpose:str=None, system_request:SystemRequest=None, context:ActionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> Any:
+    def __init__(self, *requests:Request, purpose:str=None, system_request:SystemRequest=None, context:ActionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, invoker_response_as:str=None) -> Any:
         self.__requests = list(requests)
         self.__purpose = purpose
         if self.__purpose is None:

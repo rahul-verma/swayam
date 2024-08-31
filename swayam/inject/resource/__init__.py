@@ -15,20 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.structure.structure import IOStructure
-from .meta import ToolMeta
+from pydantic import BaseModel
+from .meta import ResourceMeta
+from swayam import Structure
 
-class Tool(metaclass=ToolMeta):
+kallable = callable
+
+class Resource(metaclass=ResourceMeta):
     
     @classmethod
-    def build(cls, name, *, callable, 
-              description:str, 
-              input_structure:IOStructure, 
-              output_structure:IOStructure,
-              allow_none_output=False):
-        from .tool import StructuredTool
-        return StructuredTool(name, 
-                              callable=callable, 
-                              description=description, input_structure=input_structure,
-                              output_structure=output_structure,
-                              allow_none_output=allow_none_output)
+    def build(cls, name, *, callable, input_structure):
+        """
+        Create a dynamic Pydantic BaseModel class inheriting from a given base class.
+
+        :param name: Name of the structure
+        """
+        from .resource import StructuredResource
+        return StructuredResource(name, callable=callable, input_structure=input_structure)
+        

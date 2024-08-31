@@ -28,7 +28,7 @@ class ActionFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def request_files(self, *request_files:RequestFile, purpose:str=None, system_request:RequestFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMAction:
+    def request_files(self, *request_files:RequestFile, purpose:str=None, system_request:RequestFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, invoker_response_as:str=None) -> LLMAction:
         if len(request_files) == 0:
             raise ValueError("No requests provided.")
         requests = []
@@ -56,7 +56,7 @@ class ActionFormatter:
                 pass
         
         from swayam import Action
-        return Action.requests(*requests, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return Action.requests(*requests, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, invoker_response_as=store_response_as)
     
     def __getattr__(self, name):
         from .namespace import ActionDir

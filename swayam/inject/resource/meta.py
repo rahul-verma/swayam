@@ -15,13 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib
-
-from swayam.inject.error import *
 from swayam.core.caller import get_caller_module_file_location
 
-class ToolMeta(type):
+from swayam.inject.error import *
+
+class ResourceMeta(type):
     
     def __getattr__(cls, name):
         from swayam.inject import Injectable
-        return Injectable.load_from_module("Tool", name, caller_file= get_caller_module_file_location())
+        return Injectable.load_from_module("Resource", name, caller_file= get_caller_module_file_location())

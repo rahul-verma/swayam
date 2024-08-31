@@ -21,7 +21,7 @@ from swayam.inject.structure.builtin import *
 import os
 import re
 
-def read_file(, store, file_path:str):
+def read_file(, invoker, file_path:str):
     from tarkash import FlatFile
     file = FlatFile(file_path)
     return Structure.TextFileContent(

@@ -17,7 +17,7 @@
 
 from swayam.inject.injectable import StructuredInjectableWithCallable
 from swayam.inject.structure.structure import IOStructureObject
-from swayam.inject.error import InjectableInvalidOutputError
+from swayam.inject.error import *
 from swayam import Structure
 from .error import *
 
@@ -25,36 +25,45 @@ from .error import *
 
 kallable = callable
 
-def iterator(invoker, iterable):
+def iterator(invoker, generator):
+    from swayam.inject.tool.tool import StructuredTool
     
     def validate_output(output):
         if not isinstance(output, IOStructureObject):
-            if output is None and invoker.allow_none_output:
-                    return Structure.NoneValue().as_dict()
             raise InjectableOutputNotAStructureError(invoker, output=output)
         elif not isinstance(output.model_instance, invoker.output_structure.data_model):
             # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
             raise InjectableInvalidOutputStructureError(invoker, output=output)
 
-    for output in iterable:
+    # setup call
+    try:
+        output = next(generator)
         validate_output(output)
         yield output.as_dict()
-
-class StructuredGenerator(StructuredInjectableWithCallable):
+    except Exception as e:
+        raise ResourceSetUpError(invoker, error=e)
     
-    def __init__(self, name, *, callable, input_structure, output_structure, allow_none_output=False):
+    # teardown call
+    try:
+        output = next(generator)
+        validate_output(output)
+        yield output.as_dict()
+    except Exception as e:
+        raise ResourceTearDownError(invoker, error=e)
+
+class StructuredResource(StructuredInjectableWithCallable):
+    
+    def __init__(self, name, *, callable, input_structure):
         if input_structure is None:
             input_structure = Structure.Empty
-        super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
+        super().__init__(name, callable=callable, input_structure=input_structure, output_structure=Structure.Result)
         
-    def validate_output(self, output):
+    def validate_output(self, generator):
         # In a generator, at this stage, it's to be checked where it is an iterable.
-        try:
-            iter(output)
-            return True
-        except TypeError:
-            raise GeneratorCallableNotIterableError(self)
+        import inspect
+        if not inspect.isgenerator(generator):
+            raise ResourceInvalidCallableError(self)
  
     def __call__(self, **kwargs):
-        output = self.call_encapsulated_callable(**kwargs)
-        return iterator(self, output)
+        generator = self.call_encapsulated_callable(**kwargs)
+        return iterator(self, generator)

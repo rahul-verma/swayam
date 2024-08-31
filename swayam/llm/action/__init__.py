@@ -29,7 +29,7 @@ from .meta import ActionMeta
 class Action(metaclass=ActionMeta):
     
     @classmethod
-    def requests(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMAction:
+    def requests(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, invoker_response_as:str=None) -> LLMAction:
         if len(requests) == 0:
             raise ValueError("No requests provided.")
         for request in requests:
@@ -53,14 +53,14 @@ class Action(metaclass=ActionMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMAction(*requests, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return LLMAction(*requests, purpose=purpose, system_request=system_request, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, invoker_response_as=store_response_as)
     
     @classmethod
-    def texts(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMAction:
+    def texts(cls, *requests:UserRequest, purpose:str=None, system_request:Union[str,SystemRequest]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, invoker_response_as:str=None) -> LLMAction:
         for request in requests:
             if type(request) is not str:
                 raise ValueError(f"Invalid request type: {type(request)}. Should be a string")
-        return cls.requests(*[UserRequest(text=request) for request in requests], purpose=purpose, system_request=system_request,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return cls.requests(*[UserRequest(text=request) for request in requests], purpose=purpose, system_request=system_request,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, invoker_response_as=store_response_as)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

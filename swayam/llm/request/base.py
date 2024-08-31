@@ -52,7 +52,7 @@ class BaseRequest(ABC):
             self.__tool_definitions = [tool.definition for tool in tools]
             self.__tool_dict = {tool.name: tool for tool in tools}
             
-    def dynamic_format(self, store):
+    def dynamic_format(self, invoker):
         updated_content = self.__message["content"]
         if self.image:
             updated_content = updated_content[0]["text"]

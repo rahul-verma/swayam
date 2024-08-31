@@ -22,7 +22,7 @@ import json
 from swayam import Parser
 from swayam.inject.structure import Structure
 
-def extract_code_blocks(*, store, content:str, languages:List[str]=None, strict=True) -> str:
+def extract_code_blocks(*, invoker, content:str, languages:List[str]=None, strict=True) -> str:
     """
     Extracts code blocks from an LLM response, supporting both Markdown and JSON.
     
