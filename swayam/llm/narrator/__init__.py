@@ -19,3 +19,7 @@ class Narrator:
     def simple(self):
         from swayam.llm.narrator.simple import SimpleNarrator
         return SimpleNarrator()
+    
+    def prompt(self, narration=None):
+        from .phase.prompt import PromptNarrator
+        return PromptNarrator(narration=narration)

@@ -72,20 +72,20 @@ class _SwayamSingleton:
     def default_narrator(self):
         return self.__default_narrator
     
-    def narrator(self, display=False, record_html=True, run_id=None):
+    def narrator(self, display=False, record_html=True, narration=None):
         """
         Creates an Narrator.
         
         Args:
             display (bool, optional): If True, the narrator will display the console output. Defaults to False.
             record_html (bool, optional): If True, the narrator will create a report in HTML format. Defaults to True.
-            run_id ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
+            narration ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same narration append results to that report.
 
         Returns:
             SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
         """
         from swayam.llm.narrator.prompt import SimpleNarrator
-        return SimpleNarrator(display=display, record_html=record_html, run_id=run_id)
+        return SimpleNarrator(display=display, record_html=record_html, narration=narration)
     
     def reset_narrator(self):
         """

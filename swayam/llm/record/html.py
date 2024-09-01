@@ -41,9 +41,9 @@ class HtmlRecorder(Reporter):
         
         # For JSON Data
         
-        # Don't store the run_id, always get it from config.
+        # Don't store the narration, always get it from config.
         record_dir = Tarkash.get_option_value(SwayamOption.NARRATION_DIR)
-        self.__base_path = os.path.join(record_dir, str(self.__recorder_config.run_id))
+        self.__base_path = os.path.join(record_dir, str(self.__recorder_config.narration))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         self.__json_messages_path = self.__base_path + "/json"
@@ -357,9 +357,7 @@ class HtmlRecorder(Reporter):
         Finishes report creation.
         """
         # !!!Should always be referred from reporting_config as it is a global object updated by Narrator from one execution to another.
-        log_debug("Showing report in browser", self.__recorder_config.show_in_browser)
-        if self.__recorder_config.show_in_browser:        
-            webbrowser.open("file://" + self.__html_record_path)
+        webbrowser.open("file://" + self.__html_record_path)
 
 
         

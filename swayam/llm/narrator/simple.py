@@ -15,37 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime
-from tarkash import log_debug
-from swayam.llm.expression.narrative import ExpressionNarrative
+from .phase.prompt import PromptNarrator
 
-class SimpleNarrator:
+class SimpleNarrator(PromptNarrator):
     
     def __init__(self):
-        from swayam.llm.config.report import RecorderConfig
-        self.__recorder_config = RecorderConfig(display=True, record_html=False)
-            
-        from swayam.llm.record.recorder import Recorder
-        log_debug(f"Creating Listener")
-        self.__recorder = Recorder(self.__recorder_config)
-        log_debug("Narrator initialized.")
-        
-        self.__narrative = ExpressionNarrative()
+        super().__init__(display=True, record_html=False)
     
     def enact(self, prompt):
         """
         Executes a prompt text.
         """
-        
         if not isinstance(prompt, str):
             raise TypeError(f"Simple Narrator cannot execute prompt of type {type(prompt)}. It must be a string.")
-        
         from swayam.llm.prompt.types import UserPrompt
-        from swayam.llm.enactor.prompt import PromptEnactor
-        log_debug(f"Executing prompt.")
-        enactor = PromptEnactor(recorder=self.__recorder)
-        enactor.enact(UserPrompt(text=prompt), narrative=self.__narrative)
-        self.__recorder.finish()
-        
-    def reset(self):
-        self.__narrative = ExpressionNarrative()
+        super().enact(UserPrompt(text=prompt))
+

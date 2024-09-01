@@ -21,14 +21,14 @@ from .narrative import NarratorNarrative
 
 class SimpleNarrator:
     
-    def __init__(self, display=False, record_html=True, run_id=None):
+    def __init__(self, display=False, record_html=True, narration=None):
         self.__narrative = NarratorNarrative()
         from swayam.llm.config.report import RecorderConfig
         self.__recorder_config = RecorderConfig(display=display, record_html=record_html, show_in_browser=False)
-        if not run_id:
-            self.__recorder_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
+        if not narration:
+            self.__recorder_config._narration = datetime.now().strftime("%Y%m%d%H%M%S")
         else:
-            self.__recorder_config._run_id = str(run_id)
+            self.__recorder_config._narration = str(narration)
             
         from swayam.llm.record.recorder import Recorder
         log_debug(f"Creating Listener")
