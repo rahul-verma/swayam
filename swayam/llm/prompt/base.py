@@ -207,5 +207,5 @@ class BasePrompt(ABC):
 
     
     @property
-    def is_system_prompt(self):
+    def is_perspective(self):
         return self.__role == "system"

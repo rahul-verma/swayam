@@ -36,6 +36,7 @@ class _SwayamSingleton:
             "EXPRESSION_DIR": ("definition/expression", "path"),
             "THOUGHT_DIR": ("definition/thought", "path"),
             "STORY_DIR": ("definition/strategy", "path"),
+            "NARRATION_DIR": ("narration", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }
@@ -50,10 +51,10 @@ class _SwayamSingleton:
         
         self.__register_config_with_tarkash()
         
-        # Create default agent
-        from swayam.llm.agent.simple import SimpleAgent
-        #print("Creating default agent...")
-        self.__default_agent = SimpleAgent(display=True, report_html=False)
+        # Create default narrator
+        from swayam.llm.narrator.simple import SimpleNarrator
+        #print("Creating default narrator...")
+        self.__default_narrator = SimpleNarrator(display=True, record_html=False)
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
@@ -68,23 +69,23 @@ class _SwayamSingleton:
         return self.__join_paths(self.get_swayam_root_dir(), "res", file_name)
     
     @property
-    def default_agent(self):
-        return self.__default_agent
+    def default_narrator(self):
+        return self.__default_narrator
     
-    def agent(self, display=False, report_html=True, run_id=None):
+    def narrator(self, display=False, record_html=True, run_id=None):
         """
-        Creates an Agent.
+        Creates an Narrator.
         
         Args:
-            display (bool, optional): If True, the agent will display the console output. Defaults to False.
-            report_html (bool, optional): If True, the agent will create a report in HTML format. Defaults to True.
-            run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
+            display (bool, optional): If True, the narrator will display the console output. Defaults to False.
+            record_html (bool, optional): If True, the narrator will create a report in HTML format. Defaults to True.
+            run_id ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
 
         Returns:
-            SimpleAgent: A simple agent that executes a parts of or complete strategy.
+            SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
         """
-        from swayam.llm.agent.simple import SimpleAgent
-        return SimpleAgent(display=display, report_html=report_html, run_id=run_id)
+        from swayam.llm.narrator.simple import SimpleNarrator
+        return SimpleNarrator(display=display, record_html=record_html, run_id=run_id)
 
 class Swayam:
     '''
@@ -121,20 +122,20 @@ class Swayam:
         """
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
-        return cls._SWAYAM_SINGLETON.default_agent.enact(prompt)
+        return cls._SWAYAM_SINGLETON.default_narrator.enact(prompt)
     
     
     @classmethod
-    def agent(cls, display=False, report_html=True, run_id=None):
+    def narrator(cls, display=False, record_html=True, run_id=None):
         """
-        Creates an Agent.
+        Creates an Narrator.
         
         Args:
-            display (bool, optional): If True, the agent will display the console output. Defaults to False.
-            report_html (bool, optional): If True, the agent will create a report in HTML format. Defaults to True.
-            run_id ([type], optional): The run id for the agent. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
+            display (bool, optional): If True, the narrator will display the console output. Defaults to False.
+            record_html (bool, optional): If True, the narrator will create a report in HTML format. Defaults to True.
+            run_id ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
 
         Returns:
-            SimpleAgent: A simple agent that executes a parts of or complete strategy.
+            SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
         """
-        return cls._SWAYAM_SINGLETON.agent(display=display, report_html=report_html, run_id=run_id)
+        return cls._SWAYAM_SINGLETON.narrator(display=display, record_html=record_html, run_id=run_id)

@@ -1,7 +1,7 @@
 [
     {
-        "id": "agent_node_11f8f40b2b9f4624a4e95c8b59f78291",
-        "text": "Agent",
+        "id": "narrator_node_11f8f40b2b9f4624a4e95c8b59f78291",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_1a9cb440d7204177ba7240b31072de47",
@@ -45,8 +45,8 @@
         ]
     },
     {
-        "id": "agent_node_63c4f41275a4476da74549eba60e5550",
-        "text": "Agent",
+        "id": "narrator_node_63c4f41275a4476da74549eba60e5550",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_6c244d3b41df4835a65c52833a9b28bb",
@@ -90,8 +90,8 @@
         ]
     },
     {
-        "id": "agent_node_aec74e04097e48cbbc4e75c6402ca7f9",
-        "text": "Agent",
+        "id": "narrator_node_aec74e04097e48cbbc4e75c6402ca7f9",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_83d471a2563a42b69366b6c9abf7a8a6",
@@ -135,8 +135,8 @@
         ]
     },
     {
-        "id": "agent_node_69ccab6d029744b0963e09cb25468929",
-        "text": "Agent",
+        "id": "narrator_node_69ccab6d029744b0963e09cb25468929",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_b8b2d46bdf5c4442bb7f751f67f27d73",
@@ -180,8 +180,8 @@
         ]
     },
     {
-        "id": "agent_node_267cc6232df3488bafd0168b9e865f55",
-        "text": "Agent",
+        "id": "narrator_node_267cc6232df3488bafd0168b9e865f55",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_ebd1eeb2bf2a45ea8874fa51ca498cbb",
@@ -225,8 +225,8 @@
         ]
     },
     {
-        "id": "agent_node_f0d6dd75657745c18828617258b1c661",
-        "text": "Agent",
+        "id": "narrator_node_f0d6dd75657745c18828617258b1c661",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_6b3aa29a8e5f47e48f674778fc1ffd2e",
@@ -270,8 +270,8 @@
         ]
     },
     {
-        "id": "agent_node_b2ad777ae82540028293c4647147a963",
-        "text": "Agent",
+        "id": "narrator_node_b2ad777ae82540028293c4647147a963",
+        "text": "Narrator",
         "children": [
             {
                 "id": "prompt_9ff40eac087349c3ab8dba383559ed58",
@@ -310,14 +310,14 @@
                         "text": "Expression",
                         "children": [
                             {
-                                "id": "chat_context_33c694a4d81045b8af2dea6fb5cb90fd",
-                                "text": "Chat Context",
+                                "id": "chat_narrative_33c694a4d81045b8af2dea6fb5cb90fd",
+                                "text": "Chat Narrative",
                                 "data": {
-                                    "content": "This is the sequences of messages sent to the LLM for context management."
+                                    "content": "This is the sequences of messages sent to the LLM for narrative management."
                                 },
                                 "children": [
                                     {
-                                        "id": "chat_context_msg_54b4ba5777934401aacdee3ccc14c3c1",
+                                        "id": "chat_narrative_msg_54b4ba5777934401aacdee3ccc14c3c1",
                                         "text": "System",
                                         "icon": "jstree-file",
                                         "data": {
@@ -328,7 +328,7 @@
                                         }
                                     },
                                     {
-                                        "id": "chat_context_msg_d3bbe700ee3d4aa78dcf12c40737e155",
+                                        "id": "chat_narrative_msg_d3bbe700ee3d4aa78dcf12c40737e155",
                                         "text": "LLM",
                                         "icon": "jstree-file",
                                         "data": {
@@ -372,7 +372,7 @@
                                         "text": "Response Content",
                                         "icon": "jstree-file",
                                         "data": {
-                                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing,\" developed by Rahul Verma. It outlines a structured approach to integrating large language models (LLMs) in testing processes. Here\u2019s a breakdown of its components:\n\n### Key Sections:\n\n1. **Engage**: \n   - Focuses on identifying and defining the testing problem.\n   - Encourages taking charge and determining the roles of humans versus LLMs.\n\n2. **Explore**: \n   - Involves assessing whether the right problem is being addressed.\n   - Includes prompting experiments and evaluating the context and capabilities of LLMs.\n\n3. **Engineer**: \n   - Centers on the technical aspects, such as selecting base LLMs and prompt engineering.\n   - Discusses knowledge augmentation and tuning/deployment strategies.\n\n4. **Embed**: \n   - Highlights the importance of involving participants (humans and LLMs) in the testing process.\n   - Discusses roles of \"Invokers\" and \"Recipients\" in the testing framework.\n\n5. **Evolve**: \n   - Focuses on continuous improvement and adaptation based on feedback.\n   - Emphasizes fairness, transparency, accountability, and other ethical considerations.\n\n### Additional Elements:\n- **Feedback & Adaptation**: A continuous loop for refining the process based on outcomes.\n- **Testing Protocols**: Guidelines for assessing the effectiveness and completeness of solutions.\n\n### Overall Purpose:\nThe model aims to facilitate a collaborative approach between humans and AI in testing, ensuring that both parties contribute effectively to problem-solving and innovation."
+                                            "content": "The image presents \"The 5E Mental Model for LLM-Assisted Pluralistic Testing,\" developed by Rahul Verma. It outlines a structured approach to integrating large language models (LLMs) in testing processes. Here\u2019s a breakdown of its components:\n\n### Key Sections:\n\n1. **Engage**: \n   - Focuses on identifying and defining the testing problem.\n   - Encourages taking charge and determining the roles of humans versus LLMs.\n\n2. **Explore**: \n   - Involves assessing whether the right problem is being addressed.\n   - Includes prompting experiments and evaluating the narrative and capabilities of LLMs.\n\n3. **Engineer**: \n   - Centers on the technical aspects, such as selecting base LLMs and prompt engineering.\n   - Discusses knowledge augmentation and tuning/deployment strategies.\n\n4. **Embed**: \n   - Highlights the importance of involving participants (humans and LLMs) in the testing process.\n   - Discusses roles of \"Invokers\" and \"Recipients\" in the testing framework.\n\n5. **Evolve**: \n   - Focuses on continuous improvement and adaptation based on feedback.\n   - Emphasizes fairness, transparency, accountability, and other ethical considerations.\n\n### Additional Elements:\n- **Feedback & Adaptation**: A continuous loop for refining the process based on outcomes.\n- **Testing Protocols**: Guidelines for assessing the effectiveness and completeness of solutions.\n\n### Overall Purpose:\nThe model aims to facilitate a collaborative approach between humans and AI in testing, ensuring that both parties contribute effectively to problem-solving and innovation."
                                         }
                                     }
                                 ]

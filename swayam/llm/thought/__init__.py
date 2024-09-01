@@ -20,7 +20,7 @@
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.types import Perspective, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.expression.expression import LLMExpression
 from swayam.llm.expression.repeater import DynamicExpressionFile
@@ -33,7 +33,7 @@ from .meta import ThoughtMeta
 class Thought(metaclass=ThoughtMeta):
     
     @classmethod
-    def expressions(cls, *expressions:LLMExpression, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMThought:
+    def expressions(cls, *expressions:LLMExpression, purpose:str=None, perspective:Union[str,Perspective]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMThought:
         if len(expressions) == 0:
             raise ValueError("No expressions provided.")
         out_expressions = []
@@ -46,11 +46,11 @@ class Thought(metaclass=ThoughtMeta):
             else:
                 raise ValueError(f"Invalid expression type: {type(expression)}. Should be an LLMExpression or DynamicExpressionFile object.")
             
-        if system_prompt:
-            if type(system_prompt) == str:
-                system_prompt = SystemPrompt(text=system_prompt)
-            elif not isinstance(system_prompt, SystemPrompt):
-                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
+        if perspective:
+            if type(perspective) == str:
+                perspective = Perspective(text=perspective)
+            elif not isinstance(perspective, Perspective):
+                raise ValueError(f"Invalid system prompt type: {type(perspective)}. Should be a string or a Perspective object")
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
@@ -63,7 +63,7 @@ class Thought(metaclass=ThoughtMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-        return LLMThought(*out_expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        return LLMThought(*out_expressions, purpose=purpose, perspective=perspective, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

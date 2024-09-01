@@ -20,19 +20,19 @@ from typing import Any, Union
 
 from tarkash import log_debug
 from swayam.llm.expression.expression import LLMExpression
-from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.types import Perspective
+from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.inject.structure.structure import IOStructure
 
 class LLMThought:
     
-    def __init__(self, *expressions:LLMExpression, purpose:str=None, system_prompt:SystemPrompt=None, content:ExpressionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *expressions:LLMExpression, purpose:str=None, perspective:Perspective=None, content:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__expressions = list(expressions)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Thought"
-        self.__context = None
-        self.__system_prompt = system_prompt
+        self.__narrative = None
+        self.__perspective = perspective
            
         for expression in self.__expressions:
             if image:
@@ -45,30 +45,30 @@ class LLMThought:
                 expression.suggest_tools(tools)
     
     def is_new(self):
-        return len(self.__context) == 0
+        return len(self.__narrative) == 0
         
-    def has_system_prompt(self):
-        return self.__system_prompt is not None
+    def has_perspective(self):
+        return self.__perspective is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def system_prompt(self):
-        return self.__system_prompt
+    def perspective(self):
+        return self.__perspective
         
-    @system_prompt.setter
-    def system_prompt(self, system_prompt:SystemPrompt):
-        self.__system_prompt = system_prompt
+    @perspective.setter
+    def perspective(self, perspective:Perspective):
+        self.__perspective = perspective
         
     @property
-    def context(self):
-        return self.__context
+    def narrative(self):
+        return self.__narrative
     
-    @context.setter
-    def context(self, context:ExpressionContext):
-        self.__context = context
+    @narrative.setter
+    def narrative(self, narrative:ExpressionNarrative):
+        self.__narrative = narrative
         
     def append(self, expression:LLMExpression):
         self.__prompts.append(expression)

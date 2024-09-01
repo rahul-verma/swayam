@@ -25,33 +25,34 @@ import copy
 from tarkash import log_debug
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.llm.prompt.response import LLMResponse
-from swayam.llm.report import Reporter
+from swayam.llm.record import Reporter
 
-class HtmlReporter(Reporter):
+class HtmlRecorder(Reporter):
     
     def __init__(self, config):
         super().__init__()
-        self.__report_config = config
+        self.__recorder_config = config
         
         from tarkash import Tarkash, TarkashOption
         from swayam import Swayam
+        from swayam.core.constant import SwayamOption
         
         # For JSON Data
         
         # Don't store the run_id, always get it from config.
-        report_dir = Tarkash.get_option_value(TarkashOption.REPORT_DIR)
-        self.__base_path = os.path.join(report_dir, str(self.__report_config.run_id))
+        record_dir = Tarkash.get_option_value(SwayamOption.NARRATION_DIR)
+        self.__base_path = os.path.join(record_dir, str(self.__recorder_config.run_id))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"
         self.__json_messages_path = self.__base_path + "/json"
         os.makedirs(self.__base_path +"/json", exist_ok=True)
         
         # For HTML Report
-        self.__html_report_path = self.__base_path + "/report.html"
-        log_debug("Report Path:", self.__html_report_path)
-        template_path = Swayam._get_swayam_res_path("llm_report_template.html")
+        self.__html_record_path = self.__base_path + "/narration.html"
+        log_debug("Report Path:", self.__html_record_path)
+        template_path = Swayam._get_swayam_res_path("llm_narration_template.html")
         self.__template = ""
         with open(template_path, 'r') as f:
             self.__template = f.read()
@@ -93,11 +94,11 @@ class HtmlReporter(Reporter):
         with open(self.__json_path, 'w') as f:
             f.write(json_str)
         
-        with open(self.__html_report_path, 'w') as f:
+        with open(self.__html_record_path, 'w') as f:
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
             
-    def report_begin_expression(self, expression) -> None:
+    def record_begin_expression(self, expression) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -137,7 +138,7 @@ class HtmlReporter(Reporter):
                                     "children": []
                                 })
             
-    def report_system_prompt(self, prompt:Prompt) -> None:
+    def record_perspective(self, prompt:Prompt) -> None:
         """
         Reports the system prompt details.
         
@@ -161,32 +162,32 @@ class HtmlReporter(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
-    def report_context(self, context:ExpressionContext) -> None:
+    def record_narrative(self, narrative:ExpressionNarrative) -> None:
         """
-        Reports the context details.
+        Reports the narrative details.
 
         Args:
-            context (ExpressionContext): Context object with all input messages.
+            narrative (ExpressionNarrative): Narrative object with all input messages.
         """
         
         if self.__json_data == []:
             from swayam import Expression
-            self.report_begin_expression(Expression.texts("Hi"))
+            self.record_begin_expression(Expression.texts("Hi"))
         
-        log_debug("Begin: Reporting Context.")
-        context_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_context.json"
-        context_json = json.dumps(context.reportable_messages, indent=4)
-        with open(context_file_path, 'w') as f:
-            f.write(context_json)
+        log_debug("Begin: Reporting Narrative.")
+        narrative_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_narrative.json"
+        narrative_json = json.dumps(narrative.reportable_messages, indent=4)
+        with open(narrative_file_path, 'w') as f:
+            f.write(narrative_json)
         for_html = [
-            {"heading": message["role"].title(), "content":message} for message in context.reportable_messages
+            {"heading": message["role"].title(), "content":message} for message in narrative.reportable_messages
         ]
-        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{context_file_path}"] + context.reportable_messages
+        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{narrative_file_path}"] + narrative.reportable_messages
      
         self.__update_report()
-        log_debug("Finished: Reporting Context.")
+        log_debug("Finished: Reporting Narrative.")
 
-    def report_prompt(self, prompt:Prompt, role="User") -> None:
+    def record_prompt(self, prompt:Prompt, role="User") -> None:
         """
         Reports the prompt details.
         
@@ -254,7 +255,7 @@ class HtmlReporter(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting Prompt.")
         
-    def report_response(self, prompt, response:LLMResponse) -> None:
+    def record_response(self, prompt, response:LLMResponse) -> None:
         """
         Reports the LLM response.
 
@@ -318,7 +319,7 @@ class HtmlReporter(Reporter):
         log_debug("Finished: Reporting Response.")
         
 
-    def report_tool_response(self, response) -> None:
+    def record_tool_response(self, response) -> None:
         """
         Reports the tool response.
 
@@ -355,10 +356,10 @@ class HtmlReporter(Reporter):
         """
         Finishes report creation.
         """
-        # !!!Should always be referred from reporting_config as it is a global object updated by Agent from one execution to another.
-        log_debug("Showing report in browser", self.__report_config.show_in_browser)
-        if self.__report_config.show_in_browser:        
-            webbrowser.open("file://" + self.__html_report_path)
+        # !!!Should always be referred from reporting_config as it is a global object updated by Narrator from one execution to another.
+        log_debug("Showing report in browser", self.__recorder_config.show_in_browser)
+        if self.__recorder_config.show_in_browser:        
+            webbrowser.open("file://" + self.__html_record_path)
 
 
         

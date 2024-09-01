@@ -19,7 +19,7 @@
 from typing import Union
 
 from tarkash import log_debug
-from swayam.llm.prompt.types import SystemPrompt, UserPrompt
+from swayam.llm.prompt.types import Perspective, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from .format import ExpressionFormatter
 from .expression import LLMExpression
@@ -29,17 +29,17 @@ from .meta import ExpressionMeta
 class Expression(metaclass=ExpressionMeta):
     
     @classmethod
-    def prompts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMExpression:
+    def prompts(cls, *prompts:UserPrompt, purpose:str=None, perspective:Union[str,Perspective]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> LLMExpression:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
         for prompt in prompts:
             if not isinstance(prompt, UserPrompt):
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a UserPrompt object.")
-        if system_prompt:
-            if type(system_prompt) == str:
-                system_prompt = SystemPrompt(text=system_prompt)
-            elif not isinstance(system_prompt, SystemPrompt):
-                raise ValueError(f"Invalid system prompt type: {type(system_prompt)}. Should be a string or a SystemPrompt object")
+        if perspective:
+            if type(perspective) == str:
+                perspective = Perspective(text=perspective)
+            elif not isinstance(perspective, Perspective):
+                raise ValueError(f"Invalid system prompt type: {type(perspective)}. Should be a string or a Perspective object")
             
         from swayam import Tool, Structure
         if output_structure is not None and type(output_structure) is str:
@@ -53,14 +53,14 @@ class Expression(metaclass=ExpressionMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMExpression(*prompts, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return LLMExpression(*prompts, purpose=purpose, perspective=perspective, image=image, output_structure=output_structure, tools=tools, reset_narrative=reset_narrative, standalone=standalone, store_response_as=store_response_as)
     
     @classmethod
-    def texts(cls, *prompts:UserPrompt, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> LLMExpression:
+    def texts(cls, *prompts:UserPrompt, purpose:str=None, perspective:Union[str,Perspective]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> LLMExpression:
         for prompt in prompts:
             if type(prompt) is not str:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")
-        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, system_prompt=system_prompt,  image=image, output_structure=output_structure, tools=tools, reset_context=reset_context, standalone=standalone, store_response_as=store_response_as)
+        return cls.prompts(*[UserPrompt(text=prompt) for prompt in prompts], purpose=purpose, perspective=perspective,  image=image, output_structure=output_structure, tools=tools, reset_narrative=reset_narrative, standalone=standalone, store_response_as=store_response_as)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

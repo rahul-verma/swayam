@@ -1,4 +1,4 @@
-system_prompt_def: |
+perspective_def: |
   trip_persona
 
 purpose: Using Dynamic System Prompt Def

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .namespace import UserPromptDir, SystemPromptDir
+from .namespace import UserPromptDir, PerspectiveDir
 from .file import PromptFileFinder
 
 class PromptMeta(type):
@@ -23,6 +23,6 @@ class PromptMeta(type):
     def __getattr__(cls, name):
         return {
             "user": UserPromptDir,
-            "system": SystemPromptDir,
+            "system": PerspectiveDir,
             "file": PromptFileFinder
         }[name]()

@@ -16,23 +16,23 @@
 # limitations under the License.
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.types import Perspective
+from swayam.llm.expression.narrative import ExpressionNarrative
 
-class AgentListener:
+class Recorder:
     
-    def __init__(self, report_config):
+    def __init__(self, recorder_config):
         self.__reporters = []
         
-        from .console import ConsoleReporter
-        from .html import HtmlReporter
-        if report_config.display:
-            self.__reporters.append(ConsoleReporter())
+        from .console import ConsoleRecorder
+        from .html import HtmlRecorder
+        if recorder_config.display:
+            self.__reporters.append(ConsoleRecorder())
             
-        if report_config.report_html:
-            self.__reporters.append(HtmlReporter(config=report_config))
+        if recorder_config.record_html:
+            self.__reporters.append(HtmlRecorder(config=recorder_config))
             
-    def report_begin_expression(self, expression) -> None:
+    def record_begin_expression(self, expression) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -40,9 +40,9 @@ class AgentListener:
             prompt (Prompt): The prompt to report.
         """
         for reporter in self.__reporters:
-            reporter.report_begin_expression(expression)
+            reporter.record_begin_expression(expression)
             
-    def report_system_prompt(self, prompt:SystemPrompt) -> None:
+    def record_perspective(self, prompt:Perspective) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -50,9 +50,9 @@ class AgentListener:
             prompt (Prompt): The prompt to report.
         """
         for reporter in self.__reporters:
-            reporter.report_system_prompt(prompt)
+            reporter.record_perspective(prompt)
 
-    def report_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt:Prompt) -> None:
         """
         Broadcasts the prompt details.
         
@@ -60,19 +60,19 @@ class AgentListener:
             prompt (Prompt): The prompt to report.
         """
         for reporter in self.__reporters:
-            reporter.report_prompt(prompt)
+            reporter.record_prompt(prompt)
     
-    def report_context(self, context:ExpressionContext) -> None:
+    def record_narrative(self, narrative:ExpressionNarrative) -> None:
         """
-        Broadcasts the context details.
+        Broadcasts the narrative details.
 
         Args:
-            context (ExpressionContext): Context object with all input messages.
+            narrative (ExpressionNarrative): Narrative object with all input messages.
         """
         for reporter in self.__reporters:
-            reporter.report_context(context)
+            reporter.record_narrative(narrative)
  
-    def report_response(self, prompt, message:dict) -> None:
+    def record_response(self, prompt, message:dict) -> None:
         """
         Broadcasts the output message.
 
@@ -80,9 +80,9 @@ class AgentListener:
             message (dict): Response dict from LLM.
         """
         for reporter in self.__reporters:
-            reporter.report_response(prompt, message)
+            reporter.record_response(prompt, message)
             
-    def report_tool_response(self, response) -> None:
+    def record_tool_response(self, response) -> None:
         """
         Broadcasts the tool response.
 
@@ -90,7 +90,7 @@ class AgentListener:
             message (dict): ToolResponse object
         """
         for reporter in self.__reporters:
-            reporter.report_tool_response(response)
+            reporter.record_tool_response(response)
             
     def finish(self) -> None:
         """

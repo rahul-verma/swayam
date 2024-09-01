@@ -39,10 +39,10 @@ class ThoughtDir:
         from swayam.llm.expression.namespace import ExpressionDir
         from swayam.llm.expression.format import ExpressionFormatter
         
-        def load_system_prompt_from_direct_content(prompt):
-            return PromptDir.create_prompt_from_content("system", f"{name}_system_prompt", prompt)
+        def load_perspective_from_direct_content(prompt):
+            return PromptDir.create_prompt_from_content("system", f"{name}_perspective", prompt)
         
-        def load_system_prompt_from_definition(definition):                
+        def load_perspective_from_definition(definition):                
             if fmt_kwargs:
                 prompt_file = getattr(getattr(Prompt.file, "system"), definition.strip())
                 system_formatter = PromptFormatter(role="system", **fmt_kwargs)
@@ -94,29 +94,29 @@ class ThoughtDir:
             
         thought_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
-            "system_prompt": content.get("system_prompt", None),
+            "perspective": content.get("perspective", None),
             "image": content.get("image", None),
             "output_structure": content.get("output_structure", None),
             "tools": content.get("tools", None)
         }
         
         if type(content) is not dict:
-            raise TypeError(f"Invalid format of thought file: {name}. Expected a YAML dictionary with the allowed keys: [system_prompt, system_prompt_def, expressions, expression_defs, purpose, image, output_structure, tools]")  
+            raise TypeError(f"Invalid format of thought file: {name}. Expected a YAML dictionary with the allowed keys: [perspective, perspective_def, expressions, expression_defs, purpose, image, output_structure, tools]")  
         
         if "expressions" in content and "expression_defs" in content:
             raise ValueError(f"A thought file cannot contain both 'expressions' and 'expression_defs' keys. Choose one.")
         
-        if "system_prompt" in content and "system_prompt_def" in content:
-            raise ValueError(f"A thought file cannot contain both 'system_prompt' and 'system_prompt_def' keys. Choose one.")
+        if "perspective" in content and "perspective_def" in content:
+            raise ValueError(f"A thought file cannot contain both 'perspective' and 'perspective_def' keys. Choose one.")
         
-        if "system_prompt" in content:
-            if type(content["system_prompt"]) is not str:
-                raise ValueError(f"The system_prompt key in a expression file must be a string. Found: {type(content['system_prompt'])}") 
-            thought_kwargs["system_prompt"] = load_system_prompt_from_direct_content(content["system_prompt"])
-        elif "system_prompt_def" in content:
-            if type(content["system_prompt_def"]) is not str:
-                raise ValueError(f"The system_prompt_def key in a expression file must be a string. Found: {type(content['system_prompt_def'])}") 
-            thought_kwargs["system_prompt"]  = load_system_prompt_from_definition(content["system_prompt_def"])
+        if "perspective" in content:
+            if type(content["perspective"]) is not str:
+                raise ValueError(f"The perspective key in a expression file must be a string. Found: {type(content['perspective'])}") 
+            thought_kwargs["perspective"] = load_perspective_from_direct_content(content["perspective"])
+        elif "perspective_def" in content:
+            if type(content["perspective_def"]) is not str:
+                raise ValueError(f"The perspective_def key in a expression file must be a string. Found: {type(content['perspective_def'])}") 
+            thought_kwargs["perspective"]  = load_perspective_from_definition(content["perspective_def"])
 
         for key, allowed_type in [("purpose", str), ("image", str), ("output_structure",str), ("tools", list)]:
             if key in content:

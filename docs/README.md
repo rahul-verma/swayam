@@ -8,7 +8,7 @@ Thought: Represents the conceptual phase where ideas and themes are developed fr
 
 Expression: Bridges the abstract with the concrete, focusing on how Thoughts will be articulated or represented. A step/stage in the achievement of a thought becoming a reality. This is a proxy layer between what the thought is about and who is solving the part of the problem this step/stage demands.
 
-Prompt: The most actionable part, where the specific thoughts or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
+Prompt: The most actionable part, where the specific thoughts or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the narrative of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
 
 All building blocks of STEP are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
 
@@ -17,6 +17,12 @@ All building blocks of STEP are only expressed as definitions, with the only exc
 To Do
 
 ## Expression
+
+Each expression has a unique narrative in which the prompts work. Each prompt gets the narrative as a sequence of messages.
+
+An expression can choose to continue the previous narrative, by default it does not.
+
+An expression can also have a standalone narrative.
 
 To Do
 - Expression as a package
@@ -27,6 +33,8 @@ To Do
 - Dynamic Prompts. Prompts added on the fly.
 
 ## Thought
+
+A thought has a Perspective with which the expressions and hence prompts need to work. This perspective is sent as the system prompt to an LLM.
 
 To Do
 - Thought as a package
@@ -101,7 +109,7 @@ TO Do
 
 Here are the ideas:
 - model/< type > folders will contain model configs. E.g. model/llm for LLM Model configs. The options will be as provided by corresponding models apart from generic options like temperature. Needs to be investigated.
-- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The context management part has to be thought about.
+- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The narrative management part has to be thought about.
 
 
 ### Model /embed

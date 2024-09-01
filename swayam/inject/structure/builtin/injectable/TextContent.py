@@ -21,6 +21,6 @@ from pydantic import BaseModel, Field
 from swayam import Structure
 
 class TextContentModel(BaseModel):
-    content: str = Field(..., title="Text Content", description="Text content with its meaning depending on the context it is used in.")
+    content: str = Field(..., title="Text Content", description="Text content with its meaning depending on the narrative it is used in.")
     
 TextContent = Structure.build("TextContent", model=TextContentModel)

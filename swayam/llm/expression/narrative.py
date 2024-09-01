@@ -17,7 +17,7 @@
 
 import json
 
-class ExpressionContext:
+class ExpressionNarrative:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []

@@ -21,9 +21,9 @@ from typing import List, Union
 from tarkash import TarkashObject, log_info, log_debug
 from swayam.llm.config.prompt import PromptConfig
 from swayam.llm.config.model import ModelConfig
-from swayam.llm.config.report import ReportConfig
+from swayam.llm.config.report import RecorderConfig
 from tarkash.type.descriptor import DString, DNumber, DBoolean
-from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.prompt.types import Perspective
 from pydantic import BaseModel
 
 class BaseLLMEnactor(TarkashObject):
@@ -33,9 +33,9 @@ class BaseLLMEnactor(TarkashObject):
     _model = DString()
     
     """
-    Base Class for All LLM Agents
+    Base Class for All LLM Narrators
     """
-    def __init__(self, *, listener, name:str = "Swayam Agent", provider:str = None, model:str = None, temperature=0, system_prompt:Union[str,SystemPrompt]=None, **kwargs):
+    def __init__(self, *, listener, name:str = "Swayam Narrator", provider:str = None, model:str = None, temperature=0, perspective:Union[str,Perspective]=None, **kwargs):
         self.__model_config = ModelConfig(provider=provider, model=model)
         self.__prompt_config = PromptConfig(temperature=temperature, **kwargs)
         self.__listener = listener
@@ -46,15 +46,15 @@ class BaseLLMEnactor(TarkashObject):
         self._model = self.model_config.model
         self.load()
         
-        self.__default_agent_system_prompt = "You are a helpful assistant who deliberates and provides useful answers to my queries."
-        if system_prompt is None:
-            self.__system_prompt = SystemPrompt(text=self.__default_agent_system_prompt)
-        elif isinstance(system_prompt, str):
-            self.__system_prompt = SystemPrompt(text=system_prompt) 
-        elif isinstance(system_prompt, SystemPrompt):
-            self.__system_prompt = system_prompt
+        self.__default_narrator_perspective = "You are a helpful assistant who deliberates and provides useful answers to my queries."
+        if perspective is None:
+            self.__perspective = Perspective(text=self.__default_narrator_perspective)
+        elif isinstance(perspective, str):
+            self.__perspective = Perspective(text=perspective) 
+        elif isinstance(perspective, Perspective):
+            self.__perspective = perspective
         else:
-            TypeError(f"Invalid type for system_prompt: {type(system_prompt)}. Can be either str or SystemPrompt.")
+            TypeError(f"Invalid type for perspective: {type(perspective)}. Can be either str or Perspective.")
 
     @property
     def model_config(self):
@@ -69,8 +69,8 @@ class BaseLLMEnactor(TarkashObject):
         return self.__listener
     
     @property
-    def system_prompt(self):
-        return self.__system_prompt
+    def perspective(self):
+        return self.__perspective
     
     @abstractmethod
     def enact(self, *args, **kwargs):

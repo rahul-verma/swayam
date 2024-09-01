@@ -20,15 +20,15 @@ from typing import Union
 
 from tarkash import log_debug
 
-from swayam.llm.prompt.types import SystemPrompt
+from swayam.llm.prompt.types import Perspective
 from swayam.llm.prompt.response import LLMResponse
 from .base import BaseLLMEnactor
 
-class PromptEnactor(BaseLLMEnactor):
+class ExpressionEnactor(BaseLLMEnactor):
 
-    def __init__(self, *, listener:str, model:str = None, name:str = "Expression Executor", provider:str = None, temperature=0, system_prompt: Union[str,SystemPrompt]=None, **kwargs):
+    def __init__(self, *, listener:str, model:str = None, name:str = "Expression Enactor", provider:str = None, temperature=0, perspective: Union[str,Perspective]=None, **kwargs):
         super().__init__(listener=listener, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
-        log_debug(f"Expression Executor {name} created")
+        log_debug(f"Expression Enactor {name} created")
 
     def load(self):
         from swayam.llm.model import Model
@@ -40,59 +40,59 @@ class PromptEnactor(BaseLLMEnactor):
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
-        expression_context = expression.context.expression_context
+        expression_narrative = expression.narrative.expression_narrative
         
         log_debug(f"Executing Expression with {len(expression)} prompt(s).")
         if not expression.extends_previous_expression:
-            self.listener.report_begin_expression(expression)
+            self.listener.record_begin_expression(expression)
             if expression.is_new():
-                if expression.has_system_prompt():
-                    # For dynamic variables in Agent store
-                    expression.context.format_prompt(expression.system_prompt)
-                    expression.system_prompt.process_for_report()
-                    self.listener.report_system_prompt(expression.system_prompt)
+                if expression.has_perspective():
+                    # For dynamic variables in Narrator store
+                    expression.narrative.format_prompt(expression.perspective)
+                    expression.perspective.process_for_report()
+                    self.listener.record_perspective(expression.perspective)
                     
-                    expression_context.append_prompt(expression.system_prompt)
-                    self.listener.report_context(expression_context)
+                    expression_narrative.append_prompt(expression.perspective)
+                    self.listener.record_narrative(expression_narrative)
         log_debug("Finished processing system prompt.")
         
         for prompt in expression:
             log_debug("Processing prompt...")
-            # For dynamic variables in Agent store
-            expression.context.format_prompt(prompt)
+            # For dynamic variables in Narrator store
+            expression.narrative.format_prompt(prompt)
             prompt.process_for_report()
             
-            self.listener.report_context(expression_context)
+            self.listener.record_narrative(expression_narrative)
             
-            # Appending happens via the Agent Context so that dynamic variables can be considered.
-            expression_context.append_prompt(prompt)
-            self.listener.report_context(expression_context)
+            # Appending happens via the Narrator Narrative so that dynamic variables can be considered.
+            expression_narrative.append_prompt(prompt)
+            self.listener.record_narrative(expression_narrative)
             
-            self.listener.report_prompt(prompt)
+            self.listener.record_prompt(prompt)
             log_debug("Finished processing prompt...")
 
             log_debug("Executing prompt...")
-            response = self.__client.execute_messages(messages=expression_context.messages, output_structure=prompt.output_structure, tools=prompt.tools)
+            response = self.__client.execute_messages(messages=expression_narrative.messages, output_structure=prompt.output_structure, tools=prompt.tools)
             log_debug("Handling Response.")
             output_message = response.choices[0].message
             llm_response = LLMResponse(output_message)
             
-            expression_context.append_assistant_response(llm_response.as_dict())
-            self.listener.report_context(expression_context)
+            expression_narrative.append_assistant_response(llm_response.as_dict())
+            self.listener.record_narrative(expression_narrative)
             
-            self.listener.report_response(prompt, llm_response)
+            self.listener.record_response(prompt, llm_response)
 
             
-            log_debug("Updated Context with Response message.")
+            log_debug("Updated Narrative with Response message.")
 
             if output_message.tool_calls:
                 response_messages = []
                 for tool in output_message.tool_calls:
                     tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
-                    self.listener.report_tool_response(tool_response)
+                    self.listener.record_tool_response(tool_response)
                     response_messages.append(tool_response)
-                    expression_context.append_tool_response(tool_response)
-                    self.listener.report_context(expression_context)
+                    expression_narrative.append_tool_response(tool_response)
+                    self.listener.record_narrative(expression_narrative)
             else: 
                 response_messages = output_message
                 
@@ -106,7 +106,7 @@ class PromptEnactor(BaseLLMEnactor):
             else:
                 stored_message = stored_message.to_dict()
             if "content" in stored_message and stored_message["content"]:
-                expression.context.store[expression.response_storage_name] = stored_message["content"]
+                expression.narrative.store[expression.response_storage_name] = stored_message["content"]
 
         log_debug(f"Finished Expression") 
         return response_messages

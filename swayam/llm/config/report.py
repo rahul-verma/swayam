@@ -15,11 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ReportConfig:
+class RecorderConfig:
     
-    def __init__(self, *, display=False, report_html=True, show_in_browser=True):
+    def __init__(self, *, display=False, record_html=True, show_in_browser=True):
         self._display = display
-        self._report_html = report_html
+        self._record_html = record_html
         self._show_in_browser = show_in_browser
 
     @property
@@ -27,8 +27,8 @@ class ReportConfig:
         return self._display
     
     @property
-    def report_html(self):
-        return self._report_html
+    def record_html(self):
+        return self._record_html
     
     @property
     def show_in_browser(self):

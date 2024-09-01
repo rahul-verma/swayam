@@ -19,11 +19,11 @@ import os
 from pprint import pprint
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.llm.prompt.response import LLMResponse
-from swayam.llm.report import Reporter
+from swayam.llm.record import Reporter
     
-class ConsoleReporter(Reporter):
+class ConsoleRecorder(Reporter):
     def __init__(self):
         super().__init__()
         
@@ -32,7 +32,7 @@ class ConsoleReporter(Reporter):
         return self.__enabled
     
 
-    def report_begin_expression(self, expression) -> None:
+    def record_begin_expression(self, expression) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -41,16 +41,16 @@ class ConsoleReporter(Reporter):
         """
         pass
     
-    def report_system_prompt(self, prompt:Prompt) -> None:
+    def record_perspective(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.
         
         Args:
             prompt (Prompt): The prompt to report.
         """
-        self.report_prompt(prompt)
+        self.record_prompt(prompt)
 
-    def report_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.
         
@@ -72,16 +72,16 @@ class ConsoleReporter(Reporter):
             print(prompt.content)
         print("-" * 80)
 
-    def report_context(self, context:ExpressionContext) -> None:
+    def record_narrative(self, narrative:ExpressionNarrative) -> None:
         """
-        Reports the context details.
+        Reports the narrative details.
 
         Args:
-            context (ExpressionContext): Context object with all input messages.
+            narrative (ExpressionNarrative): Narrative object with all input messages.
         """
         pass
         
-    def report_response(self, prompt, response:LLMResponse) -> None:
+    def record_response(self, prompt, response:LLMResponse) -> None:
         """
         Reports the LLM response.
 
@@ -91,7 +91,7 @@ class ConsoleReporter(Reporter):
         print("Response:")
         print(response.content)
         
-    def report_tool_response(self, response) -> None:
+    def record_tool_response(self, response) -> None:
         """
         Reports the tool response.
 

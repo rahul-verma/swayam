@@ -17,22 +17,22 @@
 
 from swayam.core.store import Store
 
-class AgentContext:
+class NarratorNarrative:
     
     def __init__(self):
-        from swayam.llm.expression.context import ExpressionContext
-        self.__expression_context = ExpressionContext()
+        from swayam.llm.expression.narrative import ExpressionNarrative
+        self.__expression_narrative = ExpressionNarrative()
         self.__store = Store()
         
     @property
-    def expression_context(self):
-        return self.__expression_context
+    def expression_narrative(self):
+        return self.__expression_narrative
         
-    def reset_expression_context(self):
-        self.__expression_context.reset()
+    def reset_expression_narrative(self):
+        self.__expression_narrative.reset()
         
     def reset(self):
-        self.__expression_context.reset()
+        self.__expression_narrative.reset()
         self.__store.reset()
         
     @property

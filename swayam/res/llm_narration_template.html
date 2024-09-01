@@ -36,6 +36,17 @@
             left: 0;
         }
 
+        .footer a {
+            color: #FFFFFF; /* Assuming a dark background, use white or a very light color */
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            color: #FFD700; /* A gold color or another color that stands out */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
         /* Update the middle section to allow for resizing */
         .middle-section {
             display: flex;
@@ -136,14 +147,14 @@
 
     <!-- Top Header -->
     <div class="header">
-        Swayam Report
+        Narration
     </div>
 
     <!-- Middle Section -->
     <div class="middle-section">
         <!-- Left Pane for jsTree -->
         <div class="left-pane" id="leftPane">
-            <div id="jstree_agent" class="treeview"></div>
+            <div id="jstree_narrator" class="treeview"></div>
         </div>
 
         <!-- Resizer Handle -->
@@ -157,7 +168,7 @@
 
     <!-- Bottom Footer -->
     <div class="footer">
-        <a href="https://github.com/rahul-verma/swayam"><strong>Swayam</strong></a> is an Apache Licensed library free for commercial use. Developed by Rahul Verma 2024.
+        <a href="https://github.com/rahul-verma/swayam"><strong>Swayam</strong></a> is an Apache Licensed library free for commercial use. Developed by Rahul Verma.
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -227,7 +238,7 @@
         const jsonData = $$SWAYAM_JSON_DATA$$;
 
         $(document).ready(function() {
-            $('#jstree_agent').jstree({
+            $('#jstree_narrator').jstree({
                 'core': {
                     'data': jsonData
                 },
@@ -242,9 +253,9 @@
             });
         
             // These functions deal with enabling single click expansion of a node.
-            $('#jstree_agent').on("click", ".jstree-anchor", function (e) {
+            $('#jstree_narrator').on("click", ".jstree-anchor", function (e) {
                 e.preventDefault();
-                var instance = $('#jstree_agent').jstree(true);
+                var instance = $('#jstree_narrator').jstree(true);
                 var node = instance.get_node(e.target);
         
                 // Single-click toggle for the clicked node
@@ -257,15 +268,15 @@
         }
             });
         
-            $('#jstree_agent').on("dblclick.jstree", function (e) {
+            $('#jstree_narrator').on("dblclick.jstree", function (e) {
                 e.stopPropagation();
             });
         
             // Handle node selection
-            $('#jstree_agent').on("changed.jstree", function (e, data) {
+            $('#jstree_narrator').on("changed.jstree", function (e, data) {
                 if (data && data.selected && data.selected.length) {
                     const nodeId = data.selected[0];
-                    const node = $('#jstree_agent').jstree(true).get_node(nodeId);
+                    const node = $('#jstree_narrator').jstree(true).get_node(nodeId);
                     let detailsContent = `<h2>${node.text}</h2>`;
                     const content = node.data.content;
             

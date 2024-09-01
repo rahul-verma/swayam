@@ -37,6 +37,9 @@ class SwayamOption(Enum):
     STORY_DIR = auto()
     '''Root Directory for Plan Files'''
     
+    NARRATION_DIR = auto()
+    '''Root Directory for Narration Files'''
+    
     LLM_PROVIDER = auto()
     '''Default LLM Provider name.'''
     

@@ -20,19 +20,19 @@ from typing import Any, Union
 
 from tarkash import log_debug
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import SystemPrompt, UserPrompt
-from .context import ExpressionContext
+from swayam.llm.prompt.types import Perspective, UserPrompt
+from .narrative import ExpressionNarrative
 from swayam.inject.structure.structure import IOStructure
 
 class LLMExpression:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, system_prompt:SystemPrompt=None, context:ExpressionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_context:bool=True, store_response_as:str=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, perspective:Perspective=None, narrative:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Expression"
-        self.__agent_context = context
-        self.__system_prompt = system_prompt
+        self.__narrator_narrative = narrative
+        self.__perspective = perspective
         self.__image = image
         self.__output_structure = output_structure
         self.__tools = tools
@@ -41,14 +41,14 @@ class LLMExpression:
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
         
-        # Depends on how it was created. When it is a single prompt expression created for an execute call of Agent, it is treated as a continuation of the previous expression.
+        # Depends on how it was created. When it is a single prompt expression created for an execute call of Narrator, it is treated as a continuation of the previous expression.
         self.__extends_previous_expression = False
         
-        # If True, it gets an empty context value. Has no impact on context of the follow-up expressions.
+        # If True, it gets an empty narrative value. Has no impact on narrative of the follow-up expressions.
         self.__standalone = standalone
         
-        # If True, it resets the parent's context for itself. The subsequent expression receives the context that it results in.
-        self.__reset_context = reset_context
+        # If True, it resets the parent's narrative for itself. The subsequent expression receives the narrative that it results in.
+        self.__reset_narrative = reset_narrative
         
     @property
     def should_store_response(self):
@@ -63,8 +63,8 @@ class LLMExpression:
         return self.__standalone
     
     @property
-    def reset_context(self):
-        return self.__reset_context
+    def reset_narrative(self):
+        return self.__reset_narrative
         
     @property
     def extends_previous_expression(self):
@@ -100,30 +100,30 @@ class LLMExpression:
                 prompt.suggest_tools(self.__tools) 
     
     def is_new(self):
-        return len(self.__agent_context.expression_context) == 0
+        return len(self.__narrator_narrative.expression_narrative) == 0
         
-    def has_system_prompt(self):
-        return self.__system_prompt is not None
+    def has_perspective(self):
+        return self.__perspective is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def system_prompt(self):
-        return self.__system_prompt
+    def perspective(self):
+        return self.__perspective
         
-    @system_prompt.setter
-    def system_prompt(self, system_prompt:SystemPrompt):
-        self.__system_prompt = system_prompt
+    @perspective.setter
+    def perspective(self, perspective:Perspective):
+        self.__perspective = perspective
         
     @property
-    def context(self):
-        return self.__agent_context
+    def narrative(self):
+        return self.__narrator_narrative
     
-    @context.setter
-    def context(self, context:ExpressionContext):
-        self.__agent_context = context
+    @narrative.setter
+    def narrative(self, narrative:ExpressionNarrative):
+        self.__narrator_narrative = narrative
         
     def append(self, prompt:Prompt):
         self.__prompts.append(prompt)

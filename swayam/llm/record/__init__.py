@@ -18,8 +18,8 @@
 
 from abc import ABC, abstractmethod
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import SystemPrompt
-from swayam.llm.expression.context import ExpressionContext
+from swayam.llm.prompt.types import Perspective
+from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.llm.prompt.response import LLMResponse
 
 class Reporter(ABC):
@@ -28,7 +28,7 @@ class Reporter(ABC):
         pass
     
     @abstractmethod
-    def report_begin_expression(self, expression) -> None:
+    def record_begin_expression(self, expression) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -38,7 +38,7 @@ class Reporter(ABC):
         pass
     
     @abstractmethod
-    def report_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt:Prompt) -> None:
         """
         Reports the prompt details.
         
@@ -48,17 +48,17 @@ class Reporter(ABC):
         pass
         
     @abstractmethod
-    def report_context(self, context:ExpressionContext) -> None:
+    def record_narrative(self, narrative:ExpressionNarrative) -> None:
         """
-        Reports the context details.
+        Reports the narrative details.
 
         Args:
-            context (ExpressionContext): Context object with all input messages.
+            narrative (ExpressionNarrative): Narrative object with all input messages.
         """
         pass
 
         
-    def report_response(self, message:LLMResponse) -> None:
+    def record_response(self, message:LLMResponse) -> None:
         """
         Reports the LLM response.
 

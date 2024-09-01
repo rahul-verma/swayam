@@ -17,75 +17,75 @@
 
 from datetime import datetime
 from tarkash import log_debug
-from .context import AgentContext
+from .narrative import NarratorNarrative
 
-class SimpleAgent:
+class SimpleNarrator:
     
-    def __init__(self, display=False, report_html=True, run_id=None):
-        self.__context = AgentContext()
-        from swayam.llm.config.report import ReportConfig
-        self.__report_config = ReportConfig(display=display, report_html=report_html, show_in_browser=False)
+    def __init__(self, display=False, record_html=True, run_id=None):
+        self.__narrative = NarratorNarrative()
+        from swayam.llm.config.report import RecorderConfig
+        self.__recorder_config = RecorderConfig(display=display, record_html=record_html, show_in_browser=False)
         if not run_id:
-            self.__report_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
+            self.__recorder_config._run_id = datetime.now().strftime("%Y%m%d%H%M%S")
         else:
-            self.__report_config._run_id = str(run_id)
+            self.__recorder_config._run_id = str(run_id)
             
-        from swayam.llm.report.listener import AgentListener
+        from swayam.llm.record.recorder import Recorder
         log_debug(f"Creating Listener")
-        self.__listener = AgentListener(self.__report_config)
-        log_debug("Agent initialized.")
+        self.__listener = Recorder(self.__recorder_config)
+        log_debug("Narrator initialized.")
         
     def __prepare_for_execution(self, *, show_in_browser):
         log_debug(f"Setting show_in_browser to {show_in_browser}.")
-        self.__report_config.show_in_browser = show_in_browser
+        self.__recorder_config.show_in_browser = show_in_browser
         
         
     def __execute_user_prompt(self, user_prompt):
         from swayam import Expression
         log_debug(f"Converting UserPrompt to Expression.")
-        expression = Expression.prompts(user_prompt, reset_context=False)
+        expression = Expression.prompts(user_prompt, reset_narrative=False)
         expression.extends_previous_expression = True
         return self.__execute_expression(expression)
     
     def __execute_expression(self, expression):
-        from swayam.llm.expression.context import ExpressionContext
-        from swayam.llm.executor.expression import ExpressionExecutor
+        from swayam.llm.expression.narrative import ExpressionNarrative
+        from swayam.llm.enactor.expression import ExpressionEnactor
 
-        if expression.reset_context:
-            self.__context.reset_expression_context()
+        if expression.reset_narrative:
+            self.__narrative.reset_expression_narrative()
 
-        # Set context of expression
+        # Set narrative of expression
         if not expression.standalone:
-            expression.context = self.__context
+            expression.narrative = self.__narrative
         else:
-            # Set empty context
-            expression.context = AgentContext()
+            # Set empty narrative
+            expression.narrative = NarratorNarrative()
         
-        log_debug(f"Executing Expression with ExpressionAgent.")
-        agent = ExpressionExecutor(listener=self.__listener)
+        log_debug(f"Executing Expression with ExpressionNarrator.")
+        narrator = ExpressionEnactor(listener=self.__listener)
         
-        # If a the context is non-empty then the system prompt is already set in it.
-        log_debug(f"New context-free expression?", expression.is_new())
-        log_debug(f"Expression has an already assigned system prompt?", expression.has_system_prompt()) 
-        if expression.is_new() and not expression.has_system_prompt():
-            log_debug(f"Setting default system prompt from the Agent.")
-            expression.system_prompt = agent.system_prompt
+        # If a the narrative is non-empty then the system prompt is already set in it.
+        log_debug(f"New narrative-free expression?", expression.is_new())
+        log_debug(f"Expression has an already assigned system prompt?", expression.has_perspective()) 
+        if expression.is_new() and not expression.has_perspective():
+            log_debug(f"Setting default system prompt from the Narrator.")
+            expression.perspective = narrator.perspective
             
         log_debug("Validating expression.")
-        if expression.is_new() and not expression.has_system_prompt():
-            raise ValueError("It's a new expression, but no SystemPrompt was found. Review.")
+        if expression.is_new() and not expression.has_perspective():
+            raise ValueError("It's a new expression, but no Perspective was found. Review.")
         
-        if not expression.is_new() and expression.has_system_prompt():
-            raise ValueError("As it is continued expression, the system prompt is already set in the context. So, the context found in this expression is going to be ignored. Review.")
+        if not expression.is_new() and expression.has_perspective():
+            raise ValueError("As it is continued expression, the system prompt is already set in the narrative. So, the narrative found in this expression is going to be ignored. Review.")
 
-        log_debug(f"Executing Expression with ExpressionAgent.")
+        log_debug(f"Executing Expression with ExpressionNarrator.")
         def process_output(in_data):
             if in_data.content:
                 return in_data.content
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
-        output = agent.enact(expression)
+        output = narrator.enact(expression)
         
         if type(output) is list:
             if len(output) == 1:
@@ -107,7 +107,7 @@ class SimpleAgent:
         """
         Executes a part of or complete strategy.
         
-        The Agent can execute any of the following types of objects:
+        The Narrator can execute any of the following types of objects:
         - A User Prompt object
         - A Expression object
         - A Thought object: Not supported yet
@@ -118,7 +118,7 @@ class SimpleAgent:
             show_in_browser: If True, the HTML report will be displayed in the browser. Default is False.
         """
         
-        log_debug(f"Executing Agent executable object of type {type(executable)}.")
+        log_debug(f"Executing Narrator executable object of type {type(executable)}.")
         self.__prepare_for_execution(show_in_browser=show_in_browser)
         
         from swayam.llm.prompt.types import UserPrompt
