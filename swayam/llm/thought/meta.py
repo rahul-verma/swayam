@@ -16,8 +16,8 @@
 # limitations under the License.
 
 
-class TaskMeta(type):
+class ThoughtMeta(type):
     
     def __getattr__(cls, name):
-        from .namespace import TaskDir
-        return TaskDir.load_task_from_file(name)
+        from .namespace import ThoughtDir
+        return ThoughtDir.load_thought_from_file(name)

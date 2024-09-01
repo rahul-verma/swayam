@@ -68,16 +68,16 @@ class HtmlReporter(Reporter):
                 self.__json_data = json.load(f)
         self.__update_report()
         
-        # So far the report has only one plan node with one task node.
+        # So far the report has only one plan node with one thought node.
 
     def __get_strategy_children_node(self):
         return self.__json_data[-1]["children"]
     
-    def __get_task_children_node(self):
+    def __get_thought_children_node(self):
         return self.__get_strategy_children_node()[-1]["children"]
     
     def __get_expression_node(self):
-        return self.__get_task_children_node()[-1]
+        return self.__get_thought_children_node()[-1]
     
     def __get_expression_children_node(self):
         return self.__get_expression_node()["children"]
@@ -113,15 +113,15 @@ class HtmlReporter(Reporter):
                                     "children": []   
                                 })
             
-            # The Task node
+            # The Thought node
             self.__get_strategy_children_node().append({
-                                        "id": "task_node_" + uuid4().hex,
-                                        "text": "Task",
+                                        "id": "thought_node_" + uuid4().hex,
+                                        "text": "Thought",
                                         "children": []
                                     })
 
         expression_id = "expression_" + uuid4().hex
-        self.__get_task_children_node().append({
+        self.__get_thought_children_node().append({
                                     "id": expression_id,
                                     "text": f"{expression.purpose}",
                                     "data": {

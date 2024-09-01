@@ -24,7 +24,7 @@ from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
 from swayam.inject.structure.structure import IOStructure
 
-class TaskFormatter:
+class ThoughtFormatter:
     
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
@@ -62,12 +62,12 @@ class TaskFormatter:
                 # If a system prompt is provided directly, it is NOT formatted.
                 pass
 
-        from swayam import Task
-        return Task.expressions(*expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        from swayam import Thought
+        return Thought.expressions(*expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
-        from .namespace import TaskDir
+        from .namespace import ThoughtDir
         import yaml
-        with open(TaskDir.get_path_for_task(name=name), "r", encoding="utf-8") as f:
+        with open(ThoughtDir.get_path_for_thought(name=name), "r", encoding="utf-8") as f:
             content = yaml.safe_load(f.read().format(**self.__fmt_kwargs))
-        return TaskDir.create_task_from_content(name, content, **self.__fmt_kwargs)
+        return ThoughtDir.create_thought_from_content(name, content, **self.__fmt_kwargs)

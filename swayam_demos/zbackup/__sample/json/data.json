@@ -32,8 +32,8 @@
                 ]
             },
             {
-                "id": "task_node_68e9c6cb4fd945d086044bad96674487",
-                "text": "Task",
+                "id": "thought_node_68e9c6cb4fd945d086044bad96674487",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_5b4c75fe56914ca0a6011f4ecb5eed4e",
@@ -77,8 +77,8 @@
                 ]
             },
             {
-                "id": "task_node_518d4ae28f824a3d80175e13323749f5",
-                "text": "Task",
+                "id": "thought_node_518d4ae28f824a3d80175e13323749f5",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_ffc0dd41bccf426eb643097c9d6d996c",
@@ -122,8 +122,8 @@
                 ]
             },
             {
-                "id": "task_node_605d8b49c51b47c984d91895ae2f0542",
-                "text": "Task",
+                "id": "thought_node_605d8b49c51b47c984d91895ae2f0542",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_e99d2c4b1c5a4f0282cddde2ed97956a",
@@ -167,8 +167,8 @@
                 ]
             },
             {
-                "id": "task_node_c6bd5f3706cc42199e2a2a05135c1427",
-                "text": "Task",
+                "id": "thought_node_c6bd5f3706cc42199e2a2a05135c1427",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_efc9cbcc84554620aa1abbf0dd8ada37",
@@ -212,8 +212,8 @@
                 ]
             },
             {
-                "id": "task_node_e9dfc47ab3f44ae79f1b197461493e91",
-                "text": "Task",
+                "id": "thought_node_e9dfc47ab3f44ae79f1b197461493e91",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_404f911e1d3243e58da978bfd98992a2",
@@ -257,8 +257,8 @@
                 ]
             },
             {
-                "id": "task_node_9b6a09a0c26e49acab31a1d4c3d088ed",
-                "text": "Task",
+                "id": "thought_node_9b6a09a0c26e49acab31a1d4c3d088ed",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_d32f635bd51e4d368702862e3ba2562e",
@@ -302,8 +302,8 @@
                 ]
             },
             {
-                "id": "task_node_b84e61e097e34a0ab4de0ff7215ba2d5",
-                "text": "Task",
+                "id": "thought_node_b84e61e097e34a0ab4de0ff7215ba2d5",
+                "text": "Thought",
                 "children": [
                     {
                         "id": "expression_node_d49d2b3b7e7d4781a7401ab92ea25840",

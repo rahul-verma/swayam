@@ -8,7 +8,7 @@ Thought: Represents the conceptual phase where ideas and themes are developed fr
 
 Expression: Bridges the abstract with the concrete, focusing on how Thoughts will be articulated or represented. A step/stage in the achievement of a thought becoming a reality. This is a proxy layer between what the thought is about and who is solving the part of the problem this step/stage demands.
 
-Prompt: The most actionable part, where the specific tasks or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
+Prompt: The most actionable part, where the specific thoughts or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the context of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
 
 All building blocks of STEP are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
 
@@ -26,10 +26,10 @@ To Do
 - Standalone PPromptrompt: Possibly to another instance of same Model or a different one.
 - Dynamic Prompts. Prompts added on the fly.
 
-## Task
+## Thought
 
 To Do
-- Task as a package
+- Thought as a package
 
 
 ## Story

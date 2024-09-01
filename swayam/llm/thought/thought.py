@@ -24,13 +24,13 @@ from swayam.llm.prompt.types import SystemPrompt
 from swayam.llm.expression.context import ExpressionContext
 from swayam.inject.structure.structure import IOStructure
 
-class LLMTask:
+class LLMThought:
     
     def __init__(self, *expressions:LLMExpression, purpose:str=None, system_prompt:SystemPrompt=None, content:ExpressionContext=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__expressions = list(expressions)
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = "Task"
+            self.__purpose = "Thought"
         self.__context = None
         self.__system_prompt = system_prompt
            

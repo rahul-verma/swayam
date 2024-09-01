@@ -31,8 +31,8 @@ class SwayamOption(Enum):
     EXPRESSION_DIR = auto()
     '''Root Directory for Expression Files'''
     
-    TASK_DIR = auto()
-    '''Root Directory for Task Files'''
+    THOUGHT_DIR = auto()
+    '''Root Directory for Thought Files'''
     
     STORY_DIR = auto()
     '''Root Directory for Plan Files'''

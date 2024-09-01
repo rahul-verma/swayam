@@ -26,7 +26,7 @@ from tarkash.type.descriptor import DString, DNumber, DBoolean
 from swayam.llm.prompt.types import SystemPrompt
 from pydantic import BaseModel
 
-class BaseLLMExecutor(TarkashObject):
+class BaseLLMEnactor(TarkashObject):
     
     _name = DString()
     _temperature = DNumber()
@@ -73,7 +73,7 @@ class BaseLLMExecutor(TarkashObject):
         return self.__system_prompt
     
     @abstractmethod
-    def execute(self, *args, **kwargs):
+    def enact(self, *args, **kwargs):
         pass
     
     @abstractmethod

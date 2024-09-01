@@ -22,9 +22,9 @@ from tarkash import log_debug
 
 from swayam.llm.prompt.types import SystemPrompt
 from swayam.llm.prompt.response import LLMResponse
-from .base import BaseLLMExecutor
+from .base import BaseLLMEnactor
 
-class PromptExecutor(BaseLLMExecutor):
+class PromptEnactor(BaseLLMEnactor):
 
     def __init__(self, *, listener:str, model:str = None, name:str = "Expression Executor", provider:str = None, temperature=0, system_prompt: Union[str,SystemPrompt]=None, **kwargs):
         super().__init__(listener=listener, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
@@ -34,7 +34,7 @@ class PromptExecutor(BaseLLMExecutor):
         from swayam.llm.model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def execute(self, expression):
+    def enact(self, expression):
         '''
         Runs the expression and returns the result.
         '''        

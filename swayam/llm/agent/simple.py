@@ -85,7 +85,7 @@ class SimpleAgent:
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
-        output = agent.execute(expression)
+        output = agent.enact(expression)
         
         if type(output) is list:
             if len(output) == 1:
@@ -97,20 +97,20 @@ class SimpleAgent:
         else:
             return process_output(output)
         
-    def __execute_task(self, task):
+    def __execute_thought(self, thought):
         output = None
-        for expression in task:
+        for expression in thought:
             output = self.__execute_expression(expression)
         return output
     
-    def execute(self, executable, show_in_browser=False):
+    def enact(self, executable, show_in_browser=False):
         """
         Executes a part of or complete strategy.
         
         The Agent can execute any of the following types of objects:
         - A User Prompt object
         - A Expression object
-        - A Task object: Not supported yet
+        - A Thought object: Not supported yet
         - A Story object: Not supported yet
         
         Args:
@@ -123,10 +123,10 @@ class SimpleAgent:
         
         from swayam.llm.prompt.types import UserPrompt
         from swayam.llm.expression.expression import LLMExpression
-        from swayam.llm.task.task import LLMTask
+        from swayam.llm.thought.thought import LLMThought
         
-        if not isinstance(executable, (str, UserPrompt, LLMExpression, LLMTask)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMExpression, LLMTask, or Story.")
+        if not isinstance(executable, (str, UserPrompt, LLMExpression, LLMThought)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMExpression, LLMThought, or Story.")
         
         output = None
         if isinstance(executable, str):
@@ -138,8 +138,8 @@ class SimpleAgent:
             output = self.__execute_user_prompt(executable)
         elif isinstance(executable, LLMExpression):
             output = self.__execute_expression(executable)
-        elif isinstance(executable, LLMTask):
-            output = self.__execute_task(executable)
+        elif isinstance(executable, LLMThought):
+            output = self.__execute_thought(executable)
             
         self.__listener.finish()
         return output

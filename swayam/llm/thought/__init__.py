@@ -24,16 +24,16 @@ from swayam.llm.prompt.types import SystemPrompt, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.expression.expression import LLMExpression
 from swayam.llm.expression.repeater import DynamicExpressionFile
-from .task import LLMTask
+from .thought import LLMThought
 from swayam.inject.structure.structure import IOStructure
 
-from .format import TaskFormatter
-from .meta import TaskMeta
+from .format import ThoughtFormatter
+from .meta import ThoughtMeta
 
-class Task(metaclass=TaskMeta):
+class Thought(metaclass=ThoughtMeta):
     
     @classmethod
-    def expressions(cls, *expressions:LLMExpression, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMTask:
+    def expressions(cls, *expressions:LLMExpression, purpose:str=None, system_prompt:Union[str,SystemPrompt]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMThought:
         if len(expressions) == 0:
             raise ValueError("No expressions provided.")
         out_expressions = []
@@ -63,8 +63,8 @@ class Task(metaclass=TaskMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-        return LLMTask(*out_expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
+        return LLMThought(*out_expressions, purpose=purpose, system_prompt=system_prompt, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):
-        return TaskFormatter(**fmt_kwargs)
+        return ThoughtFormatter(**fmt_kwargs)

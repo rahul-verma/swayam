@@ -34,7 +34,7 @@ class _SwayamSingleton:
             "SNIPPET_DIR": ("definition/snippet", "path"),
             "PROMPT_DIR": ("definition/prompt", "path"),
             "EXPRESSION_DIR": ("definition/expression", "path"),
-            "TASK_DIR": ("definition/task", "path"),
+            "THOUGHT_DIR": ("definition/thought", "path"),
             "STORY_DIR": ("definition/strategy", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
@@ -103,7 +103,7 @@ class Swayam:
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def execute(cls, prompt:str):
+    def enact(cls, prompt:str):
         """
         A simple facade to default LLM Model, resulting in one a prompt being executed.
         
@@ -121,7 +121,7 @@ class Swayam:
         """
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
-        return cls._SWAYAM_SINGLETON.default_agent.execute(prompt)
+        return cls._SWAYAM_SINGLETON.default_agent.enact(prompt)
     
     
     @classmethod

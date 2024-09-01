@@ -2,5 +2,5 @@ tools:
     - Calculator
 
 expression_defs:
-  - conv1_task
-  - conv2_task
+  - conv1_thought
+  - conv2_thought

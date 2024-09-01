@@ -6,9 +6,9 @@ expression_defs:
       generator: TwoNumberGeneratorWithCallable
       args: 
         size: 5
-    name: conv3_task_dynamic
+    name: conv3_thought_dynamic
   - repeat:
       generator: TwoNumberGeneratorWithCallable
       args: 
         size: 3
-    name: conv4_task_dynamic
+    name: conv4_thought_dynamic
