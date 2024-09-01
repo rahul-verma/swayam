@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 
 class Namespace(ABC):
     
-    def __init__(self, type, path, *, resolution=None):
+    def __init__(self, type, path, *, resolution=None, **fmt_kwargs):
         self.__type = type
         self.__name = f"{self.__type} namespace"
         self.__resolution = resolution
@@ -34,6 +34,9 @@ class Namespace(ABC):
             raise NamespaceIsNotADirectoryError(self)
         
         self.__path = path
+        
+        self.__fmt_kwargs = fmt_kwargs
+        
     @property
     def name(self):
         return self.__name
@@ -50,6 +53,12 @@ class Namespace(ABC):
         return self.__type
 
     def __getattr__(self, name):
+        
+        if name.startswith("formatter"):
+            from functools import partial
+            # Return a partial namespace of the same type
+            return partial(self.__class__, path=self.path, resolution=self.resolution)
+       
         name_path = os.path.join(self.path, name)
         # Check without the yaml extension
         if os.path.exists(name_path):
@@ -96,7 +105,7 @@ class Namespace(ABC):
                     path=name_path + ".yaml",
                     resolution=self.resolution + "." + name,
                     purpose = name.replace("_", " ").title(),
-                    content=content
+                    content=content.format(**self.__fmt_kwargs)
                 )
         else:
             raise DefinitionNotFoundError(self, name=name)

@@ -127,6 +127,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         
     def validate_output(self, output):
         from swayam.inject.structure.structure import IOStructureObject
+        from swayam import Structure
         if not isinstance(output, IOStructureObject):
             if output is None and self.allow_none_output:
                 return Structure.NoneValue()

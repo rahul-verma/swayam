@@ -23,8 +23,8 @@ from swayam.core.caller import get_caller_module_file_location
 
 class PromptNamespace(Namespace):
     
-    def __init__(self, path, resolution=None):
-        super().__init__(type="Prompt", path=path, resolution=resolution)  
+    def __init__(self, path, resolution=None, **fmt_kwargs):
+        super().__init__(type="Prompt", path=path, resolution=resolution, **fmt_kwargs)  
 
     def handle_current_name_as_dir(self, *, name, path, resolution):
         raise DefinitionNameNotAFileError(self, name=name)
