@@ -1,6 +1,8 @@
 
 
-Swayam employs the STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
+Swayam employs the Epic-STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
+
+A large problem is called an Epic which can be broken down into STEPs:
 
 Story: Captures the broad, overarching narrative or goal. It gives a sense of direction and purpose. This largely involves human intellect with some usage of tooling.
 
@@ -14,7 +16,9 @@ All building blocks of STEP are only expressed as definitions, with the only exc
 
 ## Prompt
 
-To Do
+- Prompt can be a simple text string.
+- For more involved prompting, one has to create a Prompt Definition.
+- Currently a Prompt Def supports defining purpose, output structure and tools.
 
 ## Expression
 

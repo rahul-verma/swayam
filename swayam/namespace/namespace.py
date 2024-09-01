@@ -77,22 +77,28 @@ class Namespace(ABC):
                         if name == "__files__":
                             children["attachments_dir"].append(child_path)
                         else:
-                            children["directories"].append(child_path)
+                            children["directories"].append(name)
                     elif os.path.isfile(child_path):
                         if name  == "__init__.yaml":
                             children["package_file"] = child_path
                         elif name.endswith(".yaml"):
-                            children["files"].append(child_path)
+                            children["files"].append(name[:-5])
                             
-                # self.handle_package_file(children["package_file"])
-                # self.handle_attachments_dir(children["attachments"])
-                # self.handle_files(children["files"])
-                # self.handle_package_directories(children["directories"])
+                if children["package_file"] is None:
+                    self.handle_no_package_file()
+                else: 
+                    with open(children["package_file"]) as f:
+                        content = f.read()
+                        content.format(**self.__fmt_kwargs)
+                        children["package_file_content"] = content
                 
-                return self.handle_current_name_as_dir(
+                return self.handle_current_name_as_package(
                     name=name,
                     path=name_path,
-                    resolution=self.resolution + "." + name
+                    resolution=self.resolution + "." + name,
+                    package_file_content=children["package_file_content"],
+                    sub_directories = children["directories"],
+                    definitions = children["files"],
                 )
             else:
                 raise DefinitionFileWithoutExtensionError(self, name)
@@ -109,21 +115,12 @@ class Namespace(ABC):
                 )
         else:
             raise DefinitionNotFoundError(self, name=name)
-
-    # def handle_package_file(self, *, name, path, resolution, content):
-    #     pass
-    
-    # def handle_attachments_dir(self, name, path, resolution):
-    #     pass
-    
-    # def handle_directories(self, directories):
-    #     pass
-
-    # def handle_files(self, files):
-    #     pass
+        
+    def handle_no_package_file(self):
+        pass
     
     @abstractmethod
-    def handle_current_name_as_dir(self, *, name, path, resolution):
+    def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
         pass
     
     @abstractmethod

@@ -35,6 +35,16 @@ class DefinitionNameNotAFileError(NamespaceError):
     def __init__(self, ns, *, name):
         super().__init__(ns, error= f"{ns.resolution}.{name}: Definition  >>{name}<< should be a file with .yaml extension. Found a directory instead with {name}")
         
+class DefinitionNameNotADirectoryError(NamespaceError):
+    
+    def __init__(self, ns, *, name):
+        super().__init__(ns, error= f"{ns.resolution}.{name}: Definition  >>{name}<< should be a directory. Found a file instead with {name}")
+        
+class NamespaceDirectoryMissingPackageFileError(NamespaceError):
+
+    def __init__(self, ns, * name):
+        super().__init__(ns, error= f"{ns.resolution}.{name}: Namespace  >>{name}<< directory  does not contain the mandatory __init__.yaml file.")   
+        
 class DefinitionFileWithoutExtensionError(NamespaceError):
     
     def __init__(self, ns, *, name):

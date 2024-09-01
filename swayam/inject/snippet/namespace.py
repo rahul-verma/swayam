@@ -25,7 +25,7 @@ class SnippetNamespace(Namespace):
     def __init__(self, path, resolution=None):
         super().__init__(type="Snippet", path=path, resolution=resolution)  
 
-    def handle_current_name_as_dir(self, *, name, path, resolution):
+    def handle_current_name_as_package(self, *, name, path, resolution, **kwargs):
         return SnippetNamespace(path=path, resolution=resolution)
     
     def handle_current_name_as_definition(self, *, name, path, resolution, purpose, content):

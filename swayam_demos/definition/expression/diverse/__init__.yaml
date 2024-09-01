@@ -1,0 +1,7 @@
+purpose: Using different styles of prompts
+prompts:
+  - text
+  - image
+  - output_structure
+  - tool_calling
+  - purpose

@@ -1,5 +1,5 @@
 purpose: Demo Dynamic Expression
 
-prompt_defs:
+prompts:
   - plan_a_trip
   - plan_a_trip_thought

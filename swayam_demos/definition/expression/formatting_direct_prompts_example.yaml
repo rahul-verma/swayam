@@ -1,6 +1,0 @@
-purpose: Demo Dynamic Expression
-
-prompts:
-  - I am planning a trip to {city} in {month}. Create a list of places worth seeing there.
-  - purpose: Get details for {thought}
-    text: What should I keep in mind from the directive of {thought}?

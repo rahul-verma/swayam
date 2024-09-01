@@ -1,8 +1,8 @@
 directive: |
   From now on, act as {persona}. Answer my queries related to my planned trip as best as you can, but don't guess. If you don't know the answer, just say so. 
 
-purpose: Using Dynamic System Prompt String
+purpose: Using a Dynamic Directive
 
-prompt_defs:
-  - trip_command
-  - trip_query
+prompts:
+  - plan_a_trip
+  - plan_a_trip_task

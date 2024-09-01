@@ -29,7 +29,7 @@ sys.path.insert(0, __root_dir)
 
 from swayam.core.facade import Swayam
 from swayam.llm.prompt import Prompt
-# from swayam.llm.expression import Expression
+from swayam.llm.expression import Expression
 # from swayam.llm.thought import Thought
 from swayam.inject.structure import Structure
 from swayam.inject.tool import Tool
