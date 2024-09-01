@@ -53,3 +53,4 @@ class PromptNarrator:
         
     def reset(self):
         self.__narrative = ExpressionNarrative()
+        self.__recorder.reset()

@@ -20,15 +20,15 @@ from swayam.llm.expression.narrative import ExpressionNarrative
 class Recorder:
     
     def __init__(self, recorder_config):
-        self.__reporters = []
+        self.__recorders = []
         
         from .console import ConsoleRecorder
         from .html import HtmlRecorder
         if recorder_config.display:
-            self.__reporters.append(ConsoleRecorder())
+            self.__recorders.append(ConsoleRecorder())
             
         if recorder_config.record_html:
-            self.__reporters.append(HtmlRecorder(config=recorder_config))
+            self.__recorders.append(HtmlRecorder(config=recorder_config))
             
     def record_begin_expression(self, expression) -> None:
         """
@@ -37,8 +37,8 @@ class Recorder:
         Args:
             prompt (Prompt): The prompt to report.
         """
-        for reporter in self.__reporters:
-            reporter.record_begin_expression(expression)
+        for recorder in self.__recorders:
+            recorder.record_begin_expression(expression)
             
     def record_directive(self, directive) -> None:
         """
@@ -47,8 +47,8 @@ class Recorder:
         Args:
             prompt (Prompt): The prompt to report.
         """
-        for reporter in self.__reporters:
-            reporter.record_directive(prompt)
+        for recorder in self.__recorders:
+            recorder.record_directive(prompt)
 
     def record_prompt(self, prompt) -> None:
         """
@@ -57,8 +57,8 @@ class Recorder:
         Args:
             prompt (Prompt): The prompt to report.
         """
-        for reporter in self.__reporters:
-            reporter.record_prompt(prompt)
+        for recorder in self.__recorders:
+            recorder.record_prompt(prompt)
     
     def record_narrative(self, narrative:ExpressionNarrative) -> None:
         """
@@ -67,8 +67,8 @@ class Recorder:
         Args:
             narrative (ExpressionNarrative): Narrative object with all input messages.
         """
-        for reporter in self.__reporters:
-            reporter.record_narrative(narrative)
+        for recorder in self.__recorders:
+            recorder.record_narrative(narrative)
  
     def record_response(self, prompt, message:dict) -> None:
         """
@@ -77,8 +77,8 @@ class Recorder:
         Args:
             message (dict): Response dict from LLM.
         """
-        for reporter in self.__reporters:
-            reporter.record_response(prompt, message)
+        for recorder in self.__recorders:
+            recorder.record_response(prompt, message)
             
     def record_tool_response(self, response) -> None:
         """
@@ -87,12 +87,19 @@ class Recorder:
         Args:
             message (dict): ToolResponse object
         """
-        for reporter in self.__reporters:
-            reporter.record_tool_response(response)
+        for recorder in self.__recorders:
+            recorder.record_tool_response(response)
             
     def finish(self) -> None:
         """
         Broadcasts finish signal.
         """
-        for reporter in self.__reporters:
-            reporter.finish()
+        for recorder in self.__recorders:
+            recorder.finish()
+            
+    def reset(self) -> None:
+        """
+        Broadcasts reset signal.
+        """
+        for recorder in self.__recorders:
+            recorder.reset()

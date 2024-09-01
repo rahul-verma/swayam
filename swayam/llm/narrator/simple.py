@@ -28,6 +28,6 @@ class SimpleNarrator(PromptNarrator):
         """
         if not isinstance(prompt, str):
             raise TypeError(f"Simple Narrator cannot execute prompt of type {type(prompt)}. It must be a string.")
-        from swayam.llm.prompt.types import UserPrompt
+        from swayam.llm.prompt.prompt import UserPrompt
         super().enact(UserPrompt(text=prompt))
 

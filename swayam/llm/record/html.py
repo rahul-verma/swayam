@@ -71,11 +71,11 @@ class HtmlRecorder(Reporter):
         
         # So far the report has only one plan node with one thought node.
 
-    def __get_strategy_children_node(self):
+    def __get_story_children_node(self):
         return self.__json_data[-1]["children"]
     
     def __get_thought_children_node(self):
-        return self.__get_strategy_children_node()[-1]["children"]
+        return self.__get_story_children_node()[-1]["children"]
     
     def __get_expression_node(self):
         return self.__get_thought_children_node()[-1]
@@ -98,7 +98,7 @@ class HtmlRecorder(Reporter):
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
             
-    def record_begin_expression(self, expression) -> None:
+    def record_begin_expression(self, expression=None) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -109,22 +109,26 @@ class HtmlRecorder(Reporter):
         if self.__json_data == []:
             # Add Story Node
             self.__json_data.append({
-                                    "id": "strategy_node_" + uuid4().hex,
+                                    "id": "story_node_" + uuid4().hex,
                                     "text": "Story",
                                     "children": []   
                                 })
             
             # The Thought node
-            self.__get_strategy_children_node().append({
+            self.__get_story_children_node().append({
                                         "id": "thought_node_" + uuid4().hex,
                                         "text": "Thought",
                                         "children": []
                                     })
 
+        if not expression:
+            expression_purpose = "Expression"
+        else:
+            expression_purpose = expression.purpose
         expression_id = "expression_" + uuid4().hex
         self.__get_thought_children_node().append({
                                     "id": expression_id,
-                                    "text": f"{expression.purpose}",
+                                    "text": f"{expression_purpose}",
                                     "data": {
                                         "content": [{
                                                 "heading": "Expression ID",
@@ -171,8 +175,7 @@ class HtmlRecorder(Reporter):
         """
         
         if self.__json_data == []:
-            from swayam import Expression
-            self.record_begin_expression(Expression.texts("Hi"))
+            self.record_begin_expression()
         
         log_debug("Begin: Reporting Narrative.")
         narrative_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_narrative.json"
@@ -356,10 +359,13 @@ class HtmlRecorder(Reporter):
         """
         Finishes report creation.
         """
-        # !!!Should always be referred from reporting_config as it is a global object updated by Narrator from one execution to another.
-        webbrowser.open("file://" + self.__html_record_path)
-
-
-        
+        pass
+    
+    def reset(self) -> None:
+        """
+        Resets the report.
+        """
+        self.__json_data = []
+        self.record_begin_expression()
 
 

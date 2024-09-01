@@ -54,27 +54,28 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
-        response = self.__client.execute_messages(messages=narrative.messages, output_structure=prompt.output_structure, tools=prompt.tools)
+        llm_response = self.__client.execute_messages(messages=narrative.messages, output_structure=prompt.output_structure, tools=prompt.tools)
         log_debug("Handling Response.")
-        output_message = response.choices[0].message
-        llm_response = LLMResponse(output_message)
         
         narrative.append_assistant_response(llm_response.as_dict())
         self.recorder.record_narrative(narrative)
         
         self.recorder.record_response(prompt, llm_response)
         log_debug("Updated Narrative with Response message.")
+        
+        if llm_response.error:
+            raise ValueError("There was an error in the LLM request. The response was returned as None.")
 
-    #     if output_message.tool_calls:
-    #         response_messages = []
-    #         for tool in output_message.tool_calls:
-    #             tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
-    #             self.recorder.record_tool_response(tool_response)
-    #             response_messages.append(tool_response)
-    #             expression_narrative.append_tool_response(tool_response)
-    #             self.recorder.record_narrative(expression_narrative)
-    #     else: 
-    #         response_messages = output_message
+        if llm_response.message.tool_calls:
+            response_messages = []
+            for tool in llm_response.message.tool_calls:
+                tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
+                self.recorder.record_tool_response(tool_response)
+                response_messages.append(tool_response)
+                narrative.append_tool_response(tool_response)
+                self.recorder.record_narrative(narrative)
+        else:
+            response_messages = llm_response.message
             
     # if expression.should_store_response:
     #     stored_message = response_messages

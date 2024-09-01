@@ -19,6 +19,7 @@ import os
 from .prompt import UserPrompt
 from swayam.namespace.namespace import Namespace
 from swayam.namespace.error import *
+from swayam.core.caller import get_caller_module_file_location
 
 class PromptNamespace(Namespace):
     
@@ -39,7 +40,8 @@ class PromptNamespace(Namespace):
             try:
                 return UserPrompt(**Structure.Prompt(**content).as_dict())
             except Exception as e:
-                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Structure.Prompt.keys}]. Error: {e}")
+                import traceback
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Structure.Prompt.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
         else:
             raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
         

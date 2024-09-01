@@ -19,12 +19,13 @@ import json
 from enum import Enum
 from typing import *
 from swayam.inject.error import *
+from swayam.inject.injectable import Injectable
 
 from pydantic import BaseModel, ValidationError
 
 from .error import *
 
-class IOStructureObject:
+class IOStructureObject(Injectable):
     
     def __init__(self, structure, instance):
         self.__structure = structure
@@ -50,32 +51,20 @@ class IOStructureObject:
         return self.__model_instance.model_dump()
     
     def __getattr__(self, key):
-        try:
-            return getattr(self.__model_instance, key)
-        except AttributeError as e:
-            raise StructureAttributeDoesNotExistError(self, key)
+        if key in self.structure.keys:
+                return getattr(self.__model_instance, key)
+        else:
+            raise StructureAttributeDoesNotExistError(self, attribute=key)
         
-    def __getitem__(self, key):
-        try:
-            return getattr(self.__model_instance, key)
-        except AttributeError as e:
-            raise StructureAttributeDoesNotExistError(self, key)
+    __getitem__ = __getattr__
 
 
 # Define a base class `Structure` that inherits from `BaseModel`
-class IOStructure:
+class IOStructure(Injectable):
     
     def __init__(self, name, model:BaseModel):
-        self.__name = name
+        super().__init__(type="Structure", name=name)
         self.__data_model = model
-        
-    @property
-    def type(self):
-        return "Structure"
-        
-    @property
-    def name(self):
-        return self.__name
         
     @property
     def data_model(self):

@@ -23,6 +23,18 @@ kallable = callable
         
 class Injectable:
     
+    def __init__(self, *, type, name):
+        self.__type = type
+        self.__name = name
+        
+    @property
+    def type(self):
+        return self.__type
+    
+    @property
+    def name(self):
+        return self.__name
+    
     @classmethod
     def raise_import_exception(cls, type, name, module_name, e):
         this_object = Injectable.create_metadata_object(type=type, name=name, module_name=module_name)

@@ -24,5 +24,5 @@ class StructureValidationError(InjectableObjectError):
         
 class StructureAttributeDoesNotExistError(InjectableObjectError):
     
-    def __init__(self, structure, *, attribute):
-        super().__init__(structure, error=f"Attribute {attribute} does not exist in structure {structure}.")
+    def __init__(self, structure_object, *, attribute):
+        super().__init__(structure_object.structure, error=f"Attribute {attribute} does not exist in structure {structure_object.as_dict()}.")

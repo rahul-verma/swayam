@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
+from typing import Union, List
 from pydantic import BaseModel, Field
 
 from swayam import Structure
@@ -25,5 +25,6 @@ class PromptModel(BaseModel):
     text: str = Field(..., title="Text Content", description="Text content")
     image: Union[str,None] = Field(None, description="Full or Project Relative Path of the image file. Must include file name.", examples=["/home/user/abc.png", "user/file.jpeg"])
     output_structure: Union[str, None] = Field(None, description="Output Structure of the prompt")
+    tools: List[str] = Field([], description="List of tools to be used in the prompt")
     
 Prompt = Structure.build("Prompt", model=PromptModel)

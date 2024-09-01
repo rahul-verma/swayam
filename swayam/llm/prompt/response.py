@@ -17,8 +17,14 @@
 
 class LLMResponse:
     
-    def __init__(self, message, **kwargs) -> None:
+    def __init__(self, message, *, error=False) -> None:
         self.__message = message
+        self.__error = error
+        if error:
+            self.__content = self.__message["content"]
+        else:
+            self.__content = self.__message.content
+        
         
     @property
     def message(self):
@@ -26,7 +32,34 @@ class LLMResponse:
     
     @property
     def content(self):
-        return self.__message.content
+        return self.__content
+    
+    @property
+    def error(self):
+        return self.__error
     
     def as_dict(self) -> dict:
-        return self.__message.to_dict()
+        if self.__error:
+            return self.__message
+        else:
+            return self.__message.to_dict()
+        
+        
+class ToolResponse:
+    
+    def __init__(self, *, tool_id, tool_name, content):
+        self.__tool_id = tool_id
+        self.__tool_name = tool_name
+        self.__content = content
+        
+    @property
+    def tool_id(self):
+        return self.__tool_id
+    
+    @property
+    def tool_name(self):
+        return self.__tool_name
+    
+    @property
+    def content(self):
+        return self.__content

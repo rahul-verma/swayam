@@ -19,8 +19,7 @@ kallable = callable
 
 import inspect
 from .error import *
-from swayam import Structure
-from swayam.inject.structure.structure import IOStructureObject
+
 from swayam.inject import Injectable
 class StructuredInjectable:
     
@@ -127,6 +126,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
             raise InjectableCallError(self, error=str(e) + f". Check: {frame_str}")
         
     def validate_output(self, output):
+        from swayam.inject.structure.structure import IOStructureObject
         if not isinstance(output, IOStructureObject):
             if output is None and self.allow_none_output:
                 return Structure.NoneValue()

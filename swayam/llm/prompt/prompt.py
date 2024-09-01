@@ -30,7 +30,9 @@ class UserPrompt:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = f"User Prompt"
+            self.__purpose = f"Prompt"
+        else:
+            self.__purpose = f"Prompt: {self.__purpose}"
         self.__content = text
         self.__output_structure = output_structure
         if self.__output_structure is not None:
@@ -38,6 +40,14 @@ class UserPrompt:
             self.__output_structure = getattr(Structure, self.__output_structure)
         
         self.__tools = tools
+        self.__tool_definitions = None
+        self.__tool_dict = {}
+        
+        if self.__tools:
+            from swayam import Tool
+            self.__tools = [getattr(Tool, tool) for tool in tools]
+            self.__tool_definitions = [tool.definition for tool in self.__tools]
+            self.__tool_dict = {tool.name: tool for tool in self.__tools}
         
         self.__message = {
             "role": self.__role,
@@ -50,12 +60,6 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
 
-        self.__tool_definitions = None
-        self.__tool_dict = {}
-        if tools is not None:
-            self.__tool_definitions = [tool.definition for tool in tools]
-            self.__tool_dict = {tool.name: tool for tool in tools}
-            
     def dynamic_format(self, store):
         updated_content = self.__message["content"]
         if self.image:
@@ -115,8 +119,8 @@ class UserPrompt:
         tool = self.__tool_dict.get(tool_name)
         if tool:
             tool_response = tool(**kwargs)
-            tool_response.tool_id = tool_id
-            return tool_response
+            from .response import ToolResponse
+            return ToolResponse(tool_id=tool_id, tool_name=tool_name, content=tool_response)
         else:
             raise ValueError(f"Tool {tool_name} not defined for this prompt.")
 

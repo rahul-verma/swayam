@@ -105,3 +105,6 @@ class ConsoleRecorder(Reporter):
         Finishes report creation.
         """
         print("-"* 80) 
+        
+    def reset(self) -> None:
+        pass
