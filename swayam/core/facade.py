@@ -93,8 +93,15 @@ class _SwayamSingleton:
         """
         from swayam.llm.narrator.simple import SimpleNarrator
         self.__default_narrator.reset()
+        
+class SwayamMeta(type):
+    
+    def __getattr__(cls, name):
+        from swayam.llm.narrator import Narrator
+        if name == "narrator":
+            return Narrator()
 
-class Swayam:
+class Swayam(metaclass=SwayamMeta):
     '''
         Swayam is the facade of Swayam framework.
         Contains static methods which wrapper an internal singleton class for easy access to top-level Swayam functions.
@@ -137,18 +144,3 @@ class Swayam:
         Resets the default narrator.
         """
         cls._SWAYAM_SINGLETON.reset_narrator()
-    
-    @classmethod
-    def narrator(cls, display=False, record_html=True, run_id=None):
-        """
-        Creates an Narrator.
-        
-        Args:
-            display (bool, optional): If True, the narrator will display the console output. Defaults to False.
-            record_html (bool, optional): If True, the narrator will create a report in HTML format. Defaults to True.
-            run_id ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same run_id append results to that report.
-
-        Returns:
-            SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
-        """
-        return cls._SWAYAM_SINGLETON.narrator(display=display, record_html=record_html, run_id=run_id)
