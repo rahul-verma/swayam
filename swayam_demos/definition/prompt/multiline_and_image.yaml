@@ -1,3 +1,4 @@
+purpose: Demo Image and Multiline Prompt
 image: data/images/5EModel.png
 text: |
   I am providing you an image of a visual model.
