@@ -17,12 +17,11 @@
 
 from datetime import datetime
 from tarkash import log_debug
-from .narrative import NarratorNarrative
+from swayam.llm.expression.narrative import ExpressionNarrative
 
 class SimpleNarrator:
     
     def __init__(self):
-        self.__narrative = NarratorNarrative()
         from swayam.llm.config.report import RecorderConfig
         self.__recorder_config = RecorderConfig(display=True, record_html=False)
             
@@ -30,6 +29,8 @@ class SimpleNarrator:
         log_debug(f"Creating Listener")
         self.__recorder = Recorder(self.__recorder_config)
         log_debug("Narrator initialized.")
+        
+        self.__narrative = ExpressionNarrative()
     
     def enact(self, prompt):
         """
@@ -43,5 +44,8 @@ class SimpleNarrator:
         from swayam.llm.enactor.prompt import PromptEnactor
         log_debug(f"Executing prompt.")
         enactor = PromptEnactor(recorder=self.__recorder)
-        enactor.enact(UserPrompt(text=prompt))
+        enactor.enact(UserPrompt(text=prompt), narrative=self.__narrative)
         self.__recorder.finish()
+        
+    def reset(self):
+        self.__narrative = ExpressionNarrative()

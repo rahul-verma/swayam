@@ -86,6 +86,13 @@ class _SwayamSingleton:
         """
         from swayam.llm.narrator.prompt import SimpleNarrator
         return SimpleNarrator(display=display, record_html=record_html, run_id=run_id)
+    
+    def reset_narrator(self):
+        """
+        Resets the default narrator.
+        """
+        from swayam.llm.narrator.simple import SimpleNarrator
+        self.__default_narrator.reset()
 
 class Swayam:
     '''
@@ -124,6 +131,12 @@ class Swayam:
             raise TypeError("Prompt should be a string")
         return cls._SWAYAM_SINGLETON.default_narrator.enact(prompt)
     
+    @classmethod
+    def reset_narrator(cls):
+        """
+        Resets the default narrator.
+        """
+        cls._SWAYAM_SINGLETON.reset_narrator()
     
     @classmethod
     def narrator(cls, display=False, record_html=True, run_id=None):
