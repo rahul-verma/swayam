@@ -80,7 +80,7 @@ class ExpressionDir:
             
         expression_kwargs ={
             "purpose": content.get("purpose", cls._create_purpose_from_file_name(name)),
-            "perspective": content.get("perspective", None),
+            "directive": content.get("directive", None),
             "image": content.get("image", None),
             "output_structure": content.get("output_structure", None),
             "tools": content.get("tools", None),
@@ -90,29 +90,29 @@ class ExpressionDir:
         }
         
         if type(content) is not dict:
-            raise TypeError(f"Invalid format of expression file: {name}. Expected a YAML dictionary with the allowed keys: [perspective, prompts, prompt_defs, purpose, image, output_structure, tools]")  
+            raise TypeError(f"Invalid format of expression file: {name}. Expected a YAML dictionary with the allowed keys: [directive, prompts, prompt_defs, purpose, image, output_structure, tools]")  
         
         if "prompts" in content and "prompt_defs" in content:
             raise ValueError(f"A expression file cannot contain both 'prompts' and 'prompt_defs' keys. Choose one.")
         
-        if "perspective" in content and "perspective_def" in content:
-            raise ValueError(f"A expression file cannot contain both 'perspective' and 'perspective_def' keys. Choose one.")
+        if "directive" in content and "directive_def" in content:
+            raise ValueError(f"A expression file cannot contain both 'directive' and 'directive_def' keys. Choose one.")
         
         # System Prompt
-        if expression_kwargs["perspective"] is not None and type(expression_kwargs["perspective"]) is not str:
-            raise ValueError(f"Invalid format of 'perspective' key in expression file: {name}. Expected a string. Found: {type(expression_kwargs['perspective'])}")
+        if expression_kwargs["directive"] is not None and type(expression_kwargs["directive"]) is not str:
+            raise ValueError(f"Invalid format of 'directive' key in expression file: {name}. Expected a string. Found: {type(expression_kwargs['directive'])}")
         
-        if "perspective" in content:
-            if type(content["perspective"]) is not str:
-                raise ValueError(f"The perspective key in a expression file must be a string. Found: {type(content['perspective'])}") 
-            expression_kwargs["perspective"] = load_prompts_from_direct_content("system", [content["perspective"]])
-        elif "perspective_def" in content:
-            if type(content["perspective_def"]) is not str:
-                raise ValueError(f"The perspective_def key in a expression file must be a string. Found: {type(content['perspective_def'])}") 
-            expression_kwargs["perspective"]  = load_prompts_from_definitions("system", [content["perspective_def"]])
+        if "directive" in content:
+            if type(content["directive"]) is not str:
+                raise ValueError(f"The directive key in a expression file must be a string. Found: {type(content['directive'])}") 
+            expression_kwargs["directive"] = load_prompts_from_direct_content("system", [content["directive"]])
+        elif "directive_def" in content:
+            if type(content["directive_def"]) is not str:
+                raise ValueError(f"The directive_def key in a expression file must be a string. Found: {type(content['directive_def'])}") 
+            expression_kwargs["directive"]  = load_prompts_from_definitions("system", [content["directive_def"]])
                    
         """
-        *prompts:UserPrompt, purpose:str=None, perspective:Union[str,Perspective]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None)
+        *prompts:UserPrompt, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None)
         """
         for key, allowed_type in [("purpose", str), ("image", str), ("output_structure",str), ("tools", list)]:
             if key in content:

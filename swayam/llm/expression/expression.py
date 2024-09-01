@@ -20,19 +20,19 @@ from typing import Any, Union
 
 from tarkash import log_debug
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import Perspective, UserPrompt
+from swayam.llm.prompt.types import Directive, UserPrompt
 from .narrative import ExpressionNarrative
 from swayam.inject.structure.structure import IOStructure
 
 class LLMExpression:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, perspective:Perspective=None, narrative:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, directive:Directive=None, narrative:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Expression"
         self.__narrator_narrative = narrative
-        self.__perspective = perspective
+        self.__directive = directive
         self.__image = image
         self.__output_structure = output_structure
         self.__tools = tools
@@ -102,20 +102,20 @@ class LLMExpression:
     def is_new(self):
         return len(self.__narrator_narrative.expression_narrative) == 0
         
-    def has_perspective(self):
-        return self.__perspective is not None
+    def has_directive(self):
+        return self.__directive is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def perspective(self):
-        return self.__perspective
+    def directive(self):
+        return self.__directive
         
-    @perspective.setter
-    def perspective(self, perspective:Perspective):
-        self.__perspective = perspective
+    @directive.setter
+    def directive(self, directive:Directive):
+        self.__directive = directive
         
     @property
     def narrative(self):

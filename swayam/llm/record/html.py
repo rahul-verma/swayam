@@ -138,7 +138,7 @@ class HtmlRecorder(Reporter):
                                     "children": []
                                 })
             
-    def record_perspective(self, prompt:Prompt) -> None:
+    def record_directive(self, prompt:Prompt) -> None:
         """
         Reports the system prompt details.
         

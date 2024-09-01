@@ -17,10 +17,10 @@
 
 class RecorderConfig:
     
-    def __init__(self, *, display=False, record_html=True, show_in_browser=True):
+    def __init__(self, *, display=False, record_html=True):
         self._display = display
         self._record_html = record_html
-        self._show_in_browser = show_in_browser
+        self._narration = None
 
     @property
     def display(self):
@@ -31,15 +31,7 @@ class RecorderConfig:
         return self._record_html
     
     @property
-    def show_in_browser(self):
-        return self._show_in_browser
-    
-    @show_in_browser.setter
-    def show_in_browser(self, value):
-        self._show_in_browser = value
-    
-    @property
-    def run_id(self):
-        return self._run_id        
+    def narration(self):
+        return self._narration        
         
     

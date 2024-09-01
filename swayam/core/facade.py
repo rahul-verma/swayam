@@ -54,7 +54,7 @@ class _SwayamSingleton:
         # Create default narrator
         from swayam.llm.narrator.simple import SimpleNarrator
         #print("Creating default narrator...")
-        self.__default_narrator = SimpleNarrator(display=True, record_html=False)
+        self.__default_narrator = SimpleNarrator()
     
     def __join_paths(self, *paths):
         return os.path.abspath(os.path.join(*paths))
@@ -84,7 +84,7 @@ class _SwayamSingleton:
         Returns:
             SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
         """
-        from swayam.llm.narrator.simple import SimpleNarrator
+        from swayam.llm.narrator.prompt import SimpleNarrator
         return SimpleNarrator(display=display, record_html=record_html, run_id=run_id)
 
 class Swayam:

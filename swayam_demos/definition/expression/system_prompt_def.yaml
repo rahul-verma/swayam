@@ -1,4 +1,4 @@
-perspective_def: |
+directive_def: |
   friend
 
 purpose: Using System Prompt Def

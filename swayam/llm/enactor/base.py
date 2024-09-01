@@ -23,7 +23,7 @@ from swayam.llm.config.prompt import PromptConfig
 from swayam.llm.config.model import ModelConfig
 from swayam.llm.config.report import RecorderConfig
 from tarkash.type.descriptor import DString, DNumber, DBoolean
-from swayam.llm.prompt.types import Perspective
+from swayam.llm.prompt.types import Directive
 from pydantic import BaseModel
 
 class BaseLLMEnactor(TarkashObject):
@@ -35,26 +35,17 @@ class BaseLLMEnactor(TarkashObject):
     """
     Base Class for All LLM Narrators
     """
-    def __init__(self, *, listener, name:str = "Swayam Narrator", provider:str = None, model:str = None, temperature=0, perspective:Union[str,Perspective]=None, **kwargs):
+    def __init__(self, *, recorder, name:str = "Enactor", provider:str = None, model:str = None, temperature=0, **kwargs):
+        self.__name = name
         self.__model_config = ModelConfig(provider=provider, model=model)
         self.__prompt_config = PromptConfig(temperature=temperature, **kwargs)
-        self.__listener = listener
+        self.__recorder = recorder
         super().__init__(**kwargs)
         
         self._temperature = temperature
         self._provider = self.model_config.provider
         self._model = self.model_config.model
         self.load()
-        
-        self.__default_narrator_perspective = "You are a helpful assistant who deliberates and provides useful answers to my queries."
-        if perspective is None:
-            self.__perspective = Perspective(text=self.__default_narrator_perspective)
-        elif isinstance(perspective, str):
-            self.__perspective = Perspective(text=perspective) 
-        elif isinstance(perspective, Perspective):
-            self.__perspective = perspective
-        else:
-            TypeError(f"Invalid type for perspective: {type(perspective)}. Can be either str or Perspective.")
 
     @property
     def model_config(self):
@@ -65,12 +56,12 @@ class BaseLLMEnactor(TarkashObject):
         return self.__prompt_config
     
     @property
-    def listener(self):
-        return self.__listener
+    def recorder(self):
+        return self.__recorder
     
     @property
-    def perspective(self):
-        return self.__perspective
+    def directive(self):
+        return self.__directive
     
     @abstractmethod
     def enact(self, *args, **kwargs):

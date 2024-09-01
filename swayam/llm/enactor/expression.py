@@ -20,13 +20,13 @@ from typing import Union
 
 from tarkash import log_debug
 
-from swayam.llm.prompt.types import Perspective
+from swayam.llm.prompt.types import Directive
 from swayam.llm.prompt.response import LLMResponse
 from .base import BaseLLMEnactor
 
 class ExpressionEnactor(BaseLLMEnactor):
 
-    def __init__(self, *, listener:str, model:str = None, name:str = "Expression Enactor", provider:str = None, temperature=0, perspective: Union[str,Perspective]=None, **kwargs):
+    def __init__(self, *, listener:str, model:str = None, name:str = "Expression Enactor", provider:str = None, temperature=0, directive: Union[str,Directive]=None, **kwargs):
         super().__init__(listener=listener, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
         log_debug(f"Expression Enactor {name} created")
 
@@ -46,13 +46,13 @@ class ExpressionEnactor(BaseLLMEnactor):
         if not expression.extends_previous_expression:
             self.listener.record_begin_expression(expression)
             if expression.is_new():
-                if expression.has_perspective():
+                if expression.has_directive():
                     # For dynamic variables in Narrator store
-                    expression.narrative.format_prompt(expression.perspective)
-                    expression.perspective.process_for_report()
-                    self.listener.record_perspective(expression.perspective)
+                    expression.narrative.format_prompt(expression.directive)
+                    expression.directive.process_for_report()
+                    self.listener.record_directive(expression.directive)
                     
-                    expression_narrative.append_prompt(expression.perspective)
+                    expression_narrative.append_prompt(expression.directive)
                     self.listener.record_narrative(expression_narrative)
         log_debug("Finished processing system prompt.")
         

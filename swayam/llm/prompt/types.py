@@ -20,7 +20,7 @@ from tarkash import log_debug
 from typing import Any, Union
 from swayam.inject.structure.structure import IOStructure
 
-class Perspective(BasePrompt):
+class Directive(BasePrompt):
     
     def __init__(self, *, text:str) -> Any:
         super().__init__(role="system", text=text)

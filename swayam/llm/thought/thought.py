@@ -20,19 +20,19 @@ from typing import Any, Union
 
 from tarkash import log_debug
 from swayam.llm.expression.expression import LLMExpression
-from swayam.llm.prompt.types import Perspective
+from swayam.llm.prompt.types import Directive
 from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.inject.structure.structure import IOStructure
 
 class LLMThought:
     
-    def __init__(self, *expressions:LLMExpression, purpose:str=None, perspective:Perspective=None, content:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *expressions:LLMExpression, purpose:str=None, directive:Directive=None, content:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__expressions = list(expressions)
         self.__purpose = purpose
         if self.__purpose is None:
             self.__purpose = "Thought"
         self.__narrative = None
-        self.__perspective = perspective
+        self.__directive = directive
            
         for expression in self.__expressions:
             if image:
@@ -47,20 +47,20 @@ class LLMThought:
     def is_new(self):
         return len(self.__narrative) == 0
         
-    def has_perspective(self):
-        return self.__perspective is not None
+    def has_directive(self):
+        return self.__directive is not None
     
     @property
     def purpose(self):
         return self.__purpose
     
     @property
-    def perspective(self):
-        return self.__perspective
+    def directive(self):
+        return self.__directive
         
-    @perspective.setter
-    def perspective(self, perspective:Perspective):
-        self.__perspective = perspective
+    @directive.setter
+    def directive(self, directive:Directive):
+        self.__directive = directive
         
     @property
     def narrative(self):

@@ -207,5 +207,5 @@ class BasePrompt(ABC):
 
     
     @property
-    def is_perspective(self):
+    def is_directive(self):
         return self.__role == "system"

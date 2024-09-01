@@ -17,7 +17,7 @@
 
 from typing import Union
 
-from .types import UserPrompt, Perspective
+from .types import UserPrompt, Directive
 from swayam.inject.structure.structure import IOStructure
 from .format import FormatterMediator
 from .meta import PromptMeta

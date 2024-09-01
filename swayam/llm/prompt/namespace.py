@@ -71,11 +71,11 @@ class PromptDir(ABC):
                         tools.append(getattr(Tool, tool))
 
         from swayam import Prompt
-        from swayam.llm.prompt.types import Perspective
+        from swayam.llm.prompt.types import Directive
         if role == "user":
             return Prompt.text(text, purpose=purpose, image=image, output_structure=output_structure, tools=tools, role=role)
         else:
-            return Perspective(text=text)
+            return Directive(text=text)
         
     def __getattr__(self, name):
         role = self.__dict__["_role"]
@@ -88,7 +88,7 @@ class UserPromptDir(PromptDir):
     def __init__(self):
         super().__init__(role="user")
         
-class PerspectiveDir(PromptDir):
+class DirectiveDir(PromptDir):
     
     def __init__(self):
         super().__init__(role="system")

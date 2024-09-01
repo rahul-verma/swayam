@@ -1,4 +1,4 @@
 purpose: Using Dynamic System as well as Prompt Defs
 
 expression_defs:
-  - perspective_dyn_string_dynamic_prompts
+  - directive_dyn_string_dynamic_prompts

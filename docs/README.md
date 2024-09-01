@@ -34,7 +34,7 @@ To Do
 
 ## Thought
 
-A thought has a Perspective with which the expressions and hence prompts need to work. This perspective is sent as the system prompt to an LLM.
+A thought has a Directive with which the expressions and hence prompts need to work. This directive is sent as the system prompt to an LLM.
 
 To Do
 - Thought as a package

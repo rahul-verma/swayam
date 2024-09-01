@@ -17,4 +17,4 @@ prompts:
   - purpose: |
       Get details for Visa
     text: |
-      What should I keep in mind from the perspective of Visa?
+      What should I keep in mind from the directive of Visa?

@@ -1,4 +1,4 @@
-perspective: |
+directive: |
   From now on, act as {persona}. Answer my queries related to my planned trip as best as you can, but don't guess. If you don't know the answer, just say so. 
 
 purpose: Using Dynamic System Prompt String

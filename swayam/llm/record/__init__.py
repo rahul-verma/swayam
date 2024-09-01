@@ -18,7 +18,7 @@
 
 from abc import ABC, abstractmethod
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import Perspective
+from swayam.llm.prompt.types import Directive
 from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.llm.prompt.response import LLMResponse
 

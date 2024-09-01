@@ -1,4 +1,4 @@
 purpose: |
   Get details for {thought}
 text: |
-  What should I keep in mind from the perspective of {thought}?
+  What should I keep in mind from the directive of {thought}?

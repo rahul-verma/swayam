@@ -20,7 +20,7 @@ from typing import Union
 from swayam.llm.expression.file import ExpressionFile
 from swayam.llm.expression.expression import LLMExpression
 from swayam.llm.prompt.file import PromptFile
-from swayam.llm.prompt.types import Perspective, UserPrompt
+from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
 from swayam.inject.structure.structure import IOStructure
 
@@ -29,7 +29,7 @@ class ThoughtFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def expression_files(self, *expression_files:ExpressionFile, purpose:str=None, perspective:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMExpression:
+    def expression_files(self, *expression_files:ExpressionFile, purpose:str=None, directive:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMExpression:
         from swayam.llm.expression.format import ExpressionFormatter
         from swayam.llm.expression.repeater import DynamicExpressionFile
         
@@ -47,23 +47,23 @@ class ThoughtFormatter:
             else:
                 raise ValueError(f"Invalid expression type: {type(expression_file)}. Should be a ExpressionFile object.") 
             
-        if perspective:
-            if not isinstance(perspective, PromptFile) and not isinstance(perspective, Perspective):
-                raise ValueError(f"Invalid system prompt type: {type(perspective)}. Should be a Perspective or PromptFile object.")  
-            elif not perspective.role == "system":
-                raise ValueError(f"Invalid prompt role: {perspective.role}. Should be a system prompt.")
+        if directive:
+            if not isinstance(directive, PromptFile) and not isinstance(directive, Directive):
+                raise ValueError(f"Invalid system prompt type: {type(directive)}. Should be a Directive or PromptFile object.")  
+            elif not directive.role == "system":
+                raise ValueError(f"Invalid prompt role: {directive.role}. Should be a system prompt.")
             
-            if isinstance(perspective, PromptFile):
-                system_formatter = PromptFormatter(role=perspective.role, **self.__fmt_kwargs)
-                perspective = getattr(system_formatter, perspective.file_name)
-                if not isinstance(perspective, Perspective):
+            if isinstance(directive, PromptFile):
+                system_formatter = PromptFormatter(role=directive.role, **self.__fmt_kwargs)
+                directive = getattr(system_formatter, directive.file_name)
+                if not isinstance(directive, Directive):
                     raise ValueError(f"There has been a critical framework issue in creating a system prompt.")
             else:
                 # If a system prompt is provided directly, it is NOT formatted.
                 pass
 
         from swayam import Thought
-        return Thought.expressions(*expressions, purpose=purpose, perspective=perspective, image=image, output_structure=output_structure, tools=tools)
+        return Thought.expressions(*expressions, purpose=purpose, directive=directive, image=image, output_structure=output_structure, tools=tools)
     
     def __getattr__(self, name):
         from .namespace import ThoughtDir
