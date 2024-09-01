@@ -229,7 +229,7 @@ class HtmlRecorder(Reporter):
         if expected_output_structure is None:
             expected_output_structure = "Not specified."
         else:
-            expected_output_structure = expected_output_structure.data_model.model_json_schema()
+            expected_output_structure = expected_output_structure.definition
 
         prompt_content_node.append({
                     "heading": "Expected Response Format",

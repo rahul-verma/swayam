@@ -259,21 +259,21 @@
                                         "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/narration/test/json/expression_079dbb7dedf2458b96eada53001377d2_narrative.json",
                                         {
                                             "role": "user",
-                                            "content": [
-                                                {
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "type": "image_url",
-                                                    "description": "data:image/png;base64, <Base64 encoded content of /Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png>.",
-                                                    "local_path": "/Users/rahulverma/Documents/GitHub/swayam/swayam_demos/data/images/5EModel.png"
-                                                }
-                                            ]
+                                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
                                         },
                                         {
-                                            "content": "The image presents the \"5E Mental Model for LLM-Assisted Pluralistic Testing,\" structured into several phases and components. Here\u2019s a breakdown of the various phases shown in the model:\n\n### Phases:\n\n1. **Engage**:\n   - Focuses on identifying and testing the problem.\n   - Key activities include taking charge, defining roles between humans and LLMs, and assessing if the right questions are being asked.\n\n2. **Explore**:\n   - Involves determining if the problem is appropriate for exploration.\n   - Activities include conducting prompting experiments, comparing LLMs and models, and evaluating readiness criteria and hyper-parameters.\n\n3. **Engineer**:\n   - Centers on the technical aspects of implementing solutions.\n   - This phase includes working with base LLMs, prompt engineering, and knowledge augmentation, as well as tuning and deployment.\n\n4. **Embed**:\n   - Focuses on integrating solutions into existing frameworks.\n   - Key components include defining roles for participants (humans and LLMs), establishing protocols, and assessing the degree of solution autonomy.\n\n5. **Evolve**:\n   - Emphasizes continuous improvement and adaptation.\n   - This phase involves evaluating fairness, transparency, accountability, and the overall effectiveness of the solutions.\n\n### Additional Components:\n\n- **Participants in the Loop (PIL)**: Involves humans and LLMs as verifiers, solvers, and augmenters.\n- **Translators and Invokers**: Facilitate communication between recipients (consumers and listeners) and the solutions.\n- **Feedback & Adaptation**: A continuous process that runs alongside all phases, ensuring that insights and results are used to refine and improve the approach.\n\n### Key Considerations:\n- The model highlights the importance of quick feedback loops and adaptability throughout the testing process.\n- It also emphasizes the need for a structured approach to ensure that solutions are effective and meet the desired criteria.\n\nThis model serves as a comprehensive framework for understanding and implementing LLM-assisted testing in a systematic manner.",
+                                            "content": "{\"event_name\":\"Science Fair\",\"event_date\":\"Friday\",\"event_participants\":[\"Alice\",\"Bob\"],\"event_city\":[] }",
                                             "refusal": null,
-                                            "role": "assistant"
+                                            "role": "assistant",
+                                            "parsed": {
+                                                "event_name": "Science Fair",
+                                                "event_date": "Friday",
+                                                "event_participants": [
+                                                    "Alice",
+                                                    "Bob"
+                                                ],
+                                                "event_city": []
+                                            }
                                         }
                                     ]
                                 }
@@ -386,6 +386,86 @@
                                         {
                                             "heading": "Response Content",
                                             "content": "The image presents the \"5E Mental Model for LLM-Assisted Pluralistic Testing,\" structured into several phases and components. Here\u2019s a breakdown of the various phases shown in the model:\n\n### Phases:\n\n1. **Engage**:\n   - Focuses on identifying and testing the problem.\n   - Key activities include taking charge, defining roles between humans and LLMs, and assessing if the right questions are being asked.\n\n2. **Explore**:\n   - Involves determining if the problem is appropriate for exploration.\n   - Activities include conducting prompting experiments, comparing LLMs and models, and evaluating readiness criteria and hyper-parameters.\n\n3. **Engineer**:\n   - Centers on the technical aspects of implementing solutions.\n   - This phase includes working with base LLMs, prompt engineering, and knowledge augmentation, as well as tuning and deployment.\n\n4. **Embed**:\n   - Focuses on integrating solutions into existing frameworks.\n   - Key components include defining roles for participants (humans and LLMs), establishing protocols, and assessing the degree of solution autonomy.\n\n5. **Evolve**:\n   - Emphasizes continuous improvement and adaptation.\n   - This phase involves evaluating fairness, transparency, accountability, and the overall effectiveness of the solutions.\n\n### Additional Components:\n\n- **Participants in the Loop (PIL)**: Involves humans and LLMs as verifiers, solvers, and augmenters.\n- **Translators and Invokers**: Facilitate communication between recipients (consumers and listeners) and the solutions.\n- **Feedback & Adaptation**: A continuous process that runs alongside all phases, ensuring that insights and results are used to refine and improve the approach.\n\n### Key Considerations:\n- The model highlights the importance of quick feedback loops and adaptability throughout the testing process.\n- It also emphasizes the need for a structured approach to ensure that solutions are effective and meet the desired criteria.\n\nThis model serves as a comprehensive framework for understanding and implementing LLM-assisted testing in a systematic manner."
+                                        },
+                                        {
+                                            "heading": "Tool Calls Suggested by LLM",
+                                            "content": "No suggestions."
+                                        }
+                                    ]
+                                },
+                                "children": []
+                            },
+                            {
+                                "id": "prompt_1a696414037b4dca9e5d379cedca87de",
+                                "text": "User Prompt",
+                                "icon": "jstree-file",
+                                "data": {
+                                    "content": [
+                                        {
+                                            "heading": "Prompt Text",
+                                            "content": "Extract event information: Alice and Bob are going to a science fair on Friday.\n"
+                                        },
+                                        {
+                                            "heading": "Expected Response Format",
+                                            "content": {
+                                                "properties": {
+                                                    "event_name": {
+                                                        "description": "Name of the event",
+                                                        "type": "string"
+                                                    },
+                                                    "event_date": {
+                                                        "description": "Date on which the event takes place.",
+                                                        "type": "string"
+                                                    },
+                                                    "event_participants": {
+                                                        "description": "Names of participants.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "event_city": {
+                                                        "description": "City where the event takes place.",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "event_name",
+                                                    "event_date",
+                                                    "event_participants",
+                                                    "event_city"
+                                                ],
+                                                "title": "CalendarEventModel",
+                                                "type": "object"
+                                            }
+                                        },
+                                        {
+                                            "heading": "Provided Tools",
+                                            "content": "No tool provided."
+                                        },
+                                        {
+                                            "heading": "Response Meta-Data",
+                                            "content": {
+                                                "refusal": null,
+                                                "role": "assistant",
+                                                "tool_calls": [],
+                                                "parsed": {
+                                                    "event_name": "Science Fair",
+                                                    "event_date": "Friday",
+                                                    "event_participants": [
+                                                        "Alice",
+                                                        "Bob"
+                                                    ],
+                                                    "event_city": []
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "heading": "Response Content",
+                                            "content": "{\"event_name\":\"Science Fair\",\"event_date\":\"Friday\",\"event_participants\":[\"Alice\",\"Bob\"],\"event_city\":[] }"
                                         },
                                         {
                                             "heading": "Tool Calls Suggested by LLM",

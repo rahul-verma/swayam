@@ -33,6 +33,10 @@ class UserPrompt:
             self.__purpose = f"User Prompt"
         self.__content = text
         self.__output_structure = output_structure
+        if self.__output_structure is not None:
+            from swayam import Structure
+            self.__output_structure = getattr(Structure, self.__output_structure)
+        
         self.__tools = tools
         
         self.__message = {
