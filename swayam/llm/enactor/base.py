@@ -23,7 +23,6 @@ from swayam.llm.config.prompt import PromptConfig
 from swayam.llm.config.model import ModelConfig
 from swayam.llm.config.report import RecorderConfig
 from tarkash.type.descriptor import DString, DNumber, DBoolean
-from swayam.llm.prompt.types import Directive
 from pydantic import BaseModel
 
 class BaseLLMEnactor(TarkashObject):

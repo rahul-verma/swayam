@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 from swayam.llm.prompt.types import Directive
 from swayam.llm.prompt.response import LLMResponse
-from .base import BaseLLMEnactor
+from ...swayam.llm.enactor.base import BaseLLMEnactor
 
 class ExpressionEnactor(BaseLLMEnactor):
 

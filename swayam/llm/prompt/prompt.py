@@ -14,7 +14,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+    
 import json
 
 from copy import deepcopy
@@ -24,13 +24,13 @@ from abc import ABC, abstractmethod
 from swayam.inject.structure.structure import IOStructure
 
 
-class BasePrompt(ABC):
+class UserPrompt:
     
-    def __init__(self, *, role, text, purpose=None, image=None, output_structure:IOStructure=None, tools=None) -> Any:
-        self.__role = role
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None) -> None:
+        self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = f"{role.title()} Prompt"
+            self.__purpose = f"User Prompt"
         self.__content = text
         self.__output_structure = output_structure
         self.__tools = tools
@@ -73,26 +73,6 @@ class BasePrompt(ABC):
             }
         else:
             self.__message["content"][0]["text"] = updated_content 
-        # if self.image:
-        #     print(self.__message["content"][0])
-        #     store["json_data"]
-        # if not self.image:
-        #     self.__reportable_message = deepcopy(self.__message)
-        #     self.__reportable_text = self.__message["content"]
-        # else:
-        #     self.__reportable_message = deepcopy(self.__message)
-        #     temp_content = self.__reportable_message["content"]
-        #     self.__reportable_text = temp_content
-        #     if type(temp_content) == list:
-        #         for item in temp_content:
-        #             if item["type"] == "text":
-        #                 self.__reportable_text = item["text"]
-        #                 del item["text"]
-        #             elif item["type"] == "image_url":
-        #                 prefix = self.__image.as_data_url.split(",")[0]
-        #                 item["description"] = f"{prefix}, <Base64 encoded content of {self.__image_path}>."
-        #                 item["local_path"] = self.__image_path
-        #                 del item["image_url"]
             
     def suggest_image(self, image):
         if not self.image:

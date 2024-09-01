@@ -15,8 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import Directive
 from swayam.llm.expression.narrative import ExpressionNarrative
 
 class Recorder:
@@ -42,7 +40,7 @@ class Recorder:
         for reporter in self.__reporters:
             reporter.record_begin_expression(expression)
             
-    def record_directive(self, prompt:Directive) -> None:
+    def record_directive(self, directive) -> None:
         """
         Broadcasts the system prompt details.
         
@@ -52,7 +50,7 @@ class Recorder:
         for reporter in self.__reporters:
             reporter.record_directive(prompt)
 
-    def record_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt) -> None:
         """
         Broadcasts the prompt details.
         

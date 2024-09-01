@@ -20,7 +20,6 @@ from pprint import pprint
 import typing
 
 from tarkash import singleton
-from swayam.llm.expression import Expression
 
 @singleton
 class _SwayamSingleton:

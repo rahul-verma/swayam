@@ -15,31 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union
-
-from .types import UserPrompt, Directive
-from swayam.inject.structure.structure import IOStructure
-from .format import FormatterMediator
 from .meta import PromptMeta
 
 class Prompt(metaclass=PromptMeta):
-    
-    @classmethod
-    def text(cls, text, *, purpose:str=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, role:str="user") -> UserPrompt:
-        from swayam import Tool, Structure
-        if output_structure is not None and type(output_structure) is str:
-            output_structure = getattr(Structure, output_structure)
-        if tools is not None:
-            output_tools = []
-            for tool in tools:
-                if type(tool) is str:
-                    output_tools.append(getattr(Tool, tool))
-                else:
-                    output_tools.append(tool)
-            tools = output_tools
-                
-        return UserPrompt(text=text, purpose=purpose, image=image, output_structure=output_structure, tools=tools)
-    
-    @classmethod
-    def formatter(cls, **fmt_kwargs):
-        return FormatterMediator(**fmt_kwargs)
+    pass

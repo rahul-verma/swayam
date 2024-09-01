@@ -18,7 +18,7 @@
 from datetime import datetime
 from tarkash import log_debug
 from swayam.llm.expression.narrative import ExpressionNarrative
-from swayam.llm.prompt.types import UserPrompt
+from swayam.llm.prompt.prompt import UserPrompt
 from swayam.llm.enactor.prompt import PromptEnactor
 
 class PromptNarrator:

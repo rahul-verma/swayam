@@ -15,14 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .namespace import UserPromptDir, DirectiveDir
-from .file import PromptFileFinder
+import os
+import importlib
 
-class PromptMeta(type):
+from .namespace import *
+from swayam.namespace.meta import NamespaceMeta
+from swayam.namespace.error import DefinitionNotFoundError
+from swayam.core.caller import get_caller_module_file_location
+    
+class PromptMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
-        return {
-            "user": UserPromptDir,
-            "system": DirectiveDir,
-            "file": PromptFileFinder
-        }[name]()
+        from swayam.core.constant import SwayamOption
+        from .namespace import PromptNamespace
+        cls.load_root_namespace(SwayamOption.PROMPT_DIR, PromptNamespace)
+        return getattr(cls.root, name)

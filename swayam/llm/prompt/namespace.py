@@ -16,81 +16,31 @@
 # limitations under the License.
 
 import os
-import importlib
-from abc import ABC, abstractmethod
+from .prompt import UserPrompt
+from swayam.namespace.namespace import Namespace
+from swayam.namespace.error import *
 
-
-class PromptDir(ABC):   
+class PromptNamespace(Namespace):
     
-    def __init__(self, *, role):
-        self._role = role
+    def __init__(self, path, resolution=None):
+        super().__init__(type="Prompt", path=path, resolution=resolution)  
+
+    def handle_current_name_as_dir(self, *, name, path, resolution):
+        raise DefinitionNameNotAFileError(self, name=name)
+    
+    def handle_current_name_as_definition(self, *, name, path, resolution, purpose, content):
+        from swayam import Structure
         
-    @classmethod
-    def get_path_for_prompt(cls, *, role, name):
-        from tarkash import Tarkash, YamlFile
-        from swayam.core.constant import SwayamOption
-        return os.path.join(Tarkash.get_option_value(SwayamOption.PROMPT_DIR), role, f"{name}.yaml")
-    @classmethod
-    def _create_purpose_from_file_name(cls, name):
-        return name.replace("_", " ").lower().title()
-    
-    @classmethod
-    def create_prompt_from_content(cls, role, name, content):
-        from swayam import Tool, Structure
-        text = None
-        purpose = None
-        image = None
-        output_structure = None
-        tools = None
-        if type(content) is str:
-            text = content
-            purpose = cls._create_purpose_from_file_name(name)
-        elif type(content) is dict:
-            if "text" not in content:
-                raise ValueError(f"Prompt file {name} does not contain a text key")  
-            else:
-                text = content["text"]
-            if "purpose" in content:
-                purpose = content["purpose"].strip()
-            else:
-                purpose = cls._create_purpose_from_file_name(name)
-            if "image" in content:
-                image = content["image"]
-            if "output_structure" in content:
-                output_structure = content["output_structure"].strip()
-                if output_structure:
-                    output_structure = getattr(Structure, output_structure)
-                   
-            if "tools" in content:
-                tools_content = content["tools"]
-                for tool in tools_content:
-                    tool = tool.strip()
-                    if tool:
-                        if not tools:
-                            tools = []
-                        tools.append(getattr(Tool, tool))
-
-        from swayam import Prompt
-        from swayam.llm.prompt.types import Directive
-        if role == "user":
-            return Prompt.text(text, purpose=purpose, image=image, output_structure=output_structure, tools=tools, role=role)
+        import yaml
+        content = yaml.safe_load(content)
+        if isinstance(content, str):
+            return UserPrompt(text=content, purpose=purpose)
+        elif isinstance(content, dict):
+            try:
+                return UserPrompt(**Structure.Prompt(**content).as_dict())
+            except Exception as e:
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Structure.Prompt.keys}]. Error: {e}")
         else:
-            return Directive(text=text)
-        
-    def __getattr__(self, name):
-        role = self.__dict__["_role"]
-        from tarkash import YamlFile        
-        file = YamlFile(PromptDir.get_path_for_prompt(role=role, name=name))
-        return PromptDir.create_prompt_from_content(role, name, file.content)
-
-class UserPromptDir(PromptDir):
-    
-    def __init__(self):
-        super().__init__(role="user")
-        
-class DirectiveDir(PromptDir):
-    
-    def __init__(self):
-        super().__init__(role="system")
+            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
         
         

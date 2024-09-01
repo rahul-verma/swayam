@@ -20,7 +20,7 @@ from typing import Union
 
 from tarkash import log_debug
 
-from swayam.llm.prompt.types import Directive
+from swayam.llm.prompt.prompt import UserPrompt
 from swayam.llm.prompt.response import LLMResponse
 from .base import BaseLLMEnactor
 

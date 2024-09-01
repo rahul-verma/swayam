@@ -30,6 +30,11 @@ class NamespaceIsNotADirectoryError(NamespaceError):
     def __init__(self, ns):
         super().__init__(ns, error= f"Expected a directory at the path for {ns.resolution} Namespace. Found a file instead.")
         
+class DefinitionNameNotAFileError(NamespaceError):
+    
+    def __init__(self, ns, *, name):
+        super().__init__(ns, error= f"{ns.resolution}.{name}: Definition  >>{name}<< should be a file with .yaml extension. Found a directory instead with {name}")
+        
 class DefinitionFileWithoutExtensionError(NamespaceError):
     
     def __init__(self, ns, *, name):

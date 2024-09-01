@@ -18,8 +18,6 @@
 
 from abc import ABC, abstractmethod
 from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.types import Directive
-from swayam.llm.expression.narrative import ExpressionNarrative
 from swayam.llm.prompt.response import LLMResponse
 
 class Reporter(ABC):
@@ -48,7 +46,7 @@ class Reporter(ABC):
         pass
         
     @abstractmethod
-    def record_narrative(self, narrative:ExpressionNarrative) -> None:
+    def record_narrative(self, narrative) -> None:
         """
         Reports the narrative details.
 

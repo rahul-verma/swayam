@@ -49,7 +49,7 @@ class SimpleNarrator:
     
     def __execute_expression(self, expression):
         from swayam.llm.expression.narrative import ExpressionNarrative
-        from swayam.llm.enactor.expression import ExpressionEnactor
+        from docs.enactor.expression import ExpressionEnactor
 
         if expression.reset_narrative:
             self.__narrative.reset_expression_narrative()
