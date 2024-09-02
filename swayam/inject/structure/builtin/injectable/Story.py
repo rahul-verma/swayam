@@ -15,7 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .meta import ThoughtMeta
+from typing import Union, List
+from pydantic import BaseModel, Field
 
-class Thought(metaclass=ThoughtMeta):
-    pass
+from swayam import Structure
+
+class StoryModel(BaseModel):
+    thoughts: List[str] = Field(..., title="Thought definition names", description="Thought definition names that are included in this story.")
+    purpose: Union[str,None] = Field(None, title="Purpose of the story", description="A statement describing the purpose of the story.")
+    directive: str = Field(None, title="Directive", description="Directive text for the narrative this story builds. This is the first directive in the narrative.")
+    
+Story = Structure.build("Thought", model=StoryModel)

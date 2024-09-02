@@ -15,7 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .meta import ThoughtMeta
+import os
+import importlib
 
-class Thought(metaclass=ThoughtMeta):
-    pass
+from swayam.namespace.meta import NamespaceMeta
+
+
+class ThoughtMeta(NamespaceMeta):
+    
+    def __getattr__(cls, name):
+        from swayam.core.constant import SwayamOption
+        from .namespace import ThoughtNamespace
+        cls.load_root_namespace(SwayamOption.THOUGHT_DIR, ThoughtNamespace)
+        return getattr(cls.root, name)

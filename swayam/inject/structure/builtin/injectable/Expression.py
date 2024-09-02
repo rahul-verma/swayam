@@ -22,11 +22,10 @@ from swayam import Structure
 
 class ExpressionModel(BaseModel):
     prompts: List[str] = Field(..., title="Prompt definition names", description="Prompt definition names that are included in this expression.")
-    purpose: Union[str,None] = Field(None, title="Purpose of the prompt", description="A statement describing the purpose of the prompt.")
+    purpose: Union[str,None] = Field(None, title="Purpose of the expression", description="A statement describing the purpose of the expression.")
     directive: str = Field(None, title="Directive", description="Directive text for the narrative this expression builds. Extends previous directives if any.")
     image: Union[str,None] = Field(None, title="Image for first prompt.", description="Full or Project Relative Path of the image file. Used for the first prompt in the expression and hence becomes a part of the narrative.", examples=["/home/user/abc.png", "user/file.jpeg"])
     output_structure: Union[str, None] = Field(None, title="Common output structure", description="Common output structure for all prompts that don't have an output structure of their own.")
     tools: List[str] = Field([], title="Common Tools", description="List of tools to be used in the prompts that don't have a tool list of their own.")
-    reset_narrative: bool = Field(True, title="Reset Narrative", description="If True, it resets the parent's narrative for itself. The subsequent expression receives the narrative that it results in.")
     
-Expression = Structure.build("Prompt", model=ExpressionModel)
+Expression = Structure.build("Expression", model=ExpressionModel)

@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 class UserExpression:
     
-    def __init__(self, *, prompts, purpose:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True) -> Any:
+    def __init__(self, *, prompts, purpose:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None) -> Any:
         self.__prompt_names = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
@@ -35,11 +35,8 @@ class UserExpression:
         
         self.__narrative = None
         
-        # If True, it gets an empty narrative value. Has no impact on narrative of the follow-up expressions.
-        self.__standalone = standalone
-        
-        # If True, it resets the parent's narrative for itself. The subsequent expression receives the narrative that it results in.
-        self.__reset_narrative = reset_narrative
+        if self.__output_structure and self.__tools:
+            raise ValueError("Cannot suggest both output structure and tools.")
         
     def load(self, *, prompt_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
@@ -52,22 +49,6 @@ class UserExpression:
         self.__make_image_suggestions()
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
-        
-    @property
-    def should_store_response(self):
-        return self.__store_response_as is not None
-    
-    @property
-    def response_storage_name(self):
-        return self.__store_response_as
-        
-    @property
-    def standalone(self):
-        return self.__standalone
-    
-    @property
-    def reset_narrative(self):
-        return self.__reset_narrative
 
     def __make_image_suggestions(self):
         # the image is appended only to the first prompt.
@@ -85,9 +66,6 @@ class UserExpression:
         for prompt in self.__prompts:
             if self.__tools:
                 prompt.suggest_tools(self.__tools) 
-    
-    def is_new(self):
-        return len(self.narrative) == 0
         
     def has_directive(self):
         return self.__directive is not None
@@ -149,20 +127,6 @@ class UserExpression:
         except IndexError:
             self.__index = -1
             raise StopIteration()
-        
-    def _get_first_child(self):
-        return self.__prompts[0]
-    
-
-    def suggest_image(self, image):
-        if not self.__image:
-            self.__image = image
-        self.__make_image_suggestions()
-            
-    def suggest_output_structure(self, output_structure):
-        if not self.__output_structure:
-            self.__output_structure = output_structure
-        self.__make_structure_suggestions()
             
     def suggest_tools(self, tools):
         if not self.__tools:
