@@ -16,23 +16,23 @@
 # limitations under the License.
 
 from tarkash import log_debug
-from swayam.llm.prompt.prompt import UserPrompt
-from swayam.llm.enactor.prompt import PromptEnactor
+from swayam.llm.expression.expression import UserExpression
+from swayam.llm.enactor.expression import ExpressionEnactor
 
 from .base import BaseNarrator
 
-class PromptNarrator(BaseNarrator):
+class ExpressionNarrator(BaseNarrator):
 
     def __init__(self, display=False, record_html=True, narration=None):
         super().__init__(display=display, record_html=record_html, narration=narration)
     
-    def narrate(self, prompt):
+    def narrate(self, expression):
         """
-        Narrates a prompt to a Prompt enactor.
+        Narrates an Expression to an Expression enactor.
         """
-        if not isinstance(prompt, UserPrompt):
-            raise TypeError(f"PromptNarrator cannot narrate a prompt of type {type(prompt)}. It must UserPrompt object.")
+        if not isinstance(expression, UserExpression):
+            raise TypeError(f"ExpressionNarrator cannot narrate an expression of type {type(expression)}. It must be an UserExpression object.")
         
-        log_debug(f"Narrating prompt....")
-        enactor = PromptEnactor(recorder=self.recorder)
-        enactor.enact(prompt, narrative=self.narrative)
+        log_debug(f"Executing expression.")
+        enactor = ExpressionEnactor(recorder=self.recorder)
+        enactor.enact(expression, narrative=self.narrative)

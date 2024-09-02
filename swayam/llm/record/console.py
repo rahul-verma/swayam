@@ -19,7 +19,7 @@ import os
 from pprint import pprint
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.expression.narrative import ExpressionNarrative
+from swayam.llm.expression.conversation import Conversation
 from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.record import Reporter
     
@@ -72,12 +72,12 @@ class ConsoleRecorder(Reporter):
             print(prompt.content)
         print("-" * 80)
 
-    def record_narrative(self, narrative:ExpressionNarrative) -> None:
+    def record_narrative(self, narrative:Conversation) -> None:
         """
         Reports the narrative details.
 
         Args:
-            narrative (ExpressionNarrative): Narrative object with all input messages.
+            narrative (Conversation): Narrative object with all input messages.
         """
         pass
         

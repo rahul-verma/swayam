@@ -23,3 +23,7 @@ class Narrator:
     def prompt(self, narration=None):
         from .phase.prompt import PromptNarrator
         return PromptNarrator(narration=narration)
+    
+    def expression(self, narration=None):
+        from .phase.expression import ExpressionNarrator
+        return ExpressionNarrator(narration=narration)

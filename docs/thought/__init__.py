@@ -22,9 +22,9 @@ from typing import Union
 from tarkash import log_debug
 from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.file import PromptFile
-from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.expression.expression import UserExpression
 from swayam.llm.expression.repeater import DynamicExpressionFile
-from .thought import LLMThought
+from .thought import UserThought
 from swayam.inject.structure.structure import IOStructure
 
 from .format import ThoughtFormatter
@@ -33,7 +33,7 @@ from .meta import ThoughtMeta
 class Thought(metaclass=ThoughtMeta):
     
     @classmethod
-    def expressions(cls, *expressions:LLMExpression, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMThought:
+    def expressions(cls, *expressions:UserExpression, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> UserThought:
         if len(expressions) == 0:
             raise ValueError("No expressions provided.")
         out_expressions = []
@@ -41,10 +41,10 @@ class Thought(metaclass=ThoughtMeta):
             if isinstance (expression, DynamicExpressionFile):
                 repeated_expressions = expression.create_expressions()
                 out_expressions.extend(repeated_expressions)
-            elif isinstance(expression, LLMExpression):
+            elif isinstance(expression, UserExpression):
                 out_expressions.append(expression)
             else:
-                raise ValueError(f"Invalid expression type: {type(expression)}. Should be an LLMExpression or DynamicExpressionFile object.")
+                raise ValueError(f"Invalid expression type: {type(expression)}. Should be an UserExpression or DynamicExpressionFile object.")
             
         if directive:
             if type(directive) == str:
@@ -63,7 +63,7 @@ class Thought(metaclass=ThoughtMeta):
                 else:
                     output_tools.append(tool)
             tools = output_tools
-        return LLMThought(*out_expressions, purpose=purpose, directive=directive, image=image, output_structure=output_structure, tools=tools)
+        return UserThought(*out_expressions, purpose=purpose, directive=directive, image=image, output_structure=output_structure, tools=tools)
     
     @classmethod
     def formatter(self, **fmt_kwargs):

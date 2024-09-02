@@ -22,12 +22,12 @@ class SimpleNarrator(PromptNarrator):
     def __init__(self):
         super().__init__(display=True, record_html=False)
     
-    def enact(self, prompt):
+    def narrate(self, prompt):
         """
         Executes a prompt text.
         """
         if not isinstance(prompt, str):
             raise TypeError(f"Simple Narrator cannot execute prompt of type {type(prompt)}. It must be a string.")
         from swayam.llm.prompt.prompt import UserPrompt
-        super().enact(UserPrompt(text=prompt))
+        super().narrate(UserPrompt(text=prompt))
 

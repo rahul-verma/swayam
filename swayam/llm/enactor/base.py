@@ -21,7 +21,7 @@ from typing import List, Union
 from tarkash import TarkashObject, log_info, log_debug
 from swayam.llm.config.prompt import PromptConfig
 from swayam.llm.config.model import ModelConfig
-from swayam.llm.config.report import RecorderConfig
+from swayam.llm.config.recorder import RecorderConfig
 from tarkash.type.descriptor import DString, DNumber, DBoolean
 from pydantic import BaseModel
 
@@ -44,7 +44,18 @@ class BaseLLMEnactor(TarkashObject):
         self._temperature = temperature
         self._provider = self.model_config.provider
         self._model = self.model_config.model
-        self.load()
+        
+    @property
+    def model(self):
+        return self.__model_config.model
+    
+    @property
+    def provider(self):
+        return self.__model_config.provider
+    
+    @property
+    def temperature(self):
+        return self.__prompt_config.temperature
 
     @property
     def model_config(self):
@@ -64,8 +75,4 @@ class BaseLLMEnactor(TarkashObject):
     
     @abstractmethod
     def enact(self, *args, **kwargs):
-        pass
-    
-    @abstractmethod
-    def load(self, *args, **kwargs):
         pass

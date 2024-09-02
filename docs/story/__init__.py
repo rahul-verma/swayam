@@ -15,10 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .strategy import LLMStory
+from .strategy import UserStory
 
 class Story:
     
     @classmethod
     def dummy(cls):
-        return LLMStory()
+        return UserStory()

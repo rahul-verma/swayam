@@ -22,14 +22,14 @@ from tarkash import log_debug
 from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.file import PromptFile
 from .format import ExpressionFormatter
-from .expression import LLMExpression
+from .expression import UserExpression
 from swayam.inject.structure.structure import IOStructure
 from .meta import ExpressionMeta
 
 class Expression(metaclass=ExpressionMeta):
     
     @classmethod
-    def prompts(cls, *prompts:UserPrompt, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> LLMExpression:
+    def prompts(cls, *prompts:UserPrompt, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> UserExpression:
         if len(prompts) == 0:
             raise ValueError("No prompts provided.")
         for prompt in prompts:
@@ -53,10 +53,10 @@ class Expression(metaclass=ExpressionMeta):
                     output_tools.append(tool)
             tools = output_tools
 
-        return LLMExpression(*prompts, purpose=purpose, directive=directive, image=image, output_structure=output_structure, tools=tools, reset_narrative=reset_narrative, standalone=standalone, store_response_as=store_response_as)
+        return UserExpression(*prompts, purpose=purpose, directive=directive, image=image, output_structure=output_structure, tools=tools, reset_narrative=reset_narrative, standalone=standalone, store_response_as=store_response_as)
     
     @classmethod
-    def texts(cls, *prompts:UserPrompt, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> LLMExpression:
+    def texts(cls, *prompts:UserPrompt, purpose:str=None, directive:Union[str,Directive]=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> UserExpression:
         for prompt in prompts:
             if type(prompt) is not str:
                 raise ValueError(f"Invalid prompt type: {type(prompt)}. Should be a string")

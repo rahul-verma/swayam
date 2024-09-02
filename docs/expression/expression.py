@@ -21,12 +21,12 @@ from typing import Any, Union
 from tarkash import log_debug
 from swayam.llm.prompt import Prompt
 from swayam.llm.prompt.types import Directive, UserPrompt
-from ...swayam.llm.expression.narrative import ExpressionNarrative
+from ...swayam.llm.expression.conversation import Conversation
 from swayam.inject.structure.structure import IOStructure
 
-class LLMExpression:
+class UserExpression:
     
-    def __init__(self, *prompts:Prompt, purpose:str=None, directive:Directive=None, narrative:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> Any:
+    def __init__(self, *prompts:Prompt, purpose:str=None, directive:Directive=None, narrative:Conversation=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> Any:
         self.__prompts = list(prompts)
         self.__purpose = purpose
         if self.__purpose is None:
@@ -100,7 +100,7 @@ class LLMExpression:
                 prompt.suggest_tools(self.__tools) 
     
     def is_new(self):
-        return len(self.__narrator_narrative.expression_narrative) == 0
+        return len(self.__narrator_narrative.conversation) == 0
         
     def has_directive(self):
         return self.__directive is not None
@@ -122,7 +122,7 @@ class LLMExpression:
         return self.__narrator_narrative
     
     @narrative.setter
-    def narrative(self, narrative:ExpressionNarrative):
+    def narrative(self, narrative:Conversation):
         self.__narrator_narrative = narrative
         
     def append(self, prompt:Prompt):
@@ -140,7 +140,7 @@ class LLMExpression:
         description = f"{indent}Expression (Length: {len(self)})\n"
         
         for prompt in self.__prompts:
-            if isinstance(prompt, LLMExpression):
+            if isinstance(prompt, UserExpression):
                 description += prompt.describe(level + 1)
             else:
                 description += f"{indent}  {type(prompt).__name__}\n"

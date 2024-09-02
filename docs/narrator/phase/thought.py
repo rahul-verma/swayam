@@ -17,13 +17,13 @@
 
 from datetime import datetime
 from tarkash import log_debug
-from .narrative import NarratorNarrative
+from .narrative import Narrative
 
 class SimpleNarrator:
     
     def __init__(self, display=False, record_html=True, narration=None):
-        self.__narrative = NarratorNarrative()
-        from swayam.llm.config.report import RecorderConfig
+        self.__narrative = Narrative()
+        from swayam.llm.config.recorder import RecorderConfig
         self.__recorder_config = RecorderConfig(display=display, record_html=record_html, show_in_browser=False)
         if not narration:
             self.__recorder_config._narration = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -48,18 +48,18 @@ class SimpleNarrator:
         return self.__execute_expression(expression)
     
     def __execute_expression(self, expression):
-        from swayam.llm.expression.narrative import ExpressionNarrative
-        from docs.enactor.expression import ExpressionEnactor
+        from swayam.llm.expression.conversation import Conversation
+        from swayam.llm.enactor.expression import ExpressionEnactor
 
         if expression.reset_narrative:
-            self.__narrative.reset_expression_narrative()
+            self.__narrative.reset_conversation()
 
         # Set narrative of expression
         if not expression.standalone:
             expression.narrative = self.__narrative
         else:
             # Set empty narrative
-            expression.narrative = NarratorNarrative()
+            expression.narrative = Narrative()
         
         log_debug(f"Executing Expression with ExpressionNarrator.")
         narrator = ExpressionEnactor(listener=self.__listener)
@@ -85,7 +85,7 @@ class SimpleNarrator:
             elif "tool_calls" in in_data and in_data["tool_calls"]:
                 return f'Tool Call {in_data["tool_calls"]["function"]["name"]} suggested.'
                 
-        output = narrator.enact(expression)
+        output = narrator.narrate(expression)
         
         if type(output) is list:
             if len(output) == 1:
@@ -122,23 +122,23 @@ class SimpleNarrator:
         self.__prepare_for_execution(show_in_browser=show_in_browser)
         
         from swayam.llm.prompt.types import UserPrompt
-        from swayam.llm.expression.expression import LLMExpression
-        from swayam.llm.thought.thought import LLMThought
+        from swayam.llm.expression.expression import UserExpression
+        from swayam.llm.thought.thought import UserThought
         
-        if not isinstance(executable, (str, UserPrompt, LLMExpression, LLMThought)):
-            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, LLMExpression, LLMThought, or Story.")
+        if not isinstance(executable, (str, UserPrompt, UserExpression, UserThought)):
+            raise TypeError(f"Cannot execute object of type {type(executable)}. It must be an instance of str, UserPrompt, UserExpression, UserThought, or Story.")
         
         output = None
         if isinstance(executable, str):
             from swayam.llm.prompt import Prompt
-            log_debug(f"Converting user prompt string to LLMExpression.")
+            log_debug(f"Converting user prompt string to UserExpression.")
             output = self.__execute_user_prompt(Prompt.text(executable))
         if isinstance(executable, UserPrompt):
-            log_debug(f"Converting UserPrompt to LLMExpression.")
+            log_debug(f"Converting UserPrompt to UserExpression.")
             output = self.__execute_user_prompt(executable)
-        elif isinstance(executable, LLMExpression):
+        elif isinstance(executable, UserExpression):
             output = self.__execute_expression(executable)
-        elif isinstance(executable, LLMThought):
+        elif isinstance(executable, UserThought):
             output = self.__execute_thought(executable)
             
         self.__listener.finish()

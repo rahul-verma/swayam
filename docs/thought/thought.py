@@ -19,14 +19,14 @@
 from typing import Any, Union
 
 from tarkash import log_debug
-from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.expression.expression import UserExpression
 from swayam.llm.prompt.types import Directive
-from swayam.llm.expression.narrative import ExpressionNarrative
+from swayam.llm.expression.conversation import Conversation
 from swayam.inject.structure.structure import IOStructure
 
-class LLMThought:
+class UserThought:
     
-    def __init__(self, *expressions:LLMExpression, purpose:str=None, directive:Directive=None, content:ExpressionNarrative=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
+    def __init__(self, *expressions:UserExpression, purpose:str=None, directive:Directive=None, content:Conversation=None,  image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> Any:
         self.__expressions = list(expressions)
         self.__purpose = purpose
         if self.__purpose is None:
@@ -67,10 +67,10 @@ class LLMThought:
         return self.__narrative
     
     @narrative.setter
-    def narrative(self, narrative:ExpressionNarrative):
+    def narrative(self, narrative:Conversation):
         self.__narrative = narrative
         
-    def append(self, expression:LLMExpression):
+    def append(self, expression:UserExpression):
         self.__prompts.append(expression)
         
     def __len__(self):

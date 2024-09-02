@@ -135,7 +135,7 @@ class Swayam(metaclass=SwayamMeta):
         """
         if type(prompt) is not str:
             raise TypeError("Prompt should be a string")
-        return cls._SWAYAM_SINGLETON.default_narrator.enact(prompt)
+        return cls._SWAYAM_SINGLETON.default_narrator.narrate(prompt)
     
     @classmethod
     def reset_narrator(cls):

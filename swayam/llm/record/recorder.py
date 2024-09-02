@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.expression.narrative import ExpressionNarrative
+from swayam.llm.expression.conversation import Conversation
 
 class Recorder:
     
@@ -48,7 +48,7 @@ class Recorder:
             prompt (Prompt): The prompt to report.
         """
         for recorder in self.__recorders:
-            recorder.record_directive(prompt)
+            recorder.record_directive(directive)
 
     def record_prompt(self, prompt) -> None:
         """
@@ -60,12 +60,12 @@ class Recorder:
         for recorder in self.__recorders:
             recorder.record_prompt(prompt)
     
-    def record_narrative(self, narrative:ExpressionNarrative) -> None:
+    def record_narrative(self, narrative:Conversation) -> None:
         """
         Broadcasts the narrative details.
 
         Args:
-            narrative (ExpressionNarrative): Narrative object with all input messages.
+            narrative (Conversation): Narrative object with all input messages.
         """
         for recorder in self.__recorders:
             recorder.record_narrative(narrative)

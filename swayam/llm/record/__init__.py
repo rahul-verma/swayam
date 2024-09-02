@@ -51,7 +51,7 @@ class Reporter(ABC):
         Reports the narrative details.
 
         Args:
-            narrative (ExpressionNarrative): Narrative object with all input messages.
+            narrative (Conversation): Narrative object with all input messages.
         """
         pass
 

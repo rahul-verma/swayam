@@ -18,7 +18,7 @@
 from typing import Union
 
 from swayam.llm.expression.file import ExpressionFile
-from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.expression.expression import UserExpression
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
@@ -29,7 +29,7 @@ class ThoughtFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def expression_files(self, *expression_files:ExpressionFile, purpose:str=None, directive:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> LLMExpression:
+    def expression_files(self, *expression_files:ExpressionFile, purpose:str=None, directive:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None) -> UserExpression:
         from swayam.llm.expression.format import ExpressionFormatter
         from swayam.llm.expression.repeater import DynamicExpressionFile
         

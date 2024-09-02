@@ -26,7 +26,7 @@ from swayam.inject.structure.structure import IOStructure
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None) -> None:
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, store_response_as:str=None, standalone:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -35,6 +35,9 @@ class UserPrompt:
             self.__purpose = f"Prompt: {self.__purpose}"
         self.__content = text
         self.__output_structure = output_structure
+        self.__store_response_as = store_response_as
+        self.__standalone = standalone
+        
         if self.__output_structure is not None:
             from swayam import Structure
             self.__output_structure = getattr(Structure, self.__output_structure)

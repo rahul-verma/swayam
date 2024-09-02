@@ -25,7 +25,7 @@ import copy
 from tarkash import log_debug
 
 from swayam.llm.prompt import Prompt
-from swayam.llm.expression.narrative import ExpressionNarrative
+from swayam.llm.expression.conversation import Conversation
 from swayam.llm.prompt.response import LLMResponse
 from swayam.llm.record import Reporter
 
@@ -142,7 +142,7 @@ class HtmlRecorder(Reporter):
                                     "children": []
                                 })
             
-    def record_directive(self, prompt:Prompt) -> None:
+    def record_directive(self, directive) -> None:
         """
         Reports the system prompt details.
         
@@ -152,13 +152,13 @@ class HtmlRecorder(Reporter):
         log_debug("Begin: Reporting System Prompt.")
 
         prompt_node = {
-                    "id": "prompt_" + uuid4().hex,
-                    "text": f"{prompt.purpose}",
+                    "id": "directive_" + uuid4().hex,
+                    "text": "Directive",
                     "icon": "jstree-file",
                     "data": {
                                 "content": [{
-                                                "heading": "Prompt Text",
-                                                "content" : prompt.reportable_text
+                                                "heading": "Directive",
+                                                "content" : directive
                                 }]
                     }
         }
@@ -166,12 +166,12 @@ class HtmlRecorder(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
-    def record_narrative(self, narrative:ExpressionNarrative) -> None:
+    def record_narrative(self, narrative:Conversation) -> None:
         """
         Reports the narrative details.
 
         Args:
-            narrative (ExpressionNarrative): Narrative object with all input messages.
+            narrative (Conversation): Narrative object with all input messages.
         """
         
         if self.__json_data == []:

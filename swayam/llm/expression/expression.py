@@ -20,7 +20,7 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-class LLMExpression:
+class UserExpression:
     
     def __init__(self, *, prompts, purpose:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True) -> Any:
         self.__prompt_names = list(prompts)
@@ -87,7 +87,7 @@ class LLMExpression:
                 prompt.suggest_tools(self.__tools) 
     
     def is_new(self):
-        return len(self.__narrator_narrative.expression_narrative) == 0
+        return len(self.narrative) == 0
         
     def has_directive(self):
         return self.__directive is not None
@@ -106,11 +106,11 @@ class LLMExpression:
         
     @property
     def narrative(self):
-        return self.__narrator_narrative
+        return self.__narrative
     
     @narrative.setter
     def narrative(self, narrative):
-        self.__narrator_narrative = narrative
+        self.__narrative = narrative
         
     def append(self, prompt):
         self.__prompts.append(prompt)
@@ -127,7 +127,7 @@ class LLMExpression:
         description = f"{indent}Expression (Length: {len(self)})\n"
         
         for prompt in self.__prompts:
-            if isinstance(prompt, LLMExpression):
+            if isinstance(prompt, UserExpression):
                 description += prompt.describe(level + 1)
             else:
                 description += f"{indent}  {type(prompt).__name__}\n"

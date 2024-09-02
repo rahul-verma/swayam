@@ -17,13 +17,13 @@
 
 import json
 
-class ExpressionNarrative:
+class Conversation:
     
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
         self.__reportable_messages = []
         self.__expected_output_structure = None
-        
+
     def reset(self):
         self.__messages = []
         self.__reportable_messages = []
@@ -48,6 +48,13 @@ class ExpressionNarrative:
     @property
     def reportable_messages(self):
         return self.__reportable_messages
+    
+    def append_directive(self, directive):
+        message = {
+            "role": "system",
+            "content": directive}
+        self.__messages.append(message)
+        self.__reportable_messages.append(message)
     
     def append_prompt(self, prompt):
         self.__messages.append(prompt.message)

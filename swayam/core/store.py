@@ -16,24 +16,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Store:
+from swayam.llm.story.story import UserStory
+from swayam.llm.thought.thought import UserThought
+from swayam.llm.expression.expression import UserExpression
+from swayam.llm.prompt.prompt import UserPrompt
+
+
+class STEPStore:
     
     def __init__(self):
+        self.__order = [
+            UserPrompt.__class__.__name__,
+            UserExpression.__class__.__name__,
+            UserThought.__class__.__name__,
+            UserStory.__class__.__name__
+        ]
         self.__storage = {}
+        for item in self.__order:
+            self.__storage[item] = {}
         
     def reset(self):
-        self.__storage = {}
+        for item in self.__order:
+            self.__storage[item] = {}
         
-    def __getitem__(self, key):
-        return self.__storage[key]
+    def fetch_value(self, stage, key):
+        # Get the class name of the object
+        class_name = stage.__class__.__name__
+
+        # Start looking from the class_name in the order defined
+        start_index = self.__order.index(class_name)
+
+        # Traverse the __order list starting from the given class_name
+        for key in self.__order[start_index:]:
+            if key in self.__storage and self.__storage[key]:
+                return self.__storage[key]
+
+        # If nothing is found, return None or some default value
+        return None
     
-    def __setitem__(self, key, value):
-        self.__storage[key] = value
+    def set_value(self, stage, key, value):
+        self.__storage[stage.__class__.__name__][key] = value
+        
+    def set_value_in_parent(self, stage, key, value):
+        kls = stage.__class__.__name__
+        if kls == UserStory.__class__.__name__:
+            raise ValueError("There is no parent for a UserStory")
+        else:
+            parent_index = self.__order.index(class_name) + 1
+            parent = self.__order[parent_index]
+            self.__storage[parent][key] = value
     
-    def items(self):
-        # Return an iterable of key-value pairs
-        return self.__storage.items()
-    
-    def __iter__(self):
-        # Iterator to allow unpacking
-        return iter(self.__storage)
+    def items(self, stage):
+        # Get the class name of the object
+        class_name = stage.__class__.__name__
+
+        # Start looking from the class_name in the order defined
+        start_index = self.__order.index(class_name)
+        
+        merged_dict = {}
+        # Iterate over the reversed order
+        for key in reversed(self.__order[start_index:]):
+            if key in self.__storage:
+                merged_dict.update(self.__storage[key])
+        return merged_dict

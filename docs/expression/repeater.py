@@ -21,7 +21,7 @@ from typing import Union
 from tarkash import log_debug
 from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.file import PromptFile
-from swayam.llm.expression.expression import LLMExpression
+from swayam.llm.expression.expression import UserExpression
 from swayam.inject.structure.structure import IOStructure
 
 class DynamicExpressionFile:

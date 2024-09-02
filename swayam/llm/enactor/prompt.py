@@ -29,8 +29,9 @@ class PromptEnactor(BaseLLMEnactor):
     def __init__(self, *, recorder:str, model:str = None, name:str = "Expression Enactor", provider:str = None, temperature=0, **kwargs):
         super().__init__(recorder=recorder, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
         log_debug(f"Expression Enactor {name} created")
+        self._load()
 
-    def load(self):
+    def _load(self):
         from swayam.llm.model import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
@@ -40,12 +41,12 @@ class PromptEnactor(BaseLLMEnactor):
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
-        #expression_narrative = expression.narrative.expression_narrative
+        #conversation = expression.narrative.conversation
 
         log_debug("Processing prompt...")
         prompt.process_for_report()
         
-        #self.recorder.record_narrative(expression_narrative)
+        #self.recorder.record_narrative(conversation)
         
         # Appending happens via the Narrator Narrative so that dynamic variables can be considered.
         narrative.append_prompt(prompt)

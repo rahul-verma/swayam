@@ -20,7 +20,7 @@ from typing import Union
 from swayam.llm.prompt.file import PromptFile
 from swayam.llm.prompt.types import Directive, UserPrompt
 from swayam.llm.prompt.format import PromptFormatter
-from .expression import LLMExpression
+from .expression import UserExpression
 from swayam.inject.structure.structure import IOStructure
 
 class ExpressionFormatter:
@@ -28,7 +28,7 @@ class ExpressionFormatter:
     def __init__(self, **fmt_kwargs):
         self.__fmt_kwargs = fmt_kwargs
 
-    def prompt_files(self, *prompt_files:PromptFile, purpose:str=None, directive:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> LLMExpression:
+    def prompt_files(self, *prompt_files:PromptFile, purpose:str=None, directive:PromptFile=None, image:str=None, output_structure:Union[str, IOStructure]=None, tools:list=None, standalone:bool=False, reset_narrative:bool=True, store_response_as:str=None) -> UserExpression:
         if len(prompt_files) == 0:
             raise ValueError("No prompts provided.")
         prompts = []

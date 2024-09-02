@@ -15,25 +15,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.core.store import Store
+from swayam.core.store import STEPStore
 
-class NarratorNarrative:
+class Narrative:
     
     def __init__(self):
-        from swayam.llm.expression.narrative import ExpressionNarrative
-        self.__expression_narrative = ExpressionNarrative()
-        self.__store = Store()
+        from swayam.llm.expression.conversation import Conversation
+        self.__conversation = Conversation()
+        self.__store = STEPStore()
+        self.__directive = ""
         
     @property
-    def expression_narrative(self):
-        return self.__expression_narrative
+    def conversation(self):
+        return self.__conversation
         
-    def reset_expression_narrative(self):
-        self.__expression_narrative.reset()
+    def reset_conversation(self):
+        self.__conversation.reset()
         
     def reset(self):
-        self.__expression_narrative.reset()
-        self.__store.reset()
+        self.reset_conversation()
+        self.store.reset()
         
     @property
     def store(self):
@@ -41,5 +42,11 @@ class NarratorNarrative:
     
     def format_prompt(self, prompt):
         prompt.dynamic_format(self.store)
+        
+    def add_directive(self, directive):
+        self.__directive += directive + "\n\n"
+    @property
+    def directive(self):
+        return self.__directive
         
     
