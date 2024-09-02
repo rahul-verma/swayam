@@ -1,4 +1,0 @@
-purpose: Using Dynamic System as well as Prompt Defs
-
-expression_defs:
-  - directive_dyn_string_dynamic_prompts

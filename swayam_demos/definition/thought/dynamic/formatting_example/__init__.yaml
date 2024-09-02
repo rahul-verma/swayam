@@ -1,0 +1,5 @@
+purpose: Demo Dynamic Expression
+
+prompts:
+  - plan_a_trip
+  - plan_a_trip_task

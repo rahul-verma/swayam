@@ -1,0 +1,6 @@
+tools:
+    - Calculator
+
+expressions:
+  - basic
+  - diverse

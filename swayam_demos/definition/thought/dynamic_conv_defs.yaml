@@ -1,6 +1,0 @@
-tools:
-    - Calculator
-
-expression_defs:
-  - conv3_thought_dynamic
-  - conv4_thought_dynamic
