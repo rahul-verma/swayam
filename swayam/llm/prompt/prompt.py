@@ -47,10 +47,7 @@ class UserPrompt:
         self.__tool_dict = {}
         
         if self.__tools:
-            from swayam import Tool
-            self.__tools = [getattr(Tool, tool) for tool in tools]
-            self.__tool_definitions = [tool.definition for tool in self.__tools]
-            self.__tool_dict = {tool.name: tool for tool in self.__tools}
+            self.load_tools_from_names(self.__tools)
         
         self.__message = {
             "role": self.__role,
@@ -62,6 +59,12 @@ class UserPrompt:
         else:
             self.__image = None
             self.__image_path = None
+            
+    def load_tools_from_names(self, tool_names):
+        from swayam import Tool
+        self.__tools = [getattr(Tool, tool) for tool in tool_names]
+        self.__tool_definitions = [tool.definition for tool in self.__tools]
+        self.__tool_dict = {tool.name: tool for tool in self.__tools}
 
     def dynamic_format(self, store):
         updated_content = self.__message["content"]
@@ -89,15 +92,15 @@ class UserPrompt:
         if not self.image:
             self.image = image
             
-    def suggest_output_structure(self, output_structure):
-        if not self.output_structure:
-            self.__output_structure = output_structure
+    def suggest_output_structure(self, structure_name):
+        from swayam import Structure
+        if not self.output_structure and structure_name:
+            self.__output_structure = getattr(Structure, structure_name)
             
-    def suggest_tools(self, tools):
-        if not self.tools:
-            self.__tools = tools
-            self.__tool_definitions = [tool.definition for tool in tools]
-            self.__tool_dict = {tool.name: tool for tool in tools}
+    def suggest_tools(self, tool_names):
+        from swayam import Tool
+        if not self.tools and tool_names:
+            self.load_tools_from_names(tool_names)
         
     @property
     def purpose(self):
