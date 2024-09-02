@@ -48,7 +48,7 @@ class ExpressionNamespace(Namespace):
             expression.load(prompt_ns_path=path, resolution=resolution, **self.fmt_kwargs)
             return expression
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(expression_dict)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(expression_dict)}")
         
         
         

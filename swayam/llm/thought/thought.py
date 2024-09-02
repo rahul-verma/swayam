@@ -23,7 +23,7 @@ from tarkash import log_debug
 class UserThought:
     
     def __init__(self, *, expressions, purpose:str=None, directive:str=None, tools:list=None) -> Any:
-        self.__expression_names = list(expressions)
+        self.__expression_names_or_dicts = list(expressions)
         self.__expressions = []
         self.__purpose = purpose
         if self.__purpose is None:
@@ -36,9 +36,27 @@ class UserThought:
     def load(self, *, expression_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
         from swayam.llm.expression.namespace import ExpressionNamespace
-        expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
-        for name in self.__expression_names:
-            self.__expressions.append(getattr(expression_namespace, name))
+        for expression_name_or_dict in self.__expression_names_or_dicts:
+            if isinstance(expression_name_or_dict, dict):
+                expression_dict = expression_name_or_dict
+                expression_name = expression_dict["definition"]
+                generator_structure = Structure.Generator(**expression_name_or_dict["repeater"])
+                
+                from swayam import Generator
+                
+                generator = getattr(Generator, generator_structure.generator)
+                
+                print(f"Generator: {generator_structure.as_dict()}")
+                for out_dict in generator(**generator_structure.args):
+                    temp_dict = {}
+                    temp_dict.update(fmt_kwargs)
+                    temp_dict.update(out_dict)
+                    expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
+                    self.__expressions.append(getattr(expression_namespace, expression_name))
+            else:
+                expression_name = expression_name_or_dict
+                expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
+                self.__expressions.append(getattr(expression_namespace, expression_name))
         self.__make_tool_suggestions()
                 
     def __make_tool_suggestions(self):

@@ -15,19 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Narrator:
-    def simple(self):
-        from swayam.llm.narrator.simple import SimpleNarrator
-        return SimpleNarrator()
+from typing import Union, List
+from pydantic import BaseModel, Field
+
+from swayam import Structure
     
-    def prompt(self, narration=None):
-        from .phase.prompt import PromptNarrator
-        return PromptNarrator(narration=narration)
-    
-    def expression(self, narration=None):
-        from .phase.expression import ExpressionNarrator
-        return ExpressionNarrator(narration=narration)
-    
-    def thought(self, narration=None):
-        from .phase.thought import ThoughtNarrator
-        return ThoughtNarrator(narration=narration)
+class GeneratorModel(BaseModel):
+    generator: str = Field(..., title="Generator", description="Name of the generator to be used.")
+    args: dict = Field({}, title="Keyword Arguments", description="Keyword Arguments to be passed to structured callable.")
+
+Generator = Structure.build("Generator", model=GeneratorModel)

@@ -19,9 +19,10 @@ from typing import Union, List
 from pydantic import BaseModel, Field
 
 from swayam import Structure
+from .RepeatedDefinition import RepeatedDefinitionModel
 
 class ThoughtModel(BaseModel):
-    expressions: List[str] = Field(..., title="Expression definition names", description="Expression definition names that are included in this thought.")
+    expressions: List[Union[str, RepeatedDefinitionModel]] = Field(..., title="Expression definition or dictionary.", description="Expression definition names that are included in this thought. Instead of a name it can be dictionary of a RepeatedDefinition.")
     purpose: Union[str,None] = Field(None, title="Purpose of the thought", description="A statement describing the purpose of the thought.")
     directive: str = Field(None, title="Directive", description="Directive text for the narrative this thought builds. Extends previous directives if any.")
     tools: List[str] = Field([], title="Common Tools", description="List of tools to be used in the expressions that don't have a tool list of their own.")

@@ -8,7 +8,7 @@ Story: Captures the broad, overarching narrative or goal. It gives a sense of di
 
 Thought: Represents the conceptual phase where ideas and themes are developed from the Story. Still a human-focused phase with some assistance from tooling.
 
-Expression: Bridges the abstract with the concrete, focusing on how Thoughts will be articulated or represented. A step/stage in the achievement of a thought becoming a reality. This is a proxy layer between what the thought is about and who is solving the part of the problem this step/stage demands.
+Expression: Bridges the abstract with the concrete, focusing on how Thoughts will be articulated or represented. A phase in the achievement of a thought becoming a reality. This is a proxy layer between what the thought is about and who is solving the part of the problem this phase demands.
 
 Prompt: The most actionable part, where the specific thoughts or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the narrative of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
 

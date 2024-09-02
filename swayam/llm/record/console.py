@@ -31,6 +31,9 @@ class ConsoleRecorder(Reporter):
     def enabled(self):
         return self.__enabled
     
+    def record_begin_thought(self, thought) -> None:
+        pass
+    
 
     def record_begin_expression(self, expression) -> None:
         """

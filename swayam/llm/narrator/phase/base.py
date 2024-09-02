@@ -51,9 +51,9 @@ class BaseNarrator(ABC):
         return self.__recorder
     
     @abstractmethod
-    def narrate(self, stage):
+    def narrate(self, phase):
         """
-        Narrates a stage in STEP.
+        Narrates a phase in STEP.
         """
         pass
         

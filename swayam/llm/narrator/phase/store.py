@@ -39,9 +39,9 @@ class STEPStore:
         for item in self.__order:
             self.__storage[item] = {}
         
-    def fetch_value(self, stage, key):
+    def fetch_value(self, phase, key):
         # Get the class name of the object
-        class_name = stage.__class__.__name__
+        class_name = phase.__class__.__name__
 
         # Start looking from the class_name in the order defined
         start_index = self.__order.index(class_name)
@@ -54,11 +54,11 @@ class STEPStore:
         # If nothing is found, return None or some default value
         return None
     
-    def set_value(self, stage, key, value):
-        self.__storage[stage.__class__.__name__][key] = value
+    def set_value(self, phase, key, value):
+        self.__storage[phase.__class__.__name__][key] = value
         
-    def set_value_in_parent(self, stage, key, value):
-        kls = stage.__class__.__name__
+    def set_value_in_parent(self, phase, key, value):
+        kls = phase.__class__.__name__
         if kls == UserStory.__class__.__name__:
             raise ValueError("There is no parent for a UserStory")
         else:
@@ -66,9 +66,9 @@ class STEPStore:
             parent = self.__order[parent_index]
             self.__storage[parent][key] = value
     
-    def items(self, stage):
+    def items(self, phase):
         # Get the class name of the object
-        class_name = stage.__class__.__name__
+        class_name = phase.__class__.__name__
         # Start looking from the class_name in the order defined
         start_index = self.__order.index(class_name)
         

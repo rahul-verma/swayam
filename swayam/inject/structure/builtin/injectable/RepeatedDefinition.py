@@ -15,19 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Narrator:
-    def simple(self):
-        from swayam.llm.narrator.simple import SimpleNarrator
-        return SimpleNarrator()
+from typing import Union, List
+from pydantic import BaseModel, Field
+
+from swayam import Structure
+
+from .Generator import GeneratorModel
     
-    def prompt(self, narration=None):
-        from .phase.prompt import PromptNarrator
-        return PromptNarrator(narration=narration)
-    
-    def expression(self, narration=None):
-        from .phase.expression import ExpressionNarrator
-        return ExpressionNarrator(narration=narration)
-    
-    def thought(self, narration=None):
-        from .phase.thought import ThoughtNarrator
-        return ThoughtNarrator(narration=narration)
+class RepeatedDefinitionModel(BaseModel):
+    definition: str = Field(..., title="Definition", description="Name of the definition to be repeated.")
+    repeater: GeneratorModel = Field(..., title="Generator", description="Generator details.")
+
+RepeatedDefinition = Structure.build("RepeatedDefinition", model=RepeatedDefinitionModel)

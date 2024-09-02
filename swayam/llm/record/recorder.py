@@ -29,10 +29,20 @@ class Recorder:
             
         if recorder_config.record_html:
             self.__recorders.append(HtmlRecorder(config=recorder_config))
-            
-    def record_begin_expression(self, expression) -> None:
+
+    def record_begin_thought(self, thought) -> None:
         """
         Broadcasts the system prompt details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        for recorder in self.__recorders:
+            recorder.record_begin_thought(thought)
+                        
+    def record_begin_expression(self, expression) -> None:
+        """
+        Broadcasts the expression details.
         
         Args:
             prompt (Prompt): The prompt to report.
@@ -42,7 +52,7 @@ class Recorder:
             
     def record_directive(self, directive) -> None:
         """
-        Broadcasts the system prompt details.
+        Broadcasts the directive details.
         
         Args:
             prompt (Prompt): The prompt to report.

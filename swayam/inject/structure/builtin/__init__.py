@@ -29,6 +29,7 @@ from .injectable.EntityName import *
 from .injectable.FileInfo import *
 from .injectable.FileName import *
 from .injectable.FilePath import *
+from .injectable.Generator import *
 from .injectable.JsonContentParser import *
 from .injectable.JsonContent import *
 from .injectable.Prompt import *
