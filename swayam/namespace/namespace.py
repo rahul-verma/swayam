@@ -93,7 +93,7 @@ class Namespace(ABC):
                 else: 
                     with open(children["package_file"]) as f:
                         content = f.read()
-                        content.format(**self.__fmt_kwargs)
+                        content = content.format(**self.fmt_kwargs)
                         children["package_file_content"] = content
                 
                 return self.handle_current_name_as_package(
