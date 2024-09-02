@@ -47,7 +47,8 @@ class ExpressionNamespace(Namespace):
             except Exception as e:
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Structure.Expression.keys}]. Overall structure definition is {str(Structure.Expression.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
-            expression.load(prompt_ns_path=path, resolution=resolution)
+            
+            expression.load(prompt_ns_path=path, resolution=resolution, **self.fmt_kwargs)
             return expression
         else:
             raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(expression_dict)}")

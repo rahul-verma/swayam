@@ -26,10 +26,10 @@ class STEPStore:
     
     def __init__(self):
         self.__order = [
-            UserPrompt.__class__.__name__,
-            UserExpression.__class__.__name__,
-            UserThought.__class__.__name__,
-            UserStory.__class__.__name__
+            UserPrompt.__name__,
+            UserExpression.__name__,
+            UserThought.__name__,
+            UserStory.__name__
         ]
         self.__storage = {}
         for item in self.__order:
@@ -69,7 +69,6 @@ class STEPStore:
     def items(self, stage):
         # Get the class name of the object
         class_name = stage.__class__.__name__
-
         # Start looking from the class_name in the order defined
         start_index = self.__order.index(class_name)
         

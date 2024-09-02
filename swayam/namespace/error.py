@@ -52,10 +52,15 @@ class DefinitionFileWithoutExtensionError(NamespaceError):
         
 class DefinitionNotFoundError(NamespaceError):
     
-    def __init__(self, ns, *, name):
-        super().__init__(ns, error= f"{ns.resolution}.{name}: Definition file >>{name}.yaml<< not found. Expected path: {ns.path}/{name}.yaml")
+    def __init__(self, ns, *, name, error=""):
+        super().__init__(ns, error= f"{ns.resolution}.{name}: Definition file >>{name}.yaml<< not found. Expected path: {ns.path}/{name}.yaml. {error}")
         
 class DefinitionIsInvalidError(NamespaceError):
     
     def __init__(self, ns, *, name, path, resolution, error):
         super().__init__(ns, error= f"{resolution}: Definition file >>{name}.yaml<< does not follow the rules for a {ns.type} definition. Path: {path}. Error: {error}")
+        
+class DefinitionFormattingError(NamespaceError):
+    
+    def __init__(self, ns, *, name, path, resolution, fmt_kwargs, error):
+        super().__init__(ns, error= f"{resolution}: Not able to format Definition file >>{name}.yaml<<. Path: {path}. Provided format dictionary has keys {fmt_kwargs.keys()} : Error: {error}")

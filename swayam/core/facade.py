@@ -34,7 +34,7 @@ class _SwayamSingleton:
             "PROMPT_DIR": ("definition/prompt", "path"),
             "EXPRESSION_DIR": ("definition/expression", "path"),
             "THOUGHT_DIR": ("definition/thought", "path"),
-            "STORY_DIR": ("definition/strategy", "path"),
+            "STORY_DIR": ("definition/story", "path"),
             "NARRATION_DIR": ("narration", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
@@ -81,7 +81,7 @@ class _SwayamSingleton:
             narration ([type], optional): The run id for the narrator. Defaults to None. The HTML report directory is created with this name and multiple calls to execute with same narration append results to that report.
 
         Returns:
-            SimpleNarrator: A simple narrator that executes a parts of or complete strategy.
+            SimpleNarrator: A simple narrator that executes a parts of or complete story.
         """
         from swayam.llm.narrator.prompt import SimpleNarrator
         return SimpleNarrator(display=display, record_html=record_html, narration=narration)

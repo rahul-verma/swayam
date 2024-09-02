@@ -51,6 +51,10 @@ class Namespace(ABC):
     @property
     def type(self):
         return self.__type
+    
+    @property
+    def fmt_kwargs(self):
+        return self.__fmt_kwargs
 
     def __getattr__(self, name):
         
@@ -106,13 +110,17 @@ class Namespace(ABC):
             content = None
             with open(name_path + ".yaml") as f:
                 content = f.read()
-            return self.handle_current_name_as_definition(
-                    name=name,
-                    path=name_path + ".yaml",
-                    resolution=self.resolution + "." + name,
-                    purpose = name.replace("_", " ").title(),
-                    content=content.format(**self.__fmt_kwargs)
+            try:
+                return self.handle_current_name_as_definition(
+                        name=name,
+                        path=name_path + ".yaml",
+                        resolution=self.resolution + "." + name,
+                        purpose = name.replace("_", " ").title(),
+                        content=content.format(**self.fmt_kwargs)
                 )
+            except KeyError as e:
+                import traceback
+                raise DefinitionFormattingError(self, name=name, path=name_path + ".yaml", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
         else:
             raise DefinitionNotFoundError(self, name=name)
         

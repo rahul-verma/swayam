@@ -72,7 +72,7 @@ class ConsoleRecorder(Reporter):
             print(prompt.content)
         print("-" * 80)
 
-    def record_narrative(self, narrative:Conversation) -> None:
+    def record_conversation(self, narrative:Conversation) -> None:
         """
         Reports the narrative details.
 

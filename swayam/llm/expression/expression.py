@@ -41,10 +41,10 @@ class UserExpression:
         # If True, it resets the parent's narrative for itself. The subsequent expression receives the narrative that it results in.
         self.__reset_narrative = reset_narrative
         
-    def load(self, *, prompt_ns_path, resolution=None):
+    def load(self, *, prompt_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
         from swayam.llm.prompt.namespace import PromptNamespace
-        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter 
+        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
         for name in self.__prompt_names:
             self.__prompts.append(getattr(prompt_namespace, name))
         if self.__output_structure:

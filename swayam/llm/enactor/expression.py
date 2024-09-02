@@ -41,14 +41,15 @@ class ExpressionEnactor(BaseLLMEnactor):
         
         log_debug(f"Executing Expression with {len(expression)} prompt(s).")
         self.recorder.record_begin_expression(expression)
-        if len(narrative) == 0:
+        conversation = narrative.conversation
+        if len(conversation) == 0:
             # For dynamic variables in Narrator store
             #expression.narrative.format_prompt(directive)
             #expression.directive.process_for_report()
             self.recorder.record_directive(directive)
             
-            narrative.append_directive(directive)
-            self.recorder.record_narrative(narrative)
+            conversation.append_directive(directive)
+            self.recorder.record_conversation(conversation)
         log_debug("Finished processing system prompt.")
         
         from swayam.llm.enactor.prompt import PromptEnactor

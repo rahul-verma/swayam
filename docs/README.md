@@ -113,7 +113,7 @@ TO Do
 
 Here are the ideas:
 - model/< type > folders will contain model configs. E.g. model/llm for LLM Model configs. The options will be as provided by corresponding models apart from generic options like temperature. Needs to be investigated.
-- for the time being, till the provision for 2 models in single strategy is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The narrative management part has to be thought about.
+- for the time being, till the provision for 2 models in single story is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The narrative management part has to be thought about.
 
 
 ### Model /embed

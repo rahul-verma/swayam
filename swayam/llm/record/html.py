@@ -166,7 +166,7 @@ class HtmlRecorder(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
-    def record_narrative(self, narrative:Conversation) -> None:
+    def record_conversation(self, narrative:Conversation) -> None:
         """
         Reports the narrative details.
 

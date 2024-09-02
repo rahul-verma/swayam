@@ -46,20 +46,22 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Processing prompt...")
         prompt.process_for_report()
         
-        #self.recorder.record_narrative(conversation)
+        conversation = narrative.conversation
+        
+        #self.recorder.record_conversation(conversation)
         
         # Appending happens via the Narrator Narrative so that dynamic variables can be considered.
-        narrative.append_prompt(prompt)
-        self.recorder.record_narrative(narrative)
+        conversation.append_prompt(prompt)
+        self.recorder.record_conversation(conversation)
         self.recorder.record_prompt(prompt)
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
-        llm_response = self.__client.execute_messages(messages=narrative.messages, output_structure=prompt.output_structure, tools=prompt.tools)
+        llm_response = self.__client.execute_messages(messages=conversation.messages, output_structure=prompt.output_structure, tools=prompt.tools)
         log_debug("Handling Response.")
         
-        narrative.append_assistant_response(llm_response.as_dict())
-        self.recorder.record_narrative(narrative)
+        conversation.append_assistant_response(llm_response.as_dict())
+        self.recorder.record_conversation(conversation)
         
         self.recorder.record_response(prompt, llm_response)
         log_debug("Updated Narrative with Response message.")
@@ -73,8 +75,8 @@ class PromptEnactor(BaseLLMEnactor):
                 tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
                 self.recorder.record_tool_response(tool_response)
                 response_messages.append(tool_response)
-                narrative.append_tool_response(tool_response)
-                self.recorder.record_narrative(narrative)
+                conversation.append_tool_response(tool_response)
+                self.recorder.record_conversation(conversation)
         else:
             response_messages = llm_response.message
             

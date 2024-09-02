@@ -60,7 +60,7 @@ class Recorder:
         for recorder in self.__recorders:
             recorder.record_prompt(prompt)
     
-    def record_narrative(self, narrative:Conversation) -> None:
+    def record_conversation(self, narrative:Conversation) -> None:
         """
         Broadcasts the narrative details.
 
@@ -68,7 +68,7 @@ class Recorder:
             narrative (Conversation): Narrative object with all input messages.
         """
         for recorder in self.__recorders:
-            recorder.record_narrative(narrative)
+            recorder.record_conversation(narrative)
  
     def record_response(self, prompt, message:dict) -> None:
         """

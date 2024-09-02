@@ -68,7 +68,7 @@ class UserPrompt:
         if self.image:
             updated_content = updated_content[0]["text"]
         import re
-        for key, value in store.items():
+        for key, value in store.items(self):
             if value is None:
                 value = ""
             elif type(value) in (dict, list):

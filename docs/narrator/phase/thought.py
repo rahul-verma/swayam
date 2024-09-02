@@ -105,7 +105,7 @@ class SimpleNarrator:
     
     def enact(self, executable, show_in_browser=False):
         """
-        Executes a part of or complete strategy.
+        Executes a part of or complete story.
         
         The Narrator can execute any of the following types of objects:
         - A User Prompt object

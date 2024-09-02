@@ -20,9 +20,9 @@ from abc import ABC, abstractmethod
 
 from datetime import datetime
 from tarkash import log_debug
-from swayam.llm.expression.conversation import Conversation
 from swayam.llm.prompt.prompt import UserPrompt
 from swayam.llm.enactor.prompt import PromptEnactor
+from .narrative import Narrative
 
 class BaseNarrator(ABC):
 
@@ -40,7 +40,7 @@ class BaseNarrator(ABC):
         self.__recorder = Recorder(self.__recorder_config)
         log_debug("Narrator initialized.")
         
-        self.__narrative = Conversation()
+        self.__narrative = Narrative()
         
     @property
     def narrative(self):
@@ -49,7 +49,6 @@ class BaseNarrator(ABC):
     @property
     def recorder(self):
         return self.__recorder
-    
     
     @abstractmethod
     def narrate(self, stage):
@@ -62,5 +61,5 @@ class BaseNarrator(ABC):
         self.__recorder.finish()
         
     def reset(self):
-        self.__narrative = Conversation()
+        self.__narrative = Narrative()
         self.__recorder.reset()

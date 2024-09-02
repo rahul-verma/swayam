@@ -46,7 +46,7 @@ class Reporter(ABC):
         pass
         
     @abstractmethod
-    def record_narrative(self, narrative) -> None:
+    def record_conversation(self, narrative) -> None:
         """
         Reports the narrative details.
 
