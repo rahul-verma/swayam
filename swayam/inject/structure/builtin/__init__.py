@@ -24,6 +24,7 @@ from .injectable.DirName import *
 from .injectable.DirPath import *
 from .injectable.DirPathFilter import *
 from .injectable.Empty import *
+from .injectable.Expression import *
 from .injectable.EntityName import *
 from .injectable.FileInfo import *
 from .injectable.FileName import *

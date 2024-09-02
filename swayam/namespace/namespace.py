@@ -57,7 +57,7 @@ class Namespace(ABC):
         if name.startswith("formatter"):
             from functools import partial
             # Return a partial namespace of the same type
-            return partial(self.__class__, path=self.path, resolution=self.resolution)
+            return self.__class__(path=self.path, resolution=self.resolution, fmt_kwargs=self.__fmt_kwargs)
        
         name_path = os.path.join(self.path, name)
         # Check without the yaml extension

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import yaml
 
 from swayam.namespace.namespace import Namespace
 from swayam.namespace.error import *
@@ -36,4 +36,24 @@ class ExpressionNamespace(Namespace):
         raise NamespaceDirectoryMissingPackageFileError(self)
 
     def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
-        print("Now processing", name, path, resolution, package_file_content, sub_directories, definitions)
+        from .expression import LLMExpression
+        from swayam import Structure
+            
+        import yaml
+        expression_dict = yaml.safe_load(package_file_content)
+        if isinstance(expression_dict, dict):
+            try:
+                expression = LLMExpression(**Structure.Expression(**expression_dict).as_dict())
+            except Exception as e:
+                import traceback
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Structure.Expression.keys}]. Overall structure definition is {str(Structure.Expression.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
+            expression.load(prompt_ns_path=path, resolution=resolution)
+            return expression
+        else:
+            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(expression_dict)}")
+        
+        
+        
+        
+        
+        
