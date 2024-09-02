@@ -1,6 +1,6 @@
 
 
-Swayam employs the Epic-STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
+Swayam employs the STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
 
 A large problem is called an Epic which can be broken down into STEPs:
 
