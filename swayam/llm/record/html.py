@@ -98,6 +98,21 @@ class HtmlRecorder(Reporter):
             html = self.__template.replace("$$SWAYAM_JSON_DATA$$", json_str)
             f.write(html)
             
+    def record_begin_story(self, story) -> None:
+        """
+        Broadcasts the story details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        if self.__json_data == []:
+            # Add Story Node
+            self.__json_data.append({
+                                    "id": "story_node_" + uuid4().hex,
+                                    "text": story.purpose,
+                                    "children": []   
+                                })
+            
     def record_begin_thought(self, thought) -> None:
         """
         Broadcasts the system prompt details.

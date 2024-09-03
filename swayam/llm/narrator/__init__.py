@@ -31,3 +31,7 @@ class Narrator:
     def thought(self, narration=None):
         from .phase.thought import ThoughtNarrator
         return ThoughtNarrator(narration=narration)
+    
+    def story(self, narration=None):
+        from .phase.story import StoryNarrator
+        return StoryNarrator(narration=narration)

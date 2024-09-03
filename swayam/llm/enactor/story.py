@@ -21,27 +21,27 @@ from typing import Union
 from tarkash import log_debug
 from .base import BaseLLMEnactor
 
-class ThoughtEnactor(BaseLLMEnactor):
+class StoryEnactor(BaseLLMEnactor):
 
-    def __init__(self, *, recorder:str, model:str = None, name:str = "Thought Enactor", provider:str = None, temperature=0, **kwargs):
+    def __init__(self, *, recorder:str, model:str = None, name:str = "Story Enactor", provider:str = None, temperature=0, **kwargs):
         super().__init__(recorder=recorder, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
-        log_debug(f"Thought Enactor {name} created")
+        log_debug(f"Story Enactor {name} created")
     
-    def enact(self, thought, *, narrative):
+    def enact(self, story, *, narrative):
         '''
-        Enacts the thought.
+        Enacts the story.
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
-        if thought.has_directive():
-            narrative.append_directive(thought.directive)
+        if story.has_directive():
+            narrative.append_directive(story.directive)
         
-        log_debug(f"Executing Thought with {len(thought)} expression(s).")
-        self.recorder.record_begin_thought(thought)
+        log_debug(f"Executing Story with {len(story)} thought(s).")
+        self.recorder.record_begin_story(story)
         
-        from swayam.llm.enactor.expression import ExpressionEnactor
-        expression_enactor = ExpressionEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
+        from swayam.llm.enactor.thought import ThoughtEnactor
+        thought_enactor = ThoughtEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
         
-        for expression in thought:
-            narrative.reset_conversation()
-            expression_enactor.enact(expression, narrative=narrative)
+        for thought in story:
+            log_debug("Processing prompt...")
+            thought_enactor.enact(thought, narrative=narrative)

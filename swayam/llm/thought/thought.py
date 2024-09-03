@@ -108,7 +108,7 @@ class UserThought:
     
     @property
     def _expressions(self):
-        return self.__prompts
+        return self.__expressions
         
     def __iter__(self):
         self.__index = -1

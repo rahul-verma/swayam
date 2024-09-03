@@ -29,10 +29,20 @@ class Recorder:
             
         if recorder_config.record_html:
             self.__recorders.append(HtmlRecorder(config=recorder_config))
+            
+    def record_begin_story(self, story) -> None:
+        """
+        Broadcasts the story details.
+        
+        Args:
+            prompt (Prompt): The prompt to report.
+        """
+        for recorder in self.__recorders:
+            recorder.record_begin_story(story)
 
     def record_begin_thought(self, thought) -> None:
         """
-        Broadcasts the system prompt details.
+        Broadcasts the thought details.
         
         Args:
             prompt (Prompt): The prompt to report.

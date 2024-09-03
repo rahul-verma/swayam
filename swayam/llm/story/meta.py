@@ -15,7 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .meta import StoryMeta
+import os
+import importlib
 
-class Story(metaclass=StoryMeta):
-    pass
+from swayam.namespace.meta import NamespaceMeta
+
+
+class StoryMeta(NamespaceMeta):
+    
+    def __getattr__(cls, name):
+        from swayam.core.constant import SwayamOption
+        from .namespace import StoryNamespace
+        cls.load_root_namespace(SwayamOption.STORY_DIR, StoryNamespace)
+        return getattr(cls.root, name)

@@ -34,6 +34,8 @@ class ConsoleRecorder(Reporter):
     def record_begin_thought(self, thought) -> None:
         pass
     
+    def record_begin_story(self, story) -> None:
+       pass
 
     def record_begin_expression(self, expression) -> None:
         """
