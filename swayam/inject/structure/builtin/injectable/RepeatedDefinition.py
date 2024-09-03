@@ -23,7 +23,7 @@ from swayam import Structure
 from .Generator import GeneratorModel
     
 class RepeatedDefinitionModel(BaseModel):
-    definition: str = Field(..., title="Definition", description="Name of the definition to be repeated.")
+    definitions: List[str] = Field(..., title="Definitions", description="Definition names to be repeated.")
     repeater: GeneratorModel = Field(..., title="Generator", description="Generator details.")
 
 RepeatedDefinition = Structure.build("RepeatedDefinition", model=RepeatedDefinitionModel)

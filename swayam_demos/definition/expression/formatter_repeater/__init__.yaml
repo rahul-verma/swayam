@@ -1,0 +1,15 @@
+purpose: Demo Formatting with Repeater
+
+prompts:
+
+  - definitions: 
+      - q1
+      - q2
+      - q3
+    repeater:
+      generator: TwoNumberGenerator
+      args: 
+        size: 3
+
+tools:
+  - Calculator

@@ -1,0 +1,3 @@
+purpose: Instruction - {i}, {j} 
+
+text: Ask from me 2 numbers and {operation} them.

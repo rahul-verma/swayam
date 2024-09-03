@@ -58,7 +58,7 @@ class Namespace(ABC):
 
     def __getattr__(self, name):
         
-        if name.startswith("formatter"):
+        if name == "formatter":
             from functools import partial
             # Return a partial namespace of the same type
             return partial(self.__class__, path=self.path, resolution=self.resolution)

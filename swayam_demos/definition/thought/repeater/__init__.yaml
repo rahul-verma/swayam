@@ -2,13 +2,22 @@ tools:
   - Calculator
 
 expressions:
-  - definition: calc1
+  - definitions: 
+      - calc1
     repeater:
-      generator: TwoNumberGeneratorWithCallable
+      generator: TwoNumberGenerator
       args: 
         size: 5
-  - definition: calc2
+  - definitions: 
+      - calc2
     repeater:
-      generator: TwoNumberGeneratorWithCallable
+      generator: TwoNumberGenerator
       args: 
         size: 3
+  - definitions:
+      - calc1
+      - calc2
+    repeater:
+      generator: TwoNumberGenerator
+      args: 
+        size: 4

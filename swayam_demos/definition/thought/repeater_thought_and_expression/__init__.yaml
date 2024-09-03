@@ -1,0 +1,8 @@
+tools:
+  - Calculator
+
+expressions:
+  - definitions: 
+      - formatter_repeater
+    repeater:
+      generator: OperationGenerator

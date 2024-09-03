@@ -20,8 +20,10 @@ from pydantic import BaseModel, Field
 
 from swayam import Structure
 
+from .RepeatedDefinition import RepeatedDefinitionModel
+
 class ExpressionModel(BaseModel):
-    prompts: List[str] = Field(..., title="Prompt definition names", description="Prompt definition names that are included in this expression.")
+    prompts: List[Union[str, RepeatedDefinitionModel]] = Field(..., title="Prompt definition or dictionary.", description="Prompt definition names that are included in this expression. Instead of a name it can be dictionary of a RepeatedDefinition.")
     purpose: Union[str,None] = Field(None, title="Purpose of the expression", description="A statement describing the purpose of the expression.")
     directive: str = Field(None, title="Directive", description="Directive text for the narrative this expression builds. Extends previous directives if any.")
     image: Union[str,None] = Field(None, title="Image for first prompt.", description="Full or Project Relative Path of the image file. Used for the first prompt in the expression and hence becomes a part of the narrative.", examples=["/home/user/abc.png", "user/file.jpeg"])

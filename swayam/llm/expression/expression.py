@@ -23,11 +23,13 @@ from tarkash import log_debug
 class UserExpression:
     
     def __init__(self, *, prompts, purpose:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None) -> Any:
-        self.__prompt_names = list(prompts)
+        self.__prompt_names_or_dicts = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = "Expression"
+            self.__purpose = f"Expression"
+        else:
+            self.__purpose = f"Expression: {self.__purpose}"
         self.__directive = directive
         self.__image = image
         self.__output_structure = output_structure
@@ -41,9 +43,29 @@ class UserExpression:
     def load(self, *, prompt_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
         from swayam.llm.prompt.namespace import PromptNamespace
-        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
-        for name in self.__prompt_names:
-            self.__prompts.append(getattr(prompt_namespace, name))
+            
+        for prompt_name_or_dict in self.__prompt_names_or_dicts:
+            if isinstance(prompt_name_or_dict, dict):
+                prompt_dict = prompt_name_or_dict
+                prompt_names = prompt_dict["definitions"]
+                generator_structure = Structure.Generator(**prompt_dict["repeater"])
+                
+                from swayam import Generator
+                
+                generator = getattr(Generator, generator_structure.generator)
+
+                for out_dict in generator(**generator_structure.args):
+                    temp_dict = {}
+                    temp_dict.update(fmt_kwargs)
+                    temp_dict.update(out_dict)
+                    prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
+                    for prompt_name in prompt_names:
+                        self.__prompts.append(getattr(prompt_namespace, prompt_name))
+            else:
+                prompt_name = prompt_name_or_dict
+                prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
+                self.__prompts.append(getattr(prompt_namespace, prompt_name))
+
         if self.__output_structure:
             self.__output_structure = getattr(Structure, self.__output_structure)
         self.__make_image_suggestions()

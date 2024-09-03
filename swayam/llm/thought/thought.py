@@ -27,7 +27,9 @@ class UserThought:
         self.__expressions = []
         self.__purpose = purpose
         if self.__purpose is None:
-            self.__purpose = "Thought"
+            self.__purpose = f"Thought"
+        else:
+            self.__purpose = f"Thought: {self.__purpose}"
         self.__directive = directive
         self.__tools = tools
         
@@ -39,20 +41,20 @@ class UserThought:
         for expression_name_or_dict in self.__expression_names_or_dicts:
             if isinstance(expression_name_or_dict, dict):
                 expression_dict = expression_name_or_dict
-                expression_name = expression_dict["definition"]
+                expression_names = expression_dict["definitions"]
                 generator_structure = Structure.Generator(**expression_name_or_dict["repeater"])
                 
                 from swayam import Generator
                 
                 generator = getattr(Generator, generator_structure.generator)
-                
-                print(f"Generator: {generator_structure.as_dict()}")
+
                 for out_dict in generator(**generator_structure.args):
                     temp_dict = {}
                     temp_dict.update(fmt_kwargs)
                     temp_dict.update(out_dict)
                     expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
-                    self.__expressions.append(getattr(expression_namespace, expression_name))
+                    for expression_name in expression_names:
+                        self.__expressions.append(getattr(expression_namespace, expression_name))
             else:
                 expression_name = expression_name_or_dict
                 expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
