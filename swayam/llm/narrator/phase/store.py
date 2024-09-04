@@ -67,11 +67,14 @@ class STEPStore:
             parent = self.__order[parent_index]
             self.__storage[parent][key] = value
     
-    def items(self, phase):
-        # Get the class name of the object
-        class_name = phase.__class__.__name__
-        # Start looking from the class_name in the order defined
-        start_index = self.__order.index(class_name)
+    def items(self, phase=None):
+        if phase is not None:
+            # Get the class name of the object
+            class_name = phase.__class__.__name__
+            # Start looking from the class_name in the order defined
+            start_index = self.__order.index(class_name)
+        else:
+            start_index = 0
         
         merged_dict = {}
         # Iterate over the reversed order
