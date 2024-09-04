@@ -20,7 +20,16 @@ from swayam.llm.story.story import UserStory
 from swayam.llm.thought.thought import UserThought
 from swayam.llm.expression.expression import UserExpression
 from swayam.llm.prompt.prompt import UserPrompt
+from functools import partial
 
+class PhaseStore:
+    
+    def __init__(self, phase, store):
+        self.__phase = phase
+        self.__store = store
+        
+    def __getattr__(self, name):
+        return partial(getattr(self.__store, name), phase=self.__phase)
 
 class STEPStore:
     
@@ -39,7 +48,7 @@ class STEPStore:
         for item in self.__order:
             self.__storage[item] = {}
         
-    def get(self, phase, key):
+    def get(self, key, *, phase):
         # Get the class name of the object
         class_name = phase.__class__.__name__
 
@@ -53,12 +62,12 @@ class STEPStore:
                 return self.__storage[class_name][key]
 
         # If nothing is found, return None or some default value
-        return "not_set"
+        return "NOT_SET"
     
-    def set(self, phase, key, value):
+    def set(self, key, value, *, phase):
         self.__storage[phase.__class__.__name__][key] = value
         
-    def set_in_parent(self, phase, key, value):
+    def set_in_parent(self, key, value, *, phase):
         kls = phase.__class__.__name__
         if kls == UserStory.__class__.__name__:
             raise ValueError("There is no parent for a UserStory")
@@ -67,7 +76,7 @@ class STEPStore:
             parent = self.__order[parent_index]
             self.__storage[parent][key] = value
     
-    def items(self, phase=None):
+    def items(self, *, phase=None):
         if phase is not None:
             # Get the class name of the object
             class_name = phase.__class__.__name__
@@ -82,3 +91,9 @@ class STEPStore:
             if key in self.__storage:
                 merged_dict.update(self.__storage[key])
         return merged_dict
+    
+    def get_phase_wrapper(self, phase):
+        return PhaseStore(phase, self)
+    
+
+        
