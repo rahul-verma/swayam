@@ -60,6 +60,14 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
             
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store.get_phase_wrapper(self)
+            
     def load_tools_from_names(self, tool_names):
         from swayam import Tool
         self.__tools = [getattr(Tool, tool) for tool in tool_names]
