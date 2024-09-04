@@ -39,30 +39,31 @@ class STEPStore:
         for item in self.__order:
             self.__storage[item] = {}
         
-    def fetch_value(self, phase, key):
+    def get(self, phase, key):
         # Get the class name of the object
         class_name = phase.__class__.__name__
 
         # Start looking from the class_name in the order defined
         start_index = self.__order.index(class_name)
 
+        class_lookup_order = self.__order[start_index:]
         # Traverse the __order list starting from the given class_name
-        for key in self.__order[start_index:]:
-            if key in self.__storage and self.__storage[key]:
-                return self.__storage[key]
+        for class_name in class_lookup_order:
+            if class_name in self.__storage and key in self.__storage[class_name]:
+                return self.__storage[class_name][key]
 
         # If nothing is found, return None or some default value
-        return None
+        return "not_set"
     
-    def set_value(self, phase, key, value):
+    def set(self, phase, key, value):
         self.__storage[phase.__class__.__name__][key] = value
         
-    def set_value_in_parent(self, phase, key, value):
+    def set_in_parent(self, phase, key, value):
         kls = phase.__class__.__name__
         if kls == UserStory.__class__.__name__:
             raise ValueError("There is no parent for a UserStory")
         else:
-            parent_index = self.__order.index(class_name) + 1
+            parent_index = self.__order.index(kls) + 1
             parent = self.__order[parent_index]
             self.__storage[parent][key] = value
     
