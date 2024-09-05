@@ -96,7 +96,7 @@ class STEPStore:
         for key in reversed(self.__order[start_index:]):
             if key in self.__storage:
                 merged_dict.update(self.__storage[key])
-        return merged_dict
+        return merged_dict.items()
     
     def get_phase_wrapper(self, phase):
         return PhaseStore(phase, self)

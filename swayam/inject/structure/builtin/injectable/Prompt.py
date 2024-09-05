@@ -19,8 +19,9 @@ from typing import Union, List
 from pydantic import BaseModel, Field
 
 from swayam import Structure
+from .Fixture import FixtureModel
 
-class PromptModel(BaseModel):
+class PromptModel(FixtureModel):
     purpose: Union[str,None] = Field(None, title="Purpose of the prompt", description="A statement describing the purpose of the prompt.")
     text: str = Field(..., title="Text Content", description="Text content")
     image: Union[str,None] = Field(None, description="Full or Project Relative Path of the image file. Must include file name.", examples=["/home/user/abc.png", "user/file.jpeg"])

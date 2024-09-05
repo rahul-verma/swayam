@@ -57,6 +57,7 @@ class ExpressionEnactor(BaseLLMEnactor):
         
         for prompt in expression:
             log_debug("Processing prompt...")
-            # For dynamic variables in Narrator store
-            narrative.format_prompt(prompt)
+            # For dynamic variables in Narrative
+            prompt.store = narrative.store
+            prompt.dynamic_format()
             prompt_enactor.enact(prompt, narrative=narrative)

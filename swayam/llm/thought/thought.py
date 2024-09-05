@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 class UserThought:
     
-    def __init__(self, *, expressions, purpose:str=None, directive:str=None, tools:list=None) -> Any:
+    def __init__(self, *, expressions, purpose:str=None, directive:str=None, tools:list=None, resources=None, before=None, after=None) -> Any:
         self.__expression_names_or_dicts = list(expressions)
         self.__expressions = []
         self.__purpose = purpose
@@ -32,6 +32,9 @@ class UserThought:
             self.__purpose = f"Thought: {self.__purpose}"
         self.__directive = directive
         self.__tools = tools
+        self.__resources = resources
+        self.__before = before
+        self.__after = after
         
         self.__narrative = None
         

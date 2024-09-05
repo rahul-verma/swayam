@@ -39,9 +39,6 @@ class Narrative:
     @property
     def store(self):
         return self.__store
-    
-    def format_prompt(self, prompt):
-        prompt.dynamic_format(self.store)
         
     def add_directive(self, directive):
         self.__directive += directive + "\n\n"

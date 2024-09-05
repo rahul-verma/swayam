@@ -42,7 +42,7 @@ class PromptEnactor(BaseLLMEnactor):
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
         #conversation = expression.narrative.conversation
-        
+                
         prompt.store = narrative.store
 
         log_debug("Processing prompt...")
@@ -73,8 +73,6 @@ class PromptEnactor(BaseLLMEnactor):
         
         narrative.store.set("response_content", llm_response.as_dict()["content"], phase=prompt)
         
-        narrative.store.set("tool_results", llm_response, phase=prompt)
-        
         tooling_results = {}
 
         if llm_response.message.tool_calls:
@@ -82,7 +80,7 @@ class PromptEnactor(BaseLLMEnactor):
             for tool in llm_response.message.tool_calls:
                 tooling_results["tool.id"] = {"name": tool.function.name, "arguments": tool.function.arguments}
                 tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
-                tooling_results["tool.id"]["response"] = tool_response.content
+                tooling_results["tool.id"]["response"] = json.dumps(tool_response.content)
                 self.recorder.record_tool_response(tool_response)
                 response_messages.append(tool_response)
                 conversation.append_tool_response(tool_response)

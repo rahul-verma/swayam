@@ -19,8 +19,9 @@ from typing import Union, List
 from pydantic import BaseModel, Field
 
 from swayam import Structure
+from .Fixture import StagedFixtureModel
 
-class StoryModel(BaseModel):
+class StoryModel(StagedFixtureModel):
     thoughts: List[str] = Field(..., title="Thought definition names", description="Thought definition names that are included in this story.")
     purpose: Union[str,None] = Field(None, title="Purpose of the story", description="A statement describing the purpose of the story.")
     directive: str = Field(None, title="Directive", description="Directive text for the narrative this story builds. This is the first directive in the narrative.")

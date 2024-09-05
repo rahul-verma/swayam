@@ -26,7 +26,7 @@ from swayam.inject.structure.structure import IOStructure
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, store_response_as:str=None, standalone:bool=False) -> None:
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, resources=None, before=None, after=None, store_response_as:str=None, standalone:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -35,6 +35,9 @@ class UserPrompt:
             self.__purpose = f"Prompt: {self.__purpose}"
         self.__content = text
         self.__output_structure = output_structure
+        self.__resources = resources
+        self.__before = before
+        self.__after = after
         self.__store_response_as = store_response_as
         self.__standalone = standalone
         
@@ -74,12 +77,12 @@ class UserPrompt:
         self.__tool_definitions = [tool.definition for tool in self.__tools]
         self.__tool_dict = {tool.name: tool for tool in self.__tools}
 
-    def dynamic_format(self, store):
+    def dynamic_format(self):
         updated_content = self.__message["content"]
         if self.image:
             updated_content = updated_content[0]["text"]
         import re
-        for key, value in store.items(self):
+        for key, value in self.store.items():
             if value is None:
                 value = ""
             elif type(value) in (dict, list):

@@ -18,10 +18,12 @@
 from typing import Union, List
 from pydantic import BaseModel, Field
 
+from .Fixture import StagedFixtureModel
+
 from swayam import Structure
 from .RepeatedDefinition import RepeatedDefinitionModel
 
-class ThoughtModel(BaseModel):
+class ThoughtModel(StagedFixtureModel):
     expressions: List[Union[str, RepeatedDefinitionModel]] = Field(..., title="Expression definition or dictionary.", description="Expression definition names that are included in this thought. Instead of a name it can be dictionary of a RepeatedDefinition.")
     purpose: Union[str,None] = Field(None, title="Purpose of the thought", description="A statement describing the purpose of the thought.")
     directive: str = Field(None, title="Directive", description="Directive text for the narrative this thought builds. Extends previous directives if any.")
