@@ -2,7 +2,7 @@ tools:
   - Calculator
 
 expressions:
-  - definitions: 
-      - formatter_repeater
-    repeater:
+  - repeat:
+      definitions: 
+        - formatter_repeater
       generator: OperationGenerator

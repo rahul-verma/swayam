@@ -35,6 +35,7 @@ class UserThought:
         self.__resources = resources
         self.__before = before
         self.__after = after
+        self.__story = None
         
         self.__narrative = None
         
@@ -43,9 +44,10 @@ class UserThought:
         from swayam.llm.phase.expression.namespace import ExpressionNamespace
         for expression_name_or_dict in self.__expression_names_or_dicts:
             if isinstance(expression_name_or_dict, dict):
-                expression_dict = expression_name_or_dict
-                expression_names = expression_dict["definitions"]
-                generator_structure = Structure.Generator(**expression_name_or_dict["repeater"])
+                expression_dict = expression_name_or_dict["repeat"]
+                expression_names = expression_dict.pop("definitions")
+                from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
+                generator_structure = GeneratorStructure(**expression_dict)
                 
                 from swayam import Generator
                 
@@ -57,7 +59,8 @@ class UserThought:
                     temp_dict.update(out_dict)
                     expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
                     for expression_name in expression_names:
-                        self.__expressions.append(getattr(expression_namespace, expression_name))
+                        expression = getattr(expression_namespace, expression_name)
+                        self.__expressions.append(expression)
             else:
                 expression_name = expression_name_or_dict
                 expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
@@ -92,6 +95,14 @@ class UserThought:
     @narrative.setter
     def narrative(self, narrative):
         self.__narrative = narrative
+        
+    @property
+    def story(self):
+        return self.__story
+    
+    @story.setter
+    def story(self, story):
+        self.__story = story
         
     def __len__(self):
         return len(self.__expressions)

@@ -31,19 +31,33 @@ class ExpressionEnactor(BaseLLMEnactor):
         '''
         Runs the expression and returns the result.
         '''
-        
+        expression.narrative = narrative
         log_debug(f"Executing Expression with {len(expression)} prompt(s).")
         self.recorder.record_begin_expression(expression)
         conversation = narrative.conversation
-        if len(conversation) == 0:
-            if expression.has_directive():
-                self.recorder.record_directive(expression.directive)
-                self.recorder.record_conversation(conversation)
-            conversation.append_directive(narrative._prepare_directive(expression_directive=expression.directive, expression_persona=expression.persona))
-        log_debug("Finished processing system prompt.")
+        conversation.append_system_prompt(narrative.get_instructions())
+        context_prompt = context_prompt = narrative.get_context_prompt(
+                story_purpose=expression.story,
+                thought_purpose=expression.thought,
+                expression_purpose=expression.purpose,
+                expression_directive=expression.directive,
+                expression_persona=expression.persona
+            ) 
+        conversation.append_context_prompt(context_prompt)
         
         from swayam.llm.enact.prompt import PromptEnactor
         prompt_enactor = PromptEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
+        from swayam.llm.phase.prompt.prompt import UserPrompt
+        prompt_enactor.enact(UserPrompt(text=context_prompt), narrative=narrative, report=False)
+        
+        
+        directive = narrative.get_directive(expression_directive=expression.directive)
+        if directive:
+            self.recorder.record_directive(directive)
+            
+        self.recorder.record_conversation(conversation)
+            
+        log_debug("Finished processing system prompt.")
         
         for prompt in expression:
             log_debug("Processing prompt...")

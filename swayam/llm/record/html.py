@@ -194,7 +194,7 @@ class HtmlRecorder(Reporter):
                     "icon": "jstree-file",
                     "data": {
                                 "content": [{
-                                                "heading": "Directive",
+                                                "heading": "Directive Text",
                                                 "content" : directive
                                 }]
                     }
@@ -203,29 +203,35 @@ class HtmlRecorder(Reporter):
         self.__update_report()
         log_debug("Finished: Reporting System Prompt.")
             
-    def record_conversation(self, narrative:Conversation) -> None:
+    def record_conversation(self, conversation) -> None:
         """
-        Reports the narrative details.
+        Reports the conversation details.
 
         Args:
             narrative (Conversation): Narrative object with all input messages.
         """
         
+        debug = os.environ.get("SWAYAM_DEBUG", "false")
+        if debug.lower() != "true":
+            messages = conversation.reportable_messages[3:]
+        else:
+            messages = conversation.reportable_messages
+        
         if self.__json_data == []:
             self.record_begin_expression()
         
         log_debug("Begin: Reporting Narrative.")
-        narrative_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_narrative.json"
-        narrative_json = json.dumps(narrative.reportable_messages, indent=4)
-        with open(narrative_file_path, 'w') as f:
-            f.write(narrative_json)
+        conversation_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_conversation.json"
+        conversation_json = json.dumps(messages, indent=4)
+        with open(conversation_file_path, 'w') as f:
+            f.write(conversation_json)
         for_html = [
-            {"heading": message["role"].title(), "content":message} for message in narrative.reportable_messages
+            {"heading": message["role"].title(), "content":message} for message in messages
         ]
-        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{narrative_file_path}"] + narrative.reportable_messages
+        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{conversation_file_path}"] + messages
      
         self.__update_report()
-        log_debug("Finished: Reporting Narrative.")
+        log_debug("Finished: Reporting Conversation.")
 
     def record_prompt(self, prompt:Prompt, role="User") -> None:
         """
@@ -266,23 +272,14 @@ class HtmlRecorder(Reporter):
                 })
         
         expected_output_structure = prompt.output_structure
-        if expected_output_structure is None:
-            expected_output_structure = "Not specified."
-        else:
-            expected_output_structure = expected_output_structure.definition
-
-        prompt_content_node.append({
-                    "heading": "Expected Response Format",
-                    "content": expected_output_structure
-                })
+        if expected_output_structure is not None:
+            prompt_content_node.append({
+                        "heading": "Expected Response Format",
+                        "content": expected_output_structure.definition
+                    })
         
         provided_tools = prompt.tool_dict
-        if not provided_tools:
-            prompt_content_node.append({
-                    "heading": "Provided Tools",
-                    "content": "No tool provided."
-                })
-        else:
+        if provided_tools:
             tool_content_for_main_page = {
                 "heading": "Provided Tools",
                 "content": {}
@@ -307,31 +304,18 @@ class HtmlRecorder(Reporter):
         response = response.as_dict()
         content = response["content"]
         del response["content"]
-        
-        children.append({
-                        "id": "message_" + uuid4().hex,
-                        "text": "Response Meta-Data",
-                        "icon": "jstree-file",
-                        "data": {
-                            "content": response
-                        }
-                    })
-        
-        self.__get_prompt_content_node().append({
-                    "heading": "Response Meta-Data",
-                    "content": response
-            })
+
+        if response["refusal"] is not None:
+            self.__get_prompt_content_node().append({
+                        "heading": "Response Meta-Data",
+                        "content": response
+                })
         
         if content:
             self.__get_prompt_content_node().append({
                             "heading": "Response Content",
                             "content": content
                         })
-        else:
-            self.__get_prompt_content_node().append({
-                    "heading": "Response Content",
-                    "content": "No response content was returned by the LLM. Check the response meta-data for more details."
-            })
             
         # Appending non-LLM expression requirements
         if "tool_calls" in response and response["tool_calls"]:
@@ -347,14 +331,7 @@ class HtmlRecorder(Reporter):
                 }
                 
             self.__get_prompt_content_node().append(tool_response_for_main_page)           
-            
-        else:
-            self.__get_prompt_content_node().append(
-                {
-                    "heading": "Tool Calls Suggested by LLM",
-                    "content": "No suggestions."
-                }
-            )     
+    
         self.__update_report()
         log_debug("Finished: Reporting Response.")
         

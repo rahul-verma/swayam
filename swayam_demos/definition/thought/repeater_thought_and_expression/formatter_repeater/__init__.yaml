@@ -2,11 +2,11 @@ purpose: Demo Formatting with Repeater
 
 prompts:
 
-  - definitions: 
-      - q1
-      - q2
-      - q3
-    repeater:
+  - repeat:
+      definitions: 
+        - q1
+        - q2
+        - q3
       generator: TwoNumberGenerator
       args: 
         size: 3

@@ -49,16 +49,22 @@ class Conversation:
     def reportable_messages(self):
         return self.__reportable_messages
     
-    def append_directive(self, directive):
+    def append_system_prompt(self, text):
         message = {
             "role": "system",
-            "content": directive}
+            "content": text}
         self.__messages.append(message)
         self.__reportable_messages.append(message)
     
     def append_prompt(self, prompt):
         self.__messages.append(prompt.message)
         self.__reportable_messages.append(prompt.reportable_message)
+        
+    def append_context_prompt(self, text):
+        message = {
+            "role": "user",
+            "content": text}
+        self.__messages.append(message)
         
     def append_assistant_response(self, *messages):
         for message in messages:

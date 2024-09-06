@@ -1,0 +1,7 @@
+purpose: Basic Expression Demo
+
+directive: Critically analyse your output and offer to revise.
+
+prompts:
+  - trip_command
+  - trip_query

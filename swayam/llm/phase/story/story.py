@@ -42,7 +42,8 @@ class UserStory:
         from swayam.llm.phase.thought.namespace import ThoughtNamespace
         for thought_name in self.__thought_names:
             thought_namespace = ThoughtNamespace(path=thought_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
-            self.__thoughts.append(getattr(thought_namespace, thought_name))
+            thought = getattr(thought_namespace, thought_name)
+            self.__thoughts.append(thought)
         
     def has_directive(self):
         return self.__directive is not None

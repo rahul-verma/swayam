@@ -2,22 +2,22 @@ tools:
   - Calculator
 
 expressions:
-  - definitions: 
-      - calc1
-    repeater:
+  - repeat:
+      definitions: 
+        - calc1
       generator: TwoNumberGenerator
       args: 
         size: 5
-  - definitions: 
-      - calc2
-    repeater:
+  - repeat:
+      definitions: 
+        - calc2
       generator: TwoNumberGenerator
       args: 
         size: 3
-  - definitions:
-      - calc1
-      - calc2
-    repeater:
+  - repeat:
+      definitions:
+        - calc1
+        - calc2
       generator: TwoNumberGenerator
       args: 
         size: 4

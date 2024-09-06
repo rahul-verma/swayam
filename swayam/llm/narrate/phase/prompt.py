@@ -31,16 +31,21 @@ class PromptNarrator(BaseNarrator):
         """
         Narrates a prompt to a Prompt enactor.
         """
-        if self.__first_prompt:
-            self.narrative.conversation.append_directive(self.narrative._prepare_directive(expression_directive=None, expression_persona=None))
-            self.__first_prompt = False
-            
         if not isinstance(prompt, UserPrompt):
             raise TypeError(f"PromptNarrator cannot narrate a prompt of type {type(prompt)}. It must UserPrompt object.")
         
         log_debug(f"Narrating prompt....")
         enactor = PromptEnactor(recorder=self.recorder)
+        
+        if self.__first_prompt:
+            self.narrative.conversation.append_system_prompt(self.narrative.get_instructions())
+            context_prompt = self.narrative.get_context_prompt(story_purpose=None, thought_purpose=None, expression_purpose=None, expression_directive=None, expression_persona=None)
+            self.__first_prompt = False
+            enactor.enact(UserPrompt(text=context_prompt), narrative=self.narrative, report=False)
+            
         enactor.enact(prompt, narrative=self.narrative)
+        
+        
         
     def reset(self):
         super().reset()

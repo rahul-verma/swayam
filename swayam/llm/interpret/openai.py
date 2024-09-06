@@ -30,7 +30,6 @@ class OpenAIClient(LLMClient):
         from pprint import pprint
         from swayam.llm.phase.prompt.response import LLMResponse
         import openai
-        print(messages)
         if tools:
             tools =[tool.definition for tool in tools]
 

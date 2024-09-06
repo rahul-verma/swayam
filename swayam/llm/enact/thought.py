@@ -32,7 +32,7 @@ class ThoughtEnactor(BaseLLMEnactor):
         Enacts the thought.
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
-        
+
         if thought.has_directive():
             narrative.append_directive(thought.directive)
         
@@ -44,4 +44,6 @@ class ThoughtEnactor(BaseLLMEnactor):
         
         for expression in thought:
             narrative.reset_conversation()
+            expression.story = thought.story
+            expression.thought = thought.purpose
             expression_enactor.enact(expression, narrative=narrative)

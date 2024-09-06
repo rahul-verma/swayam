@@ -35,7 +35,7 @@ class PromptEnactor(BaseLLMEnactor):
         from swayam.llm.interpret import Model
         self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
-    def enact(self, prompt, *, narrative):
+    def enact(self, prompt, *, narrative, report=True):
         '''
         Runs the expression and returns the result.
         '''        
@@ -55,7 +55,8 @@ class PromptEnactor(BaseLLMEnactor):
         # Appending happens via the Narrator Narrative so that dynamic variables can be considered.
         conversation.append_prompt(prompt)
         self.recorder.record_conversation(conversation)
-        self.recorder.record_prompt(prompt)
+        if report:
+            self.recorder.record_prompt(prompt)
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
@@ -65,7 +66,8 @@ class PromptEnactor(BaseLLMEnactor):
         conversation.append_assistant_response(llm_response.as_dict())
         self.recorder.record_conversation(conversation)
         
-        self.recorder.record_response(prompt, llm_response)
+        if report:
+            self.recorder.record_response(prompt, llm_response)
         log_debug("Updated Narrative with Response message.")
         
         if llm_response.error:

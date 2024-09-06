@@ -38,6 +38,8 @@ class UserExpression:
         self.__resources = resources
         self.__before = before
         self.__after = after
+        self.__story = None
+        self.__thought = None
         
         self.__narrative = None
         
@@ -51,7 +53,7 @@ class UserExpression:
         for prompt_name_or_dict in self.__prompt_names_or_dicts:
             if isinstance(prompt_name_or_dict, dict):
                 prompt_dict = prompt_name_or_dict["repeat"]
-                prompt_names = prompt_dict["definitions"]
+                prompt_names = prompt_dict.pop("definitions")
                 from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
                 generator_structure = GeneratorStructure(**prompt_dict)
                 
@@ -119,6 +121,22 @@ class UserExpression:
     @narrative.setter
     def narrative(self, narrative):
         self.__narrative = narrative
+        
+    @property
+    def story(self):
+        return self.__story
+    
+    @story.setter
+    def story(self, story):
+        self.__story = story
+    
+    @property
+    def thought(self):
+        return self.__thought
+    
+    @thought.setter
+    def thought(self, thought):
+        self.__thought = thought
         
     def append(self, prompt):
         self.__prompts.append(prompt)

@@ -44,4 +44,5 @@ class StoryEnactor(BaseLLMEnactor):
         
         for thought in story:
             log_debug("Processing prompt...")
+            thought.story = story.purpose
             thought_enactor.enact(thought, narrative=narrative)
