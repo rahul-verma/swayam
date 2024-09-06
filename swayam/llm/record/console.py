@@ -18,9 +18,9 @@ import os
 
 from pprint import pprint
 
-from swayam.llm.prompt import Prompt
-from swayam.llm.expression.conversation import Conversation
-from swayam.llm.prompt.response import LLMResponse
+from swayam.llm.phase.prompt import Prompt
+from swayam.llm.phase.expression.conversation import Conversation
+from swayam.llm.phase.prompt.response import LLMResponse
 from swayam.llm.record import Reporter
     
 class ConsoleRecorder(Reporter):
@@ -53,7 +53,7 @@ class ConsoleRecorder(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-        self.record_prompt(prompt)
+        pass
 
     def record_prompt(self, prompt:Prompt) -> None:
         """

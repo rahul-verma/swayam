@@ -17,8 +17,8 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from swayam.llm.prompt import Prompt
-from swayam.llm.prompt.response import LLMResponse
+from swayam.llm.phase.prompt import Prompt
+from swayam.llm.phase.prompt.response import LLMResponse
 
 class Reporter(ABC):
     

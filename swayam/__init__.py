@@ -28,10 +28,10 @@ __root_dir = __join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
 sys.path.insert(0, __root_dir)
 
 from swayam.core.facade import Swayam
-from swayam.llm.prompt import Prompt
-from swayam.llm.expression import Expression
-from swayam.llm.thought import Thought
-from swayam.llm.story import Story
+from swayam.llm.phase.prompt import Prompt
+from swayam.llm.phase.expression import Expression
+from swayam.llm.phase.thought import Thought
+from swayam.llm.phase.story import Story
 from swayam.inject.structure import Structure
 from swayam.inject.tool import Tool
 from swayam.inject.generator import Generator

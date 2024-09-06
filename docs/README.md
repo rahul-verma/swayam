@@ -14,40 +14,59 @@ Prompt: The most actionable part, where the specific thoughts or commands are ge
 
 All building blocks of STEP are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
 
+## Narrative
+Narrative is passed from narrator to the enactor and the primary object remains same throughout the narration. It has three primary provisions:
+1. Directives from Story and Thought
+2. A multi-layered, cascading look-up Store: A phase can store key-value pairs in its own layer or in its parent layer. When accessing, a cascading lookup takes place.
+3. Current Conversation
+
 ## Prompt
 
 - Prompt can be a simple text string.
 - For more involved prompting, one has to create a Prompt Definition.
-- Currently a Prompt Def supports defining purpose, output structure and tools.
+- A Prompt is a part of an Expression and continues the current Conversation in the Narrative.
+- Currently a Prompt Def supports defining image, purpose, output structure and tools. In addition, it supports resources, before and after constructs.
 
-## Expression
+### Expression
 
-Each expression has a unique narrative in which the prompts work. Each prompt gets the narrative as a sequence of messages.
+An Expression can contain multiple prompts.
 
-An expression can choose to continue the previous narrative, by default it does not.
+Each expression starts a new Conversation within the Narrative.
 
-An expression can also have a standalone narrative.
+Expression definitions are packages defined as directories.
 
-To Do
-- Expression as a package
-- Prompt Loop with Generator
-- Loop with a Condition based Generator
-- Conditional Prompt
-- Standalone PPromptrompt: Possibly to another instance of same Model or a different one.
-- Dynamic Prompts. Prompts added on the fly.
+The directive in an expression is clubbed with directives from Story and Thought.
 
-## Thought
+### Thought
 
-A thought has a Directive with which the expressions and hence prompts need to work. This directive is sent as the system prompt to an LLM.
+A Thought can contain multiple Expressions. 
 
-To Do
-- Thought as a package
+Thought definitions are packages defined as directories.
 
+### Story
 
-## Story
+A Story can contain multiple Thoughts.
 
-To Do
+Thought definitions are packages defined as directories.
 
+## Fixtures
+
+There are three types of fixtures that can be included in Phase definitions:
+1. Resources: (Resource injectable)
+    - These are injectables that are automatically called twice in the flow at appropriate point in time.
+2. Before: (Parser, Condition, Tool injectables)
+    - Once: These are injectables that are called for the current phase, before the phase starts.
+    - Every: These are injectables that are called before every child phase.
+2. Before: (Parser, Condition, Tool injectables)
+    - Once: These are injectables that are called after the current phase, after the phase ends.
+    - Every: These are injectables that are called after every child phase completes.
+
+## Repeater
+Expression and Thought Definitions have the provision to use a repeater.
+
+In Expression a repeater can be associated with one or more prompts.
+
+In Thought, a repeater can be associated with one or more expressions.
 
 ## Injectables and Injection Protocol
 

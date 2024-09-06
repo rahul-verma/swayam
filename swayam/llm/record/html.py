@@ -24,9 +24,9 @@ import copy
 
 from tarkash import log_debug
 
-from swayam.llm.prompt import Prompt
-from swayam.llm.expression.conversation import Conversation
-from swayam.llm.prompt.response import LLMResponse
+from swayam.llm.phase.prompt import Prompt
+from swayam.llm.phase.expression.conversation import Conversation
+from swayam.llm.phase.prompt.response import LLMResponse
 from swayam.llm.record import Reporter
 
 class HtmlRecorder(Reporter):

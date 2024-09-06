@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.llm.expression.conversation import Conversation
+from swayam.llm.phase.expression.conversation import Conversation
 
 class Recorder:
     

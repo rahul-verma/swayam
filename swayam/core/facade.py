@@ -51,7 +51,7 @@ class _SwayamSingleton:
         self.__register_config_with_tarkash()
         
         # Create default narrator
-        from swayam.llm.narrator.simple import SimpleNarrator
+        from swayam.llm.narrate.simple import SimpleNarrator
         #print("Creating default narrator...")
         self.__default_narrator = SimpleNarrator()
     
@@ -83,20 +83,20 @@ class _SwayamSingleton:
         Returns:
             SimpleNarrator: A simple narrator that executes a parts of or complete story.
         """
-        from swayam.llm.narrator.prompt import SimpleNarrator
+        from swayam.llm.narrate.prompt import SimpleNarrator
         return SimpleNarrator(display=display, record_html=record_html, narration=narration)
     
     def reset_narrator(self):
         """
         Resets the default narrator.
         """
-        from swayam.llm.narrator.simple import SimpleNarrator
+        from swayam.llm.narrate.simple import SimpleNarrator
         self.__default_narrator.reset()
         
 class SwayamMeta(type):
     
     def __getattr__(cls, name):
-        from swayam.llm.narrator import Narrator
+        from swayam.llm.narrate import Narrator
         if name == "narrator":
             return Narrator()
 
