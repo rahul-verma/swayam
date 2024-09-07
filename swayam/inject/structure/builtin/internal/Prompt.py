@@ -27,7 +27,6 @@ class PromptModel(FixtureModel):
     image: Union[str,None] = Field(None, description="Full or Project Relative Path of the image file. Must include file name.", examples=["/home/user/abc.png", "user/file.jpeg"])
     output_structure: Union[str, None] = Field(None, description="Output Structure of the prompt")
     tools: List[str] = Field([], description="List of tools to be used in the prompt")
-    store_response_as:str = Field(None, title= "Store Response As <Name>", description="Variable name for the response in Narrative's store")
     standalone: bool = Field(False, title="Standalone Expression", description="If True, it gets an empty narrative value. The follow-up prompts continue with the narrative before it.")
     
 Prompt = Structure.build("Prompt", model=PromptModel)

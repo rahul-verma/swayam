@@ -52,8 +52,8 @@ class InjectableNotCallableError(InjectableObjectError):
         
 class InjectableInvalidInputStructureError(InjectableObjectError):
     
-    def __init__(self, injectable, *, provided_input):
-        super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: >>Structure.{injectable.input_structure.name}<<.")
+    def __init__(self, injectable, *, provided_input, error=""):
+        super().__init__(injectable, error=f"The provided input is >>{str(provided_input)}<<. Expected: >>Structure.{injectable.input_structure.name}<<.{error}")
         
 class InjectableInvalidInputContentError(InjectableObjectError):
         

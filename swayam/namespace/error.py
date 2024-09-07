@@ -58,7 +58,7 @@ class DefinitionNotFoundError(NamespaceError):
 class DefinitionIsInvalidError(NamespaceError):
     
     def __init__(self, ns, *, name, path, resolution, error):
-        super().__init__(ns, error= f"{resolution}: Definition file >>{name}.yaml<< does not follow the rules for a {ns.type} definition. Path: {path}. Error: {error}")
+        super().__init__(ns, error= f"{resolution}: Definition file >>{name}<< does not follow the rules for a {ns.type} definition. Path: {path}. Error: {error}")
         
 class DefinitionFormattingError(NamespaceError):
     

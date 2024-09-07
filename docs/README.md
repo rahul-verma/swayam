@@ -16,7 +16,7 @@ All building blocks of STEP are only expressed as definitions, with the only exc
 
 ## Narrative
 Narrative is passed from narrator to the enactor and the primary object remains same throughout the narration. It has three primary provisions:
-1. Directives from Story and Thought
+1. Directives from Story and Thought. These get combined with the directive in an Expression and transformed as context by Swayam for the conversation in the Expression.
 2. A multi-layered, cascading look-up Store: A phase can store key-value pairs in its own layer or in its parent layer. When accessing, a cascading lookup takes place.
 3. Current Conversation
 

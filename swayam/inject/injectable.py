@@ -108,7 +108,8 @@ class StructuredInjectableWithCallable(StructuredInjectable):
             try:
                 updated_kwargs = self.input_structure(**kwargs).as_dict()
             except Exception as e:
-                raise InjectableInvalidInputStructureError(self, provided_input=kwargs)
+                import traceback
+                raise InjectableInvalidInputStructureError(self, provided_input=kwargs, error=str(e) + traceback.format_exc())
             else:
                 try:
                     self.validate_input_content(**updated_kwargs)

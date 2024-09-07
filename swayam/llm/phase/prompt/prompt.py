@@ -26,7 +26,7 @@ from swayam.inject.structure.structure import IOStructure
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, resources=None, before=None, after=None, store_response_as:str=None, standalone:bool=False) -> None:
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, resources=None, before=None, after=None, standalone:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -38,7 +38,11 @@ class UserPrompt:
         self.__resources = resources
         self.__before = before
         self.__after = after
-        self.__store_response_as = store_response_as
+        if not self.__before:
+            self.__before = []
+        if not self.__after:
+            self.__after = []
+
         self.__standalone = standalone
         
         if self.__output_structure is not None:
@@ -63,6 +67,13 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
             
+        from swayam.llm.enact.fixture import Fixture
+        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
+
+    @property
+    def fixture(self):
+        return self.__fixture
+            
     @property
     def store(self):
         return self.__store
@@ -70,6 +81,7 @@ class UserPrompt:
     @store.setter
     def store(self, store):
         self.__store = store.get_phase_wrapper(self)
+        self.__store["purpose"] = self.__purpose
             
     def load_tools_from_names(self, tool_names):
         from swayam import Tool

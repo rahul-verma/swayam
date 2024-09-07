@@ -24,7 +24,7 @@ kallable = callable
 class Resource(metaclass=ResourceMeta):
     
     @classmethod
-    def build(cls, name, *, callable, input_structure):
+    def build(cls, name, *, callable, input_structure=None):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 

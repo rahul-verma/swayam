@@ -20,9 +20,7 @@ from typing import List, Union
 from pydantic import BaseModel, Field
 from swayam import Structure
 
-class ToolArgsModel(BaseModel):
-    name: str = Field(..., title="Name of the tool", description="Name of the tool to be called.")
-    args: dict = Field(dict(), title="Keyword Arguments", description="Keyword Arguments to be passed to structured callable.")
+from .FixtureInjectable import FixtureInjectableModel
     
 class ToolModel(BaseModel):
-    Tool: ToolArgsModel = Field(..., title="Tool details", description="Tool Details.")
+    Tool: FixtureInjectableModel = Field(..., title="Tool details", description="Tool Details.")

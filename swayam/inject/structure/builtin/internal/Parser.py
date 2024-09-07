@@ -20,9 +20,7 @@ from typing import List, Union
 from pydantic import BaseModel, Field
 from swayam import Structure
 
-class ParserArgsModel(BaseModel):
-    name: str = Field(..., title="Name of the parser", description="Name of the parser to be called.")
-    args: dict = Field(dict(), title="Keyword Arguments", description="Keyword Arguments to be passed to structured callable.")
+from .FixtureInjectable import FixtureInjectableModel
     
 class ParserModel(BaseModel):
-    Parser: ParserArgsModel = Field(..., title="Parser details", description="Parser Details.")
+    Parser: FixtureInjectableModel = Field(..., title="Parser details", description="Parser Details.")

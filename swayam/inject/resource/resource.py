@@ -53,7 +53,7 @@ def iterator(invoker, generator):
 
 class StructuredResource(StructuredInjectableWithCallable):
     
-    def __init__(self, name, *, callable, input_structure):
+    def __init__(self, name, *, callable, input_structure=None):
         if input_structure is None:
             input_structure = Structure.Empty
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=Structure.Result)

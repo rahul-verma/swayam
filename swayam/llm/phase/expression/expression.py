@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 class UserExpression:
     
-    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, resources=None, before=None, after=None) -> Any:
+    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, before=None, after=None, before_node=None, after_node=None) -> Any:
         self.__prompt_names_or_dicts = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
@@ -35,9 +35,10 @@ class UserExpression:
         self.__image = image
         self.__output_structure = output_structure
         self.__tools = tools
-        self.__resources = resources
         self.__before = before
         self.__after = after
+        self.__before_node = before_node
+        self.__after_node = after_node
         self.__story = None
         self.__thought = None
         

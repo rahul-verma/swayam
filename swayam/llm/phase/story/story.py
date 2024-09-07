@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 class UserStory:
     
-    def __init__(self, *, thoughts, purpose:str=None, directive:str=None, resources=None, before=None, after=None) -> Any:
+    def __init__(self, *, thoughts, purpose:str=None, directive:str=None, resources=None, before=None, after=None, before_node=None, after_node=None) -> Any:
         self.__thought_names = list(thoughts)
         self.__thoughts = []
         self.__purpose = purpose
@@ -31,9 +31,10 @@ class UserStory:
         else:
             self.__purpose = f"Story: {self.__purpose}"
         self.__directive = directive
-        self.__resources = resources
         self.__before = before
         self.__after = after
+        self.__before_node = before_node
+        self.__after_node = after_node
         
         self.__narrative = None
         

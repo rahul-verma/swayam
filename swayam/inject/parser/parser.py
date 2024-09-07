@@ -27,13 +27,8 @@ class StructuredParser(StructuredInjectableWithCallable):
 class TextContentParser(StructuredParser):
     
     def __init__(self, name, *, callable, input_structure=None, output_structure=None, allow_none_output=False):
-        from swayam.inject.structure.builtin import TextContent
         if input_structure is None:
-            input_structure = Structure.TextContent
-        elif not issubclass(input_structure.data_model, Structure.TextContent.data_model):
-            raise TextParserIncompatibleInputStructureError(self)
-        else:
-            input_structure = input_structure
+            input_structure = Structure.Empty
         if output_structure is None:
             output_structure = Structure.StringValues
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
@@ -43,9 +38,7 @@ class JsonContentParser(StructuredParser):
     def __init__(self, name, *, callable, output_structure, input_structure=None,      content_structure=None, allow_none_output=False):
         from swayam.inject.structure.builtin import TextContent
         if input_structure is None:
-            input_structure = Structure.JsonContent
-        elif not issubclass(input_structure.data_model, Structure.JsonContent.data_model):
-            raise JsonParserIncompatibleInputStructureError(self)
+            input_structure = Structure.Empty
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
         self.__content_structure = content_structure
         

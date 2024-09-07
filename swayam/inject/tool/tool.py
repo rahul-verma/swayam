@@ -19,7 +19,12 @@ from swayam.inject.injectable import StructuredInjectableWithCallable
 
 class StructuredTool(StructuredInjectableWithCallable):
     
-    def __init__(self, name, *, callable, description, input_structure, output_structure, allow_none_output=False):
+    def __init__(self, name, *, callable, description, input_structure=None, output_structure=None, allow_none_output=False):
+        from swayam import Structure
+        if input_structure is None:
+            input_structure = Structure.Empty
+        if output_structure is None:
+            output_structure = Structure.Empty
         super().__init__(name, callable=callable, input_structure=input_structure, output_structure=output_structure, allow_none_output=allow_none_output)
         self.__description = description
         

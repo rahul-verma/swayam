@@ -29,13 +29,16 @@ class PhaseStore:
         self.__store = store
         
     def __getattr__(self, name):
-        return partial(getattr(self.__store, name), phase=self.__phase)
+        return self[name]
     
     def __getitem__(self, key):
         return self.__store.get(key, phase=self.__phase)
     
     def __setitem__(self, key, value):
         self.__store.set(key, value, phase=self.__phase)
+        
+    def items(self):
+        return self.__store.items(phase=self.__phase)
 
 class STEPStore:
     

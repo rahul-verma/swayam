@@ -21,5 +21,5 @@ from pydantic import BaseModel, Field
 from swayam import Structure
 from .FixtureInjectable import FixtureInjectableModel
     
-class ConditionModel(BaseModel):
-    Condition: FixtureInjectableModel = Field(..., title="Condition details", description="Condition Details.")
+class ResourceModel(BaseModel):
+    Resource: FixtureInjectableModel = Field(..., title="Condition details", description="Condition Details.")

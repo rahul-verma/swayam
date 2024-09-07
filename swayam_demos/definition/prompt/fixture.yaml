@@ -1,0 +1,45 @@
+before:
+  - Resource.NoArgResource
+  - Resource:
+      name: ArgResource
+      args:
+        value: testing
+  - Condition.NoArgCondition
+  - Condition:
+      name: ArgCondition
+      args:
+        value: testing
+  - Parser.NoArgParser
+  - Parser:
+      name: ArgParser
+      args:
+        value: testing
+  - Tool.NoArgTool
+  - Tool:
+      name: ArgTool
+      args:
+        value: testing
+    
+after:
+  - Resource.NoArgResource
+  - Resource:
+      name: ArgResource
+      args:
+        value: testing
+  - Condition.NoArgCondition
+  - Condition:
+      name: ArgCondition
+      args:
+        value: testing
+  - Parser.NoArgParser
+  - Parser:
+      name: ArgParser
+      args:
+        value: testing
+  - Tool.NoArgTool
+  - Tool:
+      name: ArgTool
+      args:
+        value: testing
+
+text: Tell me a jok on testing.

@@ -48,7 +48,7 @@ class ExpressionEnactor(BaseLLMEnactor):
         from swayam.llm.enact.prompt import PromptEnactor
         prompt_enactor = PromptEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
         from swayam.llm.phase.prompt.prompt import UserPrompt
-        prompt_enactor.enact(UserPrompt(text=context_prompt), narrative=narrative, report=False)
+        prompt_enactor.enact(UserPrompt(text=context_prompt, purpose="Context Setting"), narrative=narrative, report=False)
         
         
         directive = narrative.get_directive(expression_directive=expression.directive)

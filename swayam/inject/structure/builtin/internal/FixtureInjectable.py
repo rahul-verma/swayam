@@ -19,7 +19,7 @@ from typing import List, Union
 
 from pydantic import BaseModel, Field
 from swayam import Structure
-from .FixtureInjectable import FixtureInjectableModel
-    
-class ConditionModel(BaseModel):
-    Condition: FixtureInjectableModel = Field(..., title="Condition details", description="Condition Details.")
+
+class FixtureInjectableModel(BaseModel):
+    name: str = Field(..., title="Name of the injectable", description="Name of the injectable to be called.")
+    args: dict = Field(dict(), title="Keyword Arguments", description="Keyword Arguments to be passed to injectable")

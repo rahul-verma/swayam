@@ -1,0 +1,15 @@
+before:
+  - Resource:
+      name: ArgResource
+      args:
+        value: Before
+    
+after:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args:
+        value: After
+
+purpose: Prompt2
+
+text: Tell me a joke on testing.

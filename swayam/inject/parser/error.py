@@ -20,12 +20,12 @@ from swayam.inject.error import *
 class ParserNoMatchError(InjectableObjectError):
     
     def __init__(self, injectable, *, error):
-        super().__init__(injectable, message=f"Parser did not find any match. {error}")
+        super().__init__(injectable, error=f"Parser did not find any match. {error}")
         
 class ParserIncompatibleInputStructureError(InjectableObjectError):
         
     def __init__(self, injectable, *, input_structure):
-        super().__init__(injectable, message=f"Parser input structure must be either Structure.{input_structure} or a structure based on a Pydantic class DataModel that inherits from Structure.{input_structure}.data_model.")
+        super().__init__(injectable, error=f"Parser input structure must be either Structure.{input_structure} or a structure based on a Pydantic class DataModel that inherits from Structure.{input_structure}.data_model.")
             
 class TextParserIncompatibleInputStructureError(ParserIncompatibleInputStructureError):
     

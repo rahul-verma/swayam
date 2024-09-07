@@ -1,0 +1,29 @@
+before:
+  - Resource:
+      name: ArgResource
+      args:
+        value: Before Expression
+    
+after:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args:
+        value: After Expression
+
+before_node:
+  - Resource:
+      name: ArgResource
+      args:
+        value: Before Prompt Node
+    
+after_node:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args:
+        value: After Prompt Node
+
+purpose: Expression1
+
+prompts:
+  - prompt1
+  - prompt2

@@ -44,6 +44,8 @@ class PromptEnactor(BaseLLMEnactor):
         #conversation = expression.narrative.conversation
                 
         prompt.store = narrative.store
+        
+        prompt.fixture.before()
 
         log_debug("Processing prompt...")
         prompt.process_for_report()
@@ -91,14 +93,4 @@ class PromptEnactor(BaseLLMEnactor):
         else:
             response_messages = llm_response.message
             
-    # if expression.should_store_response:
-    #     stored_message = response_messages
-    #     if type(response_messages) is list:
-    #         stored_message = response_messages[-1]
-    #     from swayam.inject.tool.response import ToolResponse
-    #     if isinstance(stored_message, ToolResponse):
-    #         stored_message = stored_message.content
-    #     else:
-    #         stored_message = stored_message.to_dict()
-    #     if "content" in stored_message and stored_message["content"]:
-    #         expression.narrative.store[expression.response_storage_name] = stored_message["content"]
+        prompt.fixture.after()
