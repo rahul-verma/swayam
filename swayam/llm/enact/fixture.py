@@ -34,35 +34,29 @@ class Fixture:
             if isinstance(injectable, str):
                 try:
                     injectable_type, injectable_name = injectable.split('.')
+                    injectable_args = {}
                 except Exception as e:
                     raise ValueError("Invalid injectable type: {}. Expected an Injectable dictionary or a name as Resource.name, Condition.name etc".format(injectable))
-                from swayam.inject import Injectable
-                injectable_object = Injectable.load_from_module(injectable_type, injectable_name, caller_file= get_caller_module_file_location())
-                injectable_object.store = self.__phase.store
-                if injectable_type == "Resource":
-                    injectable_object = iter(injectable_object())
-                    if store_resources:
-                        self.__setup_resource_objects.append(injectable_object)
-                    next(injectable_object)
-                else:
-                    injectable_object()
             elif isinstance(injectable, dict):
                 injectable_type = list(injectable.keys())[0]
                 injectable_name = injectable[injectable_type]["name"]
                 injectable_args = injectable[injectable_type]["args"]
                 from swayam.inject import Injectable
                 injectable_object = Injectable.load_from_module(injectable_type, injectable_name, caller_file= get_caller_module_file_location())   
-                
-                # !!! It is critical that the store is passed only at the calling stage. The store should not be passed at the time of object creation as the Injectable can be used multiple times and the last value holds in such a case.
-                if injectable_type == "Resource":
-                    iter_injectable_object = injectable_object(store=self.__phase.store, **injectable_args)
-                    if store_resources:
-                        self.__setup_resource_objects.append(iter_injectable_object)
-                    next(iter_injectable_object)
-                else:
-                    injectable_object(store=self.__phase.store, **injectable_args)
             else:
                 raise ValueError("Invalid injectable type: {}. Expected an Injectable dictionary".format(injectable))
+            
+            from swayam.inject import Injectable
+            injectable_object = Injectable.load_from_module(injectable_type, injectable_name, caller_file= get_caller_module_file_location())
+            
+            # !!! It is critical that the store is passed only at the calling stage. The store should not be passed at the time of object creation as the Injectable can be used multiple times and the last value holds in such a case.
+            if injectable_type == "Resource":
+                iter_injectable_object = injectable_object(store=self.__phase.store, **injectable_args)
+                if store_resources:
+                    self.__setup_resource_objects.append(iter_injectable_object)
+                next(iter_injectable_object)
+            else:
+                injectable_object(store=self.__phase.store, **injectable_args)
 
     def before(self):
         self.__execute(self.__before, store_resources=True)

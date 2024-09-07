@@ -40,6 +40,10 @@ class UserThought:
         
         self.__narrative = None
         
+        from swayam.llm.enact.fixture import Fixture
+        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
+        self.__node_fixture = Fixture(phase=self, before=self.__before_node, after=self.__after_node)
+        
     def load(self, *, expression_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
         from swayam.llm.phase.expression.namespace import ExpressionNamespace
@@ -76,6 +80,15 @@ class UserThought:
         
     def has_directive(self):
         return self.__directive is not None
+    
+
+    @property
+    def fixture(self):
+        return self.__fixture
+    
+    @property
+    def node_fixture(self):
+        return self.__node_fixture
     
     @property
     def purpose(self):

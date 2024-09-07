@@ -94,4 +94,3 @@ class PromptEnactor(BaseLLMEnactor):
             response_messages = llm_response.message
             
         prompt.fixture.after()
-        print("Prompt execution including fixtures completed.")
