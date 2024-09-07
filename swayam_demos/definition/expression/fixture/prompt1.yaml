@@ -1,14 +1,14 @@
 before:
   - Resource:
       name: ArgResource
-      args:
-        value: Before
+      args: 
+        value: "Prompt's Own Level"
     
 after:
   - Resource:
       name: ArgResourceOnlyTeardown
-      args:
-        value: After
+      args: 
+        value: "Prompt's Own Level"
 
 purpose: Prompt1
 

@@ -24,7 +24,6 @@ from swayam.inject.error import *
     
 class Fixture:
     def __init__(self, *, phase, before, after):
-        print(before, after)
         self.__phase = phase
         self.__before = before
         self.__after = after
@@ -52,24 +51,23 @@ class Fixture:
                 injectable_name = injectable[injectable_type]["name"]
                 injectable_args = injectable[injectable_type]["args"]
                 from swayam.inject import Injectable
-                injectable_object = Injectable.load_from_module(injectable_type, injectable_name, caller_file= get_caller_module_file_location())
-                injectable_object.store = self.__phase.store
+                injectable_object = Injectable.load_from_module(injectable_type, injectable_name, caller_file= get_caller_module_file_location())   
+                
+                # !!! It is critical that the store is passed only at the calling stage. The store should not be passed at the time of object creation as the Injectable can be used multiple times and the last value holds in such a case.
                 if injectable_type == "Resource":
-                    injectable_object = iter(injectable_object(**injectable_args))
+                    iter_injectable_object = injectable_object(store=self.__phase.store, **injectable_args)
                     if store_resources:
-                        self.__setup_resource_objects.append(injectable_object)
-                    next(injectable_object)
+                        self.__setup_resource_objects.append(iter_injectable_object)
+                    next(iter_injectable_object)
                 else:
-                    injectable_object(**injectable_args)
+                    injectable_object(store=self.__phase.store, **injectable_args)
             else:
                 raise ValueError("Invalid injectable type: {}. Expected an Injectable dictionary".format(injectable))
 
     def before(self):
-        print("BEFORE")
         self.__execute(self.__before, store_resources=True)
         
     def after(self):
-        print("AFTER")
         self.__execute(self.__after, store_resources=False)
         for resource in self.__setup_resource_objects[-1:]:
             next(resource)

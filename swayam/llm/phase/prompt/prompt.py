@@ -67,6 +67,8 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
             
+        self.__store = None
+            
         from swayam.llm.enact.fixture import Fixture
         self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
 
@@ -80,8 +82,9 @@ class UserPrompt:
     
     @store.setter
     def store(self, store):
-        self.__store = store.get_phase_wrapper(self)
-        self.__store["purpose"] = self.__purpose
+        if not self.__store:
+            self.__store = store.get_phase_wrapper(self)
+            self.__store["purpose"] = self.__purpose
             
     def load_tools_from_names(self, tool_names):
         from swayam import Tool

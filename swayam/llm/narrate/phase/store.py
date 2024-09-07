@@ -39,6 +39,10 @@ class PhaseStore:
         
     def items(self):
         return self.__store.items(phase=self.__phase)
+    
+    @property
+    def phase_name(self):
+        return self.__phase.__class__.__name__
 
 class STEPStore:
     
@@ -100,6 +104,9 @@ class STEPStore:
             if key in self.__storage:
                 merged_dict.update(self.__storage[key])
         return merged_dict.items()
+    
+    def _raw_items(self):
+        return self.__storage.items()
     
     def get_phase_wrapper(self, phase):
         return PhaseStore(phase, self)

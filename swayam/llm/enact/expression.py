@@ -56,6 +56,9 @@ class ExpressionEnactor(BaseLLMEnactor):
             self.recorder.record_directive(directive)
             
         self.recorder.record_conversation(conversation)
+        
+        expression.store = narrative.store
+        expression.fixture.before()
             
         log_debug("Finished processing system prompt.")
         
@@ -64,4 +67,8 @@ class ExpressionEnactor(BaseLLMEnactor):
             # For dynamic variables in Narrative
             prompt.store = narrative.store
             prompt.dynamic_format()
+            expression.node_fixture.before()
             prompt_enactor.enact(prompt, narrative=narrative)
+            expression.node_fixture.after()
+            
+        expression.fixture.after()

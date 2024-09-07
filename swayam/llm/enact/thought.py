@@ -39,6 +39,9 @@ class ThoughtEnactor(BaseLLMEnactor):
         log_debug(f"Executing Thought with {len(thought)} expression(s).")
         self.recorder.record_begin_thought(thought)
         
+        thought.store = narrative.store
+        thought.fixture.before()
+        
         from swayam.llm.enact.expression import ExpressionEnactor
         expression_enactor = ExpressionEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
         
@@ -46,4 +49,8 @@ class ThoughtEnactor(BaseLLMEnactor):
             narrative.reset_conversation()
             expression.story = thought.story
             expression.thought = thought.purpose
+            thought.node_fixture.before()
             expression_enactor.enact(expression, narrative=narrative)
+            thought.node_fixture.after()
+            
+        thought.fixture.after()

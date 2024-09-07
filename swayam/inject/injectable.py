@@ -103,7 +103,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
     def validate_input_content(self, **kwargs):
         pass
         
-    def call_encapsulated_callable(self, **kwargs):
+    def call_encapsulated_callable(self, *, invoker, **kwargs):
         try:
             try:
                 updated_kwargs = self.input_structure(**kwargs).as_dict()
@@ -119,7 +119,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
                     frame_str = Injectable.extract_caller_from_frame(frame)
                     raise InjectableInvalidInputContentError(self, provided_input=kwargs, error=str(e) + f". Check: {frame_str}")
                 else:
-                    return self.callable(invoker=self, **updated_kwargs)
+                    return self.callable(invoker=invoker, **updated_kwargs)
         except Exception as e:
             import traceback
             frame = traceback.extract_tb(e.__traceback__)[-1]

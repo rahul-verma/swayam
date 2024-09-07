@@ -47,6 +47,10 @@ class UserExpression:
         if self.__output_structure and self.__tools:
             raise ValueError("Cannot suggest both output structure and tools.")
         
+        from swayam.llm.enact.fixture import Fixture
+        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
+        self.__node_fixture = Fixture(phase=self, before=self.__before_node, after=self.__after_node)
+        
     def load(self, *, prompt_ns_path, resolution=None, **fmt_kwargs):
         from swayam import Structure
         from swayam.llm.phase.prompt.namespace import PromptNamespace
@@ -100,6 +104,14 @@ class UserExpression:
         return self.__directive is not None
     
     @property
+    def fixture(self):
+        return self.__fixture
+    
+    @property
+    def node_fixture(self):
+        return self.__node_fixture
+    
+    @property
     def purpose(self):
         return self.__purpose
     
@@ -138,6 +150,15 @@ class UserExpression:
     @thought.setter
     def thought(self, thought):
         self.__thought = thought
+        
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store.get_phase_wrapper(self)
+        self.__store["purpose"] = self.__purpose
         
     def append(self, prompt):
         self.__prompts.append(prompt)

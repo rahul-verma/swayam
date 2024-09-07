@@ -69,6 +69,15 @@ class UserStory:
     def narrative(self, narrative):
         self.__narrative = narrative
         
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store.get_phase_wrapper(self)
+        self.__store["purpose"] = self.__purpose
+        
     def __len__(self):
         return len(self.__thoughts)
         

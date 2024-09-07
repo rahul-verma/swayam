@@ -1,26 +1,26 @@
 before:
   - Resource:
       name: ArgResource
-      args:
-        value: Before Expression
+      args: 
+        value: "Expression's Own Level"
     
 after:
   - Resource:
       name: ArgResourceOnlyTeardown
-      args:
-        value: After Expression
+      args: 
+        value: "Expression's Own Level"
 
 before_node:
   - Resource:
       name: ArgResource
-      args:
-        value: Before Prompt Node
+      args: 
+        value: "Prompt Level"
     
 after_node:
   - Resource:
       name: ArgResourceOnlyTeardown
-      args:
-        value: After Prompt Node
+      args: 
+        value: "Prompt Level"
 
 purpose: Expression1
 

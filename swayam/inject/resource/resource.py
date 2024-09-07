@@ -64,6 +64,12 @@ class StructuredResource(StructuredInjectableWithCallable):
         if not inspect.isgenerator(generator):
             raise ResourceInvalidCallableError(self)
  
-    def __call__(self, **kwargs):
-        generator = self.call_encapsulated_callable(**kwargs)
+    def __call__(self, store, **kwargs):
+        class ResourceInvoker:
+            def __init__(self, name, store):
+                self.name = name
+                self.store = store
+        generator = self.call_encapsulated_callable(
+            invoker=ResourceInvoker(self.name, store),
+            **kwargs)
         return iterator(self, generator)
