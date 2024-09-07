@@ -54,6 +54,10 @@ class StructuredGenerator(StructuredInjectableWithCallable):
         except TypeError:
             raise GeneratorCallableNotIterableError(self)
  
-    def __call__(self, **kwargs):
-        output = self.call_encapsulated_callable(**kwargs)
+    def __call__(self, store=None, **kwargs):
+        class InjectableInvoker:
+            def __init__(self, name, store):
+                self.name = name
+                self.store = store
+        output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, store=store), **kwargs)
         return iterator(self, output)
