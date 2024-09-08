@@ -118,6 +118,9 @@ class Namespace(ABC):
                         purpose = name.replace("_", " ").title(),
                         content=content.format(**self.fmt_kwargs)
                 )
+            except IndexError as e:
+                import traceback
+                raise DefinitionFormattingError(self, name=name, path=name_path + ".yaml", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=r"Are you using a positional placeholder {} in your YAML file? Only named placeholders are allowed. " + traceback.format_exc())
             except KeyError as e:
                 import traceback
                 raise DefinitionFormattingError(self, name=name, path=name_path + ".yaml", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())

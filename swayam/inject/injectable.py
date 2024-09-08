@@ -124,7 +124,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
             import traceback
             frame = traceback.extract_tb(e.__traceback__)[-1]
             frame_str = Injectable.extract_caller_from_frame(frame)
-            raise InjectableCallError(self, error=str(e) + f". Check: {frame_str}")
+            raise InjectableCallError(self, error=str(e) + f". Check: {frame_str}. " + traceback.format_exc()) 
         
     def validate_output(self, output):
         from swayam.inject.structure.structure import IOStructureObject
