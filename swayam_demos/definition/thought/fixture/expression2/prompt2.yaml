@@ -1,0 +1,15 @@
+before:
+  - Resource:
+      name: ArgResource
+      args: 
+        value: "Prompt's Own Level"
+    
+after:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args: 
+        value: "Prompt's Own Level"
+
+purpose: Prompt2
+
+text: Tell me a joke on testing.

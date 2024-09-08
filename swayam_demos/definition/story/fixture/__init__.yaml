@@ -1,0 +1,29 @@
+before:
+  - Resource:
+      name: ArgResource
+      args: 
+        value: "Story's Own Level"
+    
+after:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args: 
+        value: "Story's Own Level"
+
+before_node:
+  - Resource:
+      name: ArgResource
+      args: 
+        value: "Thought Level"
+    
+after_node:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args: 
+        value: "Thought Level"
+
+purpose: Story
+
+thoughts:
+  - thought1
+  - thought2

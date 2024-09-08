@@ -63,5 +63,9 @@ class Fixture:
         
     def after(self):
         self.__execute(self.__after, store_resources=False)
-        for resource in self.__setup_resource_objects[-1:]:
+        for resource in list(reversed(self.__setup_resource_objects)):
             next(resource)
+            
+        # As the resources are fully consumed, empty the list.
+        # This is especially important for node level fixtures in a parent.
+        self.__setup_resource_objects = []

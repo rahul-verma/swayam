@@ -1,0 +1,29 @@
+before:
+  - Resource:
+      name: ArgResource
+      args: 
+        value: "Thought's Own Level"
+    
+after:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args: 
+        value: "Thought's Own Level"
+
+before_node:
+  - Resource:
+      name: ArgResource
+      args: 
+        value: "Expression Level"
+    
+after_node:
+  - Resource:
+      name: ArgResourceOnlyTeardown
+      args: 
+        value: "Expression Level"
+
+purpose: Thought1
+
+expressions:
+  - expression1
+  - expression2
