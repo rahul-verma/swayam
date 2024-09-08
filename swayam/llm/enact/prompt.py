@@ -75,7 +75,8 @@ class PromptEnactor(BaseLLMEnactor):
         if llm_response.error:
             raise ValueError("There was an error in the LLM request. The response was returned as None.")
         
-        narrative.store.set("response_content", llm_response.as_dict()["content"], phase=prompt)
+        if report:
+            narrative.store.set("response_content", llm_response.as_dict()["content"], phase=prompt)
         
         tooling_results = {}
 

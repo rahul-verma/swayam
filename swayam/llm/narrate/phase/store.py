@@ -56,10 +56,12 @@ class STEPStore:
         self.__storage = {}
         for item in self.__order:
             self.__storage[item] = {}
+        self.__storage[UserStory.__name__]["response_content"] = ""
         
     def reset(self):
         for item in self.__order:
             self.__storage[item] = {}
+        self.__storage[UserStory.__name.__]["response_content"] = ""
         
     def get(self, key, *, phase):
         # Get the class name of the object

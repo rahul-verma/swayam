@@ -105,13 +105,14 @@ class HtmlRecorder(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
-        if self.__json_data == []:
-            # Add Story Node
-            self.__json_data.append({
-                                    "id": "story_node_" + uuid4().hex,
-                                    "text": story.purpose,
-                                    "children": []   
-                                })
+        #if self.__json_data == []:
+        # Add Story Node
+        self.__json_data.append({
+                                "id": "story_node_" + uuid4().hex,
+                                "text": story.purpose,
+                                "children": []   
+                            })
+        self.__update_report()
             
     def record_begin_thought(self, thought) -> None:
         """
@@ -134,6 +135,8 @@ class HtmlRecorder(Reporter):
                                     "text": f"{thought.purpose}",
                                     "children": []
                                 })
+        
+        self.__update_report()
             
     def record_begin_expression(self, expression=None) -> None:
         """
