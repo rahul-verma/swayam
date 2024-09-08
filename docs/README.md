@@ -1,6 +1,6 @@
 
 
-Swayam employs the STEPs model of problem solving using LLMs by Rahul Verma. It has the following high level components:
+Swayam employs [The STEPs model of prompting by Rahul Verma](https://www.linkedin.com/pulse/swayam-steps-model-prompting-i-rahul-verma-iqjne). It has the following high level components:
 
 A large problem is called an Epic which can be broken down into STEPs:
 
@@ -51,15 +51,21 @@ Thought definitions are packages defined as directories.
 
 ## Fixtures
 
-There are three types of fixtures that can be included in Phase definitions:
-1. Resources: (Resource injectable)
-    - These are injectables that are automatically called twice in the flow at appropriate point in time.
-2. Before: (Parser, Condition, Tool injectables)
-    - Once: These are injectables that are called for the current phase, before the phase starts.
-    - Every: These are injectables that are called before every child phase.
-2. Before: (Parser, Condition, Tool injectables)
-    - Once: These are injectables that are called after the current phase, after the phase ends.
-    - Every: These are injectables that are called after every child phase completes.
+There are 4 types of fixtures that can be included in Phase definitions (except Prompt in which only the first two are applicable). 
+1. **before**: Before start of the phase whose definition contains it.
+2. **after**: After end of the phase whose definition contains it.
+3. **before_node**: Before start of the every child node of current phase.
+4. **after_node**: After end of the every child node of current phase.
+
+Injectables that can be included are:
+    - Resource
+    - Condition
+    - Parser
+    - Tool
+
+Note: If a Resource is included in **after** or **after_node**, as it is called only once, only a pure teardown instruction makes sense to be put in such a Resource.
+
+Note: Resources are tore down in the exact opposite order of their creation order.
 
 ## Repeater
 Expression and Thought Definitions have the provision to use a repeater.
