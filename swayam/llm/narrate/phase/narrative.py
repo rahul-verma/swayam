@@ -67,12 +67,12 @@ The human user is going to have a conversation with you. You are expected to fol
 You are now being connected with a human.
 """
         
-        self.__context_prompt = """Before I give you the first task to perform, I am sharing guidelines, instructions and background information with you.
+        self.__context_prompt = """As a part of this task, I am going to give you a series of commands and queries in a single continuous context. Before I give you the first command/query to perform, I am sharing guidelines, instructions and background information with you.
 
 {persona}
 
 {guidelines}
-# Approach to Complete a Task
+# Approach to Cater to My Requests in this Task
 Before generating any output, work through the following steps, **but never show them to me** unless I ask. Work it out yourself and **ALWAYS SHOW ONLY THE OUTPUT**.:
 
 1. Break down my request into smaller, manageable steps.
@@ -82,13 +82,14 @@ Before generating any output, work through the following steps, **but never show
 5. Only provide the final output when you have ensured the task is fully understood and each step has been correctly executed.
 6. When a response structure or tool call is provided, ensure that the output is in the correct format and that the tool call is correct. Leave the values as placeholders if necessary but never hallucinate.
 {background}
-Can I now give you the first task to perform?
+
+Can I now proceed with the first command/query based on the above context?
 """
-        self.__guidelines = """# Guidelines for Tasks in this Conversation
-Following are task-specific instructions that you need to consider for the specific set of tasks, that I am going to give you in this particular conversation:
+        self.__guidelines = """# Guidelines for this Conversation
+Follow the below guidelines for catering to my requests in this task:
 {directive}"""
 
-        self.__background = """# Task Background
+        self.__background = """# Background Information
 Following is background information, as marked by triple backticks, that you need to consider for the tasks, that I am going to give you in this particular conversation. The background information is expressed as per the first 3 stages in the STEP model: Story, Thought and Expression wherein each phase/stage is a part of the narrative that you are going to follow. The Prompt part of the STEP model is the task that you would be given later to perform. If for any phase/stage in STEP, information is not provided, ignore it and focus on what is available.
 ```{background}```
 
@@ -163,6 +164,8 @@ Following is background information, as marked by triple backticks, that you nee
         return self.__background.format(background=background)
     
     def get_context_prompt(self, *, expression):
+        if expression is None:
+            return self.__context_prompt.format(persona="", guidelines="", background="")
         guidelines = self.__get_guidelines(expression=expression)
         background = self.__get_background(expression=expression)
         if expression.persona:

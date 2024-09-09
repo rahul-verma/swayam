@@ -40,6 +40,9 @@ class PhaseStore:
     def __delattr__(self, name: str) -> None:
         del self.__store[self.__phase.__class__.__name__][name]
         
+    def set_in_parent(self, key, value):
+        return self.__store.set_in_parent(key, value, phase=self.__phase)
+        
     def has_key(self, key, container=None):
         return self.__store.has_key(key, phase=self.__phase, container=container)
     

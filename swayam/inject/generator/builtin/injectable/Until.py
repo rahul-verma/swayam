@@ -21,13 +21,14 @@ from swayam.inject.structure.builtin.internal.Condition import ConditionAsArg
 
 def until(*, invoker, condition):
     condition_met = False
-    if invoker.store.has_condition_result(condition):
-        condition_met = invoker.store.get_condition_result(condition)
-    else:
-        condition_met = False
-
     counter = 0
     while not condition_met:
+        if invoker.store.has_condition_result(condition):
+            condition_met = invoker.store.get_condition_result(condition)
+            if condition_met:
+                break
+        else:
+            condition_met = False
         counter += 1
         yield Structure.Counter(counter=counter)
 

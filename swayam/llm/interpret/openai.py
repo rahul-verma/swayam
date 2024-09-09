@@ -43,7 +43,6 @@ class OpenAIClient(LLMClient):
                         model=self.model_name,
                         messages=messages,
                         tools=tools,
-                        tool_choice="required",
                         **self._model_kwargs
                     )
                 else:
