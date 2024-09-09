@@ -73,6 +73,7 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Updated Narrative with Response message.")
         
         if llm_response.error:
+            print(llm_response.content)
             raise ValueError("There was an error in the LLM request. The response was returned as None.")
         
         narrative.store.set("response_content", llm_response.as_dict()["content"], phase=prompt)

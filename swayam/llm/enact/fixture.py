@@ -51,12 +51,12 @@ class Fixture:
             
             # !!! It is critical that the store is passed only at the calling stage. The store should not be passed at the time of object creation as the Injectable can be used multiple times and the last value holds in such a case.
             if injectable_type == "Resource":
-                iter_injectable_object = injectable_object(store=self.__phase.store, **injectable_args)
+                iter_injectable_object = injectable_object(phase=self.__phase, **injectable_args)
                 if store_resources:
                     self.__setup_resource_objects.append(iter_injectable_object)
                 next(iter_injectable_object)
             else:
-                injectable_object(store=self.__phase.store, **injectable_args)
+                injectable_object(phase=self.__phase, **injectable_args)
 
     def before(self):
         self.__execute(self.__before, store_resources=True)

@@ -14,7 +14,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import json
 from .store import STEPStore
 
 class Narrative:
@@ -119,40 +119,54 @@ Following is background information, as marked by triple backticks, that you nee
     def get_instructions(self):
         return self.__ghost_instructions
     
-    def get_directive(self, *, expression_directive):
-        if not expression_directive:
+    def get_directive(self, *, expression):
+        expression_directive = expression.directive
+        if not expression.directive:
             expression_directive = ""
         total_directive = self.__directive + "\n" + expression_directive
-        if total_directive.strip():
-            return total_directive.strip()
+        total_directive = total_directive.strip()
+        if total_directive:
+            #sanitized_text = updated_content.replace("\\", "\\\\")
+            import re
+            for key, value in expression.store.items():
+                if value is None:
+                    value = ""
+                elif type(value) in (dict, list):
+                    value = json.dumps(value, indent=4)
+                
+                total_directive = total_directive.replace(f"${key}$", value)
+                
+            # Any leftovers, to assign an initial value of empty string
+            total_directive = total_directive.replace(f"${key}$", "")
+            return total_directive
         else:
             return None
         
-    def __get_guidelines(self, *, expression_directive):
-        directive = self.get_directive(expression_directive=expression_directive)
+    def __get_guidelines(self, *, expression):
+        directive = self.get_directive(expression=expression)
         if directive:
             return self.__guidelines.format(directive=directive)
         else:
             return ""
         
-    def __get_background(self, *, story, thought, expression):
+    def __get_background(self, *, expression):
         background = ""
-        if not story and not thought and not expression:
+        if not expression.story and not expression.thought and not expression.purpose:
             return ""
 
-        if story and story != "Story":
-            background += story + "\n"
-        if thought and thought != "Thought":
-            background += thought + "\n"
-        if expression and expression != "Expression":
-            background += expression + "\n"
+        if expression.story and expression.story != "Story":
+            background += expression.story + "\n"
+        if expression.thought and expression.thought != "Thought":
+            background += expression.thought + "\n"
+        if expression.purpose and expression.purpose != "Expression":
+            background += expression.purpose + "\n"
         return self.__background.format(background=background)
     
-    def get_context_prompt(self, *, story_purpose, thought_purpose, expression_purpose, expression_directive, expression_persona):
-        guidelines = self.__get_guidelines(expression_directive=expression_directive)
-        background = self.__get_background(story=story_purpose, thought=thought_purpose, expression=expression_purpose)
-        if expression_persona:
-            expression_persona = f"Act as {expression_persona}."
+    def get_context_prompt(self, *, expression):
+        guidelines = self.__get_guidelines(expression=expression)
+        background = self.__get_background(expression=expression)
+        if expression.persona:
+            expression_persona = f"Act as {expression.persona}."
         else:
             expression_persona = ""
         return self.__context_prompt.format(persona=expression_persona, guidelines=guidelines, background=background)

@@ -37,8 +37,29 @@ class PhaseStore:
     def __setitem__(self, key, value):
         self.__store.set(key, value, phase=self.__phase)
         
+    def __delattr__(self, name: str) -> None:
+        del self.__store[self.__phase.__class__.__name__][name]
+        
+    def has_key(self, key, container=None):
+        return self.__store.has_key(key, phase=self.__phase, container=container)
+    
     def items(self):
         return self.__store.items(phase=self.__phase)
+    
+    def _raw_items(self):
+        return self.__store._raw_items()
+   
+    def has_condition_result(self, name):
+        return self.__store.has_key(name, phase=self.__phase, container="__conditions__")
+    
+    def get_condition_result(self, name):
+        return self.__store.get(name, phase=self.__phase, container="__conditions__")
+    
+    def set_condition_result(self, key, value):
+        return self.__store.set(key, value, phase=self.__phase, container="__conditions__")
+    
+    def set_condition_result_in_parent(self, key, value):
+        return self.__store.set_in_parent(key, value, phase=self.__phase, container="__conditions__")
     
     @property
     def phase_name(self):
@@ -56,12 +77,14 @@ class STEPStore:
         self.__storage = {}
         for item in self.__order:
             self.__storage[item] = {}
+            self.__storage[item]["__conditions__"] = {}
         
     def reset(self):
         for item in self.__order:
             self.__storage[item] = {}
+            self.__storage[item]["__conditions__"] = {}
         
-    def get(self, key, *, phase):
+    def get(self, key, *, phase, container=None):
         # Get the class name of the object
         class_name = phase.__class__.__name__
 
@@ -71,23 +94,52 @@ class STEPStore:
         class_lookup_order = self.__order[start_index:]
         # Traverse the __order list starting from the given class_name
         for class_name in class_lookup_order:
-            if class_name in self.__storage and key in self.__storage[class_name]:
-                return self.__storage[class_name][key]
+            if container is None:
+                if class_name in self.__storage and key in self.__storage[class_name]:
+                    return self.__storage[class_name][key]
+            else:
+                if class_name in self.__storage and key in self.__storage[class_name][container]:
+                    return self.__storage[class_name][container][key]
 
         # If nothing is found, return None or some default value
         return "NOT_SET"
     
-    def set(self, key, value, *, phase):
-        self.__storage[phase.__class__.__name__][key] = value
+    def has_key(self, key, *, phase, container=None):
+        # Get the class name of the object
+        class_name = phase.__class__.__name__
+
+        # Start looking from the class_name in the order defined
+        start_index = self.__order.index(class_name)
+
+        class_lookup_order = self.__order[start_index:]
+        # Traverse the __order list starting from the given class_name
+        for class_name in class_lookup_order:
+            if container is None:
+                if class_name in self.__storage and key in self.__storage[class_name]:
+                    return True
+            else:
+                if class_name in self.__storage and key in self.__storage[class_name][container]:
+                    return True
+           
+        return False 
+    
+    def set(self, key, value, *, phase, container=None):
+        if not container:
+            self.__storage[phase.__class__.__name__][key] = value
+        else:
+            self.__storage[phase.__class__.__name__][container][key] = value
         
-    def set_in_parent(self, key, value, *, phase):
+    def set_in_parent(self, key, value, *, phase, container=None):
         kls = phase.__class__.__name__
         if kls == UserStory.__class__.__name__:
             raise ValueError("There is no parent for a UserStory")
         else:
             parent_index = self.__order.index(kls) + 1
             parent = self.__order[parent_index]
-            self.__storage[parent][key] = value
+            if not container:
+                self.__storage[parent][key] = value
+            else:
+                self.__storage[parent][container][key] = value
     
     def items(self, *, phase=None):
         if phase is not None:

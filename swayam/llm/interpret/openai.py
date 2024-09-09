@@ -43,6 +43,7 @@ class OpenAIClient(LLMClient):
                         model=self.model_name,
                         messages=messages,
                         tools=tools,
+                        tool_choice="required",
                         **self._model_kwargs
                     )
                 else:
@@ -62,8 +63,8 @@ class OpenAIClient(LLMClient):
                 time.sleep(2)
             except openai.RateLimitError as e:
                 error_content += "\nA 429 status code was received; we should back off a bit as we have hit a rate limit.\n"
-                print("\nSleeping for 60 seconds...\n")
-                time.sleep(60)
+                print("\nSleeping for 15 seconds...\n")
+                time.sleep(15)
             except openai.APIStatusError as e:
                 error_content += "\nA non-200-range status code was received. Retrying in 2 seconds...\n"
                 error_content += f"{e.status_code}\n"

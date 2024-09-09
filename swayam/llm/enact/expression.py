@@ -32,17 +32,14 @@ class ExpressionEnactor(BaseLLMEnactor):
         Runs the expression and returns the result.
         '''
         expression.narrative = narrative
+        expression.store = narrative.store
+        expression.fixture.before()
+        
         log_debug(f"Executing Expression with {len(expression)} prompt(s).")
         self.recorder.record_begin_expression(expression)
         conversation = narrative.conversation
         conversation.append_system_prompt(narrative.get_instructions())
-        context_prompt = context_prompt = narrative.get_context_prompt(
-                story_purpose=expression.story,
-                thought_purpose=expression.thought,
-                expression_purpose=expression.purpose,
-                expression_directive=expression.directive,
-                expression_persona=expression.persona
-            ) 
+        context_prompt = context_prompt = narrative.get_context_prompt(expression=expression) 
         conversation.append_context_prompt(context_prompt)
         
         from swayam.llm.enact.prompt import PromptEnactor
@@ -50,25 +47,27 @@ class ExpressionEnactor(BaseLLMEnactor):
         from swayam.llm.phase.prompt.prompt import UserPrompt
         prompt_enactor.enact(UserPrompt(text=context_prompt, purpose="Context Setting"), narrative=narrative, report=False)
         
-        
-        directive = narrative.get_directive(expression_directive=expression.directive)
+        directive = narrative.get_directive(expression=expression)
         if directive:
             self.recorder.record_directive(directive)
             
         self.recorder.record_conversation(conversation)
-        
-        expression.store = narrative.store
-        expression.fixture.before()
             
         log_debug("Finished processing system prompt.")
         
-        for prompt in expression:
-            log_debug("Processing prompt...")
-            # For dynamic variables in Narrative
-            prompt.store = narrative.store
-            prompt.dynamic_format()
-            expression.node_fixture.before()
-            prompt_enactor.enact(prompt, narrative=narrative)
-            expression.node_fixture.after()
+        for prompts in expression:
+            if isinstance(prompts, UserPrompt):
+                prompts = [prompts]
+            else:
+                prompts.store = expression.store
+                prompts = prompts() # Lazy loading
+            for prompt in prompts:
+                log_debug("Processing prompt...")
+                # For dynamic variables in Narrative
+                prompt.store = narrative.store
+                prompt.dynamic_format()
+                expression.node_fixture.before()
+                prompt_enactor.enact(prompt, narrative=narrative)
+                expression.node_fixture.after()
             
         expression.fixture.after()

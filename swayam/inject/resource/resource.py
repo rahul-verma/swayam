@@ -41,7 +41,8 @@ def iterator(invoker, generator):
         validate_output(output)
         yield output.as_dict()
     except Exception as e:
-        raise ResourceSetUpError(invoker, error=e)
+        import traceback
+        raise ResourceSetUpError(invoker, error=str(e) + traceback.format_exc())
     
     # teardown call
     try:
@@ -64,12 +65,17 @@ class StructuredResource(StructuredInjectableWithCallable):
         if not inspect.isgenerator(generator):
             raise ResourceInvalidCallableError(self)
  
-    def __call__(self, store=None, **kwargs):
+    def __call__(self, phase, **kwargs):
         class ResourceInvoker:
-            def __init__(self, name, store):
+            def __init__(self, name, phase):
                 self.name = name
-                self.store = store
+                self.__phase = phase
+                
+            @property
+            def store(self):
+                return self.__phase.store
+            
         generator = self.call_encapsulated_callable(
-            invoker=ResourceInvoker(self.name, store),
+            invoker=ResourceInvoker(self.name, phase),
             **kwargs)
         return iterator(self, generator)

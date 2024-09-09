@@ -23,6 +23,9 @@ from swayam import Structure
 class NumericValueModel(BaseModel):
     value: Union[int, float] = Field(..., title="Numeric Content", description="A numeric content (int or float)")
     
+class CounterModel(BaseModel):
+    counter: int = Field(..., title="Integer Counter", description="Integer value counter")
+    
 class NumericValuesModel(BaseModel):
     values: list[Union[int, float]] = Field(..., title="Numeric List Content", description="A list of numeric contents (int or float)")
 
@@ -42,6 +45,7 @@ class NoneValueModel(BaseModel):
     value: None = Field(None, title="None Content", description="A None content")
     
 NumericValue = Structure.build("NumericValue", model=NumericValueModel)
+Counter = Structure.build("Counter", model=CounterModel)
 NumericValues = Structure.build("NumericValues", model=NumericValuesModel)
 StringValue = Structure.build("StringValue", model=StringValueModel)
 StringValues = Structure.build("StringValues", model=StringValuesModel)

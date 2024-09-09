@@ -20,6 +20,43 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
+def iterator(store, prompt_names, prompt_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
+    from swayam.llm.phase.prompt.namespace import PromptNamespace
+    for out_dict in generator(store=store, **generator_kwargs):
+        temp_dict = {}
+        temp_dict.update(parent_fmt_kwargs)
+        temp_dict.update(out_dict)
+        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
+        for prompt_name in prompt_names:
+            yield getattr(prompt_namespace, prompt_name)
+
+class PromptGenerator:
+    
+    def __init__(self, prompt_dict, *, prompt_ns_path, resolution, parent_fmt_kwargs):
+        self.__prompt_ns_path = prompt_ns_path
+        self.__resolution = resolution
+        self.__parent_fmt_kwargs = parent_fmt_kwargs
+
+        self.__prompt_names = prompt_dict.pop("definitions")
+        from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
+        generator_structure = GeneratorStructure(**prompt_dict)
+        
+        from swayam import Generator
+        self.__generator = getattr(Generator, generator_structure.generator)
+        self.__generator_kwargs = generator_structure.args
+        
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store
+    
+    def __call__(self):
+        prompt_loader = iterator(self.__store, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__generator, self.__generator_kwargs, self.__parent_fmt_kwargs)
+        return prompt_loader
+
 class UserExpression:
     
     def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, before=None, after=None, before_node=None, after_node=None) -> Any:
@@ -57,21 +94,14 @@ class UserExpression:
             
         for prompt_name_or_dict in self.__prompt_names_or_dicts:
             if isinstance(prompt_name_or_dict, dict):
-                prompt_dict = prompt_name_or_dict["repeat"]
-                prompt_names = prompt_dict.pop("definitions")
-                from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
-                generator_structure = GeneratorStructure(**prompt_dict)
-                
-                from swayam import Generator
-                generator = getattr(Generator, generator_structure.generator)
-
-                for out_dict in generator(**generator_structure.args):
-                    temp_dict = {}
-                    temp_dict.update(fmt_kwargs)
-                    temp_dict.update(out_dict)
-                    prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
-                    for prompt_name in prompt_names:
-                        self.__prompts.append(getattr(prompt_namespace, prompt_name))
+                # Lazy loader of prompts
+                prompt_generator = PromptGenerator(
+                    prompt_name_or_dict["repeat"],
+                    prompt_ns_path=prompt_ns_path,
+                    resolution=resolution,
+                    parent_fmt_kwargs=fmt_kwargs
+                )
+                self.__prompts.append(prompt_generator)
             else:
                 prompt_name = prompt_name_or_dict
                 prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 

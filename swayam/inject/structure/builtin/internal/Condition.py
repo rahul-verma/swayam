@@ -23,3 +23,8 @@ from .FixtureInjectable import FixtureInjectableModel
     
 class ConditionModel(BaseModel):
     Condition: FixtureInjectableModel = Field(..., title="Condition details", description="Condition Details.")
+    
+class ConditionAsArgModel(BaseModel):
+    condition: str = Field(..., title="Condition name", description="Condition name without the prefix.")
+    
+ConditionAsArg = Structure.build("ConditionAsArg", model=ConditionAsArgModel)

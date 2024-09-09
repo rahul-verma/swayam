@@ -96,15 +96,20 @@ class UserPrompt:
         updated_content = self.__message["content"]
         if self.image:
             updated_content = updated_content[0]["text"]
+        #sanitized_text = updated_content.replace("\\", "\\\\")
         import re
         for key, value in self.store.items():
             if value is None:
                 value = ""
             elif type(value) in (dict, list):
                 value = json.dumps(value, indent=4)
-            updated_content = re.sub(r"\$" + key + r"\$", value, updated_content)
+            
+            
+            updated_content = updated_content.replace(f"${key}$", str(value))
+            
+        
         # Any leftovers, to assign an initial value of empty string
-        updated_content = re.sub(r"\$.*?\$", "", updated_content)
+        updated_content = updated_content.replace(f"${key}$", "")
         
         if not self.image:
             self.__message = {
@@ -150,7 +155,7 @@ class UserPrompt:
     def call_tool(self, tool_id, tool_name, **kwargs):
         tool = self.__tool_dict.get(tool_name)
         if tool:
-            tool_response = tool(**kwargs)
+            tool_response = tool(phase=self, **kwargs)
             from .response import ToolResponse
             return ToolResponse(tool_id=tool_id, tool_name=tool_name, content=tool_response)
         else:
