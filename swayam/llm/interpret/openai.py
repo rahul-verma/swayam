@@ -58,7 +58,7 @@ class OpenAIClient(LLMClient):
             
             except openai.APIConnectionError as e:
                 error_content += f"\nAPIConnectionError: {e}. Retrying in 2 seconds..\n."
-                error_content += (e.__cause__)  # an underlying Exception, likely raised within httpx.
+                error_content += str(e.__cause__)  # an underlying Exception, likely raised within httpx.
                 time.sleep(2)
             except openai.RateLimitError as e:
                 error_content += "\nA 429 status code was received; we should back off a bit as we have hit a rate limit.\n"

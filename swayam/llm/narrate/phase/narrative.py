@@ -21,7 +21,7 @@ class Narrative:
     
     def __init__(self):
         from swayam.llm.phase.expression.conversation import Conversation
-        self.__conversation = Conversation()
+        self.__conversation = None
         self.__store = STEPStore()
         self.__directive = ""
         self.__background = ""
@@ -98,6 +98,10 @@ Following is background information, as marked by triple backticks, that you nee
     @property
     def conversation(self):
         return self.__conversation
+    
+    @conversation.setter
+    def conversation(self, value):
+        self.__conversation = value
         
     def reset_conversation(self):
         self.__conversation.reset()

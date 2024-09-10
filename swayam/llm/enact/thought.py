@@ -32,6 +32,9 @@ class ThoughtEnactor(BaseLLMEnactor):
         Enacts the thought.
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
+        thought.narrative = narrative
+        thought.store = narrative.store
+        thought.fixture.before()
 
         if thought.has_directive():
             narrative.append_directive(thought.directive)
@@ -39,18 +42,21 @@ class ThoughtEnactor(BaseLLMEnactor):
         log_debug(f"Executing Thought with {len(thought)} expression(s).")
         self.recorder.record_begin_thought(thought)
         
-        thought.store = narrative.store
-        thought.fixture.before()
-        
         from swayam.llm.enact.expression import ExpressionEnactor
+        from swayam.llm.phase.expression.expression import UserExpression
         expression_enactor = ExpressionEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
         
-        for expression in thought:
-            narrative.reset_conversation()
-            expression.story = thought.story
-            expression.thought = thought.purpose
-            thought.node_fixture.before()
-            expression_enactor.enact(expression, narrative=narrative)
-            thought.node_fixture.after()
+        for expressions in thought:
+            if isinstance(expressions, UserExpression):
+                expressions = [expressions]
+            else:
+                expressions.store = thought.store
+                expressions = expressions() # Lazy loading
+            for expression in expressions:
+                expression.story = thought.story
+                expression.thought = thought.purpose
+                thought.node_fixture.before()
+                expression_enactor.enact(expression, narrative=narrative)
+                thought.node_fixture.after()
             
         thought.fixture.after()

@@ -93,8 +93,10 @@ class Namespace(ABC):
                 else: 
                     with open(children["package_file"]) as f:
                         content = f.read()
-                        content = content.format(**self.fmt_kwargs)
                         children["package_file_content"] = content
+                        
+                    for k,v in self.fmt_kwargs.items():
+                        children["package_file_content"] = children["package_file_content"].replace("$" + k + "$", str(v))
                 
                 return self.handle_current_name_as_package(
                     name=name,
@@ -111,12 +113,14 @@ class Namespace(ABC):
             with open(name_path + ".yaml") as f:
                 content = f.read()
             try:
+                for k,v in self.fmt_kwargs.items():
+                    content = content.replace("$" + k + "$", str(v))
                 return self.handle_current_name_as_definition(
                         name=name,
                         path=name_path + ".yaml",
                         resolution=self.resolution + "." + name,
                         purpose = name.replace("_", " ").title(),
-                        content=content.format(**self.fmt_kwargs)
+                        content=content
                 )
             except IndexError as e:
                 import traceback

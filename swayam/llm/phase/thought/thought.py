@@ -20,6 +20,43 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
+def iterator(store, expression_names, expression_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
+    from swayam.llm.phase.expression.namespace import ExpressionNamespace
+    for out_dict in generator(store=store, **generator_kwargs):
+        temp_dict = {}
+        temp_dict.update(parent_fmt_kwargs)
+        temp_dict.update(out_dict)
+        expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
+        for expression_name in expression_names:
+            yield getattr(expression_namespace, expression_name)
+
+class ExpressionGenerator:
+    
+    def __init__(self, expression_dict, *, expression_ns_path, resolution, parent_fmt_kwargs):
+        self.__expression_ns_path = expression_ns_path
+        self.__resolution = resolution
+        self.__parent_fmt_kwargs = parent_fmt_kwargs
+
+        self.__expression_names = expression_dict.pop("definitions")
+        from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
+        generator_structure = GeneratorStructure(**expression_dict)
+        
+        from swayam import Generator
+        self.__generator = getattr(Generator, generator_structure.generator)
+        self.__generator_kwargs = generator_structure.args
+        
+    @property
+    def store(self):
+        return self.__store
+    
+    @store.setter
+    def store(self, store):
+        self.__store = store
+    
+    def __call__(self):
+        expression_loader = iterator(self.__store, self.__expression_names, self.__expression_ns_path, self.__resolution, self.__generator, self.__generator_kwargs, self.__parent_fmt_kwargs)
+        return expression_loader
+
 class UserThought:
     
     def __init__(self, *, expressions, purpose:str=None, directive:str=None, tools:list=None, resources=None, before=None, after=None, before_node=None, after_node=None) -> Any:
@@ -49,23 +86,14 @@ class UserThought:
         from swayam.llm.phase.expression.namespace import ExpressionNamespace
         for expression_name_or_dict in self.__expression_names_or_dicts:
             if isinstance(expression_name_or_dict, dict):
-                expression_dict = expression_name_or_dict["repeat"]
-                expression_names = expression_dict.pop("definitions")
-                from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
-                generator_structure = GeneratorStructure(**expression_dict)
-                
-                from swayam import Generator
-                
-                generator = getattr(Generator, generator_structure.generator)
-
-                for out_dict in generator(**generator_structure.args):
-                    temp_dict = {}
-                    temp_dict.update(fmt_kwargs)
-                    temp_dict.update(out_dict)
-                    expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
-                    for expression_name in expression_names:
-                        expression = getattr(expression_namespace, expression_name)
-                        self.__expressions.append(expression)
+                # Lazy loader of prompts
+                expression_generator = ExpressionGenerator(
+                    expression_name_or_dict["repeat"],
+                    expression_ns_path=expression_ns_path,
+                    resolution=resolution,
+                    parent_fmt_kwargs=fmt_kwargs
+                )
+                self.__expressions.append(expression_generator)
             else:
                 expression_name = expression_name_or_dict
                 expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 

@@ -61,10 +61,10 @@ class Conversation:
         self.__reportable_messages.append(prompt.reportable_message)
         
     def append_context_prompt(self, text):
-        message = {
-            "role": "user",
-            "content": text}
-        self.__messages.append(message)
+        messages = [{"role": "user", "content": text},
+                    {"role": "assistant", "content": "OK. Understood. Please go ahead with your first request based on the context provided."}]
+        self.__messages.extend(messages)
+        self.__reportable_messages.extend(messages)
         
     def append_assistant_response(self, *messages):
         for message in messages:

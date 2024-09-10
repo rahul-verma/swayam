@@ -67,6 +67,8 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
             
+        self.__standalone = standalone
+            
         self.__store = None
             
         from swayam.llm.enact.fixture import Fixture
@@ -229,8 +231,8 @@ class UserPrompt:
     def reportable_message(self):
         return self.__reportable_message
     
-
-    
     @property
-    def is_directive(self):
-        return self.__role == "system"
+    def is_standalone(self):
+        return self.__standalone
+    
+    
