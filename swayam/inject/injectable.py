@@ -139,7 +139,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         return output
 
     def __call__(self, *, phase=None, **kwargs):
-        # In direct tool calling, the phase in none, hence no vault access if available. In the STEPs flow, the phase object is provided with vault access.
+        # In direct injectable calling, the phase in none, hence no vault access if available. In the STEPs flow, the phase object is provided with vault access.
         class InjectableInvoker:
             def __init__(self, name, phase):
                 self.name = name

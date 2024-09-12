@@ -90,6 +90,7 @@ class Namespace(ABC):
                             
                 if children["package_file"] is None:
                     self.handle_no_package_file()
+                    children["package_file_content"] = None
                 else: 
                     with open(children["package_file"]) as f:
                         content = f.read()
