@@ -34,7 +34,7 @@ class ThoughtEnactor(BaseLLMEnactor):
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         thought.narrative = narrative
         thought.vault = narrative.vault
-        thought.fixture.prologue()
+        thought.frame.prologue()
 
         if thought.has_directive():
             narrative.append_directive(thought.directive)
@@ -57,4 +57,4 @@ class ThoughtEnactor(BaseLLMEnactor):
                 expression.thought = thought.purpose
                 expression_enactor.enact(expression, narrative=narrative)
             
-        thought.fixture.epilogue()
+        thought.frame.epilogue()

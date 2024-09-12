@@ -40,7 +40,7 @@ class StoryEnactor(BaseLLMEnactor):
         self.recorder.record_begin_story(story)
         
         story.vault = narrative.vault
-        story.fixture.prologue()
+        story.frame.prologue()
         
         from swayam.llm.enact.thought import ThoughtEnactor
         thought_enactor = ThoughtEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
@@ -50,4 +50,4 @@ class StoryEnactor(BaseLLMEnactor):
             thought.story = story.purpose
             thought_enactor.enact(thought, narrative=narrative)
             
-        story.fixture.epilogue()
+        story.frame.epilogue()

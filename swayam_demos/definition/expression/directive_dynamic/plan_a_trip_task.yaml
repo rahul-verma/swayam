@@ -1,4 +1,6 @@
 purpose: |
   Get details for $task$
 text: |
-  What should I keep in mind from the directive of $task$?
+  What should I keep in mind from the directive of $task$? 
+
+  **SHOW YOUR WORK**

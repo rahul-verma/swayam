@@ -53,7 +53,8 @@ class DefinitionFileWithoutExtensionError(NamespaceError):
 class DefinitionNotFoundError(NamespaceError):
     
     def __init__(self, ns, *, name, error=""):
-        super().__init__(ns, error= f"{ns.resolution}.{name}: Definition file >>{name}.yaml<< not found. Expected path: {ns.path}/{name}.yaml. {error}")
+        resolution = ns.resolution.replace(".yaml", "")
+        super().__init__(ns, error= f"{resolution}.{name}: Definition file >>{name}.yaml<< not found. Expected path: {ns.path}/{name}.yaml. {error}")
         
 class DefinitionIsInvalidError(NamespaceError):
     

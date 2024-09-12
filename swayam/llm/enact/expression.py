@@ -34,7 +34,7 @@ class ExpressionEnactor(BaseLLMEnactor):
         expression.narrative = narrative
         expression.vault = narrative.vault
         
-        expression.fixture.prologue()
+        expression.frame.prologue()
         from swayam.llm.phase.expression.conversation import Conversation
         conversation = Conversation()
         narrative_instructions = narrative.get_instructions()
@@ -68,7 +68,7 @@ class ExpressionEnactor(BaseLLMEnactor):
                 # For dynamic variables in Narrative
                 prompt.vault = narrative.vault
                 prompt.dynamic_format()
-                expression.node_fixture.prologue()
+                expression.prompt_frame.prologue()
                 if prompt.is_standalone:
                     only_context_conversation = Conversation()
                     only_context_conversation.append_system_prompt(narrative_instructions)
@@ -78,6 +78,6 @@ class ExpressionEnactor(BaseLLMEnactor):
                     narrative.conversation = conversation
                 self.recorder.record_conversation(conversation)
                 prompt_enactor.enact(prompt, narrative=narrative)
-                expression.node_fixture.epilogue()
+                expression.prompt_frame.epilogue()
             
-        expression.fixture.epilogue()
+        expression.frame.epilogue()

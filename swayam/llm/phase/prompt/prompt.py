@@ -71,11 +71,11 @@ class UserPrompt:
         self.__vault = None
             
         from swayam.llm.enact.frame import Frame
-        self.__fixture = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
+        self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
 
     @property
-    def fixture(self):
-        return self.__fixture
+    def frame(self):
+        return self.__frame
             
     @property
     def vault(self):

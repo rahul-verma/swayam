@@ -45,7 +45,7 @@ class PromptEnactor(BaseLLMEnactor):
                 
         prompt.vault = narrative.vault
         
-        prompt.fixture.prologue()
+        prompt.frame.prologue()
 
         log_debug("Processing prompt...")
         prompt.process_for_report()
@@ -96,4 +96,4 @@ class PromptEnactor(BaseLLMEnactor):
         else:
             response_messages = llm_response.message
             
-        prompt.fixture.epilogue()
+        prompt.frame.epilogue()

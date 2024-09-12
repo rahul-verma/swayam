@@ -1,4 +1,4 @@
-persona: {persona}
+persona: $persona$
 directive: |
   Answer my queries related to my planned trip as best as you can, but don't guess. If you don't know the answer, just say so. 
 

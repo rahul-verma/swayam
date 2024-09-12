@@ -20,7 +20,7 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs):
+def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
     from swayam.llm.phase.prompt.namespace import PromptNamespace
     for out_dict in driver(vault=vault, **driver_kwargs):
         temp_dict = {}
@@ -28,7 +28,14 @@ def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwa
         temp_dict.update(out_dict)
         prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
         for prompt_name in prompt_names:
-            yield getattr(prompt_namespace, prompt_name)
+            prompt = getattr(prompt_namespace, prompt_name)
+            if image:
+                prompt.suggest_image(image)
+            if template:
+                prompt.suggest_out_template(template)
+            if actions:
+                prompt.suggest_actions(actions)
+            yield prompt
 
 class PromptDriver:
     
@@ -39,11 +46,14 @@ class PromptDriver:
 
         self.__prompt_names = prompt_dict["definitions"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate
-        driver_data = DriverTemplate(**prompt_dict["driver"])
+        driver_data = DriverTemplate(driver=prompt_dict["driver"])
         
         from swayam import Driver
-        self.__driver = getattr(Driver, driver_data.name)
-        self.__driver_kwargs = driver_data.args
+        self.__driver = getattr(Driver, driver_data.driver.name)
+        self.__driver_kwargs = driver_data.driver.args
+        self.__image = None
+        self.__out_template = None
+        self.__actions = None
         
     @property
     def vault(self):
@@ -52,9 +62,18 @@ class PromptDriver:
     @vault.setter
     def vault(self, vault):
         self.__vault = vault
+        
+    def suggest_image(self, image):
+        self.__image = image
+            
+    def suggest_out_template(self, template_name):
+        self.__out_template = template_name
+            
+    def suggest_actions(self, action_names):
+        self.__actions = action_names
     
     def __call__(self):
-        prompt_loader = iterator(self.__vault, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs)
+        prompt_loader = iterator(self.__vault, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)
         return prompt_loader
 
 class UserExpression:

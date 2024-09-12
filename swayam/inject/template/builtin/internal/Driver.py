@@ -19,9 +19,9 @@ from typing import Union, List
 from pydantic import BaseModel, Field
 
 from swayam import Template
+from .FrameInjectable import FrameInjectableModel
     
 class DriverModel(BaseModel):
-    driver: str = Field(..., title="Driver", description="Name of the driver to be used.")
-    args: dict = Field({}, title="Keyword Arguments", description="Keyword Arguments to be passed to structured callable.")
+    driver: FrameInjectableModel = Field(..., title="Driver details", description="Driver Details.")
 
 Driver = Template.build("Driver", model=DriverModel)
