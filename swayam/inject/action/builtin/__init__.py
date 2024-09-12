@@ -15,6 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirEnumerator import *
-from .injectable.TextFileReader import *
-from .injectable.TextFileWriter import *
+from .injectable.EnumerateDir import *
+from .injectable.ReadTextFile import *
+from .injectable.WriteTextFile import *

@@ -37,7 +37,7 @@ def list_files(*, invoker, dir_path:str, file_filter_pattern:str=None):
     
     return Template.FilesInfo(files=files_info_list)
 
-DirEnumerator = Action.build("DirEnumerator", 
+EnumerateDir = Action.build("EnumerateDir", 
                          callable=list_files, 
                          description="Recursively lists the full path of files in the provided directory path.",
                          in_template=Template.DirPathFilter,

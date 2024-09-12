@@ -21,17 +21,18 @@ from swayam.inject.template.builtin import *
 import os
 import re
 
-def read_file(*, invoker, file_path:str):
-    from tarkash import FlatFile
-    file = FlatFile(file_path)
-    return Template.TextFileContent(
-        file_name=os.path.basename(file_path), 
-        file_path=file.full_path, 
-        file_content=file.content)
+def write_file(*, invoker, file_name:str, file_path:str, file_content:str):
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w") as file:
+            file.write(file_content)
+        return Template.Success()
+    except Exception as e:
+        return Template.Failure(message=f"Failed to write file. {str(e)}")
 
-TextFileReader = Action.build("TextFileReader", 
-                         callable=read_file, 
-                         description="Returns the contents of file (in text mode).",
-                         in_template=Template.FilePath,
-                         out_template=Template.TextFileContent
+WriteTextFile = Action.build("WriteTextFile", 
+                         callable=write_file, 
+                         description="Writes the File to the disk with the name provided.",
+                         in_template=Template.TextFileContent,
+                         out_template=Template.Result
 )
