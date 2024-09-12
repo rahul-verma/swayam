@@ -25,7 +25,7 @@ from .error import *
 
 kallable = callable
 
-def iterator(invoker, generator):
+def iterator(invoker, driver):
     from swayam.inject.action.action import StructuredAction
     
     def validate_output(output):
@@ -37,16 +37,16 @@ def iterator(invoker, generator):
 
     # setup call
     try:
-        output = next(generator)
+        output = next(driver)
         validate_output(output)
         yield output.as_dict()
     except Exception as e:
         import traceback
-        raise ResourceSetUpError(invoker, error=str(e) + traceback.format_exc())
+        raise PropSetUpError(invoker, error=str(e) + traceback.format_exc())
     
     # teardown call
     try:
-        output = next(generator)
+        output = next(driver)
         validate_output(output)
         yield output.as_dict()
     except Exception as e:
@@ -59,10 +59,10 @@ class StructuredProp(StructuredInjectableWithCallable):
             in_template = Template.Empty
         super().__init__(name, callable=callable, in_template=in_template, out_template=Template.Result)
         
-    def validate_output(self, generator):
-        # In a generator, at this stage, it's to be checked where it is an iterable.
+    def validate_output(self, driver):
+        # In a driver, at this stage, it's to be checked where it is an iterable.
         import inspect
-        if not inspect.isgenerator(generator):
+        if not inspect.isdriver(driver):
             raise PropInvalidCallableError(self)
  
     def __call__(self, phase=None, **kwargs):
@@ -76,7 +76,7 @@ class StructuredProp(StructuredInjectableWithCallable):
             def vault(self):
                 return self.__phase.vault
             
-        generator = self.call_encapsulated_callable(
+        driver = self.call_encapsulated_callable(
             invoker=PropInvoker(self.name, phase),
             **kwargs)
-        return iterator(self, generator)
+        return iterator(self, driver)

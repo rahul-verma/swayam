@@ -1,0 +1,8 @@
+purpose: Ask math question.
+text: |
+  What is 7 *30 + 13?
+
+actions: 
+  - GetWeatherInfo
+  - Calculate
+  - SearchForEmailAddresses

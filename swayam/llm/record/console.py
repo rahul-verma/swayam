@@ -101,7 +101,7 @@ class ConsoleRecorder(Reporter):
         Reports the tool response.
 
         Args:
-            message (dict): ToolResponse object
+            message (dict): ActionResponse object
         """
         pass
         

@@ -1,0 +1,5 @@
+purpose: Demo Output Template
+text: |
+  Extract event information: Alice and Bob are going to a science fair on Friday.
+
+out_template: CalendarEvent

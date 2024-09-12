@@ -1,4 +1,4 @@
-purpose: Iteration - {i}, {j}
+purpose: Iteration - $i$, $j$
 
 prompts:
   - q1

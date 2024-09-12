@@ -89,7 +89,7 @@ class UserPrompt:
             
     def load_actions_from_names(self, action_names):
         from swayam import Action
-        self.__actions = [getattr(Tool, tool) for tool in action_names]
+        self.__actions = [getattr(Action, tool) for tool in action_names]
         self.__action_definitions = [tool.definition for tool in self.__actions]
         self.__action_dict = {tool.name: tool for tool in self.__actions}
 

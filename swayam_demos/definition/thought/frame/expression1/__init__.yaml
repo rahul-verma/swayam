@@ -1,0 +1,29 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Expression's Own Level"
+    
+epilogue:
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Expression's Own Level"
+
+prologue_prompt:
+  - Prop:
+      name: ArgProp
+      args: 
+        value: "Prompt Level"
+    
+epilogue_prompt:
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Prompt Level"
+
+purpose: Expression1
+
+prompts:
+  - prompt1
+  - prompt2

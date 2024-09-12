@@ -1,23 +1,26 @@
-tools:
-  - Calculator
+actions:
+  - Calculate
 
 expressions:
   - repeat:
       definitions: 
         - calc1
-      generator: TwoNumberGenerator
-      args: 
-        size: 5
+      driver: 
+        name: TwoNumberDriver
+        args: 
+          size: 5
   - repeat:
       definitions: 
         - calc2
-      generator: TwoNumberGenerator
-      args: 
-        size: 3
+      driver: 
+        name: TwoNumberDriver
+        args: 
+          size: 3
   - repeat:
       definitions:
         - calc1
         - calc2
-      generator: TwoNumberGenerator
-      args: 
-        size: 4
+      driver: 
+        name: TwoNumberDriver
+        args: 
+          size: 4

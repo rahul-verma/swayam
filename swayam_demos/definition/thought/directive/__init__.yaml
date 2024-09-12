@@ -2,8 +2,8 @@ purpose: Basic Thought Demo
 
 directive: Add one-line details for each point.
 
-tools:
-    - Calculator
+actions:
+    - Calculate
 
 expressions:
   - basic

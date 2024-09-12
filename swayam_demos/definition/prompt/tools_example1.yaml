@@ -1,8 +1,0 @@
-purpose: Ask weather question.
-text: |
-  What's the weather like in Boston?
-
-tools: 
-  - WeatherInfo
-  - Calculator
-  - EmailSearch

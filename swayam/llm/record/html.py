@@ -278,10 +278,10 @@ class HtmlRecorder(Reporter):
                         "content": expected_out_template.definition
                     })
         
-        provided_tools = prompt.tool_dict
-        if provided_tools:
+        provided_tools = prompt.action_dict
+        if provided_actions:
             tool_content_for_main_page = {
-                "heading": "Provided Tools",
+                "heading": "Provided Actions",
                 "content": {}
             }
             for tool in provided_tools.values():
@@ -320,7 +320,7 @@ class HtmlRecorder(Reporter):
         # Appending non-LLM expression requirements
         if "tool_calls" in response and response["tool_calls"]:
             tool_response_for_main_page = {
-                "heading": "Tool Calls Suggested by LLM",
+                "heading": "Action Calls Suggested by LLM",
                 "content": {}
             }
 
@@ -341,13 +341,13 @@ class HtmlRecorder(Reporter):
         Reports the tool response.
 
         Args:
-            message (dict): ToolResponse object
+            message (dict): ActionResponse object
         """
-        log_debug("Begin: Tool Response.")
+        log_debug("Begin: Action Response.")
  
         tool_response_node = {
                             "id": "tool_response_" + uuid4().hex,
-                            "text": f"Tool Response: {response.tool_name}",
+                            "text": f"Action Response: {response.tool_name}",
                             "icon": "jstree-file",
                             "data": {
                                 "content": {
@@ -359,7 +359,7 @@ class HtmlRecorder(Reporter):
         
         self.__get_prompt_content_node().append(
                 {
-                    "heading": f"Tool Response:  {response.tool_name}",
+                    "heading": f"Action Response:  {response.tool_name}",
                     "content": {
                                     "tool_id": response.tool_id,
                                     "response": response.content
@@ -367,7 +367,7 @@ class HtmlRecorder(Reporter):
                 }
             )     
         self.__update_report()
-        log_debug("Finished: Reporting Tool Response.")
+        log_debug("Finished: Reporting Action Response.")
 
     def finish(self) -> None:
         """

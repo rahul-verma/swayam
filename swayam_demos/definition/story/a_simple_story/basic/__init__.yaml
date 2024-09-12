@@ -1,7 +1,7 @@
 purpose: Basic Thought Demo
 
-tools:
-    - Calculator
+actions:
+    - Calculate
 
 expressions:
   - basic

@@ -1,0 +1,15 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Prompt's Own Level"
+    
+epilogue:
+  - Prop:
+      name: ArgPropOnlyTeardown
+      args: 
+        value: "Prompt's Own Level"
+
+purpose: Prompt2
+
+text: Tell me a joke on testing.

@@ -1,0 +1,17 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Story's Own Level"
+    
+epilogue:
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Story's Own Level"
+
+purpose: Story
+
+thoughts:
+  - thought1
+  - thought2

@@ -3,5 +3,5 @@ prompts:
   - text
   - image
   - out_template
-  - tool_calling
+  - actions
   - purpose

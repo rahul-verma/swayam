@@ -1,9 +1,9 @@
 purpose: Dynamic Text
 text: |
   Find whether there is an email address in the following text marked with triple backticks 
-    ```{text}```
+    ```$text$```
 
-tools: 
-  - WeatherInfo
-  - Calculator
-  - EmailSearch
+actions: 
+  - GetWeatherInfo
+  - Calculate
+  - SearchForEmailAddresses

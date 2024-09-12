@@ -1,8 +1,8 @@
-tools:
-  - Calculator
+actions:
+  - Calculate
 
 expressions:
   - repeat:
       definitions: 
         - formatter_repeater
-      generator: OperationGenerator
+      driver: OperationDriver

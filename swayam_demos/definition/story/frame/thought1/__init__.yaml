@@ -1,0 +1,17 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Thought's Own Level"
+    
+epilogue:
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Thought's Own Level"
+
+purpose: Thought1
+
+expressions:
+  - expression1
+  - expression2

@@ -7,9 +7,10 @@ prompts:
         - q1
         - q2
         - q3
-      generator: TwoNumberGenerator
-      args: 
-        size: 3
+      driver: 
+        name: TwoNumberDriver
+        args: 
+          size: 3
 
-tools:
-  - Calculator
+actions:
+  - Calculate

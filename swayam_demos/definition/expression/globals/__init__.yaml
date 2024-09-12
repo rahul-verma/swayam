@@ -1,7 +1,7 @@
 purpose: Providing Expression Globals
 
 image: data/images/tom_jerry.jpeg
-tools: [WeatherInfo]
+actions: [GetWeatherInfo]
 
 prompts:
   - query1

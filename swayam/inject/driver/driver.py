@@ -45,7 +45,7 @@ class StructuredDriver(StructuredInjectableWithCallable):
         super().__init__(name, callable=callable, in_template=in_template, out_template=out_template, allow_none_output=allow_none_output)
         
     def validate_output(self, output):
-        # In a generator, at this stage, it's to be checked where it is an iterable.
+        # In a driver, at this stage, it's to be checked where it is an iterable.
         try:
             iter(output)
             return True

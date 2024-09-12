@@ -1,0 +1,29 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Thought's Own Level"
+    
+epilogue:
+  - Prop:
+      name: ArgPropOnlyTeardown
+      args: 
+        value: "Thought's Own Level"
+
+prologue_prompt:
+  - Prop:
+      name: ArgProp
+      args: 
+        value: "Expression Level"
+    
+epilogue_prompt:
+  - Prop:
+      name: ArgPropOnlyTeardown
+      args: 
+        value: "Expression Level"
+
+purpose: Thought2
+
+expressions:
+  - expression1
+  - expression2

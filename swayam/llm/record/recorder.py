@@ -105,7 +105,7 @@ class Recorder:
         Broadcasts the tool response.
 
         Args:
-            message (dict): ToolResponse object
+            message (dict): ActionResponse object
         """
         for recorder in self.__recorders:
             recorder.record_action_response(response)

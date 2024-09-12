@@ -2,6 +2,6 @@ purpose: Using different styles of prompts
 prompts:
   - text
   - image
-  - out_template
-  - tool_calling
+  - template
+  - actions
   - purpose

@@ -22,7 +22,7 @@ class PropInvalidCallableError(InjectableCallError):
 
     def __init__(self, injectable):
             super().__init__(injectable, 
-                             error=f"{injectable.callable.__name__} of type {type(injectable.callable)} was expected to be a generator object which can be called twice, once for setup and once for teardown. Both times it should return a **Template.Result** object. An easy way to do this is by creating a function that has two yield statements.")
+                             error=f"{injectable.callable.__name__} of type {type(injectable.callable)} was expected to be a driver object which can be called twice, once for setup and once for teardown. Both times it should return a **Template.Result** object. An easy way to do this is by creating a function that has two yield statements.")
             
 class PropSetUpError(InjectableCallError):
 

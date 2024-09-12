@@ -1,0 +1,30 @@
+prologue:
+	- Prop.NoArgProp
+  - Prop:
+      name: ArgProp
+      args:
+        value: testing
+  - Cue.NoArgCue
+  - Cue:
+      name: ArgCue
+      args:
+        value: testing
+  - Action.NoArgAction
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Prompt's Own Level"
+    
+epilogue:
+  - Cue.NoArgCue
+  - Cue:
+      name: ArgCue
+      args:
+        value: testing
+  - Action.NoArgAction
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Prompt's Own Level"
+
+text: Tell me a jok on testing.

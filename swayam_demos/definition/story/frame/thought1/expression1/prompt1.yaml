@@ -1,0 +1,15 @@
+prologue:
+	- Prop:
+      name: ArgProp
+      args: 
+        value: "Prompt's Own Level"
+    
+epilogue:
+  - Action:
+      name: ArgAction
+      args: 
+        value: "Prompt's Own Level"
+
+purpose: Prompt1
+
+text: Tell me a joke on testing.

@@ -22,8 +22,9 @@ from swayam import Template
 
 from .Driver import DriverModel
     
-class RepeatedDefinitionModel(DriverModel):
+class RepeatedDefinitionModel(BaseModel):
     definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
+    driver: Union[DriverModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
     
 class RepeaterModel(BaseModel):
     repeat: RepeatedDefinitionModel = Field(..., title="Repeater Definition", description="Repeater dictionary.")

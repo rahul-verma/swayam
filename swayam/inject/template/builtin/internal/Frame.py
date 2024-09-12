@@ -30,7 +30,7 @@ class PromptStepsModel(BaseModel):
     
 class FrameModel(BaseModel):
     prologue: List[Union[str, PropModel, CueModel, ActionModel]]  = Field(list(), description="List of names or dictionaries of Props, Cues and Actions to run before the target narration object of this phase.")
-    epilogue: List[Union[str, PropModel, CueModel, ActionModel]]  = Field(list(), description="List of names or dictionaries of Props, Cues and Actions to run after the target narration object in this phase.")
+    epilogue: List[Union[str, PropModel, CueModel, ActionModel]]  = Field(list(), description="List of names or dictionaries of Cues and Actions to run after the target narration object in this phase.")
 
 class ExpressionFrameModel(FrameModel, PromptStepsModel):
     pass

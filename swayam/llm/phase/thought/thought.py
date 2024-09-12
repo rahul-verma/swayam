@@ -20,9 +20,9 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(vault, expression_names, expression_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
+def iterator(vault, expression_names, expression_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs):
     from swayam.llm.phase.expression.namespace import ExpressionNamespace
-    for out_dict in generator(vault=vault, **generator_kwargs):
+    for out_dict in driver(vault=vault, **driver_kwargs):
         temp_dict = {}
         temp_dict.update(parent_fmt_kwargs)
         temp_dict.update(out_dict)
@@ -30,19 +30,19 @@ def iterator(vault, expression_names, expression_ns_path, resolution, generator,
         for expression_name in expression_names:
             yield getattr(expression_namespace, expression_name)
 
-class ExpressionGenerator:
+class ExpressionDriver:
     
     def __init__(self, expression_dict, *, expression_ns_path, resolution, parent_fmt_kwargs):
         self.__expression_ns_path = expression_ns_path
         self.__resolution = resolution
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
-        self.__expression_names = expression_dict.pop("definitions")
+        self.__expression_names = expression_dict["definitions"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate
-        driver_data = DriverTemplate(**expression_dict)
+        driver_data = DriverTemplate(**expression_dict["driver"])
         
         from swayam import Driver
-        self.__driver = getattr(Driver, driver_data.driver)
+        self.__driver = getattr(Driver, driver_data.name)
         self.__driver_kwargs = driver_data.args
         
     @property
@@ -84,13 +84,13 @@ class UserThought:
         for expression_name_or_dict in self.__expression_names_or_dicts:
             if isinstance(expression_name_or_dict, dict):
                 # Lazy loader of prompts
-                expression_generator = ExpressionGenerator(
+                expression_driver = ExpressionDriver(
                     expression_name_or_dict["repeat"],
                     expression_ns_path=expression_ns_path,
                     resolution=resolution,
                     parent_fmt_kwargs=fmt_kwargs
                 )
-                self.__expressions.append(expression_generator)
+                self.__expressions.append(expression_driver)
             else:
                 expression_name = expression_name_or_dict
                 expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
@@ -98,7 +98,7 @@ class UserThought:
         self.__make_action_suggestions()
                 
     def __make_action_suggestions(self):
-        # Tools and response format are suggested to all expressions.            
+        # Actions and response format are suggested to all expressions.            
         for expression in self.__expressions:
             if self.__actions:
                 expression.suggest_actions(self.__actions) 

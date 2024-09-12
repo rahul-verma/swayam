@@ -30,19 +30,19 @@ def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwa
         for prompt_name in prompt_names:
             yield getattr(prompt_namespace, prompt_name)
 
-class PromptGenerator:
+class PromptDriver:
     
     def __init__(self, prompt_dict, *, prompt_ns_path, resolution, parent_fmt_kwargs):
         self.__prompt_ns_path = prompt_ns_path
         self.__resolution = resolution
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
-        self.__prompt_names = prompt_dict.pop("definitions")
+        self.__prompt_names = prompt_dict["definitions"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate
-        driver_data = DriverTemplate(**prompt_dict)
+        driver_data = DriverTemplate(**prompt_dict["driver"])
         
         from swayam import Driver
-        self.__driver = getattr(Driver, driver_data.driver)
+        self.__driver = getattr(Driver, driver_data.name)
         self.__driver_kwargs = driver_data.args
         
     @property
@@ -95,13 +95,13 @@ class UserExpression:
         for prompt_name_or_dict in self.__prompt_names_or_dicts:
             if isinstance(prompt_name_or_dict, dict):
                 # Lazy loader of prompts
-                prompt_generator = PromptGenerator(
+                prompt_driver = PromptDriver(
                     prompt_name_or_dict["repeat"],
                     prompt_ns_path=prompt_ns_path,
                     resolution=resolution,
                     parent_fmt_kwargs=fmt_kwargs
                 )
-                self.__prompts.append(prompt_generator)
+                self.__prompts.append(prompt_driver)
             else:
                 prompt_name = prompt_name_or_dict
                 prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
@@ -119,13 +119,13 @@ class UserExpression:
             self.__prompts[0].suggest_image(self.__image)
         
     def __make_structure_suggestions(self):
-        # Tools and response format are suggested to all prompts.            
+        # Actions and response format are suggested to all prompts.            
         for prompt in self.__prompts:
             if self.__image:
                 prompt.suggest_out_template(self.__out_template)
                 
     def __make_tool_suggestions(self):
-        # Tools and response format are suggested to all prompts.            
+        # Actions and response format are suggested to all prompts.            
         for prompt in self.__prompts:
             if self.__actions:
                 prompt.suggest_actions(self.__actions) 

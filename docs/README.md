@@ -160,5 +160,5 @@ This should follow the implementation of Model / embed injectable.
 
 Most likely this would also mean that a concept fo Dynamic snippets would need to be developed to enable search results being made part of a prompt. 
 
-The role of Tool or a specific injectable for the purpose needs to be explored as well.
+The role of Action or a specific injectable for the purpose needs to be explored as well.
 All of this will be explored when RAG support needs to be integrated into Swayam.
