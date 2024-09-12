@@ -26,7 +26,7 @@ class OpenAIClient(LLMClient):
         from openai import OpenAI
         self._client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
         
-    def execute_messages(self, *, messages, output_structure=None, tools=None):
+    def execute_messages(self, *, messages, out_template=None, tools=None):
         from pprint import pprint
         from swayam.llm.phase.prompt.response import LLMResponse
         import openai
@@ -38,7 +38,7 @@ class OpenAIClient(LLMClient):
             
             try:
                 response = None
-                if output_structure is None:
+                if out_template is None:
                     response = self._client.chat.completions.create(
                         model=self.model_name,
                         messages=messages,
@@ -49,7 +49,7 @@ class OpenAIClient(LLMClient):
                     response = self._client.beta.chat.completions.parse(
                         model=self.model_name,
                         messages=messages,
-                        response_format=output_structure.data_model,
+                        response_format=out_template.model,
                         **self._model_kwargs
                     )
                     
@@ -70,7 +70,7 @@ class OpenAIClient(LLMClient):
                 error_content += f"{e.response}\n"
                 time.sleep(2)
                 
-        from swayam import Structure
+        from swayam import Template
         
         error_dict = {
             "content": error_content,

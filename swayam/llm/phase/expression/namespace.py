@@ -34,12 +34,12 @@ class ExpressionNamespace(Namespace):
 
     def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
         from .expression import UserExpression
-        from swayam import Structure
+        from swayam import Template
             
         import yaml
         expression_dict = yaml.safe_load(package_file_content)
         if isinstance(expression_dict, dict):
-            from swayam.inject.structure.builtin.internal import Expression
+            from swayam.inject.template.builtin.internal import Expression
             try:
                 expression = UserExpression(**Expression(**expression_dict).as_dict())
             except Exception as e:

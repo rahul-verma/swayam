@@ -32,10 +32,9 @@ from swayam.llm.phase.prompt import Prompt
 from swayam.llm.phase.expression import Expression
 from swayam.llm.phase.thought import Thought
 from swayam.llm.phase.story import Story
-from swayam.inject.structure import Structure
-from swayam.inject.tool import Tool
-from swayam.inject.generator import Generator
-from swayam.inject.condition import Condition
+from swayam.inject.template import Template
+from swayam.inject.action import Action
+from swayam.inject.driver import Driver
+from swayam.inject.cue import Cue
 from swayam.inject.snippet import Snippet
-from swayam.inject.parser import Parser
-from swayam.inject.resource import Resource
+from swayam.inject.prop import Prop

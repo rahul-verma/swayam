@@ -39,8 +39,8 @@ class StoryEnactor(BaseLLMEnactor):
         log_debug(f"Executing Story with {len(story)} thought(s).")
         self.recorder.record_begin_story(story)
         
-        story.store = narrative.store
-        story.fixture.before()
+        story.vault = narrative.vault
+        story.fixture.prologue()
         
         from swayam.llm.enact.thought import ThoughtEnactor
         thought_enactor = ThoughtEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
@@ -48,8 +48,6 @@ class StoryEnactor(BaseLLMEnactor):
         for thought in story:
             log_debug("Processing prompt...")
             thought.story = story.purpose
-            story.node_fixture.before()
             thought_enactor.enact(thought, narrative=narrative)
-            story.node_fixture.after()
             
-        story.fixture.after()
+        story.fixture.epilogue()

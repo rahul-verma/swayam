@@ -38,7 +38,7 @@ class LLMClient(ABC):
         pass
     
     @abstractmethod
-    def execute_messages(self, *, messages, output_structure=None, tools=None):
+    def execute_messages(self, *, messages, out_template=None, tools=None):
         pass
 
         

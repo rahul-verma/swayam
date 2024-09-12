@@ -41,7 +41,7 @@ class HtmlRecorder(Reporter):
         
         # For JSON Data
         
-        # Don't store the narration, always get it from config.
+        # Don't vault the narration, always get it from config.
         record_dir = Tarkash.get_option_value(SwayamOption.NARRATION_DIR)
         self.__base_path = os.path.join(record_dir, str(self.__recorder_config.narration))
         os.makedirs(self.__base_path, exist_ok=True)
@@ -271,11 +271,11 @@ class HtmlRecorder(Reporter):
                         "content": item["local_path"]
                 })
         
-        expected_output_structure = prompt.output_structure
-        if expected_output_structure is not None:
+        expected_out_template = prompt.out_template
+        if expected_out_template is not None:
             prompt_content_node.append({
                         "heading": "Expected Response Format",
-                        "content": expected_output_structure.definition
+                        "content": expected_out_template.definition
                     })
         
         provided_tools = prompt.tool_dict
@@ -336,7 +336,7 @@ class HtmlRecorder(Reporter):
         log_debug("Finished: Reporting Response.")
         
 
-    def record_tool_response(self, response) -> None:
+    def record_action_response(self, response) -> None:
         """
         Reports the tool response.
 

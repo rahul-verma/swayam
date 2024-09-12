@@ -34,12 +34,12 @@ class StoryNamespace(Namespace):
 
     def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
         from .story import UserStory
-        from swayam import Structure
+        from swayam import Template
             
         import yaml
         story_dict = yaml.safe_load(package_file_content)
         if isinstance(story_dict, dict):
-            from swayam.inject.structure.builtin.internal import Story
+            from swayam.inject.template.builtin.internal import Story
             try:
                 story = UserStory(**Story(**story_dict).as_dict())
             except Exception as e:

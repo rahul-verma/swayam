@@ -22,21 +22,21 @@ class Conversation:
     def __init__(self, messages=None):
         self.__messages = messages if messages else []
         self.__reportable_messages = []
-        self.__expected_output_structure = None
+        self.__expected_out_template = None
 
     def reset(self):
         self.__messages = []
         self.__reportable_messages = []
         
     @property
-    def expected_output_structure(self):
-        if not self.__expected_output_structure:
+    def expected_out_template(self):
+        if not self.__expected_out_template:
             return None
-        return json.loads(self.__expected_output_structure.schema_json())
+        return json.loads(self.__expected_out_template.schema_json())
     
-    @expected_output_structure.setter
-    def expected_output_structure(self, value):
-        self.__expected_output_structure = value
+    @expected_out_template.setter
+    def expected_out_template(self, value):
+        self.__expected_out_template = value
         
     @property
     def messages(self):
@@ -73,11 +73,11 @@ class Conversation:
             self.__messages.append(message)
             self.__reportable_messages.append(message)
             
-    def append_tool_response(self, response):
+    def append_action_response(self, action_response):
         message = {
             "role": "tool",
-            "content": json.dumps(response.content),
-            "tool_call_id": response.tool_id
+            "content": json.dumps(action_response.content),
+            "tool_call_id": action_response.action_id
         }
         self.__messages.append(message)
         self.__reportable_messages.append(message)

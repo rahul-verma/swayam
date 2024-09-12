@@ -96,7 +96,7 @@ class ConsoleRecorder(Reporter):
         print("Response:")
         print(response.content)
         
-    def record_tool_response(self, response) -> None:
+    def record_action_response(self, response) -> None:
         """
         Reports the tool response.
 

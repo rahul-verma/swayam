@@ -22,7 +22,7 @@ from tarkash import log_debug
 
 class UserStory:
     
-    def __init__(self, *, thoughts, purpose:str=None, directive:str=None, resources=None, before=None, after=None, before_node=None, after_node=None) -> Any:
+    def __init__(self, *, thoughts, purpose:str=None, directive:str=None, resources=None, prologue=None, epilogue=None) -> Any:
         self.__thought_names = list(thoughts)
         self.__thoughts = []
         self.__purpose = purpose
@@ -31,19 +31,16 @@ class UserStory:
         else:
             self.__purpose = f"Story: {self.__purpose}"
         self.__directive = directive
-        self.__before = before
-        self.__after = after
-        self.__before_node = before_node
-        self.__after_node = after_node
+        self.__prologue = prologue
+        self.__epilogue = epilogue
         
         self.__narrative = None
         
-        from swayam.llm.enact.fixture import Fixture
-        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
-        self.__node_fixture = Fixture(phase=self, before=self.__before_node, after=self.__after_node)
+        from swayam.llm.enact.frame import Frame
+        self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
         
     def load(self, *, thought_ns_path, resolution=None, **fmt_kwargs):
-        from swayam import Structure
+        from swayam import Template
         from swayam.llm.phase.thought.namespace import ThoughtNamespace
         for thought_name in self.__thought_names:
             thought_namespace = ThoughtNamespace(path=thought_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
@@ -55,12 +52,8 @@ class UserStory:
     
 
     @property
-    def fixture(self):
-        return self.__fixture
-    
-    @property
-    def node_fixture(self):
-        return self.__node_fixture
+    def frame(self):
+        return self.__frame
     
     @property
     def purpose(self):
@@ -83,13 +76,13 @@ class UserStory:
         self.__narrative = narrative
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        self.__store = store.get_phase_wrapper(self)
-        self.__store["purpose"] = self.__purpose
+    @vault.setter
+    def vault(self, vault):
+        self.__vault = vault.get_phase_wrapper(self)
+        self.__vault["purpose"] = self.__purpose
         
     def __len__(self):
         return len(self.__thoughts)

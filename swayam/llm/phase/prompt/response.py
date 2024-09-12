@@ -45,20 +45,20 @@ class LLMResponse:
             return self.__message.to_dict()
         
         
-class ToolResponse:
+class ActionResponse:
     
-    def __init__(self, *, tool_id, tool_name, content):
-        self.__tool_id = tool_id
-        self.__tool_name = tool_name
+    def __init__(self, *, action_id, action_name, content):
+        self.__action_id = action_id
+        self.__action_name = action_name
         self.__content = content
         
     @property
-    def tool_id(self):
-        return self.__tool_id
+    def action_id(self):
+        return self.__action_id
     
     @property
-    def tool_name(self):
-        return self.__tool_name
+    def action_name(self):
+        return self.__action_name
     
     @property
     def content(self):

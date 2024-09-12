@@ -16,8 +16,8 @@
 # limitations under the License.
 
 from enum import Enum
-from swayam.inject.structure import Structure
-from swayam.inject.structure.structure import IOStructureObject
+from swayam.inject.template import Template
+from swayam.inject.template.template import Data
 
 kallable = callable
 
@@ -36,19 +36,15 @@ class StructuredSnippet:
         return self.__text
  
     def __call__(self, **kwargs):
-        from swayam.inject.tool.tool import StructuredTool
-    
-        output_iterable = None
-
-        args = self.__input_structure(**kwargs).as_dict()
+        args = self.__in_template(**kwargs).as_dict()
         output = self.__callable(**args)
         
-        if isinstance(output, IOStructureObject):
+        if isinstance(output, Data):
             output = output.as_dict()
         else:
-            if self.__output_structure.is_atomic():
-                output = self.__output_structure(**output).as_dict()
+            if self.__out_template.is_atomic():
+                output = self.__out_template(**output).as_dict()
             else:
-                output = self.__output_structure(**output).as_list()
+                output = self.__out_template(**output).as_list()
         
         self.prompt.append_output(output)        

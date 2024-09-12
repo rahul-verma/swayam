@@ -23,20 +23,20 @@ from .error import *
 from swayam.inject import Injectable
 class StructuredInjectable:
     
-    def __init__(self, name, *, input_structure, output_structure):
+    def __init__(self, name, *, in_template, out_template):
         self.__type = self.__class__.__name__
         self.__name = name
-        self.__input_structure = input_structure
-        self.__output_structure = output_structure
-        self.__store = dict()
+        self.__in_template = in_template
+        self.__out_template = out_template
+        self.__vault = dict()
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, value):
-        self.__store = value
+    @vault.setter
+    def vault(self, value):
+        self.__vault = value
         
     @property
     def type(self):
@@ -47,23 +47,23 @@ class StructuredInjectable:
         return self.__name
     
     @property
-    def input_structure(self):
-        return self.__input_structure
+    def in_template(self):
+        return self.__in_template
     
     @property
-    def output_structure(self):
-        return self.__output_structure
+    def out_template(self):
+        return self.__out_template
     
     @property
     def allowed_keywords(self):
-        from_data_model = list(self.__input_structure.keys)
-        from_data_model.insert(0, "invoker")
-        return from_data_model
+        from_model = list(self.__in_template.keys)
+        from_model.insert(0, "invoker")
+        return from_model
     
 class StructuredInjectableWithCallable(StructuredInjectable):
     
-    def __init__(self, name, *, callable, input_structure, output_structure, allow_none_output=False):
-        super().__init__(name, input_structure=input_structure, output_structure=output_structure)
+    def __init__(self, name, *, callable, in_template, out_template, allow_none_output=False):
+        super().__init__(name, in_template=in_template, out_template=out_template)
         self.__callable = callable
         self.__allow_none_output = allow_none_output
         self.__validate_callable_definition()
@@ -106,7 +106,7 @@ class StructuredInjectableWithCallable(StructuredInjectable):
     def call_encapsulated_callable(self, *, invoker, **kwargs):
         try:
             try:
-                updated_kwargs = self.input_structure(**kwargs).as_dict()
+                updated_kwargs = self.in_template(**kwargs).as_dict()
             except Exception as e:
                 import traceback
                 raise InjectableInvalidInputStructureError(self, provided_input=kwargs, error=str(e) + traceback.format_exc())
@@ -127,13 +127,13 @@ class StructuredInjectableWithCallable(StructuredInjectable):
             raise InjectableCallError(self, error=str(e) + f". Check: {frame_str}. " + traceback.format_exc()) 
         
     def validate_output(self, output):
-        from swayam.inject.structure.structure import IOStructureObject
-        from swayam import Structure
-        if not isinstance(output, IOStructureObject):
+        from swayam.inject.template.template import Data
+        from swayam import Template
+        if not isinstance(output, Data):
             if output is None and self.allow_none_output:
-                return Structure.NoneValue()
+                return Template.NoneValue()
             raise InjectableOutputNotAStructureError(self, output=output)
-        elif not isinstance(output.model_instance, self.output_structure.data_model):
+        elif not isinstance(output.model_instance, self.out_template.model):
             # The DataModel can be a sub-class of a parent model. This logic works when the parent model is set as the return type.
             raise InjectableInvalidOutputStructureError(self, output=output)
         return output
@@ -145,8 +145,8 @@ class StructuredInjectableWithCallable(StructuredInjectable):
                 self.__phase = phase
                 
             @property
-            def store(self):
-                return self.__phase.store
+            def vault(self):
+                return self.__phase.vault
         output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, phase=phase), **kwargs)     
         output = self.validate_output(output)
         return output.as_dict()

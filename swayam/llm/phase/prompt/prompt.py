@@ -21,12 +21,12 @@ from copy import deepcopy
 from typing import Any
 
 from abc import ABC, abstractmethod
-from swayam.inject.structure.structure import IOStructure
+from swayam.inject.template.template import DataTemplate
 
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, output_structure:str=None, tools:list=None, resources=None, before=None, after=None, standalone:bool=False) -> None:
+    def __init__(self, *, text:str, purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, standalone:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -34,27 +34,26 @@ class UserPrompt:
         else:
             self.__purpose = f"Prompt: {self.__purpose}"
         self.__content = text
-        self.__output_structure = output_structure
-        self.__resources = resources
-        self.__before = before
-        self.__after = after
-        if not self.__before:
-            self.__before = []
-        if not self.__after:
-            self.__after = []
+        self.__out_template = out_template
+        self.__prologue = prologue
+        self.__epilogue = epilogue
+        if not self.__prologue:
+            self.__prologue = []
+        if not self.__epilogue:
+            self.__epilogue = []
 
         self.__standalone = standalone
         
-        if self.__output_structure is not None:
-            from swayam import Structure
-            self.__output_structure = getattr(Structure, self.__output_structure)
+        if self.__out_template is not None:
+            from swayam import Template
+            self.__out_template = getattr(Template, self.__out_template)
         
-        self.__tools = tools
-        self.__tool_definitions = None
-        self.__tool_dict = {}
+        self.__actions = actions
+        self.__action_definitions = None
+        self.__action_dict = {}
         
-        if self.__tools:
-            self.load_tools_from_names(self.__tools)
+        if self.__actions:
+            self.load_actions_from_names(self.__actions)
         
         self.__message = {
             "role": self.__role,
@@ -69,30 +68,30 @@ class UserPrompt:
             
         self.__standalone = standalone
             
-        self.__store = None
+        self.__vault = None
             
-        from swayam.llm.enact.fixture import Fixture
-        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
+        from swayam.llm.enact.frame import Fixture
+        self.__fixture = Fixture(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
 
     @property
     def fixture(self):
         return self.__fixture
             
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        if not self.__store:
-            self.__store = store.get_phase_wrapper(self)
-            self.__store["purpose"] = self.__purpose
+    @vault.setter
+    def vault(self, vault):
+        if not self.__vault:
+            self.__vault = vault.get_phase_wrapper(self)
+            self.__vault["purpose"] = self.__purpose
             
-    def load_tools_from_names(self, tool_names):
-        from swayam import Tool
-        self.__tools = [getattr(Tool, tool) for tool in tool_names]
-        self.__tool_definitions = [tool.definition for tool in self.__tools]
-        self.__tool_dict = {tool.name: tool for tool in self.__tools}
+    def load_actions_from_names(self, action_names):
+        from swayam import Action
+        self.__actions = [getattr(Tool, tool) for tool in action_names]
+        self.__action_definitions = [tool.definition for tool in self.__actions]
+        self.__action_dict = {tool.name: tool for tool in self.__actions}
 
     def dynamic_format(self):
         updated_content = self.__message["content"]
@@ -100,7 +99,7 @@ class UserPrompt:
             updated_content = updated_content[0]["text"]
         #sanitized_text = updated_content.replace("\\", "\\\\")
         import re
-        for key, value in self.store.items():
+        for key, value in self.vault.items():
             if value is None:
                 value = ""
             elif type(value) in (dict, list):
@@ -125,43 +124,43 @@ class UserPrompt:
         if not self.image:
             self.image = image
             
-    def suggest_output_structure(self, structure_name):
-        from swayam import Structure
-        if not self.output_structure and structure_name:
-            self.__output_structure = getattr(Structure, structure_name)
+    def suggest_out_template(self, structure_name):
+        from swayam import Template
+        if not self.out_template and structure_name:
+            self.__out_template = getattr(Structure, structure_name)
             
-    def suggest_tools(self, tool_names):
-        from swayam import Tool
-        if not self.tools and tool_names:
-            self.load_tools_from_names(tool_names)
+    def suggest_actions(self, action_names):
+        from swayam import Action
+        if not self.actions and action_names:
+            self.load_actions_from_names(action_names)
         
     @property
     def purpose(self):
         return self.__purpose
             
     @property
-    def output_structure(self):
-        return self.__output_structure
+    def out_template(self):
+        return self.__out_template
     @property
-    def tools(self):
-        return tuple(self.__tools) if self.__tools else None
+    def actions(self):
+        return tuple(self.__actions) if self.__actions else None
     
     @property
-    def tool_definitions(self):
-        return self.__tool_definitions
+    def action_definitions(self):
+        return self.__action_definitions
     
     @property
-    def tool_dict(self):
-        return self.__tool_dict
+    def action_dict(self):
+        return self.__action_dict
     
-    def call_tool(self, tool_id, tool_name, **kwargs):
-        tool = self.__tool_dict.get(tool_name)
+    def call_action(self, action_id, action_name, **kwargs):
+        tool = self.__action_dict.get(action_name)
         if tool:
-            tool_response = tool(phase=self, **kwargs)
-            from .response import ToolResponse
-            return ToolResponse(tool_id=tool_id, tool_name=tool_name, content=tool_response)
+            action_response = tool(phase=self, **kwargs)
+            from .response import ActionResponse
+            return ActionResponse(action_id=action_id, action_name=action_name, content=action_response)
         else:
-            raise ValueError(f"Tool {tool_name} not defined for this prompt.")
+            raise ValueError(f"Action {action_name} not defined for this prompt.")
 
     def process_for_report(self):
         

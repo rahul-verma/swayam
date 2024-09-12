@@ -21,7 +21,10 @@ class SwayamOption(Enum):
     '''
         Represents all built-in configuration options for Swayam.
     '''
-    
+
+    EPIC_DIR = auto()
+    '''Root directory of the Epic.'''
+        
     SNIPPET_DIR = auto()
     '''Root Directory for Snippet Files'''
         
@@ -36,6 +39,9 @@ class SwayamOption(Enum):
     
     STORY_DIR = auto()
     '''Root Directory for Plan Files'''
+    
+    FOLIO_DIR = auto()
+    '''Root Directory for Folio Files'''
     
     NARRATION_DIR = auto()
     '''Root Directory for Narration Files'''

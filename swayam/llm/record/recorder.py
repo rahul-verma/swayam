@@ -100,7 +100,7 @@ class Recorder:
         for recorder in self.__recorders:
             recorder.record_response(prompt, message)
             
-    def record_tool_response(self, response) -> None:
+    def record_action_response(self, response) -> None:
         """
         Broadcasts the tool response.
 
@@ -108,7 +108,7 @@ class Recorder:
             message (dict): ToolResponse object
         """
         for recorder in self.__recorders:
-            recorder.record_tool_response(response)
+            recorder.record_action_response(response)
             
     def finish(self) -> None:
         """

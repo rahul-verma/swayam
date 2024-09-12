@@ -33,8 +33,8 @@ class ThoughtEnactor(BaseLLMEnactor):
         '''        
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         thought.narrative = narrative
-        thought.store = narrative.store
-        thought.fixture.before()
+        thought.vault = narrative.vault
+        thought.fixture.prologue()
 
         if thought.has_directive():
             narrative.append_directive(thought.directive)
@@ -50,13 +50,11 @@ class ThoughtEnactor(BaseLLMEnactor):
             if isinstance(expressions, UserExpression):
                 expressions = [expressions]
             else:
-                expressions.store = thought.store
+                expressions.vault = thought.vault
                 expressions = expressions() # Lazy loading
             for expression in expressions:
                 expression.story = thought.story
                 expression.thought = thought.purpose
-                thought.node_fixture.before()
                 expression_enactor.enact(expression, narrative=narrative)
-                thought.node_fixture.after()
             
-        thought.fixture.after()
+        thought.fixture.epilogue()

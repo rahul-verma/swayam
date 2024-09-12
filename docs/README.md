@@ -2,7 +2,7 @@
 
 Swayam employs [The STEPs model of prompting by Rahul Verma](https://www.linkedin.com/pulse/swayam-steps-model-prompting-i-rahul-verma-iqjne). It has the following high level components:
 
-A large problem is called an Epic which can be broken down into STEPs:
+Your Project is the Epic, which can be broken down into STEPs:
 
 Story: Captures the broad, overarching narrative or goal. It gives a sense of direction and purpose. This largely involves human intellect with some usage of tooling.
 
@@ -12,12 +12,12 @@ Expression: Bridges the abstract with the concrete, focusing on how Thoughts wil
 
 Prompt: The most actionable part, where the specific thoughts or commands are generated. A granular interaction with an entity who is supposed to solve a specific part of the problem. In the narrative of automation, this represents a problem unit/piece which can be automated with high level of confidence, with no human intervention, once the solution is implemented.
 
-All building blocks of STEP are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
+All building blocks of STEPs are only expressed as definitions, with the only exception being a Prompt, which for an extremely simple situation does not need to be defined in a file.
 
 ## Narrative
-Narrative is passed from narrator to the enactor and the primary object remains same throughout the narration. It has three primary provisions:
+Narrative is passed from narrator to the enactor and the primary vault remains same throughout the narration. What changes along the way is the current conversation that it holds at an expression level. It has three primary provisions:
 1. Directives from Story and Thought. These get combined with the directive in an Expression and transformed as context by Swayam for the conversation in the Expression.
-2. A multi-layered, cascading look-up Store: A phase can store key-value pairs in its own layer or in its parent layer. When accessing, a cascading lookup takes place.
+2. A multi-layered, cascading look-up Store: A phase can vault key-value pairs in its own layer or in its parent layer. When accessing, a cascading lookup takes place.
 3. Current Conversation
 
 ## Prompt
@@ -49,26 +49,27 @@ A Story can contain multiple Thoughts.
 
 Thought definitions are packages defined as directories.
 
-## Fixtures
+## Frames
 
-There are 4 types of fixtures that can be included in Phase definitions (except Prompt in which only the first two are applicable). 
-1. **before**: Before start of the phase whose definition contains it.
-2. **after**: After end of the phase whose definition contains it.
-3. **before_node**: Before start of the every child node of current phase.
-4. **after_node**: After end of the every child node of current phase.
+There are 4 types of frames that can be included in Phase outlines (except Prompt in which only the first two are applicable). 
+1. **prologue**: Before start of the phase whose outline contains it.
+2. **epilogue**: After end of the phase whose outline contains it.
+3. **prologue_node**: Before start of the every child node of current phase.
+4. **epilogue_node**: After end of the every child node of current phase.
 
-Injectables that can be included are:
-    - Resource
-    - Condition
-    - Parser
-    - Tool
+Prologue frames can include:
+    - Prop
+    - Cue - if evaluates to False, this phase is skipped.
+    - Action
 
-Note: If a Resource is included in **after** or **after_node**, as it is called only once, only a pure teardown instruction makes sense to be put in such a Resource.
+Epilogue frames can include:
+    - Cue - if evaluates to False, a critical level exception is raised.
+    - Action
 
-Note: Resources are tore down in the exact opposite order of their creation order.
+Note: Props are tore down in the exact opposite order of their creation order.
 
 ## Repeater
-Expression and Thought Definitions have the provision to use a repeater.
+Expression and Thought Outlines have the provision to use a repeater.
 
 In Expression a repeater can be associated with one or more prompts.
 
@@ -80,56 +81,49 @@ Swayam supports the concept of dependency injection using Injectables.
 
 An Injectable is:
 - a named object that has a well defined purpose in a sequence of steps.
-- dicoverable using <InjectableType>.<InjectableName> syntax. For definition file based injectable it is <InjectableType>.file.<InjectableName>.
-- has an input-output structure protocol. A part of the protocol could be pre-defined by Swayam for certain injectables.
+- discoverable using <InjectableType>.<InjectableName> syntax.
+- has an input-output protocol based on templates. A part of the protocol could be pre-defined by Swayam for certain injectables.
 - The callables encapsulated with injectables need to take only keyword arguments as determined by the input structure. In addition, they take a "invoker" argument. This caller object is passed from Swayam's execution flow. WIP.
-- The input to the callable as well as the output from the called is always as simple Python objects rather than the Structure objects themselves. Think of them as Validation pass-throughs.
+- The input to the callable as well as the output from the called is always as simple Python objects rather than the Template objects themselves. Think of them as Validation pass-throughs.
 
 
-### Structure
+### Template
 
 - Used to define the input-output protocol in Injectables.
 - Various built-in structures are available.
-- Can be defined in a project in /lib/inject/structure.py (or a structure package)
+- Can be defined in a project in /lib/inject/template.py (or a template package)
 
-### Tool
-- Used to define the Tools to be used as an input to an LLM that supports tool calling.
-- always define input/output structure on a tool basis.
+### Action
+- Used to define the Actions to be used as an input to an LLM that supports tool calling.
+- always define input/output template on an action basis.
 - allow_none_output tweaks the default where the encapsulated callable is allowed to return None.
 
-### Generator
+### Driver
 
-- Used to define a specific kind of injectable which when iterated over produces structures of the same kind.
+- Used to define a specific kind of injectable which when iterated over produces template objects of the same kind.
 - Typical usage: Looping.
-- always define input/output structure on a generator basis.
+- always define input/output template on a driver basis.
 - allow_none_output tweaks the default where the encapsulated callable is allowed to return None.
-- Input structure can be empty.
+- Input template can be empty.
 
-### Condition
+### Cue
 
-- Used to define a specific kind of injectable which always returns a **Structure.BoolValue**.
+- Used to define a specific kind of injectable which always returns a **Template.BoolValue**.
 - Typical usage: Checking a condition for decision making.
-- always define input structure on a generator basis.
-- Input structure can be empty.
+- always define input template on a Cue basis.
+- Input template can be empty.
 
 ### Snippet
 
-- You can define a snippet as a definition file (text or dict) directly under /snippet or any sub-directory. **Snippet.file[.path.to.snippet].<Name>**.
+- You can define a snippet as a YAML file (text or dict) directly under /snippet or any sub-directory. **Snippet.file[.path.to.snippet].<Name>**.
 
-### Parser
-- Two types of parsers: Text and Json
-- TextParser created using Parser.text: the callable gets text input. Default input_structure is Structure.TextContent. Allowed structures should inherit from its data model. Default output structure is Structure.StringValues. Allow none is false by default
-- JsonParser created using Parser.json: the callable gets loaded Python object from a JSON string. Default input_structure is Structure.JsonContent. Allowed structures should inherit from its data model. Allow none is false by default. Has an additional provision for validating the input content using content_structure attribute.
+### Prop
 
-Note that JPathExtractor uses the approach of partial functions, because at the time of creating an object of this, content_structure or output_structure is an unknown. 
+Prop is based on 2-yield statement based callable (or a custom callable which will be called twice) - once for setup and once for teardown. 
 
-### Resource
+Takes the input template as an argument based on a Prop basis. 
 
-Resource is based on 2-yield statement based callable (or a custom callable which will be called twice) - once for setup and once for teardown. 
-
-Takes the input structure as an argument based on a resource basis. 
-
-Output structure for both the calls needs to be a Structure.Result object.
+Output template for both the calls needs to be a Template.Result object.
 
 
 ### Model /llm
@@ -139,6 +133,18 @@ TO Do
 Here are the ideas:
 - model/< type > folders will contain model configs. E.g. model/llm for LLM Model configs. The options will be as provided by corresponding models apart from generic options like temperature. Needs to be investigated.
 - for the time being, till the provision for 2 models in single story is implemented, this feature is parked. Once in, this will allow to choose a different model even for prompts within a single model. The narrative management part has to be thought about.
+
+## Folio
+is the vault of scripts and drafts
+
+### Draft
+An output from the prompt. Can be translated using a Translator. Can be structured or unstructured.
+
+### Script
+A draft or sourced from anywhere else with a translator. Can be structured or unstructured.
+
+### Section
+Each unit of information in a Structured Script.
 
 
 ### Model /embed

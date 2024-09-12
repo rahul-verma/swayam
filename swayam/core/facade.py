@@ -30,12 +30,14 @@ class _SwayamSingleton:
     def __register_config_with_tarkash(self):
         from tarkash import Tarkash
         reg_config = {
+            "EPIC_DIR": ("", "path"),
             "SNIPPET_DIR": ("definition/snippet", "path"),
             "PROMPT_DIR": ("definition/prompt", "path"),
             "EXPRESSION_DIR": ("definition/expression", "path"),
             "THOUGHT_DIR": ("definition/thought", "path"),
             "STORY_DIR": ("definition/story", "path"),
             "NARRATION_DIR": ("narration", "path"),
+            "FOLIO_DIR": ("folio", "path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }

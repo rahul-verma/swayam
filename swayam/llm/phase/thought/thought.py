@@ -20,9 +20,9 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(store, expression_names, expression_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
+def iterator(vault, expression_names, expression_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
     from swayam.llm.phase.expression.namespace import ExpressionNamespace
-    for out_dict in generator(store=store, **generator_kwargs):
+    for out_dict in generator(vault=vault, **generator_kwargs):
         temp_dict = {}
         temp_dict.update(parent_fmt_kwargs)
         temp_dict.update(out_dict)
@@ -38,28 +38,28 @@ class ExpressionGenerator:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__expression_names = expression_dict.pop("definitions")
-        from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
-        generator_structure = GeneratorStructure(**expression_dict)
+        from swayam.inject.template.builtin.internal import Driver as DriverTemplate
+        driver_data = DriverTemplate(**expression_dict)
         
-        from swayam import Generator
-        self.__generator = getattr(Generator, generator_structure.generator)
-        self.__generator_kwargs = generator_structure.args
+        from swayam import Driver
+        self.__driver = getattr(Driver, driver_data.driver)
+        self.__driver_kwargs = driver_data.args
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        self.__store = store
+    @vault.setter
+    def vault(self, vault):
+        self.__vault = vault
     
     def __call__(self):
-        expression_loader = iterator(self.__store, self.__expression_names, self.__expression_ns_path, self.__resolution, self.__generator, self.__generator_kwargs, self.__parent_fmt_kwargs)
+        expression_loader = iterator(self.__vault, self.__expression_names, self.__expression_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs)
         return expression_loader
 
 class UserThought:
     
-    def __init__(self, *, expressions, purpose:str=None, directive:str=None, tools:list=None, resources=None, before=None, after=None, before_node=None, after_node=None) -> Any:
+    def __init__(self, *, expressions, purpose:str=None, directive:str=None, actions:list=None, resources=None, prologue=None, epilogue=None) -> Any:
         self.__expression_names_or_dicts = list(expressions)
         self.__expressions = []
         self.__purpose = purpose
@@ -68,21 +68,18 @@ class UserThought:
         else:
             self.__purpose = f"Thought: {self.__purpose}"
         self.__directive = directive
-        self.__tools = tools
-        self.__before = before
-        self.__after = after
-        self.__before_node = before_node
-        self.__after_node = after_node
+        self.__actions = actions
+        self.__prologue = prologue
+        self.__epilogue = epilogue
         self.__story = None
         
         self.__narrative = None
         
-        from swayam.llm.enact.fixture import Fixture
-        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
-        self.__node_fixture = Fixture(phase=self, before=self.__before_node, after=self.__after_node)
+        from swayam.llm.enact.frame import Frame
+        self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
         
     def load(self, *, expression_ns_path, resolution=None, **fmt_kwargs):
-        from swayam import Structure
+        from swayam import Template
         from swayam.llm.phase.expression.namespace import ExpressionNamespace
         for expression_name_or_dict in self.__expression_names_or_dicts:
             if isinstance(expression_name_or_dict, dict):
@@ -98,25 +95,21 @@ class UserThought:
                 expression_name = expression_name_or_dict
                 expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
                 self.__expressions.append(getattr(expression_namespace, expression_name))
-        self.__make_tool_suggestions()
+        self.__make_action_suggestions()
                 
-    def __make_tool_suggestions(self):
+    def __make_action_suggestions(self):
         # Tools and response format are suggested to all expressions.            
         for expression in self.__expressions:
-            if self.__tools:
-                expression.suggest_tools(self.__tools) 
+            if self.__actions:
+                expression.suggest_actions(self.__actions) 
         
     def has_directive(self):
         return self.__directive is not None
     
 
     @property
-    def fixture(self):
-        return self.__fixture
-    
-    @property
-    def node_fixture(self):
-        return self.__node_fixture
+    def frame(self):
+        return self.__frame
     
     @property
     def purpose(self):
@@ -147,13 +140,13 @@ class UserThought:
         self.__story = story
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        self.__store = store.get_phase_wrapper(self)
-        self.__store["purpose"] = self.__purpose
+    @vault.setter
+    def vault(self, vault):
+        self.__vault = vault.get_phase_wrapper(self)
+        self.__vault["purpose"] = self.__purpose
         
     def __len__(self):
         return len(self.__expressions)

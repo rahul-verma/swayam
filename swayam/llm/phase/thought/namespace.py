@@ -38,7 +38,7 @@ class ThoughtNamespace(Namespace):
         import yaml
         thought_dict = yaml.safe_load(package_file_content)
         if isinstance(thought_dict, dict):
-            from swayam.inject.structure.builtin.internal import Thought
+            from swayam.inject.template.builtin.internal import Thought
             try:
                 thought = UserThought(**Thought(**thought_dict).as_dict())
             except Exception as e:

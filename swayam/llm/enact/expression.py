@@ -32,9 +32,9 @@ class ExpressionEnactor(BaseLLMEnactor):
         Runs the expression and returns the result.
         '''
         expression.narrative = narrative
-        expression.store = narrative.store
+        expression.vault = narrative.vault
         
-        expression.fixture.before()
+        expression.fixture.prologue()
         from swayam.llm.phase.expression.conversation import Conversation
         conversation = Conversation()
         narrative_instructions = narrative.get_instructions()
@@ -61,14 +61,14 @@ class ExpressionEnactor(BaseLLMEnactor):
             if isinstance(prompts, UserPrompt):
                 prompts = [prompts]
             else:
-                prompts.store = expression.store
+                prompts.vault = expression.vault
                 prompts = prompts() # Lazy loading
             for prompt in prompts:
                 log_debug("Processing prompt...")
                 # For dynamic variables in Narrative
-                prompt.store = narrative.store
+                prompt.vault = narrative.vault
                 prompt.dynamic_format()
-                expression.node_fixture.before()
+                expression.node_fixture.prologue()
                 if prompt.is_standalone:
                     only_context_conversation = Conversation()
                     only_context_conversation.append_system_prompt(narrative_instructions)
@@ -78,6 +78,6 @@ class ExpressionEnactor(BaseLLMEnactor):
                     narrative.conversation = conversation
                 self.recorder.record_conversation(conversation)
                 prompt_enactor.enact(prompt, narrative=narrative)
-                expression.node_fixture.after()
+                expression.node_fixture.epilogue()
             
-        expression.fixture.after()
+        expression.fixture.epilogue()

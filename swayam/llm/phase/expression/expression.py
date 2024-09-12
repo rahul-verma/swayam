@@ -20,9 +20,9 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(store, prompt_names, prompt_ns_path, resolution, generator, generator_kwargs, parent_fmt_kwargs):
+def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs):
     from swayam.llm.phase.prompt.namespace import PromptNamespace
-    for out_dict in generator(store=store, **generator_kwargs):
+    for out_dict in driver(vault=vault, **driver_kwargs):
         temp_dict = {}
         temp_dict.update(parent_fmt_kwargs)
         temp_dict.update(out_dict)
@@ -38,28 +38,28 @@ class PromptGenerator:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__prompt_names = prompt_dict.pop("definitions")
-        from swayam.inject.structure.builtin.internal import Generator as GeneratorStructure
-        generator_structure = GeneratorStructure(**prompt_dict)
+        from swayam.inject.template.builtin.internal import Driver as DriverTemplate
+        driver_data = DriverTemplate(**prompt_dict)
         
-        from swayam import Generator
-        self.__generator = getattr(Generator, generator_structure.generator)
-        self.__generator_kwargs = generator_structure.args
+        from swayam import Driver
+        self.__driver = getattr(Driver, driver_data.driver)
+        self.__driver_kwargs = driver_data.args
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        self.__store = store
+    @vault.setter
+    def vault(self, vault):
+        self.__vault = vault
     
     def __call__(self):
-        prompt_loader = iterator(self.__store, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__generator, self.__generator_kwargs, self.__parent_fmt_kwargs)
+        prompt_loader = iterator(self.__vault, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs)
         return prompt_loader
 
 class UserExpression:
     
-    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, output_structure:str=None, tools:list=None, before=None, after=None, before_node=None, after_node=None) -> Any:
+    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
         self.__prompt_names_or_dicts = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
@@ -70,26 +70,26 @@ class UserExpression:
         self.__persona = persona
         self.__directive = directive
         self.__image = image
-        self.__output_structure = output_structure
-        self.__tools = tools
-        self.__before = before
-        self.__after = after
-        self.__before_node = before_node
-        self.__after_node = after_node
+        self.__out_template = out_template
+        self.__actions = actions
+        self.__prologue = prologue
+        self.__epilogue = epilogue
+        self.__prologue_prompt = prologue_prompt
+        self.__epilogue_prompt = epilogue_prompt
         self.__story = None
         self.__thought = None
         
         self.__narrative = None
         
-        if self.__output_structure and self.__tools:
-            raise ValueError("Cannot suggest both output structure and tools.")
+        if self.__out_template and self.__actions:
+            raise ValueError("Cannot suggest both output structure and actions.")
         
-        from swayam.llm.enact.fixture import Fixture
-        self.__fixture = Fixture(phase=self, before=self.__before, after=self.__after)
-        self.__node_fixture = Fixture(phase=self, before=self.__before_node, after=self.__after_node)
+        from swayam.llm.enact.frame import Frame
+        self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
+        self.__prompt_frame = Frame(phase=self, prologue=self.__prologue_prompt, epilogue=self.__epilogue_prompt)
         
     def load(self, *, prompt_ns_path, resolution=None, **fmt_kwargs):
-        from swayam import Structure
+        from swayam import Template
         from swayam.llm.phase.prompt.namespace import PromptNamespace
             
         for prompt_name_or_dict in self.__prompt_names_or_dicts:
@@ -107,8 +107,8 @@ class UserExpression:
                 prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
                 self.__prompts.append(getattr(prompt_namespace, prompt_name))
 
-        if self.__output_structure:
-            self.__output_structure = getattr(Structure, self.__output_structure)
+        if self.__out_template:
+            self.__out_template = getattr(Template, self.__out_template)
         self.__make_image_suggestions()
         self.__make_structure_suggestions()
         self.__make_tool_suggestions()
@@ -122,24 +122,24 @@ class UserExpression:
         # Tools and response format are suggested to all prompts.            
         for prompt in self.__prompts:
             if self.__image:
-                prompt.suggest_output_structure(self.__output_structure)
+                prompt.suggest_out_template(self.__out_template)
                 
     def __make_tool_suggestions(self):
         # Tools and response format are suggested to all prompts.            
         for prompt in self.__prompts:
-            if self.__tools:
-                prompt.suggest_tools(self.__tools) 
+            if self.__actions:
+                prompt.suggest_actions(self.__actions) 
         
     def has_directive(self):
         return self.__directive is not None
     
     @property
-    def fixture(self):
-        return self.__fixture
+    def frame(self):
+        return self.__frame
     
     @property
-    def node_fixture(self):
-        return self.__node_fixture
+    def prompt_frame(self):
+        return self.__prompt_frame
     
     @property
     def purpose(self):
@@ -182,13 +182,13 @@ class UserExpression:
         self.__thought = thought
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
     
-    @store.setter
-    def store(self, store):
-        self.__store = store.get_phase_wrapper(self)
-        self.__store["purpose"] = self.__purpose
+    @vault.setter
+    def vault(self, vault):
+        self.__vault = vault.get_phase_wrapper(self)
+        self.__vault["purpose"] = self.__purpose
         
     def append(self, prompt):
         self.__prompts.append(prompt)
@@ -228,8 +228,8 @@ class UserExpression:
             self.__index = -1
             raise StopIteration()
             
-    def suggest_tools(self, tools):
-        if not self.__tools:
-            self.__tools = tools
-        self.__make_tool_suggestions()
+    def suggest_actions(self, actions):
+        if not self.__actions:
+            self.__actions = actions
+        self.__make_action_suggestions()
             

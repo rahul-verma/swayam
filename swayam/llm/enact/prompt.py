@@ -43,9 +43,9 @@ class PromptEnactor(BaseLLMEnactor):
         
         #conversation = expression.narrative.conversation
                 
-        prompt.store = narrative.store
+        prompt.vault = narrative.vault
         
-        prompt.fixture.before()
+        prompt.fixture.prologue()
 
         log_debug("Processing prompt...")
         prompt.process_for_report()
@@ -62,7 +62,7 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
-        llm_response = self.__client.execute_messages(messages=conversation.messages, output_structure=prompt.output_structure, tools=prompt.tools)
+        llm_response = self.__client.execute_messages(messages=conversation.messages, out_template=prompt.out_template, tools=prompt.tools)
         log_debug("Handling Response.")
         
         conversation.append_assistant_response(llm_response.as_dict())
@@ -76,22 +76,24 @@ class PromptEnactor(BaseLLMEnactor):
             print(llm_response.content)
             raise ValueError("There was an error in the LLM request. The response was returned as None.")
         
-        narrative.store.set("response_content", llm_response.as_dict()["content"], phase=prompt)
+        narrative.vault.set("response_content", llm_response.as_dict()["content"], phase=prompt)
         
-        tooling_results = {}
+        action_results = {}
 
         if llm_response.message.tool_calls:
             response_messages = []
             for tool in llm_response.message.tool_calls:
-                tooling_results[tool.id] = {"name": tool.function.name, "arguments": tool.function.arguments}
-                tool_response = prompt.call_tool(tool.id, tool.function.name, **json.loads(tool.function.arguments))
-                tooling_results[tool.id]["response"] = json.dumps(tool_response.content)
-                self.recorder.record_tool_response(tool_response)
-                response_messages.append(tool_response)
-                conversation.append_tool_response(tool_response)
+                action_results[tool.id] = {"name": tool.function.name, "arguments": tool.function.arguments}
+                
+                action_response = prompt.call_action(tool.id, tool.function.name, **json.loads(tool.function.arguments))
+                
+                action_results[tool.id]["response"] = json.dumps(action_response.content)
+                self.recorder.record_action_response(action_response)
+                response_messages.append(action_response)
+                conversation.append_action_response(action_response)
                 self.recorder.record_conversation(conversation)
-            narrative.store.set("tool_results",  tooling_results, phase=prompt)
+            narrative.vault.set("action_results",  action_results, phase=prompt)
         else:
             response_messages = llm_response.message
             
-        prompt.fixture.after()
+        prompt.fixture.epilogue()

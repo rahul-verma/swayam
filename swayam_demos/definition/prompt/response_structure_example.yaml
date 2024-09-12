@@ -2,4 +2,4 @@ purpose: Demo Output Structure
 text: |
   Extract event information: Alice and Bob are going to a science fair on Friday.
 
-output_structure: CalendarEvent
+out_template: CalendarEvent

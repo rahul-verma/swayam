@@ -30,14 +30,14 @@ class PromptNamespace(Namespace):
         raise DefinitionNameNotAFileError(self, name=name)
     
     def handle_current_name_as_definition(self, *, name, path, resolution, purpose, content):
-        from swayam import Structure
+        from swayam import Template
         
         import yaml
         content = yaml.safe_load(content)
         if isinstance(content, str):
             return UserPrompt(text=content, purpose=purpose)
         elif isinstance(content, dict):
-            from swayam.inject.structure.builtin.internal import Prompt
+            from swayam.inject.template.builtin.internal import Prompt
             try:
                 return UserPrompt(**Prompt(**content).as_dict())
             except Exception as e:

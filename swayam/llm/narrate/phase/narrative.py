@@ -15,14 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import json
-from .store import STEPStore
+from .vault import STEPVault
 
 class Narrative:
     
     def __init__(self):
         from swayam.llm.phase.expression.conversation import Conversation
         self.__conversation = None
-        self.__store = STEPStore()
+        self.__vault = STEPVault()
         self.__directive = ""
         self.__background = ""
         self.__ghost_instructions = """You are an interpreter, who acts as a polite, well-informed, pluralistic individual. You always respond by following the below guidelines:
@@ -108,11 +108,11 @@ Following is background information, as marked by triple backticks, that you nee
         
     def reset(self):
         self.reset_conversation()
-        self.store.reset()
+        self.vault.reset()
         
     @property
-    def store(self):
-        return self.__store
+    def vault(self):
+        return self.__vault
         
     def append_directive(self, directive):
         if directive:
@@ -133,7 +133,7 @@ Following is background information, as marked by triple backticks, that you nee
         if total_directive:
             #sanitized_text = updated_content.replace("\\", "\\\\")
             import re
-            for key, value in expression.store.items():
+            for key, value in expression.vault.items():
                 if value is None:
                     value = ""
                 elif type(value) in (dict, list):
