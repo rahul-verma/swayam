@@ -43,11 +43,22 @@ class SwayamOption(Enum):
     FOLIO_DIR = auto()
     '''Root Directory for Folio Files'''
     
-    NARRATION_DIR = auto()
-    '''Root Directory for Narration Files'''
+    FOLIO_DRAFT_DIR = auto()
+    '''Root Directory for Drafts in Folio.'''
+    
+    FOLIO_TRANSLATION_DIR = auto()
+    '''Root Directory for Translated Drafts in Folio'''
+    
+    FOLIO_NARRATION_DIR = auto()
+    '''Root Directory for Narration Files in Folio'''
     
     LLM_PROVIDER = auto()
     '''Default LLM Provider name.'''
     
     LLM_MODEL = auto()
     '''Default LLM Model name.'''
+    
+    
+    # Updating the Tarkash option
+    LOG_DIR = auto()
+    '''Root Directory for Logs'''

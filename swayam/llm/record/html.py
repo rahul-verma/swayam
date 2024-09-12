@@ -42,7 +42,7 @@ class HtmlRecorder(Reporter):
         # For JSON Data
         
         # Don't vault the narration, always get it from config.
-        record_dir = Tarkash.get_option_value(SwayamOption.NARRATION_DIR)
+        record_dir = Tarkash.get_option_value(SwayamOption.FOLIO_NARRATION_DIR)
         self.__base_path = os.path.join(record_dir, str(self.__recorder_config.narration))
         os.makedirs(self.__base_path, exist_ok=True)
         self.__json_path = self.__base_path + "/json/data.json"

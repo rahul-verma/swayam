@@ -27,30 +27,36 @@ class _SwayamSingleton:
     def get_project_dir(self):
         return self.__project_dir
     
-    def __register_config_with_tarkash(self):
+    def __register_config_with_tarkash(self, folio_dir):
         from tarkash import Tarkash
         reg_config = {
-            "EPIC_DIR": ("", "path"),
-            "SNIPPET_DIR": ("definition/snippet", "path"),
-            "PROMPT_DIR": ("definition/prompt", "path"),
-            "EXPRESSION_DIR": ("definition/expression", "path"),
-            "THOUGHT_DIR": ("definition/thought", "path"),
-            "STORY_DIR": ("definition/story", "path"),
-            "NARRATION_DIR": ("narration", "path"),
-            "FOLIO_DIR": ("folio", "path"),
+            "EPIC_DIR": ("", "project_relative_path"),
+            "SNIPPET_DIR": ("definition/snippet", "project_relative_path"),
+            "PROMPT_DIR": ("definition/prompt", "project_relative_path"),
+            "EXPRESSION_DIR": ("definition/expression", "project_relative_path"),
+            "THOUGHT_DIR": ("definition/thought", "project_relative_path"),
+            "STORY_DIR": ("definition/story", "project_relative_path"),
+            "FOLIO_DIR": (folio_dir, "absolute_path"),
+            "FOLIO_NARRATION_DIR": (os.path.join(folio_dir, "narration"), "absolute_path"),
+            "FOLIO_DRAFT_DIR": (os.path.join(folio_dir, "draft"), "absolute_path"),
+            "FOLIO_TRANSLATION_DIR": (os.path.join(folio_dir, "translation"), 
+                                      "absolute_path"),
+            "LOG_DIR": (os.path.join(folio_dir, "log"), "absolute_path"),
             "LLM_PROVIDER": "openai",
             "LLM_MODEL": "gpt-4o-mini"
         }
         Tarkash.register_framework_config_defaults("swayam", reg_config)
     
-    def init(self):   
+    def init(self, folio_dir=None):   
         from tarkash import Tarkash, TarkashOption
         # Swayam's initialisation depends on Tarkash.init() called  by the creator of the final project using the Traksh based stack of libs.
     
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
         self.__project_dir = Tarkash.get_option_value(TarkashOption.PROJECT_DIR)
+        if folio_dir is None:
+            folio_dir = self.__project_dir
         
-        self.__register_config_with_tarkash()
+        self.__register_config_with_tarkash(folio_dir)
         
         # Create default narrator
         from swayam.llm.narrate.simple import SimpleNarrator
@@ -119,7 +125,7 @@ class Swayam(metaclass=SwayamMeta):
         return cls._SWAYAM_SINGLETON.get_swayam_res_path(file_name)
         
     @classmethod
-    def enact(cls, prompt:str):
+    def narrate(cls, prompt:str):
         """
         A simple facade to default LLM Model, resulting in one a prompt being executed.
         

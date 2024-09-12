@@ -62,7 +62,7 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
-        llm_response = self.__client.execute_messages(messages=conversation.messages, out_template=prompt.out_template, tools=prompt.tools)
+        llm_response = self.__client.execute_messages(messages=conversation.messages, out_template=prompt.out_template, actions=prompt.actions)
         log_debug("Handling Response.")
         
         conversation.append_assistant_response(llm_response.as_dict())

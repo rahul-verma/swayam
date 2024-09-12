@@ -26,12 +26,14 @@ class OpenAIClient(LLMClient):
         from openai import OpenAI
         self._client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
         
-    def execute_messages(self, *, messages, out_template=None, tools=None):
+    def execute_messages(self, *, messages, out_template=None, actions=None):
         from pprint import pprint
         from swayam.llm.phase.prompt.response import LLMResponse
         import openai
-        if tools:
+        if actions:
             tools =[tool.definition for tool in tools]
+        else:
+            tools = None
 
         error_content = ""
         for attempt in range(5):  # Retry up to 5 times

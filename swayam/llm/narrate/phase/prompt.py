@@ -18,6 +18,7 @@
 from tarkash import log_debug
 from swayam.llm.phase.prompt.prompt import UserPrompt
 from swayam.llm.enact.prompt import PromptEnactor
+from swayam.llm.phase.expression.conversation import Conversation
 
 from .base import BaseNarrator
 
@@ -38,6 +39,7 @@ class PromptNarrator(BaseNarrator):
         enactor = PromptEnactor(recorder=self.recorder)
         
         if self.__first_prompt:
+            self.narrative.conversation = Conversation()
             self.narrative.conversation.append_system_prompt(self.narrative.get_instructions())
             context_prompt = self.narrative.get_context_prompt(expression=None)
             self.__first_prompt = False
