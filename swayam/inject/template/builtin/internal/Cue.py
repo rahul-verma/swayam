@@ -25,6 +25,6 @@ class CueModel(BaseModel):
     Cue: FrameInjectableModel = Field(..., title="Cue details", description="Cue Details.")
     
 class CueAsArgModel(BaseModel):
-    condition: str = Field(..., title="Cue name", description="Cue name without the prefix.")
+    cue: str = Field(..., title="Cue name", description="Cue name without the prefix.")
     
 CueAsArg = Template.build("CueAsArg", model=CueAsArgModel)

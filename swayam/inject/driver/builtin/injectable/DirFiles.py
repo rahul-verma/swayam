@@ -23,11 +23,11 @@ from swayam import Driver, Template
 
 def get_file_info(*, invoker, dir_path, file_filter_pattern=None):
     from swayam import Action
-    for file_info in Action.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
+    for file_info in Action.EnumerateDir(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
         yield Template.FileInfo(**file_info)
 
-DirFileInfo = Driver.build("DirFileInfo", 
-                                 callable=get_file_info,
-                                 in_template=Template.DirPathFilter, 
-                                 out_template=Template.FileInfo)
+DirFiles = Driver.build("DirFiles", 
+                        callable=get_file_info,
+                        in_template=Template.DirPathFilter, 
+                        out_template=Template.FileInfo)
 

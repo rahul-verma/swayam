@@ -19,21 +19,21 @@ import os
 from swayam import Driver, Template
 from swayam.inject.template.builtin.internal.Cue import CueAsArg
 
-def until(*, invoker, condition):
-    condition_met = False
+def until(*, invoker, cue):
+    cue_met = False
     counter = 0
-    while not condition_met:
-        if invoker.vault.has_condition_result(condition):
-            condition_met = invoker.vault.get_condition_result(condition)
-            if condition_met:
+    while not cue_met:
+        if invoker.vault.has_cue_result(cue):
+            cue_met = invoker.vault.get_cue_result(cue)
+            if cue_met:
                 break
         else:
-            condition_met = False
+            cue_met = False
         counter += 1
         yield Template.Counter(counter=counter)
 
 Until = Driver.build("Until", 
-                                 callable=until,
-                                 in_template=CueAsArg, 
-                                 out_template=Template.Counter)
+                    callable=until,
+                    in_template=CueAsArg, 
+                    out_template=Template.Counter)
 

@@ -20,14 +20,17 @@ from swayam import Driver, Template
 
 def get_content_for_all_files(*, invoker, dir_path, file_filter_pattern=None):
     from swayam import Action
-    for file_info in Action.DirEnumerator(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
+    for file_info in Action.EnumerateDir(
+        dir_path=dir_path, 
+        file_filter_pattern=file_filter_pattern
+        )["files"]:
         yield Template.TextFileContent(
             file_name=file_info["file_name"],
             file_path=file_info["file_path"], 
-            file_content=Action.TextFileReader(
+            file_content=Action.ReadTextFile(
                 file_path=file_info["file_path"])["file_content"])
 
-DirFileContent = Driver.build("DirFileContent", 
+DirTextFileContents = Driver.build("DirTextFileContents", 
                                  callable=get_content_for_all_files,
                                  in_template=Template.DirPathFilter, 
                                  out_template=Template.TextFileContent)

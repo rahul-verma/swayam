@@ -15,8 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirFileContent import *
-from .injectable.DirFileInfo import *
+from .injectable.DirTextFileContents import *
+from .injectable.DirFiles import *
 from .injectable.Until import *
 
 

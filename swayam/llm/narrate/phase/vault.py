@@ -52,17 +52,17 @@ class PhaseVault:
     def _raw_items(self):
         return self.__vault._raw_items()
    
-    def has_condition_result(self, name):
-        return self.__vault.has_key(name, phase=self.__phase, container="__conditions__")
+    def has_cue(self, name):
+        return self.__vault.has_key(name, phase=self.__phase, container="__cues__")
     
-    def get_condition_result(self, name):
-        return self.__vault.get(name, phase=self.__phase, container="__conditions__")
+    def get_cue(self, name):
+        return self.__vault.get(name, phase=self.__phase, container="__cues__")
     
-    def set_condition_result(self, key, value):
-        return self.__vault.set(key, value, phase=self.__phase, container="__conditions__")
+    def set_cue(self, key, value):
+        return self.__vault.set(key, value, phase=self.__phase, container="__cues__")
     
-    def set_condition_result_in_parent(self, key, value):
-        return self.__vault.set_in_parent(key, value, phase=self.__phase, container="__conditions__")
+    def set_cue_in_parent(self, key, value):
+        return self.__vault.set_in_parent(key, value, phase=self.__phase, container="__cues__")
     
     @property
     def phase_name(self):
@@ -80,12 +80,12 @@ class STEPVault:
         self.__storage = {}
         for item in self.__order:
             self.__storage[item] = {}
-            self.__storage[item]["__conditions__"] = {}
+            self.__storage[item]["__cues__"] = {}
         
     def reset(self):
         for item in self.__order:
             self.__storage[item] = {}
-            self.__storage[item]["__conditions__"] = {}
+            self.__storage[item]["__cues__"] = {}
         
     def get(self, key, *, phase, container=None):
         # Get the class name of the object
