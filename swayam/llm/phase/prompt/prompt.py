@@ -89,9 +89,9 @@ class UserPrompt:
             
     def load_actions_from_names(self, action_names):
         from swayam import Action
-        self.__actions = [getattr(Action, tool) for tool in action_names]
-        self.__action_definitions = [tool.definition for tool in self.__actions]
-        self.__action_dict = {tool.name: tool for tool in self.__actions}
+        self.__actions = [getattr(Action, action) for action in action_names]
+        self.__action_definitions = [action.definition for action in self.__actions]
+        self.__action_dict = {action.name: action for action in self.__actions}
 
     def dynamic_format(self):
         updated_content = self.__message["content"]
@@ -124,10 +124,10 @@ class UserPrompt:
         if not self.image:
             self.image = image
             
-    def suggest_out_template(self, structure_name):
+    def suggest_out_template(self, template_name):
         from swayam import Template
-        if not self.out_template and structure_name:
-            self.__out_template = getattr(Structure, structure_name)
+        if not self.out_template and template_name:
+            self.__out_template = getattr(Template, template_name)
             
     def suggest_actions(self, action_names):
         from swayam import Action

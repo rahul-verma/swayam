@@ -274,17 +274,17 @@ class HtmlRecorder(Reporter):
         expected_out_template = prompt.out_template
         if expected_out_template is not None:
             prompt_content_node.append({
-                        "heading": "Expected Response Format",
+                        "heading": "Data Template",
                         "content": expected_out_template.definition
                     })
         
-        provided_tools = prompt.action_dict
+        provided_actions = prompt.action_dict
         if provided_actions:
             tool_content_for_main_page = {
                 "heading": "Provided Actions",
                 "content": {}
             }
-            for tool in provided_tools.values():
+            for tool in provided_actions.values():
                 tool_content_for_main_page["content"][tool.name] = tool.definition
                 
             prompt_content_node.append(tool_content_for_main_page)
@@ -344,24 +344,12 @@ class HtmlRecorder(Reporter):
             message (dict): ActionResponse object
         """
         log_debug("Begin: Action Response.")
- 
-        tool_response_node = {
-                            "id": "tool_response_" + uuid4().hex,
-                            "text": f"Action Response: {response.tool_name}",
-                            "icon": "jstree-file",
-                            "data": {
-                                "content": {
-                                    "id": response.tool_id,
-                                    "response": response.content
-                                }
-                            }
-                        }
         
         self.__get_prompt_content_node().append(
                 {
-                    "heading": f"Action Response:  {response.tool_name}",
+                    "heading": f"Action Response:  {response.action_name}",
                     "content": {
-                                    "tool_id": response.tool_id,
+                                    "action_id": response.action_id,
                                     "response": response.content
                                 }
                 }

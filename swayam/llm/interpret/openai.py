@@ -30,10 +30,10 @@ class OpenAIClient(LLMClient):
         from pprint import pprint
         from swayam.llm.phase.prompt.response import LLMResponse
         import openai
+        
+        actions = actions
         if actions:
-            tools =[tool.definition for tool in tools]
-        else:
-            tools = None
+            actions =[action.definition for action in actions]
 
         error_content = ""
         for attempt in range(5):  # Retry up to 5 times
@@ -44,7 +44,7 @@ class OpenAIClient(LLMClient):
                     response = self._client.chat.completions.create(
                         model=self.model_name,
                         messages=messages,
-                        tools=tools,
+                        tools=actions,
                         **self._model_kwargs
                     )
                 else:
