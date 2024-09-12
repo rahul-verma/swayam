@@ -20,7 +20,7 @@ from typing import List, Union
 from pydantic import BaseModel, Field
 from swayam import Template
 
-from .FrameInjectable import FixtureInjectableModel
+from .FrameInjectable import FrameInjectableModel
     
 class ActionModel(BaseModel):
-    Action: FixtureInjectableModel = Field(..., title="Action details", description="Action Details.")
+    Action: FrameInjectableModel = Field(..., title="Action details", description="Action Details.")
