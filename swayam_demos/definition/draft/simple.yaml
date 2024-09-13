@@ -1,1 +1,3 @@
-description: Contains plain text.
+
+singular_name: Response
+description: contains a response from an LLM for my trip planning.

@@ -83,14 +83,14 @@ An Injectable is:
 - a named object that has a well defined purpose in a sequence of steps.
 - discoverable using <InjectableType>.<InjectableName> syntax.
 - has an input-output protocol based on templates. A part of the protocol could be pre-defined by Swayam for certain injectables.
-- The callables encapsulated with injectables need to take only keyword arguments as determined by the input structure. In addition, they take a "invoker" argument. This caller object is passed from Swayam's execution flow. WIP.
+- The callables encapsulated with injectables need to take only keyword arguments as determined by the input template. In addition, they take a "invoker" argument. This caller object is passed from Swayam's execution flow. WIP.
 - The input to the callable as well as the output from the called is always as simple Python objects rather than the Template objects themselves. Think of them as Validation pass-throughs.
 
 
 ### Template
 
 - Used to define the input-output protocol in Injectables.
-- Various built-in structures are available.
+- Various built-in templates are available.
 - Can be defined in a project in /lib/inject/template.py (or a template package)
 
 ### Action
@@ -138,10 +138,10 @@ Here are the ideas:
 is the vault of scripts and drafts
 
 ### Draft
-An output from the prompt. Can be translated using a Translator. Can be structured or unstructured.
+An output from the prompt. Can be translated using a Translator. Can be templated or untemplated.
 
 ### Script
-A draft or sourced from anywhere else with a translator. Can be structured or unstructured.
+A draft or sourced from anywhere else with a translator. Can be templated or untemplated.
 
 ### Section
 Each unit of information in a Structured Script.

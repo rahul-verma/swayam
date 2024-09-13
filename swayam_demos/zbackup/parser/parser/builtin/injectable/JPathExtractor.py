@@ -43,5 +43,5 @@ JPathExtractor = partial(JsonContentParser,
     callable=extract_with_jpath,
     in_template=Template.JsonContentParser,
     out_template=Template.JsonContent,
-    content_structure=None
+    content_template=None
 )

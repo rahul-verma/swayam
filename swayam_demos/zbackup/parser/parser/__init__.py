@@ -28,7 +28,7 @@ class Parser(metaclass=ParserMeta):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
-        Input structure is assumed to be a string.
+        Input template is assumed to be a string.
 
         :param name: Name of the parser
         """
@@ -39,13 +39,13 @@ class Parser(metaclass=ParserMeta):
                                  allow_none_output=allow_none_output)
     
     @classmethod
-    def json(cls, name, *, callable, out_template, in_template=None, content_structure=None, allow_none_output=False):
+    def json(cls, name, *, callable, out_template, in_template=None, content_template=None, allow_none_output=False):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
         
-        Input structure is assumed to be a string.
+        Input template is assumed to be a string.
 
         :param name: Name of the parser
         """
-        return JsonContentParser(name, callable=callable, in_template=in_template, out_template=out_template, allow_none_output=allow_none_output, content_structure=content_structure)
+        return JsonContentParser(name, callable=callable, in_template=in_template, out_template=out_template, allow_none_output=allow_none_output, content_template=content_template)
         

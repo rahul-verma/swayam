@@ -1,7 +1,0 @@
-description: This content contains the entries for File information in a directory.
-
-template: FileInfo
-
-depends_on:
-  - another1
-  - another2

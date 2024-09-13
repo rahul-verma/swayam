@@ -25,7 +25,7 @@ class ParserNoMatchError(InjectableObjectError):
 class ParserIncompatibleInputStructureError(InjectableObjectError):
         
     def __init__(self, injectable, *, in_template):
-        super().__init__(injectable, error=f"Parser input structure must be either Template.{in_template} or a structure based on a Pydantic class DataModel that inherits from Template.{in_template}.model.")
+        super().__init__(injectable, error=f"Parser input template must be either Template.{in_template} or a template based on a Pydantic class DataModel that inherits from Template.{in_template}.model.")
             
 class TextParserIncompatibleInputStructureError(ParserIncompatibleInputStructureError):
     

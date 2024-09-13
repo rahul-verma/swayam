@@ -43,12 +43,12 @@ class ThoughtNamespace(Namespace):
                 thought = UserThought(**Thought(**thought_dict).as_dict())
             except Exception as e:
                 import traceback
-                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Thought.keys}]. Overall structure definition is {str(Thought.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Thought.keys}]. Overall template definition is {str(Thought.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
             
             thought.load(expression_ns_path=path, resolution=resolution, **self.fmt_kwargs)
             return thought
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(thought_dict)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(thought_dict)}")
         
         
         

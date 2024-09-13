@@ -33,7 +33,9 @@ class DraftNamespace(Namespace):
         from swayam import Template
         import yaml
         content = yaml.safe_load(content)
-        if isinstance(content, dict):
+        if content is None:
+            return Draft(name=name)
+        elif isinstance(content, dict):
             from swayam.inject.template.builtin.internal import Draft as DraftTemplate
             try:
                 return Draft(name=name, **DraftTemplate(**content).as_dict())
@@ -41,6 +43,6 @@ class DraftNamespace(Namespace):
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{DraftTemplate.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(content)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(content)}")
         
         

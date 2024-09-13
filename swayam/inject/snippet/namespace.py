@@ -39,6 +39,6 @@ class SnippetNamespace(Namespace):
             except Exception as e:
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [purpose, text]. Error: {e}")
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
         
         

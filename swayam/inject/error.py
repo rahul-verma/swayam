@@ -78,7 +78,7 @@ class InjectableOutputNotAStructureError(InjectableObjectError):
 class InjectableInvalidOutputStructureError(InjectableObjectError):
     
     def __init__(self, injectable, *, output):
-        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Template.{injectable.out_template.name}<<. Got an output structure of type >>{output.name}<< instead with data: {str(output.as_dict())}.")
+        super().__init__(injectable, error=f"Expected callable >>{injectable.callable}<< to return object of type >>Template.{injectable.out_template.name}<<. Got an output template of type >>{output.name}<< instead with data: {str(output.as_dict())}.")
         
 class InjectableDefinitionNotFoundError(InjectableObjectError):
     

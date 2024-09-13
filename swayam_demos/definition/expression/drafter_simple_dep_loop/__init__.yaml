@@ -1,0 +1,10 @@
+purpose: Basic Drafter Content Loop Demo
+
+prompts:
+  - draft:
+      definitions: 
+        - review
+      drafter: 
+        name: depends_simple_loop
+        args: 
+          iter_content: True

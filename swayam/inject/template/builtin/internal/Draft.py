@@ -22,8 +22,10 @@ from swayam import Template
 from .Frame import FrameModel
 
 class DraftModel(BaseModel):
-    description: str = Field(..., description="Description of the contents in this draft.")
-    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents.")
+    singular_name: str = Field(None, description="Singular name for each entry in contents.")
+    plural_name: str = Field(None, description="Plural name for all entries in contents. If not provided, it is taken from singular name by suffixing 's'.")
+    description: str = Field(None, description="Description of an entry in its content. If not provided, it is taken from Template description.")
+    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextConntent.")
     depends_on: Union[List[str], None] = Field(None, description="List of other drafts that this draft depends on.")
     
 Draft = Template.build("Draft", model=DraftModel)

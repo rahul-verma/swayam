@@ -1,0 +1,5 @@
+description: contains simple review comments for text
+
+depends_on:
+  - simple
+  - depends_events_loop

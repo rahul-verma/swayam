@@ -28,7 +28,7 @@ class Driver(metaclass=DriverMeta):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
-        :param name: Name of the structure
+        :param name: Name of the template
         """
         from .driver import StructuredDriver
         return StructuredDriver(name, callable=callable, out_template=out_template, in_template=in_template, allow_none_output=allow_none_output)

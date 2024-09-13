@@ -35,20 +35,20 @@ class TextContentParser(StructuredParser):
         
 class JsonContentParser(StructuredParser):
     
-    def __init__(self, name, *, callable, out_template, in_template=None,      content_structure=None, allow_none_output=False):
+    def __init__(self, name, *, callable, out_template, in_template=None,      content_template=None, allow_none_output=False):
         from swayam.inject.template.builtin import TextContent
         if in_template is None:
             in_template = Template.Empty
         super().__init__(name, callable=callable, in_template=in_template, out_template=out_template, allow_none_output=allow_none_output)
-        self.__content_structure = content_structure
+        self.__content_template = content_template
         
     @property
-    def content_structure(self):
-        return self.__content_structure
+    def content_template(self):
+        return self.__content_template
     
     def validate_input_content(self, **kwargs):
         content = kwargs["content"]
-        if self.__content_structure:
-            self.__content_structure(**content)
+        if self.__content_template:
+            self.__content_template(**content)
     
     

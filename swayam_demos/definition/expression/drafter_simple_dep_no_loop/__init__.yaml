@@ -1,0 +1,7 @@
+purpose: Basic Drafter Complete Content Demo
+
+prompts:
+  - draft:
+      definitions: 
+        - review
+      drafter: depends_simple

@@ -44,6 +44,6 @@ class PromptNamespace(Namespace):
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Prompt.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected string or dict, got {type(content)}")
         
         

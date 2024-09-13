@@ -1,0 +1,4 @@
+description: contains gift ideas for an event in Calendar.
+
+depends_on:
+  - events

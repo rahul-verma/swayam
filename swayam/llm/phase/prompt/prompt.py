@@ -33,7 +33,7 @@ class UserPrompt:
             self.__purpose = f"Prompt"
         else:
             self.__purpose = f"Prompt: {self.__purpose}"
-        self.__content = text
+        self.__content = text.replace("__NL__", "\n")
         self.__out_template = out_template
         self.__prologue = prologue
         self.__epilogue = epilogue
@@ -97,7 +97,6 @@ class UserPrompt:
         updated_content = self.__message["content"]
         if self.image:
             updated_content = updated_content[0]["text"]
-        #sanitized_text = updated_content.replace("\\", "\\\\")
         import re
         for key, value in self.vault.items():
             if value is None:

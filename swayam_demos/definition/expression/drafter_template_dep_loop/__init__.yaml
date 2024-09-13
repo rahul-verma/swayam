@@ -1,0 +1,10 @@
+purpose: Dependency on Templated Draft - No Loop
+
+prompts:
+  - draft:
+      definitions:
+        - gift_ideas
+      drafter: 
+        name: depends_events_loop
+        args:
+          iter_content: True

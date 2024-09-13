@@ -21,8 +21,9 @@ from pydantic import BaseModel, Field
 from swayam import Template
 
 class DraftDependencyModel(BaseModel):
-    dependency_description :str = Field(..., description="Description of the draft")
-    dependency_template:str = Field(..., description="Template of an entry in its contents")
-    dependency_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
+    draft_dependency_description :str = Field(..., description="Description of the draft")
+    draft_dependency_template:str = Field(..., description="Template of an entry in its contents")
+    draft_dependency_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
+    draft_dependency_writeup: str = Field("", description="Writeup of the dependency")
     
 DraftDependency = Template.build("DraftDependency", model=DraftDependencyModel) 

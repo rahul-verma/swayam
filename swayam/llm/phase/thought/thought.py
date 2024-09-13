@@ -163,7 +163,7 @@ class UserThought:
         
     def describe(self, level=0):
         """
-        Returns a string describing the structure of the Expression.
+        Returns a string describing the template of the Expression.
         Includes the length and a tree representation of the contained objects.
         """
         indent = " " * level

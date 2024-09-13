@@ -62,12 +62,16 @@ class Data(Injectable):
 # Define a base class `Structure` that inherits from `BaseModel`
 class DataTemplate(Injectable):
     
-    def __init__(self, name, model:BaseModel, plural=False, plural_key=None, base_model=None):
+    def __init__(self, name, description, model:BaseModel, plural=False, plural_key=None, base_model=None):
         super().__init__(type="Template", name=name)
+        self.__description = description
         self.__model = model
         self.__plural = plural
         self.__plural_key = plural_key
         self.__base_model = base_model
+        
+        if self.__description is None:
+            self.__description = self.name
         
     @property
     def model(self):
@@ -84,6 +88,10 @@ class DataTemplate(Injectable):
     @property
     def base_model(self):
         return self.__base_model
+    
+    @property
+    def description(self):
+        return self.__description
     
     @property
     def keys(self):

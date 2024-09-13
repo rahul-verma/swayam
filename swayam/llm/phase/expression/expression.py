@@ -45,7 +45,7 @@ class UserExpression:
         self.__narrative = None
         
         if self.__out_template and self.__actions:
-            raise ValueError("Cannot suggest both output structure and actions.")
+            raise ValueError("Cannot suggest both output template and actions.")
         
         from swayam.llm.enact.frame import Frame
         self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
@@ -119,7 +119,6 @@ class UserExpression:
     
     @drafter.setter
     def drafter(self, drafter):
-        print("set drafter")
         self.__drafter = drafter
     
     @property
@@ -183,7 +182,7 @@ class UserExpression:
         
     def describe(self, level=0):
         """
-        Returns a string describing the structure of the Expression.
+        Returns a string describing the template of the Expression.
         Includes the length and a tree representation of the contained objects.
         """
         indent = " " * level

@@ -1,0 +1,10 @@
+purpose: Drafter Content Loop with Two Deps
+
+prompts:
+  - draft:
+      definitions: 
+        - review
+      drafter: 
+        name: depends_dual_loop
+        args: 
+          iter_content: True

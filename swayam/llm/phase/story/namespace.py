@@ -44,12 +44,12 @@ class StoryNamespace(Namespace):
                 story = UserStory(**Story(**story_dict).as_dict())
             except Exception as e:
                 import traceback
-                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Story.keys}]. Overall structure definition is {str(Story.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Story.keys}]. Overall template definition is {str(Story.definition)}. Error: {e}. Check: {traceback.format_exc()} ")
             
             story.load(thought_ns_path=path, resolution=resolution, **self.fmt_kwargs)
             return story
         else:
-            raise DefinitionIsInvalidError(name, path=path, resolution=resolution, error=f"Expected dict, got {type(story_dict)}")
+            raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(story_dict)}")
         
         
         

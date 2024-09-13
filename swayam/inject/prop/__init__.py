@@ -28,7 +28,7 @@ class Prop(metaclass=PropMeta):
         """
         Create a dynamic Pydantic BaseModel class inheriting from a given base class.
 
-        :param name: Name of the structure
+        :param name: Name of the template
         """
         from .prop import StructuredProp
         return StructuredProp(name, callable=callable, in_template=in_template)

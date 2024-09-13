@@ -71,7 +71,7 @@ Before generating any output, work through the following reasoning and analysis 
 3. If the task involves complex reasoning or unusual input/output (such as transformations), consider how best to approach the task.
 4. Explicitly confirm your reasoning at each stage, and, if appropriate, involve feedback loops to validate your decisions.
 5. Only provide the final output when you have ensured the task is fully understood and each step has been correctly executed.
-6. When a response structure or tool call is provided, ensure that the output is in the correct format and that the tool call is correct. Leave the values as placeholders if necessary but never hallucinate.
+6. When a response template or tool call is provided, ensure that the output is in the correct format and that the tool call is correct. Leave the values as placeholders if necessary but never hallucinate.
 
 You are now being connected with a human.
 """

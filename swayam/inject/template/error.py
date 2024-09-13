@@ -20,7 +20,7 @@ from swayam.inject.error import *
 class TemplateValidationError(InjectableObjectError):
     
     def __init__(self, template, *, provided_input, error):
-        super().__init__(template, error=f"Invalid input data for creating structure. Expected: {template.definition}. Provided input: {provided_input}. Error: {error}")
+        super().__init__(template, error=f"Invalid input data for creating template. Expected: {template.definition}. Provided input: {provided_input}. Error: {error}")
         
 class DataAttributeDoesNotExistError(InjectableObjectError):
     

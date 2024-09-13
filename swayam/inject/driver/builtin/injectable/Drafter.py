@@ -15,39 +15,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from swayam.inject.driver import Driver
 from swayam import Action
+from pydantic import Field, BaseModel
 
 import os
 from swayam import Driver, Template
 from swayam.inject.template.builtin.internal.DraftDependency import DraftDependency
-from swayam.inject.template.builtin.internal.Injectable import Injectable
+from swayam.inject.template.builtin.internal.Injectable import InjectableModel
 
-def draft_loop(*, invoker, name, args=None):
+def draft_loop(*, invoker, name, iter_content=False):
     from swayam import Action
     from swayam import Draft
     from swayam.llm.phase.expression.drafter import Drafter as DraftWriter
     draft = getattr(Draft, name)
     drafter = DraftWriter(draft_info=draft)
     invoker.phase.drafter = drafter
-
-    if draft.dependencies:
+    if not draft.dependencies:
+        yield DraftDependency(
+                            draft_dependency_description="",
+                            draft_dependency_template="",
+                            draft_dependency_content=""
+                        )
+    else:
         for dependency in draft.dependencies:
             contents = dependency.load()
-            yield DraftDependency(
-                dependency_description=dependency.description,
-                dependency_template=dependency.template.definition,
-                dependency_content=contents
-            )
-    else:
-        yield DraftDependency(
-                dependency_description="",
-                dependency_template="",
-                dependency_content=""
-            )
+            if not iter_content:
+                yield DraftDependency(
+                    draft_dependency_description=dependency.description,
+                    draft_dependency_template=json.dumps(dependency.template.definition),
+                    draft_dependency_content=json.dumps(contents),
+                    draft_dependency_writeup=dependency.plural_writeup(contents)
+                )    
+            else:
+                for content in contents:
+                    yield DraftDependency(
+                        draft_dependency_description=dependency.description,
+                        draft_dependency_template=json.dumps(dependency.template.definition),
+                        draft_dependency_content=json.dumps(content),
+                        draft_dependency_writeup=dependency.singular_writeup(content)
+                    )    
+
+class DraftLoopInjectable(BaseModel):
+    iter_content: bool  = Field(False)
+    name: str
+    
+DraftLoop = Template.build("DraftLoop", model = DraftLoopInjectable)
 
 Drafter = Driver.build("Drafter", 
                         callable=draft_loop,
-                        in_template=Injectable, 
+                        in_template=DraftLoop, 
                         out_template=DraftDependency)
 
