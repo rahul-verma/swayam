@@ -1,12 +1,12 @@
 prologue:
-	- Prop:
+  - Prop:
       name: ArgProp
       args: 
         value: "Prompt's Own Level"
     
 epilogue:
-  - Prop:
-      name: ArgPropOnlyTeardown
+  - Action:
+      name: ArgAction
       args: 
         value: "Prompt's Own Level"
 

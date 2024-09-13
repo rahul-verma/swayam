@@ -22,7 +22,7 @@ epilogue_prompt:
       args: 
         value: "Prompt Level"
 
-purpose: Expression1
+purpose: Expression2
 
 prompts:
   - prompt1
