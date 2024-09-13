@@ -61,7 +61,6 @@ class ExpressionEnactor(BaseLLMEnactor):
             if isinstance(prompts, UserPrompt):
                 prompts = [prompts]
             else:
-                prompts.vault = expression.vault
                 prompts = prompts() # Lazy loading
             for prompt in prompts:
                 log_debug("Processing prompt...")

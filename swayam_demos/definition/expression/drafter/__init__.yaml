@@ -1,7 +1,8 @@
 purpose: Basic Expression Demo
 
 prompts:
-  - trip_command
-  - trip_query
-
-draft: simple
+  - draft:
+      definitions: 
+        - trip_command
+        - trip_query
+      drafter: simple

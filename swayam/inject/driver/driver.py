@@ -52,10 +52,19 @@ class StructuredDriver(StructuredInjectableWithCallable):
         except TypeError:
             raise DriverCallableNotIterableError(self)
  
-    def __call__(self, vault=None, **kwargs):
+    def __call__(self, phase=None, **kwargs):
         class InjectableInvoker:
-            def __init__(self, name, vault):
+            def __init__(self, name, phase):
                 self.name = name
-                self.vault = vault
-        output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, vault=vault), **kwargs)
+                self.__phase = phase
+                
+            @property
+            def vault(self):
+                return self.__phase.vault
+            
+            @property
+            def phase(self):
+                return self.__phase
+            
+        output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, phase=phase), **kwargs)
         return iterator(self, output)

@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,9 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirTextFileContents import *
-from .injectable.DirFiles import *
-from .injectable.Until import *
-from .injectable.Drafter import *
+from typing import List, Union
 
+from pydantic import BaseModel, Field
+from swayam import Template
 
+class InjectableModel(BaseModel):
+    name: str = Field(..., title="Name of the injectable", description="Name of the injectable to be called.")
+    args: dict = Field(dict(), title="Keyword Arguments", description="Keyword Arguments to be passed to injectable")
+    
+Injectable = Template.build("Injectable", model=InjectableModel)
+    

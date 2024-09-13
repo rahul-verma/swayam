@@ -1,83 +1,46 @@
-{
-    "description": "This content contains the entries for different events in calendar.",
-    "template": {
-        "properties": {
-            "event_name": {
-                "description": "Name of the event",
-                "type": "string"
-            },
-            "event_date": {
-                "description": "Date on which the event takes place.",
-                "type": "string"
-            },
-            "event_participants": {
-                "description": "Names of participants.",
-                "items": {
-                    "type": "string"
-                },
-                "type": "array"
-            },
-            "event_city": {
-                "description": "City where the event takes place.",
-                "items": {
-                    "type": "string"
-                },
-                "type": "array"
-            }
-        },
-        "required": [
-            "event_name",
-            "event_date",
-            "event_participants",
-            "event_city"
+[
+    {
+        "event_name": "Science Fair",
+        "event_date": "Friday",
+        "event_participants": [
+            "Alice",
+            "Bob"
         ],
-        "title": "CalendarEventModel",
-        "type": "object"
+        "event_city": []
     },
-    "contents": [
-        {
-            "event_name": "Science Fair",
-            "event_date": "Friday",
-            "event_participants": [
-                "Alice",
-                "Bob"
-            ],
-            "event_city": []
-        },
-        {
-            "event_name": "ATD",
-            "event_date": "",
-            "event_participants": [
-                "Pepe",
-                "Rahul"
-            ],
-            "event_city": []
-        },
-        {
-            "event_name": "Event",
-            "event_date": "Friday",
-            "event_participants": [
-                "Bob"
-            ],
-            "event_city": []
-        },
-        {
-            "event_name": "Event",
-            "event_date": "Friday",
-            "event_participants": [
-                "Bob"
-            ],
-            "event_city": []
-        },
-        {
-            "event_name": "ATD",
-            "event_date": "",
-            "event_participants": [
-                "A",
-                "T",
-                "D"
-            ],
-            "event_city": []
-        }
-    ]
-}
+    {
+        "event_name": "ATD",
+        "event_date": "",
+        "event_participants": [
+            "Pepe",
+            "Rahul"
+        ],
+        "event_city": []
+    },
+    {
+        "event_name": "Event",
+        "event_date": "Friday",
+        "event_participants": [
+            "Bob"
+        ],
+        "event_city": []
+    },
+    {
+        "event_name": "Event",
+        "event_date": "Friday",
+        "event_participants": [
+            "Bob"
+        ],
+        "event_city": []
+    },
+    {
+        "event_name": "ATD",
+        "event_date": "",
+        "event_participants": [
+            "A",
+            "T",
+            "D"
+        ],
+        "event_city": []
+    }
+]

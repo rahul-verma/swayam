@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,9 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirTextFileContents import *
-from .injectable.DirFiles import *
-from .injectable.Until import *
-from .injectable.Drafter import *
+from typing import List
 
+from pydantic import BaseModel, Field
+from swayam import Template
 
+class DraftDependencyModel(BaseModel):
+    dependency_description :str = Field(..., description="Description of the draft")
+    dependency_template:str = Field(..., description="Template of an entry in its contents")
+    dependency_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
+    
+DraftDependency = Template.build("DraftDependency", model=DraftDependencyModel) 

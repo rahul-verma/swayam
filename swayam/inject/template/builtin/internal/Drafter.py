@@ -15,13 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Union
-
+from typing import Union, List
 from pydantic import BaseModel, Field
-from swayam import Template
-from .Injectable import *
 
-class FrameInjectableModel(InjectableModel):
-    name: str = Field(..., title="Name of the injectable", description="Name of the injectable to be called.")
-    args: dict = Field(dict(), title="Keyword Arguments", description="Keyword Arguments to be passed to injectable")
+from swayam import Template
+
+from .FrameInjectable import InjectableModel
     
+class DrafterDefinitionModel(BaseModel):
+    definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
+    drafter: Union[InjectableModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
+    
+class DrafterModel(BaseModel):
+    draft: DrafterDefinitionModel = Field(..., title="Draft Definition", description="Draft dictionary.")

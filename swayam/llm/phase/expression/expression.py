@@ -20,67 +20,6 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(vault, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
-    from swayam.llm.phase.prompt.namespace import PromptNamespace
-    for out_dict in driver(vault=vault, **driver_kwargs):
-        temp_dict = {}
-        temp_dict.update(parent_fmt_kwargs)
-        temp_dict.update(out_dict)
-        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
-        for prompt_name in prompt_names:
-            prompt = getattr(prompt_namespace, prompt_name)
-            if image:
-                prompt.suggest_image(image)
-            if template:
-                prompt.suggest_out_template(template)
-            if actions:
-                prompt.suggest_actions(actions)
-            yield prompt
-
-class PromptDriver:
-    
-    def __init__(self, prompt_dict, *, prompt_ns_path, resolution, parent_fmt_kwargs):
-        self.__prompt_ns_path = prompt_ns_path
-        self.__resolution = resolution
-        self.__parent_fmt_kwargs = parent_fmt_kwargs
-
-        self.__prompt_names = prompt_dict["definitions"]
-        from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
-        from swayam import Driver
-        if isinstance(prompt_dict["driver"], dict):
-            driver_data = DriverTemplate(driver=prompt_dict["driver"])        
-            self.__driver = getattr(Driver, driver_data.driver.name)
-            self.__driver_kwargs = driver_data.driver.args
-        else:
-            self.__driver = getattr(Driver, prompt_dict["driver"])
-            self.__driver_kwargs = dict()
-        self.__driver = getattr(Driver, driver_data.driver.name)
-        self.__driver_kwargs = driver_data.driver.args
-        self.__image = None
-        self.__out_template = None
-        self.__actions = None
-        
-    @property
-    def vault(self):
-        return self.__vault
-    
-    @vault.setter
-    def vault(self, vault):
-        self.__vault = vault
-        
-    def suggest_image(self, image):
-        self.__image = image
-            
-    def suggest_out_template(self, template_name):
-        self.__out_template = template_name
-            
-    def suggest_actions(self, action_names):
-        self.__actions = action_names
-    
-    def __call__(self):
-        prompt_loader = iterator(self.__vault, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)
-        return prompt_loader
-
 class UserExpression:
     
     def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, draft=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
@@ -108,14 +47,6 @@ class UserExpression:
         if self.__out_template and self.__actions:
             raise ValueError("Cannot suggest both output structure and actions.")
         
-        if draft:
-            from swayam import Draft
-            from .drafter import Drafter
-            self.__draft = getattr(Draft, draft)
-            self.__drafter = Drafter(draft_info=self.__draft)
-        else:
-            self.__drafter = None
-        
         from swayam.llm.enact.frame import Frame
         self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
         self.__prompt_frame = Frame(phase=self, prologue=self.__prologue_prompt, epilogue=self.__epilogue_prompt)
@@ -126,9 +57,22 @@ class UserExpression:
             
         for prompt_name_or_dict in self.__prompt_names_or_dicts:
             if isinstance(prompt_name_or_dict, dict):
+                from .repeater import PromptDriver
+                prompt_dict = None
+                primary_key = None
+                if "repeat" in prompt_name_or_dict:
+                    prompt_dict = prompt_name_or_dict["repeat"]
+                    primary_key = "repeat"
+                elif "draft" in prompt_name_or_dict:
+                    prompt_dict = prompt_name_or_dict["draft"]
+                    primary_key = "draft"
+                else:
+                    raise ValueError("Prompt dictionary must have a 'repeat' or 'draft' key.")
                 # Lazy loader of prompts
                 prompt_driver = PromptDriver(
-                    prompt_name_or_dict["repeat"],
+                    self,
+                    prompt_dict,
+                    primary_key=primary_key,
                     prompt_ns_path=prompt_ns_path,
                     resolution=resolution,
                     parent_fmt_kwargs=fmt_kwargs
@@ -172,6 +116,11 @@ class UserExpression:
     @property
     def drafter(self):
         return self.__drafter
+    
+    @drafter.setter
+    def drafter(self, drafter):
+        print("set drafter")
+        self.__drafter = drafter
     
     @property
     def prompt_frame(self):

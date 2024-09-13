@@ -22,17 +22,9 @@ class Drafter:
     
     def __init__(self, *, draft_info):
         self.__draft_info = draft_info
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
-        self.__file_path = os.path.join(folio_draft_dir, self.__draft_info.file_name)
+        self.__file_path = draft_info.file_path
         with open(self.__file_path, "w") as file:
-            content = {
-                "description": self.__draft_info.description,
-                "template": self.__draft_info.template.definition,
-                "contents": []
-            }
-            file.write(json.dumps(content, indent=4))
+            file.write(json.dumps([], indent=4))
             
     def draft(self, content):
         existing_content = None
@@ -43,9 +35,9 @@ class Drafter:
         with open(self.__file_path, "w") as file:
             if isinstance(content, str):
                 content = {"content": content}
-                updated_content["contents"].append(content)
+                updated_content.append(content)
             elif isinstance(content, dict):
-                updated_content["contents"].append(content)
+                updated_content.append(content)
             else:
-                updated_content["contents"].extend(content)
+                updated_content.extend(content)
             file.write(json.dumps(updated_content, indent=4))

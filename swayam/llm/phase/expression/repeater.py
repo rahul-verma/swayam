@@ -1,0 +1,84 @@
+
+# This file is a part of Swayam
+# Copyright 2015-2024 Rahul Verma
+
+# Website: www.RahulVerma.net
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#   http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
+    from swayam.llm.phase.prompt.namespace import PromptNamespace
+    for out_dict in driver(phase=expression, **driver_kwargs):
+        temp_dict = {}
+        temp_dict.update(parent_fmt_kwargs)
+        temp_dict.update(out_dict)
+        prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
+        for prompt_name in prompt_names:
+            prompt = getattr(prompt_namespace, prompt_name)
+            prompt.vault = expression.narrative.vault
+            if image:
+                prompt.suggest_image(image)
+            if template:
+                prompt.suggest_out_template(template)
+            if actions:
+                prompt.suggest_actions(actions)
+            yield prompt
+
+class PromptDriver:
+    
+    def __init__(self, expression, prompt_dict, *, primary_key, prompt_ns_path, resolution, parent_fmt_kwargs):
+        self.__expression = expression
+        self.__primary_key = primary_key
+        self.__prompt_ns_path = prompt_ns_path
+        self.__resolution = resolution
+        self.__parent_fmt_kwargs = parent_fmt_kwargs
+
+        self.__prompt_names = prompt_dict["definitions"]
+        from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
+        from swayam import Driver
+        
+        if self.__primary_key == "repeat":
+            if isinstance(prompt_dict["driver"], dict):
+                driver_data = DriverTemplate(driver=prompt_dict["driver"])        
+                self.__driver = getattr(Driver, driver_data.driver.name)
+                self.__driver_kwargs = driver_data.driver.args
+            else:
+                self.__driver = getattr(Driver, prompt_dict["driver"])
+                self.__driver_kwargs = dict()
+        else:
+            # It is "draft"
+            if isinstance(prompt_dict["drafter"], dict):
+                driver_data = DriverTemplate(driver=prompt_dict["drafter"])        
+                self.__driver = getattr(Driver, "Drafter")
+                self.__driver_kwargs = driver_data.driver.args
+                self.__driver_kwargs["name"] = prompt_dict["drafter"]["name"]
+            else:
+                self.__driver = getattr(Driver, "Drafter")
+                self.__driver_kwargs = {"name": prompt_dict["drafter"]} 
+        self.__image = None
+        self.__out_template = None
+        self.__actions = None
+        
+    def suggest_image(self, image):
+        self.__image = image
+            
+    def suggest_out_template(self, template_name):
+        self.__out_template = template_name
+            
+    def suggest_actions(self, action_names):
+        self.__actions = action_names
+    
+    def __call__(self):
+        prompt_loader = iterator(self.__expression, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)
+        return prompt_loader

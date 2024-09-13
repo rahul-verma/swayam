@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
     
-import json
+import os, json
 
 from copy import deepcopy
 from typing import Any
@@ -29,6 +29,10 @@ class Draft:
     def __init__(self, *, name, description, template, depends_on=None) -> None:
         self.__name = name
         self.__file_name = name + ".json"
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
+        self.__file_path = os.path.join(folio_draft_dir, self.file_name)
         self.__description = description
         self.__template_name = template
         if self.__template_name is None:
@@ -52,6 +56,10 @@ class Draft:
     @property
     def file_name(self):
         return self.__file_name
+    
+    @property
+    def file_path(self):
+        return self.__file_path
                 
     @property
     def description(self):
@@ -71,5 +79,8 @@ class Draft:
     @property
     def dependencies(self):
         return self.__dependencies
-        
+    
+    def load(self):
+        with open(self.__file_path, "r") as file:
+            return json.loads(file.read())
         
