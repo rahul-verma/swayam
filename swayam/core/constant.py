@@ -25,20 +25,23 @@ class SwayamOption(Enum):
     EPIC_DIR = auto()
     '''Root directory of the Epic.'''
         
-    SNIPPET_DIR = auto()
+    DEFINITION_SNIPPET_DIR = auto()
     '''Root Directory for Snippet Files'''
         
-    PROMPT_DIR = auto()
+    DEFINITION_PROMPT_DIR = auto()
     '''Root Directory for Prompt Files'''
     
-    EXPRESSION_DIR = auto()
+    DEFINITION_EXPRESSION_DIR = auto()
     '''Root Directory for Expression Files'''
     
-    THOUGHT_DIR = auto()
+    DEFINITION_THOUGHT_DIR = auto()
     '''Root Directory for Thought Files'''
     
-    STORY_DIR = auto()
+    DEFINITION_STORY_DIR = auto()
     '''Root Directory for Plan Files'''
+    
+    DEFINITION_DRAFT_DIR = auto()
+    '''Root Directory for Draft Definition Files'''
     
     FOLIO_DIR = auto()
     '''Root Directory for Folio Files'''

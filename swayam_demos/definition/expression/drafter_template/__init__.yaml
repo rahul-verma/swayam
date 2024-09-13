@@ -1,0 +1,10 @@
+purpose: Extract Calendar Events
+prompts:
+  - event1
+  - event2
+  - event3
+  - event4_multiple_events
+
+out_template: CalendarEvent
+
+draft: events

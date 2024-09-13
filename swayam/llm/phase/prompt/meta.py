@@ -28,5 +28,5 @@ class PromptMeta(NamespaceMeta):
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
         from .namespace import PromptNamespace
-        cls.load_root_namespace(SwayamOption.PROMPT_DIR, PromptNamespace)
+        cls.load_root_namespace(SwayamOption.DEFINITION_PROMPT_DIR, PromptNamespace)
         return getattr(cls.root, name)

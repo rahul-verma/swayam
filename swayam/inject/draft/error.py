@@ -14,17 +14,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import os
-import importlib
-
-from swayam.namespace.meta import NamespaceMeta
-
-
-class ExpressionMeta(NamespaceMeta):
-    
-    def __getattr__(cls, name):
-        from swayam.core.constant import SwayamOption
-        from .namespace import ExpressionNamespace
-        cls.load_root_namespace(SwayamOption.DEFINITION_EXPRESSION_DIR, ExpressionNamespace)
-        return getattr(cls.root, name)

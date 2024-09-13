@@ -29,7 +29,8 @@ class ExpressionModel(ExpressionFrameModel):
     persona: str = Field(None, description="Persona of the expression.")
     directive: str = Field(None, description="Directive text for the narrative this expression builds. Extends previous directives if any.")
     image: Union[str,None] = Field(None, description="Full or Project Relative Path of the image file. Used for the first prompt in the expression and hence becomes a part of the narrative.", examples=["/home/user/abc.png", "user/file.jpeg"])
-    out_template: Union[str, None] = Field(None, description="Common output template for all prompts that don't have an output structure of their own.")
+    out_template: Union[str, None] = Field(None, description="Common output template for all prompts that don't have an output structure of their own")
+    draft: Union[str, None] = Field(None, description="Draft name.")
     actions: List[str] = Field([],description="List of actions to be used in the prompts that don't have an action list of their own.")
     
 Expression = Template.build("Expression", model=ExpressionModel)

@@ -26,5 +26,5 @@ class ThoughtMeta(NamespaceMeta):
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
         from .namespace import ThoughtNamespace
-        cls.load_root_namespace(SwayamOption.THOUGHT_DIR, ThoughtNamespace)
+        cls.load_root_namespace(SwayamOption.DEFINITION_THOUGHT_DIR, ThoughtNamespace)
         return getattr(cls.root, name)

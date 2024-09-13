@@ -15,16 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import importlib
+from typing import Union, List
+from pydantic import BaseModel, Field
 
-from swayam.namespace.meta import NamespaceMeta
+from swayam import Template
+from .Frame import FrameModel
 
-
-class ExpressionMeta(NamespaceMeta):
+class DraftModel(BaseModel):
+    description: str = Field(..., description="Description of the contents in this draft.")
+    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents.")
+    depends_on: Union[List[str], None] = Field(None, description="List of other drafts that this draft depends on.")
     
-    def __getattr__(cls, name):
-        from swayam.core.constant import SwayamOption
-        from .namespace import ExpressionNamespace
-        cls.load_root_namespace(SwayamOption.DEFINITION_EXPRESSION_DIR, ExpressionNamespace)
-        return getattr(cls.root, name)
+Draft = Template.build("Draft", model=DraftModel)

@@ -78,6 +78,17 @@ class PromptEnactor(BaseLLMEnactor):
         
         narrative.vault.set("response_content", llm_response.as_dict()["content"], phase=prompt)
         
+        if prompt.drafter:
+            response = prompt.vault["response_content"]
+            if not prompt.out_template:
+                prompt.drafter.draft(response)
+            else:
+                content = json.loads(response)
+                if prompt.out_template.is_plural:
+                    prompt.drafter.draft(content[prompt.out_template.plural_key])
+                else:
+                    prompt.drafter.draft(content)
+        
         action_results = {}
 
         if llm_response.message.tool_calls:

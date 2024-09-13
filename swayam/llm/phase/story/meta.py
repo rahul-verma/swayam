@@ -26,5 +26,5 @@ class StoryMeta(NamespaceMeta):
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
         from .namespace import StoryNamespace
-        cls.load_root_namespace(SwayamOption.STORY_DIR, StoryNamespace)
+        cls.load_root_namespace(SwayamOption.DEFINITION_STORY_DIR, StoryNamespace)
         return getattr(cls.root, name)

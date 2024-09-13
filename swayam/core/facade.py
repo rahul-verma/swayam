@@ -31,11 +31,12 @@ class _SwayamSingleton:
         from tarkash import Tarkash
         reg_config = {
             "EPIC_DIR": ("", "project_relative_path"),
-            "SNIPPET_DIR": ("definition/snippet", "project_relative_path"),
-            "PROMPT_DIR": ("definition/prompt", "project_relative_path"),
-            "EXPRESSION_DIR": ("definition/expression", "project_relative_path"),
-            "THOUGHT_DIR": ("definition/thought", "project_relative_path"),
-            "STORY_DIR": ("definition/story", "project_relative_path"),
+            "DEFINITION_SNIPPET_DIR": ("definition/snippet", "project_relative_path"),
+            "DEFINITION_PROMPT_DIR": ("definition/prompt", "project_relative_path"),
+            "DEFINITION_EXPRESSION_DIR": ("definition/expression", "project_relative_path"),
+            "DEFINITION_THOUGHT_DIR": ("definition/thought", "project_relative_path"),
+            "DEFINITION_STORY_DIR": ("definition/story", "project_relative_path"),
+            "DEFINITION_DRAFT_DIR": ("definition/draft", "project_relative_path"),
             "FOLIO_DIR": (folio_dir, "absolute_path"),
             "FOLIO_NARRATION_DIR": (os.path.join(folio_dir, "narration"), "absolute_path"),
             "FOLIO_DRAFT_DIR": (os.path.join(folio_dir, "draft"), "absolute_path"),

@@ -38,3 +38,4 @@ from swayam.inject.driver import Driver
 from swayam.inject.cue import Cue
 from swayam.inject.snippet import Snippet
 from swayam.inject.prop import Prop
+from swayam.inject.draft import Draft

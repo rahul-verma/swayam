@@ -18,13 +18,15 @@
 import os
 import importlib
 
+from .namespace import *
 from swayam.namespace.meta import NamespaceMeta
-
-
-class ExpressionMeta(NamespaceMeta):
+from swayam.namespace.error import DefinitionNotFoundError
+from swayam.core.caller import get_caller_module_file_location
+    
+class DraftMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
-        from .namespace import ExpressionNamespace
-        cls.load_root_namespace(SwayamOption.DEFINITION_EXPRESSION_DIR, ExpressionNamespace)
+        from .namespace import DraftNamespace
+        cls.load_root_namespace(SwayamOption.DEFINITION_DRAFT_DIR, DraftNamespace)
         return getattr(cls.root, name)

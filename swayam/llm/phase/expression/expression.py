@@ -83,7 +83,7 @@ class PromptDriver:
 
 class UserExpression:
     
-    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
+    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, draft=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
         self.__prompt_names_or_dicts = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
@@ -108,6 +108,14 @@ class UserExpression:
         if self.__out_template and self.__actions:
             raise ValueError("Cannot suggest both output structure and actions.")
         
+        if draft:
+            from swayam import Draft
+            from .drafter import Drafter
+            self.__draft = getattr(Draft, draft)
+            self.__drafter = Drafter(draft_info=self.__draft)
+        else:
+            self.__drafter = None
+        
         from swayam.llm.enact.frame import Frame
         self.__frame = Frame(phase=self, prologue=self.__prologue, epilogue=self.__epilogue)
         self.__prompt_frame = Frame(phase=self, prologue=self.__prologue_prompt, epilogue=self.__epilogue_prompt)
@@ -131,10 +139,10 @@ class UserExpression:
                 prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**fmt_kwargs) 
                 self.__prompts.append(getattr(prompt_namespace, prompt_name))
 
-        if self.__out_template:
-            self.__out_template = getattr(Template, self.__out_template)
+        # if self.__out_template:
+        #     self.__out_template = getattr(Template, self.__out_template)
         self.__make_image_suggestions()
-        self.__make_structure_suggestions()
+        self.__make_template_suggestions()
         self.__make_action_suggestions()
 
     def __make_image_suggestions(self):
@@ -142,10 +150,10 @@ class UserExpression:
         if self.__image:
             self.__prompts[0].suggest_image(self.__image)
         
-    def __make_structure_suggestions(self):
+    def __make_template_suggestions(self):
         # Actions and response format are suggested to all prompts.            
         for prompt in self.__prompts:
-            if self.__image:
+            if self.__out_template:
                 prompt.suggest_out_template(self.__out_template)
                 
     def __make_action_suggestions(self):
@@ -160,6 +168,10 @@ class UserExpression:
     @property
     def frame(self):
         return self.__frame
+    
+    @property
+    def drafter(self):
+        return self.__drafter
     
     @property
     def prompt_frame(self):

@@ -137,6 +137,14 @@ class UserPrompt:
     @property
     def purpose(self):
         return self.__purpose
+    
+    @property
+    def drafter(self):
+        return self.__drafter
+    
+    @drafter.setter
+    def drafter(self, drafter):
+        self.__drafter = drafter
             
     @property
     def out_template(self):

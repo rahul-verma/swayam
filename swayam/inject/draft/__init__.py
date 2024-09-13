@@ -15,16 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import importlib
+from .meta import DraftMeta
 
-from swayam.namespace.meta import NamespaceMeta
-
-
-class ExpressionMeta(NamespaceMeta):
-    
-    def __getattr__(cls, name):
-        from swayam.core.constant import SwayamOption
-        from .namespace import ExpressionNamespace
-        cls.load_root_namespace(SwayamOption.DEFINITION_EXPRESSION_DIR, ExpressionNamespace)
-        return getattr(cls.root, name)
+class Draft(metaclass=DraftMeta):
+    pass

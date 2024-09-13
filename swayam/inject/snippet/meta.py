@@ -29,7 +29,7 @@ class SnippetMeta(NamespaceMeta):
         from swayam.core.constant import SwayamOption
         from .namespace import SnippetNamespace
         try:
-            cls.load_root_namespace(SwayamOption.SNIPPET_DIR, SnippetNamespace)
+            cls.load_root_namespace(SwayamOption.DEFINITION_SNIPPET_DIR, SnippetNamespace)
             return getattr(cls.root, name)
         except DefinitionNotFoundError as e:
             from swayam.inject import Injectable

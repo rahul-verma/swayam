@@ -67,6 +67,7 @@ class ExpressionEnactor(BaseLLMEnactor):
                 log_debug("Processing prompt...")
                 # For dynamic variables in Narrative
                 prompt.vault = narrative.vault
+                prompt.drafter = expression.drafter
                 prompt.dynamic_format()
                 expression.prompt_frame.prologue()
                 if prompt.is_standalone:
