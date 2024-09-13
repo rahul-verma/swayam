@@ -280,14 +280,14 @@ class HtmlRecorder(Reporter):
         
         provided_actions = prompt.action_dict
         if provided_actions:
-            tool_content_for_main_page = {
+            action_content_for_main_page = {
                 "heading": "Provided Actions",
                 "content": {}
             }
-            for tool in provided_actions.values():
-                tool_content_for_main_page["content"][tool.name] = tool.definition
+            for action in provided_actions.values():
+                action_content_for_main_page["content"][action.name] = action.definition
                 
-            prompt_content_node.append(tool_content_for_main_page)
+            prompt_content_node.append(action_content_for_main_page)
 
         self.__update_report()
         log_debug("Finished: Reporting Prompt.")
@@ -318,19 +318,19 @@ class HtmlRecorder(Reporter):
                         })
             
         # Appending non-LLM expression requirements
-        if "tool_calls" in response and response["tool_calls"]:
-            tool_response_for_main_page = {
+        if "action_calls" in response and response["action_calls"]:
+            action_response_for_main_page = {
                 "heading": "Action Calls Suggested by LLM",
                 "content": {}
             }
 
-            for tool in response["tool_calls"]:
-                tool_response_for_main_page["content"][tool["id"]] = {
-                    "name": tool["function"]["name"],
-                    "arguments": json.loads(tool["function"]["arguments"])
+            for action in response["action_calls"]:
+                action_response_for_main_page["content"][action["id"]] = {
+                    "name": action["function"]["name"],
+                    "arguments": json.loads(action["function"]["arguments"])
                 }
                 
-            self.__get_prompt_content_node().append(tool_response_for_main_page)           
+            self.__get_prompt_content_node().append(action_response_for_main_page)           
     
         self.__update_report()
         log_debug("Finished: Reporting Response.")
@@ -338,7 +338,7 @@ class HtmlRecorder(Reporter):
 
     def record_action_response(self, response) -> None:
         """
-        Reports the tool response.
+        Reports the action response.
 
         Args:
             message (dict): ActionResponse object

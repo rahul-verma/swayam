@@ -45,10 +45,15 @@ class PromptDriver:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__prompt_names = prompt_dict["definitions"]
-        from swayam.inject.template.builtin.internal import Driver as DriverTemplate
-        driver_data = DriverTemplate(driver=prompt_dict["driver"])
-        
+        from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
         from swayam import Driver
+        if isinstance(prompt_dict["driver"], dict):
+            driver_data = DriverTemplate(driver=prompt_dict["driver"])        
+            self.__driver = getattr(Driver, driver_data.driver.name)
+            self.__driver_kwargs = driver_data.driver.args
+        else:
+            self.__driver = getattr(Driver, prompt_dict["driver"])
+            self.__driver_kwargs = dict()
         self.__driver = getattr(Driver, driver_data.driver.name)
         self.__driver_kwargs = driver_data.driver.args
         self.__image = None
@@ -130,7 +135,7 @@ class UserExpression:
             self.__out_template = getattr(Template, self.__out_template)
         self.__make_image_suggestions()
         self.__make_structure_suggestions()
-        self.__make_tool_suggestions()
+        self.__make_action_suggestions()
 
     def __make_image_suggestions(self):
         # the image is appended only to the first prompt.
@@ -143,7 +148,7 @@ class UserExpression:
             if self.__image:
                 prompt.suggest_out_template(self.__out_template)
                 
-    def __make_tool_suggestions(self):
+    def __make_action_suggestions(self):
         # Actions and response format are suggested to all prompts.            
         for prompt in self.__prompts:
             if self.__actions:

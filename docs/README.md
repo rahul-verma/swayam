@@ -25,7 +25,7 @@ Narrative is passed from narrator to the enactor and the primary vault remains s
 - Prompt can be a simple text string.
 - For more involved prompting, one has to create a Prompt Definition.
 - A Prompt is a part of an Expression and continues the current Conversation in the Narrative.
-- Currently a Prompt Def supports defining image, purpose, output structure and tools. In addition, it supports resources, before and after constructs.
+- Currently a Prompt Def supports defining image, purpose, prologue, epilogue, template and actions.
 
 ### Expression
 

@@ -1,5 +1,5 @@
 prologue:
-	- Prop:
+  - Prop:
       name: ArgProp
       args: 
         value: "Thought's Own Level"

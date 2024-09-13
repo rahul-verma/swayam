@@ -102,7 +102,7 @@ class Recorder:
             
     def record_action_response(self, response) -> None:
         """
-        Broadcasts the tool response.
+        Broadcasts the action response.
 
         Args:
             message (dict): ActionResponse object

@@ -20,7 +20,7 @@ from typing import Any, Union
 
 from tarkash import log_debug
 
-def iterator(vault, expression_names, expression_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs):
+def iterator(vault, expression_names, expression_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, actions):
     from swayam.llm.phase.expression.namespace import ExpressionNamespace
     for out_dict in driver(vault=vault, **driver_kwargs):
         temp_dict = {}
@@ -28,7 +28,10 @@ def iterator(vault, expression_names, expression_ns_path, resolution, driver, dr
         temp_dict.update(out_dict)
         expression_namespace = ExpressionNamespace(path=expression_ns_path, resolution=resolution).formatter(**temp_dict) 
         for expression_name in expression_names:
-            yield getattr(expression_namespace, expression_name)
+            expression = getattr(expression_namespace, expression_name)
+            if actions:
+                expression.suggest_actions(actions)
+            yield expression
 
 class ExpressionDriver:
     
@@ -39,11 +42,15 @@ class ExpressionDriver:
 
         self.__expression_names = expression_dict["definitions"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate
-        driver_data = DriverTemplate(**expression_dict["driver"])
-        
         from swayam import Driver
-        self.__driver = getattr(Driver, driver_data.name)
-        self.__driver_kwargs = driver_data.args
+        if isinstance(expression_dict["driver"], dict):
+            driver_data = DriverTemplate(driver=expression_dict["driver"])        
+            self.__driver = getattr(Driver, driver_data.driver.name)
+            self.__driver_kwargs = driver_data.driver.args
+        else:
+            self.__driver = getattr(Driver, expression_dict["driver"])
+            self.__driver_kwargs = dict()
+        self.__actions = None
         
     @property
     def vault(self):
@@ -52,9 +59,12 @@ class ExpressionDriver:
     @vault.setter
     def vault(self, vault):
         self.__vault = vault
+        
+    def suggest_actions(self, action_names):
+        self.__actions = action_names
     
     def __call__(self):
-        expression_loader = iterator(self.__vault, self.__expression_names, self.__expression_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs)
+        expression_loader = iterator(self.__vault, self.__expression_names, self.__expression_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__actions)
         return expression_loader
 
 class UserThought:

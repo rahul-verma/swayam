@@ -98,7 +98,7 @@ class ConsoleRecorder(Reporter):
         
     def record_action_response(self, response) -> None:
         """
-        Reports the tool response.
+        Reports the action response.
 
         Args:
             message (dict): ActionResponse object
