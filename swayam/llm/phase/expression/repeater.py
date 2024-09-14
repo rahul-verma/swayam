@@ -45,6 +45,7 @@ class PromptDriver:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__prompt_names = prompt_dict["definitions"]
+        self.__standalone = prompt_dict["standalone"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
         from swayam import Driver
         
@@ -78,6 +79,9 @@ class PromptDriver:
             
     def suggest_actions(self, action_names):
         self.__actions = action_names
+        
+    def is_standalone(self):
+        return self.__standalone
     
     def __call__(self):
         prompt_loader = iterator(self.__expression, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)

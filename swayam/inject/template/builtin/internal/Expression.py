@@ -20,12 +20,12 @@ from pydantic import BaseModel, Field
 
 from swayam import Template
 
-from .Repeater import RepeaterModel
+from .Repeater import PromptRepeaterModel
 from .Drafter import DrafterModel
 from .Frame import ExpressionFrameModel
 
 class ExpressionModel(ExpressionFrameModel):
-    prompts: List[Union[str, RepeaterModel, DrafterModel]] = Field(..., description="Prompt definition names that are included in this expression. Instead of a name it can be dictionary of a RepeatedDefinition.")
+    prompts: List[Union[str, PromptRepeaterModel, DrafterModel]] = Field(..., description="Prompt definition names that are included in this expression. Instead of a name it can be dictionary of a RepeatedDefinition.")
     purpose: Union[str,None] = Field(None, description="A statement describing the purpose of the expression.")
     persona: str = Field(None, description="Persona of the expression.")
     directive: str = Field(None, description="Directive text for the narrative this expression builds. Extends previous directives if any.")

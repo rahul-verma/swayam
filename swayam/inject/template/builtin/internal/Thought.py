@@ -21,10 +21,10 @@ from pydantic import BaseModel, Field
 from .Frame import FrameModel
 
 from swayam import Template
-from .Repeater import RepeaterModel
+from .Repeater import ExpressionRepeaterModel
 
 class ThoughtModel(FrameModel):
-    expressions: List[Union[str, RepeaterModel]] = Field(..., description="Expression definition names that are included in this thought. Instead of a name it can be dictionary of a RepeatedDefinition.")
+    expressions: List[Union[str, ExpressionRepeaterModel]] = Field(..., description="Expression definition names that are included in this thought. Instead of a name it can be dictionary of a RepeatedDefinition.")
     purpose: Union[str,None] = Field(None, description="A statement describing the purpose of the thought.")
     directive: str = Field(None, description="Directive text for the narrative this thought builds. Extends previous directives if any.")
     actions: List[str] = Field([], title="Common Actions", description="List of actions to be used in the expressions that don't have an action list of their own.")

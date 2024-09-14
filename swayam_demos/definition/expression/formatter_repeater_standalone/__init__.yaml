@@ -2,6 +2,8 @@ purpose: Demo Formatting with Repeater
 
 prompts:
 
+  - trip_command
+  - trip_query
   - repeat:
       definitions: 
           - q1
@@ -11,6 +13,9 @@ prompts:
         name: TwoNumberDriver
         args: 
           size: 3
+      standalone: True
+  - trip_command2
+  - trip_query2
 
 actions:
   - Calculate

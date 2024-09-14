@@ -53,9 +53,25 @@ class ExpressionEnactor(BaseLLMEnactor):
         from swayam.llm.phase.prompt.prompt import UserPrompt
         
         for prompts in expression:
+            applicable_conversation = conversation
+            generated = False
             if isinstance(prompts, UserPrompt):
+                prompt = prompts
+                if prompt.is_standalone:
+                    only_context_conversation = Conversation()
+                    only_context_conversation.append_system_prompt(narrative_instructions)
+                    only_context_conversation.append_context_prompt(narrative_context_prompt)
+                    applicable_conversation = only_context_conversation
+                else:
+                    applicable_conversation = conversation
                 prompts = [prompts]
             else:
+                generated = True
+                if prompts.is_standalone:
+                    generator_conversation = Conversation()
+                    generator_conversation.append_system_prompt(narrative_instructions)
+                    generator_conversation.append_context_prompt(narrative_context_prompt)
+                    applicable_conversation = generator_conversation
                 prompts = prompts() # Lazy loading
             for prompt in prompts:
                 log_debug("Processing prompt...")
@@ -64,13 +80,16 @@ class ExpressionEnactor(BaseLLMEnactor):
                 prompt.drafter = expression.drafter
                 prompt.dynamic_format()
                 expression.prompt_frame.prologue()
-                if prompt.is_standalone:
-                    only_context_conversation = Conversation()
-                    only_context_conversation.append_system_prompt(narrative_instructions)
-                    only_context_conversation.append_context_prompt(narrative_context_prompt)
-                    narrative.conversation = only_context_conversation
+                if generated:
+                    if prompt.is_standalone:
+                        only_context_conversation = Conversation()
+                        only_context_conversation.append_system_prompt(narrative_instructions)
+                        only_context_conversation.append_context_prompt(narrative_context_prompt)
+                        narrative.conversation = only_context_conversation
+                    else:
+                        narrative.conversation = applicable_conversation
                 else:
-                    narrative.conversation = conversation
+                    narrative.conversation = applicable_conversation
                 prompt_enactor.enact(prompt, narrative=narrative)
                 expression.prompt_frame.epilogue()
             

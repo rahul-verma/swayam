@@ -22,9 +22,17 @@ from swayam import Template
 
 from .FrameInjectable import FrameInjectableModel
     
-class RepeatedDefinitionModel(BaseModel):
+class RepeatedExpressionDefinitionsModel(BaseModel):
     definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
     driver: Union[FrameInjectableModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
     
-class RepeaterModel(BaseModel):
-    repeat: RepeatedDefinitionModel = Field(..., title="Repeater Definition", description="Repeater dictionary.")
+class RepeatedPromptDefinitionsModel(RepeatedExpressionDefinitionsModel):
+    definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
+    driver: Union[FrameInjectableModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
+    standalone: bool = Field(False, title="Standalone", description="Whether the repeated prompts are standalone or not.")
+    
+class PromptRepeaterModel(BaseModel):
+    repeat: RepeatedPromptDefinitionsModel = Field(..., title="Prompt Repeater Definition", description="Repeater dictionary.")
+    
+class ExpressionRepeaterModel(BaseModel):
+    repeat: RepeatedExpressionDefinitionsModel = Field(..., title="Expression Repeater Definition", description="Repeater dictionary.")
