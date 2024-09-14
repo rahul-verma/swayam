@@ -20,10 +20,10 @@ from typing import List
 from pydantic import BaseModel, Field
 from swayam import Template
 
-class DraftDependencyModel(BaseModel):
-    draft_dependency_description :str = Field(..., description="Description of the draft")
-    draft_dependency_template:str = Field(..., description="Template of an entry in its contents")
-    draft_dependency_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
-    draft_dependency_writeup: str = Field("", description="Writeup of the dependency")
+class ReferenceModel(BaseModel):
+    reference_description :str = Field(..., description="Description of the reference")
+    reference_template:str = Field(..., description="Template of an entry in its contents")
+    reference_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
+    reference_writeup: str = Field("", description="Writeup of the reference in singular or plural form.")
     
-DraftDependency = Template.build("DraftDependency", model=DraftDependencyModel) 
+Reference = Template.build("Reference", model=ReferenceModel)

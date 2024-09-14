@@ -36,22 +36,12 @@ class Reporter(ABC):
         pass
     
     @abstractmethod
-    def record_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt:Prompt, conversation) -> None:
         """
         Reports the prompt details.
         
         Args:
             prompt (Prompt): The prompt to report.
-        """
-        pass
-        
-    @abstractmethod
-    def record_conversation(self, narrative) -> None:
-        """
-        Reports the narrative details.
-
-        Args:
-            narrative (Conversation): Narrative object with all input messages.
         """
         pass
 

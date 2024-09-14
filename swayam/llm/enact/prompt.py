@@ -52,13 +52,10 @@ class PromptEnactor(BaseLLMEnactor):
         
         conversation = narrative.conversation
         
-        #self.recorder.record_conversation(conversation)
-        
         # Appending happens via the Narrator Narrative so that dynamic variables can be considered.
         conversation.append_prompt(prompt)
-        self.recorder.record_conversation(conversation)
         if report:
-            self.recorder.record_prompt(prompt)
+            self.recorder.record_prompt(prompt, conversation)
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
@@ -66,7 +63,6 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Handling Response.")
         
         conversation.append_assistant_response(llm_response.as_dict())
-        self.recorder.record_conversation(conversation)
         
         if report:
             self.recorder.record_response(prompt, llm_response)
@@ -102,7 +98,6 @@ class PromptEnactor(BaseLLMEnactor):
                 self.recorder.record_action_response(action_response)
                 response_messages.append(action_response)
                 conversation.append_action_response(action_response)
-                self.recorder.record_conversation(conversation)
             narrative.vault.set("action_results",  action_results, phase=prompt)
         else:
             response_messages = llm_response.message

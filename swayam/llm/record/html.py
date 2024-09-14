@@ -112,6 +112,7 @@ class HtmlRecorder(Reporter):
                                     "text": story.purpose,
                                     "children": []   
                                 })
+        self.__update_report()
             
     def record_begin_thought(self, thought) -> None:
         """
@@ -134,6 +135,7 @@ class HtmlRecorder(Reporter):
                                     "text": f"{thought.purpose}",
                                     "children": []
                                 })
+        self.__update_report()
             
     def record_begin_expression(self, expression=None) -> None:
         """
@@ -171,69 +173,20 @@ class HtmlRecorder(Reporter):
                                                 "heading": "Expression ID",
                                                 "content": expression_id
                                             },
-                                            {
-                                                "heading": "Message History",
-                                                "content": []
-                                            }
                                     ]},
                                     "children": []
                                 })
-            
-    def record_directive(self, directive) -> None:
-        """
-        Reports the system prompt details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        log_debug("Begin: Reporting System Prompt.")
 
-        prompt_node = {
-                    "id": "directive_" + uuid4().hex,
-                    "text": "Directive",
-                    "icon": "jstree-file",
-                    "data": {
-                                "content": [{
-                                                "heading": "Directive Text",
-                                                "content" : directive
-                                }]
-                    }
-        }
-        self.__get_expression_children_node().append(prompt_node)
+        if expression.directive:
+            self.__get_expression_node()["data"]["content"].append({
+                "heading": "Directive Text",
+                "content": expression.directive
+            })
         self.__update_report()
-        log_debug("Finished: Reporting System Prompt.")
-            
-    def record_conversation(self, conversation) -> None:
-        """
-        Reports the conversation details.
-
-        Args:
-            narrative (Conversation): Narrative object with all input messages.
-        """
-        
-        debug = os.environ.get("SWAYAM_DEBUG", "false")
-        if debug.lower() != "true":
-            messages = conversation.reportable_messages[3:]
-        else:
-            messages = conversation.reportable_messages
-        
-        if self.__json_data == []:
-            self.record_begin_expression()
-        
-        log_debug("Begin: Reporting Narrative.")
-        conversation_file_path = self.__json_messages_path + "/" + self.__get_expression_node()["id"] + "_conversation.json"
-        conversation_json = json.dumps(messages, indent=4)
-        with open(conversation_file_path, 'w') as f:
-            f.write(conversation_json)
-        for_html = [
-            {"heading": message["role"].title(), "content":message} for message in messages
-        ]
-        self.__get_expression_node()["data"]["content"][1]["content"] = [f"{conversation_file_path}"] + messages
-     
+        log_debug("Finished: Reporting  Directive.")
         self.__update_report()
-        log_debug("Finished: Reporting Conversation.")
 
-    def record_prompt(self, prompt:Prompt, role="User") -> None:
+    def record_prompt(self, prompt:Prompt, conversation, role="User") -> None:
         """
         Reports the prompt details.
         
@@ -241,8 +194,9 @@ class HtmlRecorder(Reporter):
             prompt (Prompt): The prompt to report.
         """
         log_debug("Begin: Reporting Prompt.")
+        prompt_id = "prompt_" + uuid4().hex
         prompt_node = {
-                "id": "prompt_" + uuid4().hex,
+                "id": prompt_id,
                 "text": f"{prompt.purpose}",
                 "icon": "jstree-file",
                 "data": {
@@ -288,7 +242,24 @@ class HtmlRecorder(Reporter):
                 action_content_for_main_page["content"][action.name] = action.definition
                 
             prompt_content_node.append(action_content_for_main_page)
-
+            
+        debug = os.environ.get("SWAYAM_DEBUG", "false")
+        if debug.lower() != "true":
+            messages = conversation.reportable_messages[3:]
+        else:
+            messages = conversation.reportable_messages
+        
+        log_debug("Begin: Reporting Narrative.")
+        conversation_file_path = self.__json_messages_path + "/" + prompt_id + "_conversation.json"
+        conversation_json = json.dumps(messages, indent=4)
+        with open(conversation_file_path, 'w') as f:
+            f.write(conversation_json)
+        
+        conversation_html = action_content_for_main_page = {
+                "heading": "Conversation",
+                "content": [f"{conversation_file_path}"] + messages
+            }
+        prompt_content_node.append(conversation_html)
         self.__update_report()
         log_debug("Finished: Reporting Prompt.")
         
@@ -368,6 +339,6 @@ class HtmlRecorder(Reporter):
         Resets the report.
         """
         self.__json_data = []
-        self.record_begin_expression()
+        self.__update_report()
 
 

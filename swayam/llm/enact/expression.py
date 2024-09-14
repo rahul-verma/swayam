@@ -40,17 +40,12 @@ class ExpressionEnactor(BaseLLMEnactor):
         narrative_instructions = narrative.get_instructions()
         narrative_context_prompt = narrative.get_context_prompt(expression=expression)
         
-        log_debug(f"Executing Expression with {len(expression)} prompt(s).")
-        self.recorder.record_begin_expression(expression)
         conversation.append_system_prompt(narrative_instructions)
         conversation.append_context_prompt(narrative_context_prompt)
-
-        # prompt_enactor.enact(UserPrompt(text=context_prompt, purpose="Context Setting"), narrative=narrative, report=False)
-        
         directive = narrative.get_directive(expression=expression)
-        if directive:
-            self.recorder.record_directive(directive)
-            
+        
+        log_debug(f"Executing Expression with {len(expression)} prompt(s).")
+        self.recorder.record_begin_expression(expression)            
         log_debug("Finished processing system prompt.")
         
         from swayam.llm.enact.prompt import PromptEnactor
@@ -76,7 +71,6 @@ class ExpressionEnactor(BaseLLMEnactor):
                     narrative.conversation = only_context_conversation
                 else:
                     narrative.conversation = conversation
-                self.recorder.record_conversation(conversation)
                 prompt_enactor.enact(prompt, narrative=narrative)
                 expression.prompt_frame.epilogue()
             

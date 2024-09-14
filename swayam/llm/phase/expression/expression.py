@@ -43,6 +43,7 @@ class UserExpression:
         self.__thought = None
         
         self.__narrative = None
+        self.__drafter = None
         
         if self.__out_template and self.__actions:
             raise ValueError("Cannot suggest both output template and actions.")

@@ -20,12 +20,18 @@ from pydantic import BaseModel, Field
 
 from swayam import Template
 from .Frame import FrameModel
+from .Injectable import InjectableModel
+
+class ReferenceDependencyModel(BaseModel):
+    name: str = Field(..., description="Name of the reference.")
+    iter_content: bool = Field(False, description="Whether to iterate over the contents of the reference.")
 
 class DraftModel(BaseModel):
     singular_name: str = Field(None, description="Singular name for each entry in contents.")
     plural_name: str = Field(None, description="Plural name for all entries in contents. If not provided, it is taken from singular name by suffixing 's'.")
     description: str = Field(None, description="Description of an entry in its content. If not provided, it is taken from Template description.")
-    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextConntent.")
-    depends_on: Union[List[str], None] = Field(None, description="List of other drafts that this draft depends on.")
+    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextContent.")
+    refer: Union[List[Union[str, ReferenceDependencyModel]], None] = Field(None, description="List of references that this draft depends on.")
+    feed: Union[List[Union[str,InjectableModel]], None] = Field(None, description="List of references that this draft depends on.")
     
 Draft = Template.build("Draft", model=DraftModel)

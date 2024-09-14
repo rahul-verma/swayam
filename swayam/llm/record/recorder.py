@@ -59,18 +59,8 @@ class Recorder:
         """
         for recorder in self.__recorders:
             recorder.record_begin_expression(expression)
-            
-    def record_directive(self, directive) -> None:
-        """
-        Broadcasts the directive details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        for recorder in self.__recorders:
-            recorder.record_directive(directive)
 
-    def record_prompt(self, prompt) -> None:
+    def record_prompt(self, prompt, conversation) -> None:
         """
         Broadcasts the prompt details.
         
@@ -78,17 +68,7 @@ class Recorder:
             prompt (Prompt): The prompt to report.
         """
         for recorder in self.__recorders:
-            recorder.record_prompt(prompt)
-    
-    def record_conversation(self, narrative:Conversation) -> None:
-        """
-        Broadcasts the narrative details.
-
-        Args:
-            narrative (Conversation): Narrative object with all input messages.
-        """
-        for recorder in self.__recorders:
-            recorder.record_conversation(narrative)
+            recorder.record_prompt(prompt, conversation)
  
     def record_response(self, prompt, message:dict) -> None:
         """

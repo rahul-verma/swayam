@@ -22,7 +22,7 @@ from pydantic import Field, BaseModel
 
 import os
 from swayam import Driver, Template
-from swayam.inject.template.builtin.internal.DraftDependency import DraftDependency
+from swayam.inject.template.builtin.internal.Reference import DraftDependency
 from swayam.inject.template.builtin.internal.Injectable import InjectableModel
 
 def draft_loop(*, invoker, name, iter_content=False):

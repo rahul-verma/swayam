@@ -54,10 +54,16 @@ class _SwayamSingleton:
     
         self.__root_dir = self.__join_paths(os.path.dirname(os.path.realpath(__file__)), "..")
         self.__project_dir = Tarkash.get_option_value(TarkashOption.PROJECT_DIR)
-        if folio_dir is None:
-            folio_dir = self.__project_dir
         
-        self.__register_config_with_tarkash(folio_dir)
+        try:
+            final_folio_dir = os.environ["FOLIO_DIR"]
+        except KeyError:
+            if folio_dir is None:
+                final_folio_dir = self.__project_dir
+            else:
+                final_folio_dir = folio_dir
+        
+        self.__register_config_with_tarkash(final_folio_dir)
         
         # Create default narrator
         from swayam.llm.narrate.simple import SimpleNarrator

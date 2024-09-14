@@ -45,17 +45,8 @@ class ConsoleRecorder(Reporter):
             prompt (Prompt): The prompt to report.
         """
         pass
-    
-    def record_directive(self, prompt:Prompt) -> None:
-        """
-        Reports the prompt details.
-        
-        Args:
-            prompt (Prompt): The prompt to report.
-        """
-        pass
 
-    def record_prompt(self, prompt:Prompt) -> None:
+    def record_prompt(self, prompt:Prompt, conversation) -> None:
         """
         Reports the prompt details.
         
@@ -76,15 +67,6 @@ class ConsoleRecorder(Reporter):
         else:
             print(prompt.content)
         print("-" * 80)
-
-    def record_conversation(self, narrative:Conversation) -> None:
-        """
-        Reports the narrative details.
-
-        Args:
-            narrative (Conversation): Narrative object with all input messages.
-        """
-        pass
         
     def record_response(self, prompt, response:LLMResponse) -> None:
         """
