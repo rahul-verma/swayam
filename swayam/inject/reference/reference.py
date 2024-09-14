@@ -24,9 +24,9 @@ from abc import ABC, abstractmethod
 from swayam.inject.template.template import DataTemplate
 
 
-class Draft:
+class Reference:
     
-    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, depends_on=None) -> None:
+    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None) -> None:
         self.__name = name
         self.__file_name = name + ".json"
         from tarkash import Tarkash
@@ -37,25 +37,9 @@ class Draft:
         self.__plural_name = plural_name
         self.__description = description
         self.__template_name = template
-        if self.__template_name is None:
-            self.__template_name = "TextContent"
-        self.__depends_on = depends_on
-        self.__dependencies = []
     
         from swayam import Template
         self.__template = getattr(Template, self.__template_name)
-        
-        from swayam.inject.draft import Draft as DraftFacade
-        if self.__depends_on:
-            for dependency in self.__depends_on:
-                self.__dependencies.append(getattr(DraftFacade, dependency))
-        
-        if self.__singular_name is None:
-            self.__singular_name = name
-        if self.__plural_name is None:
-            self.__plural_name = self.__singular_name + "s"
-        if self.__description is None:
-            self.__description = getattr(Template, self.__template_name).description
                 
     @property
     def name(self):
@@ -88,13 +72,6 @@ class Draft:
     @property
     def template(self):
         return self.__template
-    @property
-    def depends_on(self):
-        return self.__depends_on
-    
-    @property
-    def dependencies(self):
-        return self.__dependencies
     
     def load(self):
         with open(self.__file_path, "r") as file:

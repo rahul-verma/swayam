@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -14,10 +14,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from .injectable.DirTextFileContents import *
-from .injectable.DirFiles import *
-from .injectable.Until import *
-from .injectable.DraftLooper import *
-
-

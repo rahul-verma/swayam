@@ -15,7 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .meta import DraftMeta
+import os
+import importlib
 
-class Draft(metaclass=DraftMeta):
-    pass
+from .namespace import *
+from swayam.namespace.meta import NamespaceMeta
+from swayam.namespace.error import DefinitionNotFoundError
+from swayam.core.caller import get_caller_module_file_location
+    
+class ReferenceMeta(NamespaceMeta):
+    
+    def __getattr__(cls, name):
+        from swayam.core.constant import SwayamOption
+        from .namespace import ReferenceNamespace
+        cls.load_root_namespace(SwayamOption.FOLIO_REFERENCE_DIR, ReferenceNamespace)
+        return getattr(cls.root, name)

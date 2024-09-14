@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import List, Union
 
 from pydantic import BaseModel, Field
 from swayam import Template
@@ -25,5 +25,5 @@ class ReferenceModel(BaseModel):
     reference_template:str = Field(..., description="Template of an entry in its contents")
     reference_content:str = Field(..., description="All contents or content of one entry, depending on the iterator logic.")
     reference_writeup: str = Field("", description="Writeup of the reference in singular or plural form.")
-    
+
 Reference = Template.build("Reference", model=ReferenceModel)

@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,9 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirTextFileContents import *
-from .injectable.DirFiles import *
-from .injectable.Until import *
-from .injectable.DraftLooper import *
+import os
+import importlib
 
-
+from .namespace import *
+from swayam.namespace.meta import NamespaceMeta
+from swayam.namespace.error import DefinitionNotFoundError
+from swayam.core.caller import get_caller_module_file_location
+    
+class ArtifactMeta(NamespaceMeta):
+    
+    def __getattr__(cls, name):
+        from swayam.core.constant import SwayamOption
+        from .namespace import ArtifactNamespace
+        cls.load_root_namespace(SwayamOption.DEFINITION_ARTIFACT_DIR, ArtifactNamespace)
+        return getattr(cls.root, name)

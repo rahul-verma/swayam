@@ -21,9 +21,10 @@ from abc import ABC, abstractmethod
 
 class Namespace(ABC):
     
-    def __init__(self, type, path, *, resolution=None, **fmt_kwargs):
+    def __init__(self, type, path, def_extension="yaml", *, resolution=None, **fmt_kwargs):
         self.__type = type
         self.__name = f"{self.__type} namespace"
+        self.__def_extension = def_extension
         self.__resolution = resolution
         self.__path = path
         if self.__resolution is None:
@@ -61,9 +62,14 @@ class Namespace(ABC):
         if name == "formatter":
             from functools import partial
             # Return a partial namespace of the same type
-            return partial(self.__class__, path=self.path, resolution=self.resolution)
-       
+            return partial(self.__class__, path=self.path, def_extension=self.__def_extension, resolution=self.resolution)
+        
+        if "." in name:
+            prefix, name = name.split(".", 1)
+            return getattr(self.__class__(path=os.path.join(self.path, prefix), def_extension=self.__def_extension, resolution=self.resolution + "." + prefix), name)
+        
         name_path = os.path.join(self.path, name)
+        
         # Check without the yaml extension
         if os.path.exists(name_path):
             if os.path.isdir(name_path):          
@@ -83,9 +89,9 @@ class Namespace(ABC):
                         else:
                             children["directories"].append(name)
                     elif os.path.isfile(child_path):
-                        if name  == "__init__.yaml":
+                        if name  == f"__init__.{self.__def_extension}":
                             children["package_file"] = child_path
-                        elif name.endswith(".yaml"):
+                        elif name.endswith(self.__def_extension):
                             children["files"].append(name[:-5])
                             
                 if children["package_file"] is None:
@@ -109,26 +115,26 @@ class Namespace(ABC):
                 )
             else:
                 raise DefinitionFileWithoutExtensionError(self, name)
-        elif os.path.exists(name_path + ".yaml"):
+        elif os.path.exists(name_path + f".{self.__def_extension}"):
             content = None
-            with open(name_path + ".yaml") as f:
+            with open(name_path + f".{self.__def_extension}") as f:
                 content = f.read()
             try:
                 for k,v in self.fmt_kwargs.items():
                     content = content.replace("$" + k + "$", str(v))
                 return self.handle_current_name_as_definition(
                         name=name,
-                        path=name_path + ".yaml",
+                        path=name_path + f".{self.__def_extension}",
                         resolution=self.resolution + "." + name,
                         purpose = name.replace("_", " ").title(),
                         content=content
                 )
             except IndexError as e:
                 import traceback
-                raise DefinitionFormattingError(self, name=name, path=name_path + ".yaml", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=r"Are you using a positional placeholder {} in your YAML file? Only named placeholders are allowed. " + traceback.format_exc())
+                raise DefinitionFormattingError(self, name=name, path=name_path + f".{self.__def_extension}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=f"Are you using a positional placeholders in your {self.__def_extension.upper()} file? Only named placeholders are allowed. " + traceback.format_exc())
             except KeyError as e:
                 import traceback
-                raise DefinitionFormattingError(self, name=name, path=name_path + ".yaml", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
+                raise DefinitionFormattingError(self, name=name, path=name_path + f".{self.__def_extension.upper()}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
         else:
             raise DefinitionNotFoundError(self, name=name)
         

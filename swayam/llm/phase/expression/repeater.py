@@ -59,14 +59,8 @@ class PromptDriver:
                 self.__driver_kwargs = dict()
         else:
             # It is "draft"
-            if isinstance(prompt_dict["drafter"], dict):
-                driver_data = DriverTemplate(driver=prompt_dict["drafter"])        
-                self.__driver = getattr(Driver, "Drafter")
-                self.__driver_kwargs = driver_data.driver.args
-                self.__driver_kwargs["name"] = prompt_dict["drafter"]["name"]
-            else:
-                self.__driver = getattr(Driver, "Drafter")
-                self.__driver_kwargs = {"name": prompt_dict["drafter"]} 
+            self.__driver = getattr(Driver, "DraftLooper")
+            self.__driver_kwargs = {"entity_name": prompt_dict["artifact"]}
         self.__image = None
         self.__out_template = None
         self.__actions = None

@@ -66,6 +66,7 @@ class UserExpression:
                     primary_key = "repeat"
                 elif "draft" in prompt_name_or_dict:
                     prompt_dict = prompt_name_or_dict["draft"]
+                    prompt_dict["standalone"] = True
                     primary_key = "draft"
                 else:
                     raise ValueError("Prompt dictionary must have a 'repeat' or 'draft' key.")
@@ -165,6 +166,13 @@ class UserExpression:
     @thought.setter
     def thought(self, thought):
         self.__thought = thought
+        
+    @property
+    def thought_name(self):
+        if self.__thought:
+            return self.__thought.name
+        else:
+            return "Thought"
         
     @property
     def vault(self):

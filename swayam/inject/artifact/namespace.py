@@ -16,32 +16,33 @@
 # limitations under the License.
 
 import os
-from .draft import Draft
+from .artifact import Artifact
 from swayam.namespace.namespace import Namespace
 from swayam.namespace.error import *
 from swayam.core.caller import get_caller_module_file_location
 
-class DraftNamespace(Namespace):
+class ArtifactNamespace(Namespace):
     
     def __init__(self, path, resolution=None, **fmt_kwargs):
-        super().__init__(type="Draft", path=path, resolution=resolution, **fmt_kwargs)  
+        super().__init__(type="Artifact", path=path, resolution=resolution, **fmt_kwargs)  
 
-    def handle_current_name_as_package(self, *, name, path, resolution):
-        raise DefinitionNameNotAFileError(self, name=name)
+    def handle_current_name_as_package(self, *, name, path, resolution, **kwargs):
+        return ArtifactNamespace(path=path, resolution=resolution)
     
     def handle_current_name_as_definition(self, *, name, path, resolution, purpose, content):
         from swayam import Template
         import yaml
         content = yaml.safe_load(content)
+        from tarkash import Tarkash
         if content is None:
-            return Draft(name=name)
+            return Artifact(name=name)
         elif isinstance(content, dict):
-            from swayam.inject.template.builtin.internal import Draft as DraftTemplate
+            from swayam.inject.template.builtin.internal import Artifact as ArtifactTemplate
             try:
-                return Draft(name=name, **DraftTemplate(**content).as_dict())
+                return Artifact(name=name, **ArtifactTemplate(**content).as_dict())
             except Exception as e:
                 import traceback
-                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{DraftTemplate.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{ArtifactTemplate.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
         else:
             raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(content)}")
         

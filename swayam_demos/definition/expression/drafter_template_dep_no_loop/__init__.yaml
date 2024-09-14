@@ -1,7 +1,0 @@
-purpose: Dependency on Templated Draft - No Loop
-
-prompts:
-  - draft:
-      definitions:
-        - gift_ideas
-      drafter: depends_events

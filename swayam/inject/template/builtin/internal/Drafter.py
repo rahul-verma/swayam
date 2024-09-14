@@ -24,7 +24,7 @@ from .FrameInjectable import InjectableModel
     
 class DrafterDefinitionModel(BaseModel):
     definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
-    drafter: Union[InjectableModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
+    artifact: str = Field(..., title="Artifact name", description="Name of the artifact to draft")
     
 class DrafterModel(BaseModel):
     draft: DrafterDefinitionModel = Field(..., title="Draft Definition", description="Draft dictionary.")

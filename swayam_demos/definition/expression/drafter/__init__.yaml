@@ -5,4 +5,4 @@ prompts:
       definitions: 
         - trip_command
         - trip_query
-      drafter: simple
+      artifact: simple

@@ -66,5 +66,9 @@ class StructuredDriver(StructuredInjectableWithCallable):
             def phase(self):
                 return self.__phase
             
+            @property
+            def thought_name(self):
+                return self.__phase.thought_name
+            
         output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, phase=phase), **kwargs)
         return iterator(self, output)

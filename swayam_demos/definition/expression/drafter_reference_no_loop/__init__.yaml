@@ -1,0 +1,7 @@
+purpose: Dependency on Reference without Content Loop
+
+prompts:
+  - draft:
+      definitions:
+        - gift_ideas
+      artifact: depends_events

@@ -26,12 +26,14 @@ class ReferenceDependencyModel(BaseModel):
     name: str = Field(..., description="Name of the reference.")
     iter_content: bool = Field(False, description="Whether to iterate over the contents of the reference.")
 
-class DraftModel(BaseModel):
+class ArtifactModel(BaseModel):
     singular_name: str = Field(None, description="Singular name for each entry in contents.")
     plural_name: str = Field(None, description="Plural name for all entries in contents. If not provided, it is taken from singular name by suffixing 's'.")
     description: str = Field(None, description="Description of an entry in its content. If not provided, it is taken from Template description.")
-    template: Union[str, None] = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextContent.")
-    refer: Union[List[Union[str, ReferenceDependencyModel]], None] = Field(None, description="List of references that this draft depends on.")
-    feed: Union[List[Union[str,InjectableModel]], None] = Field(None, description="List of references that this draft depends on.")
+    template: str = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextContent.")
+    refer: List[Union[str, ReferenceDependencyModel]] = Field(list(), description="List of references that this draft depends on.")
+    feed: List[Union[str,InjectableModel]] = Field(list(), description="List of references that this draft depends on.")
+    interim: bool = Field(False, description="Whether this draft is an interim draft. In such a case, it is not stored as a reference.")
+    store_as: str = Field(None, description="Name of the reference to store this draft. If not provided, it is stored as the name of the draft. A prefix 'generated_' is added to the name of the reference in both the cases.")
     
-Draft = Template.build("Draft", model=DraftModel)
+Artifact = Template.build("Artifact", model=ArtifactModel)

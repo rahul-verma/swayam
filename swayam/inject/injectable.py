@@ -153,6 +153,10 @@ class StructuredInjectableWithCallable(StructuredInjectable):
             def phase(self):
                 return self.__phase
             
+            @property
+            def thought_name(self):
+                return self.__phase.thought_name
+            
         output = self.call_encapsulated_callable(invoker=InjectableInvoker(name=self.name, phase=phase), **kwargs)     
         output = self.validate_output(output)
         return output.as_dict()

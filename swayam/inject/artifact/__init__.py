@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,9 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirTextFileContents import *
-from .injectable.DirFiles import *
-from .injectable.Until import *
-from .injectable.DraftLooper import *
+from .meta import ArtifactMeta
 
-
+class Artifact(metaclass=ArtifactMeta):
+    pass

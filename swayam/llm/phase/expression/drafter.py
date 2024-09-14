@@ -20,9 +20,13 @@ import json
 
 class Drafter:
     
-    def __init__(self, *, draft_info):
-        self.__draft_info = draft_info
-        self.__file_path = draft_info.file_path
+    def __init__(self, *, artifact, thought):
+        self.__artifact = artifact
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        self.__file_path = os.path.join(Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR), thought,  artifact.name + ".json")
+        directory = os.path.dirname(self.__file_path)
+        os.makedirs(directory, exist_ok=True)
         with open(self.__file_path, "w") as file:
             file.write(json.dumps([], indent=4))
             
