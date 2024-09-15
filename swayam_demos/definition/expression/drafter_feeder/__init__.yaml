@@ -1,0 +1,7 @@
+purpose: Dependency on a Feeder
+
+prompts:
+  - draft:
+      definitions:
+        - gift_ideas
+      artifact: depends_feeder

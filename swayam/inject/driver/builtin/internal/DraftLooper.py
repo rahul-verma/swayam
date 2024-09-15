@@ -22,8 +22,10 @@ from pydantic import Field, BaseModel
 
 import os
 from swayam import Driver, Template, Reference
-from swayam.inject.template.builtin.internal.Reference import Reference as ReferenceTemplate
+from swayam.inject.template.builtin.injectable.Reference import Reference as ReferenceTemplate
+from swayam.inject.template.builtin.injectable.Reference import ReferenceContent
 from swayam.inject.template.builtin.internal.Injectable import InjectableModel
+from swayam.inject.template.template import Data
 
 def draft_loop(*, invoker, entity_name):
     from swayam import Action
@@ -39,6 +41,22 @@ def draft_loop(*, invoker, entity_name):
                             reference_content=""
                         )
     else:
+        for feeder in draft.feeders:
+            feed_driver = None
+            feed_template = None
+            if isinstance(feeder, str):
+                feed_driver = getattr(Driver, feeder)
+                feed_template = feed_driver.out_template
+                feed_driver = feed_driver()
+            else:
+                feeder_name = feeder["name"]
+                feed_driver = getattr(Driver, feeder_name)
+                feed_template = feed_driver.out_template
+                feed_driver = feed_driver(*feeder["args"])
+
+            for content in feed_driver:
+                yield feed_template(**content)
+            
         # Handle references
         for reference in draft.references:
             if isinstance(reference, str):
@@ -75,5 +93,5 @@ def draft_loop(*, invoker, entity_name):
 DraftLooper = Driver.build("DraftLooper", 
                         callable=draft_loop,
                         in_template=Template.EntityName, 
-                        out_template=ReferenceTemplate)
+                        out_template=ReferenceContent)
 
