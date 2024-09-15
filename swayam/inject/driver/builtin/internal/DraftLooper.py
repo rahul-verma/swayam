@@ -39,7 +39,6 @@ def draft_loop(*, invoker, entity_name):
                             reference_content=""
                         )
     else:
-        
         # Handle references
         for reference in draft.references:
             if isinstance(reference, str):
@@ -52,9 +51,11 @@ def draft_loop(*, invoker, entity_name):
                     reference_writeup=reference.plural_writeup(contents)
                 )   
             else:
-                reference = getattr(Reference, reference.name)
+                name = reference["name"]
+                iter_content = reference.get("iter_content", False)
+                reference = getattr(Reference, name)(thought=invoker.thought_name)
                 contents = reference.load()
-                if reference.iter_content:
+                if iter_content:
                     for content in contents:
                         yield ReferenceTemplate(
                             reference_description=reference.description,

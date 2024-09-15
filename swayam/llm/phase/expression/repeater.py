@@ -59,7 +59,8 @@ class PromptDriver:
                 self.__driver_kwargs = dict()
         else:
             # It is "draft"
-            self.__driver = getattr(Driver, "DraftLooper")
+            from swayam.inject.driver.builtin.internal.DraftLooper import DraftLooper
+            self.__driver = DraftLooper
             self.__driver_kwargs = {"entity_name": prompt_dict["artifact"]}
         self.__image = None
         self.__out_template = None
