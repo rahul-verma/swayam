@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, standalone:bool=False) -> None:
+    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, standalone:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -47,8 +47,7 @@ class UserPrompt:
         self.__standalone = standalone
         
         if self.__out_template is not None:
-            from swayam import Template
-            self.__out_template = getattr(Template, self.__out_template)
+            self.out_template = self.__out_template
         
         self.__actions = actions
         self.__action_definitions = None
@@ -78,6 +77,10 @@ class UserPrompt:
     @property
     def frame(self):
         return self.__frame
+    
+    @property
+    def name(self):
+        return self.__name
             
     @property
     def vault(self):
@@ -150,6 +153,12 @@ class UserPrompt:
     @property
     def out_template(self):
         return self.__out_template
+    
+    @out_template.setter
+    def out_template(self, template_name):
+        from swayam import Template
+        self.__out_template = getattr(Template, template_name)
+        
     @property
     def actions(self):
         return tuple(self.__actions) if self.__actions else None
@@ -242,5 +251,13 @@ class UserPrompt:
     @property
     def is_standalone(self):
         return self.__standalone
+    
+    @property
+    def standalone(self):
+        return self.__standalone
+    
+    @standalone.setter
+    def standalone(self, flag):
+        self.__standalone = flag
     
     

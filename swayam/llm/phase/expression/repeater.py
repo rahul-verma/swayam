@@ -17,7 +17,7 @@
 # limitations under the License.
 
 
-def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
+def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
     from swayam.llm.phase.prompt.namespace import PromptNamespace
     for out_dict in driver(phase=expression, **driver_kwargs):
         temp_dict = {}
@@ -26,6 +26,10 @@ def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, drive
         prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
         for index, prompt_name in enumerate(prompt_names):
             prompt = getattr(prompt_namespace, prompt_name)
+            if iterator_type=="draft":
+                if index == 0:
+                    prompt.standalone = True
+                
             prompt.vault = expression.narrative.vault
             if image:
                 prompt.suggest_image(image)
@@ -39,6 +43,7 @@ def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, drive
                 # Is it the last prompt
                 if index == len(prompt_names) - 1:
                     prompt.draft_mode = True
+                    prompt.out_template = expression.mandatory_out_template
             yield prompt
 
 class PromptDriver:
@@ -56,6 +61,7 @@ class PromptDriver:
         from swayam import Driver
         
         if self.__primary_key == "repeat":
+            self.__iterator_type = "repeat"
             if isinstance(prompt_dict["driver"], dict):
                 driver_data = DriverTemplate(driver=prompt_dict["driver"])        
                 self.__driver = getattr(Driver, driver_data.driver.name)
@@ -65,6 +71,7 @@ class PromptDriver:
                 self.__driver_kwargs = dict()
         else:
             # It is "draft"
+            self.__iterator_type = "draft"
             from swayam.inject.driver.builtin.internal.DraftLooper import DraftLooper
             self.__driver = DraftLooper
             self.__driver_kwargs = {"entity_name": prompt_dict["artifact"]}
@@ -81,9 +88,10 @@ class PromptDriver:
     def suggest_actions(self, action_names):
         self.__actions = action_names
         
+    @property
     def is_standalone(self):
         return self.__standalone
     
     def __call__(self):
-        prompt_loader = iterator(self.__expression, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)
+        prompt_loader = iterator(self.__iterator_type, self.__expression, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)
         return prompt_loader

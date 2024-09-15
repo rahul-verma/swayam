@@ -69,7 +69,8 @@ class ExpressionDriver:
 
 class UserThought:
     
-    def __init__(self, *, expressions, purpose:str=None, directive:str=None, actions:list=None, resources=None, prologue=None, epilogue=None) -> Any:
+    def __init__(self, *, name, expressions, purpose:str=None, directive:str=None, actions:list=None, resources=None, prologue=None, epilogue=None) -> Any:
+        self.__name = name
         self.__expression_names_or_dicts = list(expressions)
         self.__expressions = []
         self.__purpose = purpose
@@ -116,7 +117,10 @@ class UserThought:
     def has_directive(self):
         return self.__directive is not None
     
-
+    @property
+    def name(self):
+        return self.__name
+    
     @property
     def frame(self):
         return self.__frame

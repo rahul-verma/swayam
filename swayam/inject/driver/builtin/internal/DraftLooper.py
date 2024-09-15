@@ -34,6 +34,7 @@ def draft_loop(*, invoker, entity_name):
     draft = getattr(Artifact, entity_name)
     drafter = Drafter(artifact=draft, thought=invoker.thought_name)
     invoker.phase.drafter = drafter
+    invoker.phase.mandatory_out_template = draft.template_name
     if not draft.has_dependencies:
         yield ReferenceTemplate(
                             reference_description="",
@@ -52,22 +53,35 @@ def draft_loop(*, invoker, entity_name):
                 feeder_name = feeder["name"]
                 feed_driver = getattr(Driver, feeder_name)
                 feed_template = feed_driver.out_template
-                feed_driver = feed_driver(*feeder["args"])
+                feed_driver = feed_driver(**feeder["args"])
 
             for content in feed_driver:
                 yield feed_template(**content)
             
+        def create_reference(ref, content, whole_reference=True):
+            if whole_reference:
+                writeup = reference.plural_writeup(content)
+                reference_image_file_path = None
+            else:
+                writeup = reference.singular_writeup(content)
+                if reference.has_image:
+                    reference_image_file_path = content["file_name"]
+                else:
+                    reference_image_file_path = None
+            return ReferenceTemplate(
+                    reference_description=ref.description,
+                    reference_template=json.dumps(ref.template.definition),
+                    reference_content=json.dumps(content),
+                    reference_writeup=writeup,
+                    reference_image_file_path=reference_image_file_path
+                ) 
+        
         # Handle references
         for reference in draft.references:
             if isinstance(reference, str):
                 reference = getattr(Reference, reference)(thought=invoker.thought_name)
                 contents = reference.load()
-                yield ReferenceTemplate(
-                    reference_description=reference.description,
-                    reference_template=json.dumps(reference.template.definition),
-                    reference_content=json.dumps(contents),
-                    reference_writeup=reference.plural_writeup(contents)
-                )   
+                yield create_reference(reference, contents, whole_reference=True)
             else:
                 name = reference["name"]
                 iter_content = reference.get("iter_content", False)
@@ -75,20 +89,9 @@ def draft_loop(*, invoker, entity_name):
                 contents = reference.load()
                 if iter_content:
                     for content in contents:
-                        yield ReferenceTemplate(
-                            reference_description=reference.description,
-                            reference_template=json.dumps(reference.template.definition),
-                            reference_content=json.dumps(content),
-                            reference_writeup=reference.singular_writeup(content)
-                        ) 
+                        yield create_reference(reference, content, whole_reference=False) 
                 else:
-                    for content in contents:
-                        yield ReferenceTemplate(
-                            reference_description=reference.description,
-                            reference_template=json.dumps(reference.template.definition),
-                            reference_content=json.dumps(content),
-                            reference_writeup=reference.singular_writeup(content)
-                        )
+                    yield create_reference(reference, contents, whole_reference=True)
 
 DraftLooper = Driver.build("DraftLooper", 
                         callable=draft_loop,

@@ -26,12 +26,13 @@ from swayam.inject.template.template import DataTemplate
 
 class Artifact:
     
-    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, export_as=None) -> None:
+    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, image=None, refer=None, feed=None, interim=False, export_as=None) -> None:
         self.__name = name
         self.__file_name = name + ".json"
         self.__singular_name = singular_name
         self.__plural_name = plural_name
         self.__description = description
+        self.__image = image
         self.__template_name = template
         if self.__template_name is None:
             self.__template_name = "TextContent"
@@ -87,6 +88,10 @@ class Artifact:
     @property
     def reference_name(self):
         return self.__reference_name
+    
+    @property
+    def has_image(self):
+        return self.__image
     
     @property
     def has_dependencies(self):

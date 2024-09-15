@@ -25,6 +25,7 @@ from .FrameInjectable import InjectableModel
 class DrafterDefinitionModel(BaseModel):
     definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
     artifact: str = Field(..., title="Artifact name", description="Name of the artifact to draft")
+    standalone: bool = Field(True, title="Standalone", description="Whether the repeated prompts are standalone or not.")
     
 class DrafterModel(BaseModel):
     draft: DrafterDefinitionModel = Field(..., title="Draft Definition", description="Draft dictionary.")

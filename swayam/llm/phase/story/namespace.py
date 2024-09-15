@@ -41,7 +41,7 @@ class StoryNamespace(Namespace):
         if isinstance(story_dict, dict):
             from swayam.inject.template.builtin.internal import Story
             try:
-                story = UserStory(**Story(**story_dict).as_dict())
+                story = UserStory(name=name, **Story(**story_dict).as_dict())
             except Exception as e:
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Story.keys}]. Overall template definition is {str(Story.definition)}. Error: {e}. Check: {traceback.format_exc()} ")

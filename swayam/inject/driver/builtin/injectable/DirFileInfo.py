@@ -15,9 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .injectable.DirTextFileContents import *
-from .injectable.DirFileInfo import *
-from .injectable.DirImageInfo import *
-from .injectable.Until import *
+from swayam.inject.driver import Driver
+from swayam import Action
 
+import os
+from swayam import Driver, Template
+
+def get_file_info(*, invoker, dir_path, file_filter_pattern=None):
+    from swayam import Action
+    for file_info in Action.EnumerateDir(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
+        yield Template.FileInfo(**file_info)
+
+DirFileInfo = Driver.build("DirFileInfo", 
+                        callable=get_file_info,
+                        in_template=Template.DirPathFilter, 
+                        out_template=Template.FileInfo)
 

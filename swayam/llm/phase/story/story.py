@@ -22,7 +22,8 @@ from tarkash import log_debug
 
 class UserStory:
     
-    def __init__(self, *, thoughts, purpose:str=None, directive:str=None, resources=None, prologue=None, epilogue=None) -> Any:
+    def __init__(self, *, name, thoughts, purpose:str=None, directive:str=None, resources=None, prologue=None, epilogue=None) -> Any:
+        self.__name = name
         self.__thought_names = list(thoughts)
         self.__thoughts = []
         self.__purpose = purpose
@@ -50,6 +51,9 @@ class UserStory:
     def has_directive(self):
         return self.__directive is not None
     
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def frame(self):

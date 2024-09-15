@@ -273,11 +273,12 @@ class HtmlRecorder(Reporter):
         content = response["content"]
         del response["content"]
 
-        if response["refusal"] is not None:
-            self.__get_prompt_content_node().append({
-                        "heading": "Response Meta-Data",
-                        "content": response
-                })
+        # print("Response:", response)
+        # if response["refusal"] is not None:
+        #     self.__get_prompt_content_node().append({
+        #                 "heading": "Response Meta-Data",
+        #                 "content": response
+        #         })
         
         if content:
             self.__get_prompt_content_node().append({

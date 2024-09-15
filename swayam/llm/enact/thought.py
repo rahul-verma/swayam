@@ -54,7 +54,7 @@ class ThoughtEnactor(BaseLLMEnactor):
                 expressions = expressions() # Lazy loading
             for expression in expressions:
                 expression.story = thought.story
-                expression.thought = thought.purpose
+                expression.thought = thought
                 expression_enactor.enact(expression, narrative=narrative)
             
         thought.frame.epilogue()

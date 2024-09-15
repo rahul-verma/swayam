@@ -41,7 +41,7 @@ class ExpressionNamespace(Namespace):
         if isinstance(expression_dict, dict):
             from swayam.inject.template.builtin.internal import Expression
             try:
-                expression = UserExpression(**Expression(**expression_dict).as_dict())
+                expression = UserExpression(name=name, **Expression(**expression_dict).as_dict())
             except Exception as e:
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Expression.keys}]. Overall template definition is {str(Expression.definition)}. Error: {e}. Check: {traceback.format_exc()} ")

@@ -22,7 +22,8 @@ from tarkash import log_debug
 
 class UserExpression:
     
-    def __init__(self, *, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, draft=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
+    def __init__(self, *, name, prompts, purpose:str=None, persona:str=None, directive:str=None, image:str=None, out_template:str=None, draft=None, actions:list=None, prologue=None, epilogue=None, prologue_prompt=None, epilogue_prompt=None) -> Any:
+        self.__name = name
         self.__prompt_names_or_dicts = list(prompts)
         self.__prompts = []
         self.__purpose = purpose
@@ -44,7 +45,7 @@ class UserExpression:
         
         self.__narrative = None
         self.__drafter = None
-        
+        self.__mandatory_out_template = None
         if self.__out_template and self.__actions:
             raise ValueError("Cannot suggest both output template and actions.")
         
@@ -110,6 +111,17 @@ class UserExpression:
         
     def has_directive(self):
         return self.__directive is not None
+    
+    @property
+    def mandatory_out_template(self):
+        return self.__mandatory_out_template
+    @mandatory_out_template.setter
+    def mandatory_out_template(self, template):
+        self.__mandatory_out_template = template
+    
+    @property
+    def name(self):
+        return self.__name
     
     @property
     def frame(self):

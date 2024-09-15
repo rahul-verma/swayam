@@ -1,4 +1,4 @@
-# This file is a part of Tarkash
+# This file is a part of Swayam
 # Copyright 2015-2024 Rahul Verma
 
 # Website: www.RahulVerma.net
@@ -15,19 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swayam.inject.driver import Driver
-from swayam import Action
+from pydantic import BaseModel, Field
+from .Reference import ReferenceContentModel
+from .FileInfo import FileInfoModel
+from swayam import Template
 
-import os
-from swayam import Driver, Template
+class ImageInfo(ReferenceContentModel, FileInfoModel):
+    pass
 
-def get_file_info(*, invoker, dir_path, file_filter_pattern=None):
-    from swayam import Action
-    for file_info in Action.EnumerateDir(dir_path=dir_path, file_filter_pattern=file_filter_pattern)["files"]:
-        yield Template.FileInfo(**file_info)
-
-DirFiles = Driver.build("DirFiles", 
-                        callable=get_file_info,
-                        in_template=Template.DirPathFilter, 
-                        out_template=Template.FileInfo)
-
+ImageInfo = Template.build("ImageInfo", model=ImageInfo)

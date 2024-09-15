@@ -28,6 +28,7 @@ from .injectable.EntityName import *
 from .injectable.FileInfo import *
 from .injectable.FileName import *
 from .injectable.FilePath import *
+from .injectable.ImageInfo import *
 from .injectable.JsonContentParser import *
 from .injectable.JsonContent import *
 from .injectable.Reference import *

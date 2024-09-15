@@ -159,10 +159,10 @@ Following is background information, as marked by triple backticks, that you nee
         if not expression.story and not expression.thought and not expression.purpose:
             return ""
 
-        if expression.story and expression.story != "Story":
-            background += expression.story + "\n"
-        if expression.thought and expression.thought != "Thought":
-            background += expression.thought + "\n"
+        if expression.story and expression.story.purpose != "Story":
+            background += expression.story.purpose + "\n"
+        if expression.thought and expression.thought.purpose != "Thought":
+            background += expression.thought.purpose + "\n"
         if expression.purpose and expression.purpose != "Expression":
             background += expression.purpose + "\n"
         return self.__background.format(background=background)

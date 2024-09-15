@@ -40,7 +40,7 @@ class ThoughtNamespace(Namespace):
         if isinstance(thought_dict, dict):
             from swayam.inject.template.builtin.internal import Thought
             try:
-                thought = UserThought(**Thought(**thought_dict).as_dict())
+                thought = UserThought(name=name, **Thought(**thought_dict).as_dict())
             except Exception as e:
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Thought.keys}]. Overall template definition is {str(Thought.definition)}. Error: {e}. Check: {traceback.format_exc()} ")

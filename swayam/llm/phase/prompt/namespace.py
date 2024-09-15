@@ -39,7 +39,7 @@ class PromptNamespace(Namespace):
         elif isinstance(content, dict):
             from swayam.inject.template.builtin.internal import Prompt
             try:
-                return UserPrompt(**Prompt(**content).as_dict())
+                return UserPrompt(name=name, **Prompt(**content).as_dict())
             except Exception as e:
                 import traceback
                 raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{Prompt.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
