@@ -1,5 +1,6 @@
 description: contains simple review comments for text
 
-depends_on:
+refer:
   - simple
-  - depends_events_loop
+  - name: depends_events_loop
+    iter_content: True

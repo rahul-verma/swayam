@@ -4,7 +4,4 @@ prompts:
   - draft:
       definitions: 
         - review
-      drafter: 
-        name: depends_dual_loop
-        args: 
-          iter_content: True
+      artifact: depends_multiref_loop
