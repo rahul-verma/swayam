@@ -22,7 +22,7 @@ from pydantic import Field, BaseModel
 
 import os
 from swayam import Driver, Template, Reference
-from swayam.inject.template.builtin.internal.Reference import Reference
+from swayam.inject.template.builtin.internal.Reference import Reference as ReferenceTemplate
 from swayam.inject.template.builtin.internal.Injectable import InjectableModel
 
 def draft_loop(*, invoker, entity_name):
@@ -33,7 +33,7 @@ def draft_loop(*, invoker, entity_name):
     drafter = Drafter(artifact=draft, thought=invoker.thought_name)
     invoker.phase.drafter = drafter
     if not draft.has_dependencies:
-        yield Reference(
+        yield ReferenceTemplate(
                             reference_description="",
                             reference_template="",
                             reference_content=""
@@ -43,9 +43,9 @@ def draft_loop(*, invoker, entity_name):
         # Handle references
         for reference in draft.references:
             if isinstance(reference, str):
-                reference = getattr(Reference, reference)
+                reference = getattr(Reference, reference)(thought=invoker.thought_name)
                 contents = reference.load()
-                yield Reference(
+                yield ReferenceTemplate(
                     reference_description=reference.description,
                     reference_template=json.dumps(reference.template.definition),
                     reference_content=json.dumps(contents),
@@ -56,7 +56,7 @@ def draft_loop(*, invoker, entity_name):
                 contents = reference.load()
                 if reference.iter_content:
                     for content in contents:
-                        yield Reference(
+                        yield ReferenceTemplate(
                             reference_description=reference.description,
                             reference_template=json.dumps(reference.template.definition),
                             reference_content=json.dumps(content),
@@ -64,7 +64,7 @@ def draft_loop(*, invoker, entity_name):
                         ) 
                 else:
                     for content in contents:
-                        yield Reference(
+                        yield ReferenceTemplate(
                             reference_description=reference.description,
                             reference_template=json.dumps(reference.template.definition),
                             reference_content=json.dumps(content),
@@ -74,5 +74,5 @@ def draft_loop(*, invoker, entity_name):
 DraftLooper = Driver.build("DraftLooper", 
                         callable=draft_loop,
                         in_template=Template.EntityName, 
-                        out_template=Reference)
+                        out_template=ReferenceTemplate)
 

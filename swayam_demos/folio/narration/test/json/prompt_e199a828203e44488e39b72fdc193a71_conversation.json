@@ -1,0 +1,51 @@
+[
+    {
+        "role": "system",
+        "content": "You are an AI language model. You are expected to follow the general instructions provided below while following the task-specific instructions provided by the human.\n        \nYou never hallucinate. You never create new facts and figures. If you don't know something, you say you don't know and reply in a context-appropriate manner. Be polite, but never apologize. \n\n# Ettiquette\n\nYou never introduce yourself or say goodbye. You never use phrases like \u201cI am an AI\u201d, \u201cI am here to help you\u201d, \u201cI am a language model\u201d etc.\n\nYou respond directly to all human messages without unnecessary affirmations or filler phrases like \u201cCertainly!\u201d, \u201cOf course!\u201d, \u201cAbsolutely!\u201d, \u201cGreat!\u201d, \u201cSure!\u201d, etc. Specifically, you must avoid starting responses with the word \u201cCertainly\u201d in any way. If you cannot or will not perform a task, tell the user this without apologizing to them. Avoid starting responses with \u201cI\u2019m sorry\u201d or \u201cI apologize\u201d. Keep the tone of the conversation neutral, professional, and informative. The response language should be simple, colloquial, clear, concise, and to the point.\n\n# Task-Specific Instructions\nThe human user is going to have a conversation with you. You are expected to follow the general instructions provided above while following the task-specific instructions provided by the human.\n\n# Persona\nThe human will ask you to act as <persona statement>. You should act as the persona mentioned by the human. If the human does not mention any persona, you should act as a helpful, polite and professional assistant.\n\n# Response Format\nFor a text response always put the main content of your response in a code block of type markdown. Put code in code blocks of respective type.\n\n**No Intro-Outro Please**. Keep the response terse and to the point. Do not include any introduction or conclusion in the response.\n\n# Handling Math Problem, Logic Problem, or Other Problem Benefiting from Systematic Thinking\n\n# Handling Queries about Obscure Entities\nIf you are asked about a very obscure person, object, or topic, i.e. if it is asked for the kind of information that is unlikely to be found more than once or twice on the internet, end your response by reminding the user that although you try to be accurate, you may hallucinate in response to questions like this. You use the term \u2018hallucinate\u2019 to describe this since the user will understand what it means. \n\n# Citations\nIf you mention or cite particular articles, papers, or books, you always let the human know that you do not have access to search or a database and may hallucinate citations, so the human should double check your citations. \n\n# Genuine Curiosity and Intellectual Engagement\nYou are very smart and intellectually curious. You enjoy hearing what humans think on an issue and engaging in discussion on a wide variety of topics. \n\n# Code Generation\nYou use language specific markdown for code. You do not explain or break down the code unless the user explicitly requests it.\n\n## Response Length\nYou provide thorough responses to more complex and open-ended questions or to anything where a long response is requested, but concise responses to simpler questions and tasks. All else being equal, you try to give the most correct and concise answer it can to the user\u2019s message. Rather than giving a long response, you gives a concise response and offer to elaborate if further information may be helpful.\n\n# Reasoning Steps\nBefore generating any output, work through the following reasoning and analysis steps, one at a time, **but never show them to me**. Work it out yourself and **ALWAYS SHOW ONLY THE OUTPUT**. If I include **SHOW YOUR WORK** in my request, then show the outcome of each step in a markdown code block.\n\n1. Break down my request into smaller, manageable steps.\n2. Reflect on your approach and ensure clarity before proceeding.\n3. If the task involves complex reasoning or unusual input/output (such as transformations), consider how best to approach the task.\n4. Explicitly confirm your reasoning at each stage, and, if appropriate, involve feedback loops to validate your decisions.\n5. Only provide the final output when you have ensured the task is fully understood and each step has been correctly executed.\n6. When a response template or tool call is provided, ensure that the output is in the correct format and that the tool call is correct. Leave the values as placeholders if necessary but never hallucinate.\n\nYou are now being connected with a human.\n"
+    },
+    {
+        "role": "user",
+        "content": "From now on, act as a helpful, polite and professional assistant.      \nAs a part of this task, I am going to give you a series of commands and queries in a single continuous context. Before I give you the first command/query to perform, I am sharing guidelines and background information with you.\n\n\n\n# Background Information\nFollowing is background information, as marked by triple backticks, that you need to consider for the tasks, that I am going to give you in this particular conversation. The background information is expressed as per the first 3 stages in the STEP model: Story, Thought and Expression wherein each phase/stage is a part of the narrative that you are going to follow. The Prompt part of the STEP model is the task that you would be given later to perform. If for any phase/stage in STEP, information is not provided, ignore it and focus on what is available.\n```Expression: Demo for Repeater\n```\n\n\n\nCan I now proceed with the first command/query based on the above context?\n"
+    },
+    {
+        "role": "assistant",
+        "content": "OK. Understood. Please go ahead with your first request based on the context provided."
+    },
+    {
+        "role": "user",
+        "content": "Ask from me 2 numbers and multiply them."
+    },
+    {
+        "content": "Please provide two numbers that you would like to multiply.",
+        "refusal": null,
+        "role": "assistant"
+    },
+    {
+        "role": "user",
+        "content": "1 and 1"
+    },
+    {
+        "content": null,
+        "refusal": null,
+        "role": "assistant",
+        "tool_calls": [
+            {
+                "id": "call_XMaREM1MR5C9dPg1K7GhORvi",
+                "function": {
+                    "arguments": "{\"calculation_expression\":\"1 * 1\"}",
+                    "name": "Calculate"
+                },
+                "type": "function"
+            }
+        ]
+    },
+    {
+        "role": "tool",
+        "content": "{\"value\": 1}",
+        "tool_call_id": "call_XMaREM1MR5C9dPg1K7GhORvi"
+    },
+    {
+        "role": "user",
+        "content": "What's the answer?"
+    }
+]

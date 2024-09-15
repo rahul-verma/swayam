@@ -28,6 +28,7 @@ class Artifact:
     
     def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, store_as=None) -> None:
         self.__name = name
+        self.__file_name = name + ".json"
         self.__singular_name = singular_name
         self.__plural_name = plural_name
         self.__description = description
@@ -54,6 +55,10 @@ class Artifact:
     @property
     def name(self):
         return self.__name
+    
+    @property
+    def file_name(self):
+        return self.__file_name
     
     @property
     def singular_name(self):

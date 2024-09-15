@@ -61,7 +61,7 @@ class _SwayamSingleton:
             final_folio_dir = os.environ["FOLIO_DIR"]
         except KeyError:
             if folio_dir is None:
-                final_folio_dir = self.__project_dir
+                final_folio_dir =os.path.join(self.__project_dir, "folio")
             else:
                 final_folio_dir = folio_dir
         

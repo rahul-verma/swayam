@@ -15,18 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import importlib
-
-from .namespace import *
 from swayam.namespace.meta import NamespaceMeta
-from swayam.namespace.error import DefinitionNotFoundError
 from swayam.core.caller import get_caller_module_file_location
+from swayam import Artifact
     
 class ReferenceMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
-        from swayam.core.constant import SwayamOption
-        from .namespace import ReferenceNamespace
-        cls.load_root_namespace(SwayamOption.FOLIO_REFERENCE_DIR, ReferenceNamespace)
-        return getattr(cls.root, name)
+        artifact = getattr(Artifact, name)
+        from .reference import ReferenceMetaData
+        return ReferenceMetaData(artifact=artifact)

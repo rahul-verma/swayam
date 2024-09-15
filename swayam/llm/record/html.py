@@ -169,11 +169,8 @@ class HtmlRecorder(Reporter):
                                     "id": expression_id,
                                     "text": f"{expression_purpose}",
                                     "data": {
-                                        "content": [{
-                                                "heading": "Expression ID",
-                                                "content": expression_id
-                                            },
-                                    ]},
+                                        "content": []
+                                    },
                                     "children": []
                                 })
 

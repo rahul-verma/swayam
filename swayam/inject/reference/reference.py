@@ -26,21 +26,13 @@ from swayam.inject.template.template import DataTemplate
 
 class Reference:
     
-    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None) -> None:
-        self.__name = name
-        self.__file_name = name + ".json"
-        from tarkash import Tarkash
-        from swayam.core.constant import SwayamOption
-        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
-        self.__file_path = os.path.join(folio_draft_dir, self.file_name)
-        self.__singular_name = singular_name
-        self.__plural_name = plural_name
-        self.__description = description
-        self.__template_name = template
+    def __init__(self, *, artifact, file_path) -> None:
+        self.__artifact = artifact
+        self.__file_path = file_path
+        
+    def __getattr__(self, name):
+        return getattr(self.__artifact, name)
     
-        from swayam import Template
-        self.__template = getattr(Template, self.__template_name)
-                
     @property
     def name(self):
         return self.__name
@@ -60,26 +52,36 @@ class Reference:
     @property
     def file_path(self):
         return self.__file_path
-                
-    @property
-    def description(self):
-        return self.__description
-    
-    @property
-    def template_name(self):
-        return self.__template_name
-    
-    @property
-    def template(self):
-        return self.__template
     
     def load(self):
         with open(self.__file_path, "r") as file:
             return json.loads(file.read())
         
     def singular_writeup(self, content):
-        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the {self.__singular_name} Content**.__NL____NL__```{json.dumps(self.__template.definition)}```__NL____NL__### {self.__singular_name} Content__NL__As per the above schema, analyse the following data. It {self.__description}__NL____NL__```{json.dumps(content)}```__NL____NL__"
+        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the {self.singular_name} Content**.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.singular_name} Content__NL__As per the above schema, analyse the following data. It {self.description}__NL____NL__```{json.dumps(content)}```__NL____NL__"
     
     def plural_writeup(self, contents):
-        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the individual entries in {self.__plural_name} Content**.__NL____NL__```{json.dumps(self.__template.definition)}```__NL____NL__### {self.__plural_name} Contents__NL__As per the above schema, analyse the following data presented as a JSON List. It {self.__description}__NL____NL__```{json.dumps(contents)}```__NL____NL__"
+        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the individual entries in {self.plural_name} Content**.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.plural_name} Contents__NL__As per the above schema, analyse the following data presented as a JSON List. It {self.description}__NL____NL__```{json.dumps(contents)}```__NL____NL__"
+    
+    
+
+class ReferenceMetaData:
+    
+    def __init__(self, *, artifact) -> None:
+        self.__artifact = artifact
         
+    def __call__(self, *, thought):
+        # Look in Folio Artifacts
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_ARTIFACT_DIR)
+        reference_file_path = os.path.join(folio_draft_dir, self.__artifact.file_name)
+        if not os.path.exists(reference_file_path):
+            # Look in Thought's Drafts
+            folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
+            reference_file_path = os.path.join(folio_draft_dir, thought, self.__artifact.file_name)
+            if not os.path.exists(reference_file_path):
+                from .error import ReferenceContentNotFoundError
+                raise ReferenceContentNotFoundError(self, name=self.__artifact.name)
+        
+        return Reference(artifact=self.__artifact, file_path=reference_file_path)
