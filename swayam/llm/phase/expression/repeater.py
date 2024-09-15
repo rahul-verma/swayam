@@ -24,7 +24,7 @@ def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, drive
         temp_dict.update(parent_fmt_kwargs)
         temp_dict.update(out_dict)
         prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
-        for prompt_name in prompt_names:
+        for index, prompt_name in enumerate(prompt_names):
             prompt = getattr(prompt_namespace, prompt_name)
             prompt.vault = expression.narrative.vault
             if image:
@@ -33,6 +33,12 @@ def iterator(expression, prompt_names, prompt_ns_path, resolution, driver, drive
                 prompt.suggest_out_template(template)
             if actions:
                 prompt.suggest_actions(actions)
+                
+            # Drafting
+            if expression.drafter:
+                # Is it the last prompt
+                if index == len(prompt_names) - 1:
+                    prompt.draft_mode = True
             yield prompt
 
 class PromptDriver:

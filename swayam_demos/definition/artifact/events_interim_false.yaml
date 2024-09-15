@@ -1,0 +1,5 @@
+singular_name: Event
+description: contains data for an event in Calendar
+template: CalendarEvent
+interim: False
+export_as: InterimFalseDraft

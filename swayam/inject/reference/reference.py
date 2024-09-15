@@ -58,10 +58,10 @@ class Reference:
             return json.loads(file.read())
         
     def singular_writeup(self, content):
-        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the {self.singular_name} Content**.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.singular_name} Content__NL__As per the above schema, analyse the following data. It {self.description}__NL____NL__```{json.dumps(content)}```__NL____NL__"
+        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the {self.singular_name} Content**. If I've asked you to review contents, then do not include review comments for this schema.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.singular_name} Content__NL__As per the above schema, analyse the following data. It {self.description}__NL__**DONOT DO A SCHEMA REVIEW OF FOLLOWING DATA. REVIEW ONLY WHAT IT CONTAINS**.__NL____NL__```{json.dumps(content)}```__NL____NL__"
     
     def plural_writeup(self, contents):
-        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the individual entries in {self.plural_name} Content**.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.plural_name} Contents__NL__As per the above schema, analyse the following data presented as a JSON List. It {self.description}__NL____NL__```{json.dumps(contents)}```__NL____NL__"
+        return f"Following is the input data for this task:__NL____NL__### JSON Schema__NL__**This schema is only for you to understand the structure of the individual entries in {self.plural_name} Content**. If I've asked you to review contents, then do not include review comments for this schema.__NL____NL__```{json.dumps(self.template.definition)}```__NL____NL__### {self.plural_name} Contents__NL__As per the above schema, analyse the following data presented as a JSON List. It {self.description}.__NL__**DONOT DO A SCHEMA REVIEW OF FOLLOWING DATA. REVIEW ONLY WHAT IT CONTAINS**.__NL____NL__```{json.dumps(contents)}```__NL____NL__"
     
     
 

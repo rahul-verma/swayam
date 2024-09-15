@@ -17,6 +17,7 @@
 
 import os
 import json
+import shutil
 
 class Drafter:
     
@@ -45,3 +46,31 @@ class Drafter:
             else:
                 updated_content.extend(content)
             file.write(json.dumps(updated_content, indent=4))
+            
+    def export(self):
+        if self.__artifact.interim:
+            return
+        
+        reference_name = "generated_" + self.__artifact.reference_name
+            
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        ref_dir = Tarkash.get_option_value(SwayamOption.FOLIO_ARTIFACT_DIR)
+        os.makedirs(ref_dir, exist_ok=True)
+        shutil.copy(self.__file_path, os.path.join(ref_dir, reference_name + ".json"))
+        
+        artifact_def = {
+            "singular_name": self.__artifact.singular_name,
+            "plural_name": self.__artifact.plural_name,
+            "description": self.__artifact.description,
+            "template": self.__artifact.template.name,
+        }
+        
+        if self.__artifact.reference_name != self.__artifact.name:
+            import yaml
+            artifact_def_dir = Tarkash.get_option_value(SwayamOption.DEFINITION_ARTIFACT_DIR)
+            with open(os.path.join(artifact_def_dir, self.__artifact.reference_name + ".yaml"), "w") as file:
+                file.write(yaml.dump(artifact_def))
+        
+        
+        

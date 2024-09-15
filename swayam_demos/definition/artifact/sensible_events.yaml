@@ -1,0 +1,3 @@
+singular_name: SensibleEvent
+description: contains data for an event in Calendar, with proper prompt sequence
+template: CalendarEvent

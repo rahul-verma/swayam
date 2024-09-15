@@ -33,7 +33,7 @@ class ArtifactModel(BaseModel):
     template: str = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextContent.")
     refer: List[Union[str, ReferenceDependencyModel]] = Field(list(), description="List of references that this draft depends on.")
     feed: List[Union[str,InjectableModel]] = Field(list(), description="List of references that this draft depends on.")
-    interim: bool = Field(False, description="Whether this draft is an interim draft. In such a case, it is not stored as a reference.")
-    store_as: str = Field(None, description="Name of the reference to store this draft. If not provided, it is stored as the name of the draft. A prefix 'generated_' is added to the name of the reference in both the cases.")
+    interim: bool = Field(True, description="Whether this draft is an interim artifact (draft). In such a case, it is local to the current thought and not stored in artifacts as reference for other thoughts.")
+    export_as: str = Field(None, description="Name of the reference to store this draft as. If not provided, it is stored as the name of the draft. A prefix 'generated_' is added to the name of the reference in both the cases.")
     
 Artifact = Template.build("Artifact", model=ArtifactModel)

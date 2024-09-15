@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class Artifact:
     
-    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, store_as=None) -> None:
+    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, export_as=None) -> None:
         self.__name = name
         self.__file_name = name + ".json"
         self.__singular_name = singular_name
@@ -38,10 +38,10 @@ class Artifact:
         self.__references = refer
         self.__feeders = feed
         self.__interim = interim
-        if store_as is None:
-            self.__stored_reference_name = "generated_" + self.__name
+        if export_as is None:
+            self.__reference_name = self.__name
         else:
-            self.__stored_reference_name = "generated_" + store_as
+            self.__reference_name = export_as
         from swayam import Template
         self.__template = getattr(Template, self.__template_name)
         
@@ -79,6 +79,14 @@ class Artifact:
     @property
     def template(self):
         return self.__template
+    
+    @property
+    def interim(self):
+        return self.__interim
+    
+    @property
+    def reference_name(self):
+        return self.__reference_name
     
     @property
     def has_dependencies(self):

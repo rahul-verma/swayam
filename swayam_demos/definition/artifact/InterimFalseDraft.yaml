@@ -1,0 +1,4 @@
+description: contains data for an event in Calendar
+plural_name: Events
+singular_name: Event
+template: CalendarEvent

@@ -1,0 +1,6 @@
+singular_name: Event
+description: contains data for an event in Calendar
+template: CalendarEvent
+refer:
+  - name: events_interim_false
+    iter_content: True

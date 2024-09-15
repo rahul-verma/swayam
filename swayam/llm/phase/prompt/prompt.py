@@ -37,6 +37,8 @@ class UserPrompt:
         self.__out_template = out_template
         self.__prologue = prologue
         self.__epilogue = epilogue
+        self.draft_mode = False
+        
         if not self.__prologue:
             self.__prologue = []
         if not self.__epilogue:
@@ -138,12 +140,12 @@ class UserPrompt:
         return self.__purpose
     
     @property
-    def drafter(self):
-        return self.__drafter
+    def draft_mode(self):
+        return self.__draft_mode
     
-    @drafter.setter
-    def drafter(self, drafter):
-        self.__drafter = drafter
+    @draft_mode.setter
+    def draft_mode(self, flag):
+        self.__draft_mode = flag
             
     @property
     def out_template(self):

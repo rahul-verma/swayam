@@ -73,11 +73,12 @@ class ExpressionEnactor(BaseLLMEnactor):
                     generator_conversation.append_context_prompt(narrative_context_prompt)
                     applicable_conversation = generator_conversation
                 prompts = prompts() # Lazy loading
+                
+            last_prompt_draft_content = None
             for prompt in prompts:
                 log_debug("Processing prompt...")
                 # For dynamic variables in Narrative
                 prompt.vault = narrative.vault
-                prompt.drafter = expression.drafter
                 prompt.dynamic_format()
                 expression.prompt_frame.prologue()
                 if generated:
@@ -90,7 +91,12 @@ class ExpressionEnactor(BaseLLMEnactor):
                         narrative.conversation = applicable_conversation
                 else:
                     narrative.conversation = applicable_conversation
-                prompt_enactor.enact(prompt, narrative=narrative)
+                last_prompt_draft_content = prompt_enactor.enact(prompt, narrative=narrative)
                 expression.prompt_frame.epilogue()
+                
+            # Draft
+            if expression.drafter:
+                expression.drafter.draft(last_prompt_draft_content)
+                expression.drafter.export()
             
         expression.frame.epilogue()

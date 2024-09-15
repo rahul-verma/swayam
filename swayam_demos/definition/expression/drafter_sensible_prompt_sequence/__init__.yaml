@@ -1,0 +1,8 @@
+purpose: Example of a sensible prompt sequence for Drafting
+
+prompts:
+  - draft:
+      definitions:
+        - command
+        - event
+      artifact: sensible_events
