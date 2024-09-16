@@ -92,14 +92,16 @@ class PromptEnactor(BaseLLMEnactor):
             response_messages = llm_response.message
             
         prompt.frame.epilogue()
-        
+
         if prompt.draft_mode:
             response_for_drafting = prompt.vault["response_content"]
             if not prompt.out_template:
-                return response_for_drafting
+                response_for_drafting = response_for_drafting
             else:
                 response_for_drafting = json.loads(response_for_drafting)
                 if prompt.out_template.is_plural:
-                    return response_for_drafting[prompt.out_template.plural_key]
+                    response_for_drafting = response_for_drafting[prompt.out_template.plural_key]
                 else:
-                    return response_for_drafting
+                    response_for_drafting = response_for_drafting
+            prompt.drafter.draft(response_for_drafting)
+            prompt.drafter.export()

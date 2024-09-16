@@ -57,18 +57,18 @@ class Namespace(ABC):
     def fmt_kwargs(self):
         return self.__fmt_kwargs
 
-    def __getattr__(self, name):
+    def __getattr__(self, def_name):
         
-        if name == "formatter":
+        if def_name == "formatter":
             from functools import partial
             # Return a partial namespace of the same type
             return partial(self.__class__, path=self.path, def_extension=self.__def_extension, resolution=self.resolution)
         
-        if "." in name:
-            prefix, name = name.split(".", 1)
-            return getattr(self.__class__(path=os.path.join(self.path, prefix), def_extension=self.__def_extension, resolution=self.resolution + "." + prefix), name)
+        if "." in def_name:
+            prefix, def_name = def_name.split(".", 1)
+            return getattr(self.__class__(path=os.path.join(self.path, prefix), def_extension=self.__def_extension, resolution=self.resolution + "." + prefix), def_name)
         
-        name_path = os.path.join(self.path, name)
+        name_path = os.path.join(self.path, def_name)
         
         # Check without the yaml extension
         if os.path.exists(name_path):
@@ -106,7 +106,7 @@ class Namespace(ABC):
                         children["package_file_content"] = children["package_file_content"].replace("$" + k + "$", str(v))
                 
                 return self.handle_current_name_as_package(
-                    name=name,
+                    name=def_name,
                     path=name_path,
                     resolution=self.resolution + "." + name,
                     package_file_content=children["package_file_content"],
@@ -123,18 +123,18 @@ class Namespace(ABC):
                 for k,v in self.fmt_kwargs.items():
                     content = content.replace("$" + k + "$", str(v))
                 return self.handle_current_name_as_definition(
-                        name=name,
+                        name=def_name,
                         path=name_path + f".{self.__def_extension}",
-                        resolution=self.resolution + "." + name,
-                        purpose = name.replace("_", " ").title(),
+                        resolution=self.resolution + "." + def_name,
+                        purpose = def_name.replace("_", " ").title(),
                         content=content
                 )
             except IndexError as e:
                 import traceback
-                raise DefinitionFormattingError(self, name=name, path=name_path + f".{self.__def_extension}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=f"Are you using a positional placeholders in your {self.__def_extension.upper()} file? Only named placeholders are allowed. " + traceback.format_exc())
+                raise DefinitionFormattingError(self, name=def_name, path=name_path + f".{self.__def_extension}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=f"Are you using a positional placeholders in your {self.__def_extension.upper()} file? Only named placeholders are allowed. " + traceback.format_exc())
             except KeyError as e:
                 import traceback
-                raise DefinitionFormattingError(self, name=name, path=name_path + f".{self.__def_extension.upper()}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
+                raise DefinitionFormattingError(self, name=def_name, path=name_path + f".{self.__def_extension.upper()}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
         else:
             raise DefinitionNotFoundError(self, name=name)
         

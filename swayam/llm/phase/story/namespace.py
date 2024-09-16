@@ -35,7 +35,6 @@ class StoryNamespace(Namespace):
     def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
         from .story import UserStory
         from swayam import Template
-            
         import yaml
         story_dict = yaml.safe_load(package_file_content)
         if isinstance(story_dict, dict):

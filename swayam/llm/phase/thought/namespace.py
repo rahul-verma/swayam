@@ -34,7 +34,6 @@ class ThoughtNamespace(Namespace):
 
     def handle_current_name_as_package(self, *, name, path, resolution, package_file_content, sub_directories, definitions):
         from .thought import UserThought
-            
         import yaml
         thought_dict = yaml.safe_load(package_file_content)
         if isinstance(thought_dict, dict):

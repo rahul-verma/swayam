@@ -19,11 +19,14 @@
 
 def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution, driver, driver_kwargs, parent_fmt_kwargs, image, template, actions):
     from swayam.llm.phase.prompt.namespace import PromptNamespace
+    # This is the loop where one input dict is taken for one or more prompt definitions
     for out_dict in driver(phase=expression, **driver_kwargs):
         temp_dict = {}
         temp_dict.update(parent_fmt_kwargs)
         temp_dict.update(out_dict)
         prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
+        
+        # This is the loop for an individual prompt definition
         for index, prompt_name in enumerate(prompt_names):
             prompt = getattr(prompt_namespace, prompt_name)
             if iterator_type=="draft":
