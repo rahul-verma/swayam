@@ -23,9 +23,9 @@ from swayam import Template
 from .FrameInjectable import InjectableModel
     
 class DrafterDefinitionModel(BaseModel):
-    definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
-    artifact: str = Field(..., title="Artifact name", description="Name of the artifact to draft")
-    standalone: bool = Field(True, title="Standalone", description="Whether the repeated prompts are standalone or not.")
+    definitions: List[str] = Field(..., description="Children Definition names to be repeated.")
+    artifact: str = Field(..., description="Name of the artifact to draft")
+    reset_conversation: bool = Field(True, description="Whether the repeated prompts are reset_conversation or not.")
     
 class DrafterModel(BaseModel):
-    draft: DrafterDefinitionModel = Field(..., title="Draft Definition", description="Draft dictionary.")
+    draft: DrafterDefinitionModel = Field(..., description="Draft dictionary.")

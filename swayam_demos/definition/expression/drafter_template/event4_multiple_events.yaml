@@ -1,7 +1,5 @@
 
 text: |
-  Extract event information: 
-  Bob goes on Friday.
-  Extract event information: A, T and D are going to ATD.
-
-out_template: CalendarEvents
+  Extract event information from the following and write to disk:
+  - Bob goes on Friday.
+  - A, T and D are going to ATD.

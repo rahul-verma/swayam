@@ -13,7 +13,7 @@ prompts:
         name: TwoNumberDriver
         args: 
           size: 3
-      standalone: True
+      reset_conversation: True
   - trip_command2
   - trip_query2
 

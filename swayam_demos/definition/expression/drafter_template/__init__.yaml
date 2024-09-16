@@ -8,5 +8,3 @@ prompts:
         - event3
         - event4_multiple_events
       artifact: events
-
-out_template: CalendarEvent

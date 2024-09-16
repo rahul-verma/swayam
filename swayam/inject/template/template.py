@@ -99,12 +99,27 @@ class DataTemplate(Injectable):
 
     @property
     def definition(self):
+        def remove_title_key(data):
+            if isinstance(data, dict):
+                # Remove 'title' key if it exists at the current level
+                if 'title' in data:
+                    del data['title']
+                
+                # Recursively remove 'title' from nested dictionaries
+                for key, value in list(data.items()):
+                    remove_title_key(value)
+            
+            elif isinstance(data, list):
+                # If it's a list, iterate through all elements and remove 'title' from each
+                for item in data:
+                    remove_title_key(item)
         data_schema = self.model.model_json_schema()
-        for _, property in data_schema["properties"].items():
-            if "title" in property:
-                property.pop("title")
-            if "enum" in property:
-                property.pop("default")
+        remove_title_key(data_schema)
+        # for _, property in data_schema["properties"].items():
+        #     if "title" in property:
+        #         property.pop("title")
+        #     if "enum" in property:
+        #         property.pop("default")
         return data_schema
     
     def __call__(self, **fields):

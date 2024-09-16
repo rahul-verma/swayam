@@ -29,7 +29,7 @@ class RepeatedExpressionDefinitionsModel(BaseModel):
 class RepeatedPromptDefinitionsModel(RepeatedExpressionDefinitionsModel):
     definitions: List[str] = Field(..., title="Children Definition names", description="Children Definition names to be repeated.")
     driver: Union[FrameInjectableModel, str] = Field(..., title="Driver", description="Driver to be used for repeating the children phases.")
-    standalone: bool = Field(False, title="Standalone", description="Whether the repeated prompts are standalone or not.")
+    reset_conversation: bool = Field(False, title="Standalone", description="Whether the repeated prompts are reset_conversation or not.")
     
 class PromptRepeaterModel(BaseModel):
     repeat: RepeatedPromptDefinitionsModel = Field(..., title="Prompt Repeater Definition", description="Repeater dictionary.")

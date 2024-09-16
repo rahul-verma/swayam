@@ -1,5 +1,3 @@
 
 text: |
-  Alice and Bob are going to a science fair on Friday.
-
-out_template: CalendarEvent
+  Extract event information and write to disk.

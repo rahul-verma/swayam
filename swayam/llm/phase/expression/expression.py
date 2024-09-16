@@ -45,7 +45,7 @@ class UserExpression:
         
         self.__narrative = None
         self.__drafter = None
-        self.__mandatory_out_template = None
+        self.__mandatory_action = None
         if self.__out_template and self.__actions:
             raise ValueError("Cannot suggest both output template and actions.")
         
@@ -67,7 +67,7 @@ class UserExpression:
                     primary_key = "repeat"
                 elif "draft" in prompt_name_or_dict:
                     prompt_dict = prompt_name_or_dict["draft"]
-                    prompt_dict["standalone"] = True
+                    prompt_dict["reset_conversation"] = True
                     primary_key = "draft"
                 else:
                     raise ValueError("Prompt dictionary must have a 'repeat' or 'draft' key.")
@@ -113,11 +113,11 @@ class UserExpression:
         return self.__directive is not None
     
     @property
-    def mandatory_out_template(self):
-        return self.__mandatory_out_template
-    @mandatory_out_template.setter
-    def mandatory_out_template(self, template):
-        self.__mandatory_out_template = template
+    def mandatory_action(self):
+        return self.__mandatory_action
+    @mandatory_action.setter
+    def mandatory_action(self, action):
+        self.__mandatory_action = action
     
     @property
     def name(self):

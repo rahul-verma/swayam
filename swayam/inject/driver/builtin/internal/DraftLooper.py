@@ -27,6 +27,18 @@ from swayam.inject.template.builtin.injectable.Reference import ReferenceContent
 from swayam.inject.template.builtin.internal.Injectable import InjectableModel
 from swayam.inject.template.template import Data
 
+
+
+from swayam import Action, Template
+from swayam.inject.template.builtin import *
+
+import os
+import re
+
+def call_drafter(*, invoker, **kwargs):
+    invoker.phase.drafter.draft(kwargs)
+    return Template.Success()
+
 def draft_loop(*, invoker, entity_name):
     from swayam import Action
     from swayam import Artifact
@@ -34,7 +46,16 @@ def draft_loop(*, invoker, entity_name):
     draft = getattr(Artifact, entity_name)
     drafter = Drafter(artifact=draft, thought=invoker.thought_name)
     invoker.phase.drafter = drafter
-    invoker.phase.mandatory_out_template = draft.template_name
+    
+    Draft = Action.build("Draft", 
+                         callable=call_drafter, 
+                         description=f"Writes the {draft.singular_name} to disk.",
+                         in_template=draft.template,
+                         out_template=Template.Result
+    )
+    
+    invoker.phase.mandatory_action = Draft
+    
     if not draft.has_dependencies:
         yield ReferenceTemplate(
                             reference_description="",
@@ -61,20 +82,23 @@ def draft_loop(*, invoker, entity_name):
         def create_reference(ref, content, whole_reference=True):
             if whole_reference:
                 writeup = reference.plural_writeup(content)
-                reference_image_file_path = None
+                reference_data = dict()
             else:
                 writeup = reference.singular_writeup(content)
+                reference_data = content
             return ReferenceTemplate(
                     reference_description=ref.description,
                     reference_template=json.dumps(ref.template.definition),
                     reference_content=json.dumps(content),
                     reference_writeup=writeup,
-                    reference_data=content
+                    reference_data=reference_data
                 ) 
 
         # Handle references
         for reference in draft.references:
+            from swayam import Reference
             if isinstance(reference, str):
+                print(Reference)
                 reference = getattr(Reference, reference)(thought=invoker.thought_name)
                 contents = reference.load()
                 yield create_reference(reference, contents, whole_reference=True)

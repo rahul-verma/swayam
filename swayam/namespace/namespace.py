@@ -136,7 +136,7 @@ class Namespace(ABC):
                 import traceback
                 raise DefinitionFormattingError(self, name=def_name, path=name_path + f".{self.__def_extension.upper()}", resolution=self.resolution, fmt_kwargs=self.fmt_kwargs, error=traceback.format_exc())
         else:
-            raise DefinitionNotFoundError(self, name=name)
+            raise DefinitionNotFoundError(self, name=def_name)
         
     def handle_no_package_file(self):
         pass

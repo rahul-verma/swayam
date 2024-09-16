@@ -52,47 +52,58 @@ class ExpressionEnactor(BaseLLMEnactor):
         prompt_enactor = PromptEnactor(recorder=self.recorder, model=self.model, provider=self.provider, temperature=self.temperature)
         from swayam.llm.phase.prompt.prompt import UserPrompt
         
+        def execute_prompt(prompt, *, base_conversation=None):
+            # For dynamic variables in Narrative
+            prompt.vault = narrative.vault
+            prompt.dynamic_format()
+            expression.prompt_frame.prologue()
+            
+            if not base_conversation:
+                prompt_conversation = Conversation()
+                prompt_conversation.append_system_prompt(narrative_instructions)
+                prompt_conversation.append_context_prompt(narrative_context_prompt)
+            else:
+                prompt_conversation = base_conversation
+            narrative.conversation = prompt_conversation
+            
+            prompt.drafter = expression.drafter
+            prompt_enactor.enact(prompt, narrative=narrative)
+            expression.prompt_frame.epilogue()
+            return narrative.conversation
+        
+        overall_conversation = conversation
         for prompts in expression:
-            applicable_conversation = conversation
-            generated = False
+            
+            # Handle single prompt
             if isinstance(prompts, UserPrompt):
                 prompt = prompts
-                if prompt.is_standalone:
-                    only_context_conversation = Conversation()
-                    only_context_conversation.append_system_prompt(narrative_instructions)
-                    only_context_conversation.append_context_prompt(narrative_context_prompt)
-                    applicable_conversation = only_context_conversation
+                print("Is prompt reset_conversation?", prompts.reset_conversation)
+                prompt_conversation = None
+                if prompt.reset_conversation:
+                    overall_conversation = execute_prompt(prompt)
                 else:
-                    applicable_conversation = conversation
-                prompts = [prompts]
+                    overall_conversation = execute_prompt(prompt, base_conversation=overall_conversation)
+            
+                generated = False
+                
             else:
+                print("Is generator reset_conversation?", prompts.reset_conversation)
                 generated = True
-                if prompts.is_standalone:
+                generator_conversation = None
+                
+                if prompts.reset_conversation:
                     generator_conversation = Conversation()
                     generator_conversation.append_system_prompt(narrative_instructions)
                     generator_conversation.append_context_prompt(narrative_context_prompt)
-                    applicable_conversation = generator_conversation
+                else:
+                    generator_conversation = overall_conversation
                 prompts = prompts() # Lazy loading
 
-            for prompt in prompts:
-                log_debug("Processing prompt...")
-                # For dynamic variables in Narrative
-                prompt.vault = narrative.vault
-                prompt.dynamic_format()
-                expression.prompt_frame.prologue()
-                if generated:
-                    if prompt.is_standalone:
-                        only_context_conversation = Conversation()
-                        only_context_conversation.append_system_prompt(narrative_instructions)
-                        only_context_conversation.append_context_prompt(narrative_context_prompt)
-                        narrative.conversation = only_context_conversation
+                for prompt in prompts:
+                    print(prompt.purpose, "is reset_conversation?", prompt.reset_conversation)
+                    if prompt.reset_conversation:
+                        generator_conversation = execute_prompt(prompt)
                     else:
-                        narrative.conversation = applicable_conversation
-                else:
-                    narrative.conversation = applicable_conversation
-                
-                prompt.drafter = expression.drafter
-                prompt_enactor.enact(prompt, narrative=narrative)
-                expression.prompt_frame.epilogue()
+                        generator_conversation = execute_prompt(prompt, base_conversation=generator_conversation)
             
         expression.frame.epilogue()

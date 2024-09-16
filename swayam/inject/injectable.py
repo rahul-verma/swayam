@@ -83,9 +83,13 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         # Get the signature of the function
         signature = inspect.signature(self.callable)
         
+        has_kwargs = False
         for param in signature.parameters.values():
             if param.kind != inspect.Parameter.KEYWORD_ONLY:
-                raise InjectableInvalidCallableDefinitionError(self, error="Found non-keyword arguments in definition.")
+                if not str(param).startswith("**"):
+                    raise InjectableInvalidCallableDefinitionError(self, error="Found non-keyword arguments in definition.")
+                else:
+                    has_kwargs = True
             
         # Extract keyword-only arguments
         keyword_only_params = [
@@ -97,8 +101,12 @@ class StructuredInjectableWithCallable(StructuredInjectable):
         keyword_only_names = {param.name for param in keyword_only_params}
         
         # Check if all parameters are keyword-only and match the expected names
-        if not keyword_only_names == set(self.allowed_keywords):
-            raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
+        if not has_kwargs:
+            if not keyword_only_names == set(self.allowed_keywords):
+                raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
+        else:
+            if not keyword_only_names.issubset(set(self.allowed_keywords)):
+                raise InjectableInvalidCallableDefinitionError(self, error=f"Found {keyword_only_names} in definition.")
         
     def validate_input_content(self, **kwargs):
         pass

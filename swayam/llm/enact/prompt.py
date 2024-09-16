@@ -23,6 +23,7 @@ from tarkash import log_debug
 from swayam.llm.phase.prompt.prompt import UserPrompt
 from swayam.llm.phase.prompt.response import LLMResponse
 from .base import BaseLLMEnactor
+from swayam import Template
 
 class PromptEnactor(BaseLLMEnactor):
 
@@ -42,6 +43,8 @@ class PromptEnactor(BaseLLMEnactor):
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
         #conversation = expression.narrative.conversation
+        print("What prompt enactor got", prompt.reset_conversation)
+        print("Conversation length", len(narrative.conversation.messages))
                 
         prompt.vault = narrative.vault
         
@@ -75,10 +78,13 @@ class PromptEnactor(BaseLLMEnactor):
         narrative.vault.set("response_content", llm_response.as_dict()["content"], phase=prompt)
         
         action_results = {}
-
+        drafter_found = False
         if llm_response.message.tool_calls:
             response_messages = []
+            
             for tool in llm_response.message.tool_calls:
+                if tool.function.name == "Draft":
+                    drafter_found = True
                 action_results[tool.id] = {"name": tool.function.name, "arguments": tool.function.arguments}
                 
                 action_response = prompt.call_action(tool.id, tool.function.name, **json.loads(tool.function.arguments))
@@ -89,19 +95,11 @@ class PromptEnactor(BaseLLMEnactor):
                 conversation.append_action_response(action_response)
             narrative.vault.set("action_results",  action_results, phase=prompt)
         else:
+            if not drafter_found:
+                if prompt.draft_mode:
+                    prompt.call_action("internal42", "Draft", content=llm_response.content)
             response_messages = llm_response.message
             
         prompt.frame.epilogue()
 
-        if prompt.draft_mode:
-            response_for_drafting = prompt.vault["response_content"]
-            if not prompt.out_template:
-                response_for_drafting = response_for_drafting
-            else:
-                response_for_drafting = json.loads(response_for_drafting)
-                if prompt.out_template.is_plural:
-                    response_for_drafting = response_for_drafting[prompt.out_template.plural_key]
-                else:
-                    response_for_drafting = response_for_drafting
-            prompt.drafter.draft(response_for_drafting)
-            prompt.drafter.export()
+        

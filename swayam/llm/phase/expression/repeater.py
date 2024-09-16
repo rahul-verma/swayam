@@ -34,7 +34,7 @@ def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution
             prompt = getattr(prompt_namespace, prompt_name)
             if iterator_type=="draft":
                 if index == 0:
-                    prompt.standalone = True
+                    prompt.reset_conversation = True
                 
             prompt.vault = expression.narrative.vault
             if image:
@@ -49,7 +49,8 @@ def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution
                 # Is it the last prompt
                 if index == len(prompt_names) - 1:
                     prompt.draft_mode = True
-                    prompt.out_template = expression.mandatory_out_template
+                    prompt.suggest_mandatory_actions([expression.mandatory_action])
+            print("From repeater", prompt.reset_conversation)
             yield prompt
 
 class PromptDriver:
@@ -62,7 +63,7 @@ class PromptDriver:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__prompt_names = prompt_dict["definitions"]
-        self.__standalone = prompt_dict["standalone"]
+        self.__reset_conversation = prompt_dict["reset_conversation"]
         from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
         from swayam import Driver
         
@@ -95,8 +96,8 @@ class PromptDriver:
         self.__actions = action_names
         
     @property
-    def is_standalone(self):
-        return self.__standalone
+    def reset_conversation(self):
+        return self.__reset_conversation
     
     def __call__(self):
         prompt_loader = iterator(self.__iterator_type, self.__expression, self.__prompt_names, self.__prompt_ns_path, self.__resolution, self.__driver, self.__driver_kwargs, self.__parent_fmt_kwargs, self.__image, self.__out_template, self.__actions)

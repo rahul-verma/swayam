@@ -15,6 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from swayam import Action, Template
+from swayam.inject.template.builtin import *
+
+import os
+import re
+
 import os
 import json
 import shutil
@@ -71,6 +77,4 @@ class Drafter:
             artifact_def_dir = Tarkash.get_option_value(SwayamOption.DEFINITION_ARTIFACT_DIR)
             with open(os.path.join(artifact_def_dir, self.__artifact.reference_name + ".yaml"), "w") as file:
                 file.write(yaml.dump(artifact_def))
-        
-        
         

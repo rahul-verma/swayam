@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, standalone:bool=False) -> None:
+    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, reset_conversation:bool=False) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -34,7 +34,10 @@ class UserPrompt:
         else:
             self.__purpose = f"Prompt: {self.__purpose}"
         self.__content = text.replace("__NL__", "\n")
-        self.__out_template = out_template
+        
+        self.__out_template = None
+        self.out_template = out_template
+        
         self.__prologue = prologue
         self.__epilogue = epilogue
         self.draft_mode = False
@@ -44,10 +47,7 @@ class UserPrompt:
         if not self.__epilogue:
             self.__epilogue = []
 
-        self.__standalone = standalone
-        
-        if self.__out_template is not None:
-            self.out_template = self.__out_template
+        self.__reset_conversation = reset_conversation
         
         self.__actions = actions
         self.__action_definitions = None
@@ -67,7 +67,7 @@ class UserPrompt:
             self.__image = None
             self.__image_path = None
             
-        self.__standalone = standalone
+        self.__reset_conversation = reset_conversation
             
         self.__vault = None
             
@@ -137,6 +137,14 @@ class UserPrompt:
         from swayam import Action
         if not self.actions and action_names:
             self.load_actions_from_names(action_names)
+            
+    def suggest_mandatory_actions(self, actions):
+        from swayam import Action
+        if not self.actions:
+            self.__actions = []
+        self.__actions = actions + self.__actions
+        self.__action_definitions = [action.definition for action in self.__actions]
+        self.__action_dict = {action.name: action for action in self.__actions}
         
     @property
     def purpose(self):
@@ -156,8 +164,9 @@ class UserPrompt:
     
     @out_template.setter
     def out_template(self, template_name):
-        from swayam import Template
-        self.__out_template = getattr(Template, template_name)
+        if template_name and not self.__out_template:
+            from swayam import Template
+            self.__out_template = getattr(Template, template_name)
         
     @property
     def actions(self):
@@ -178,7 +187,7 @@ class UserPrompt:
             from .response import ActionResponse
             return ActionResponse(action_id=action_id, action_name=action_name, content=action_response)
         else:
-            raise ValueError(f"Action {action_name} not defined for this prompt.")
+            raise ValueError(f"Action {action_name} not defined for this prompt. Defined actions: {self.__action_dict.keys()}")
 
     def process_for_report(self):
         
@@ -249,15 +258,15 @@ class UserPrompt:
         return self.__reportable_message
     
     @property
-    def is_standalone(self):
-        return self.__standalone
+    def reset_conversation(self):
+        return self.__reset_conversation
     
     @property
-    def standalone(self):
-        return self.__standalone
+    def reset_conversation(self):
+        return self.__reset_conversation
     
-    @standalone.setter
-    def standalone(self, flag):
-        self.__standalone = flag
+    @reset_conversation.setter
+    def reset_conversation(self, flag):
+        self.__reset_conversation = flag
     
     

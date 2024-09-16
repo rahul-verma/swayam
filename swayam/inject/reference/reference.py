@@ -22,6 +22,7 @@ from typing import Any
 
 from abc import ABC, abstractmethod
 from swayam.inject.template.template import DataTemplate
+from swayam.inject.injectable import Injectable
 
 
 class Reference:
@@ -65,9 +66,10 @@ class Reference:
     
     
 
-class ReferenceMetaData:
+class ReferenceMetaData(Injectable):
     
     def __init__(self, *, artifact) -> None:
+        super().__init__(type="Reference", name=artifact.name)
         self.__artifact = artifact
         
     def __call__(self, *, thought):

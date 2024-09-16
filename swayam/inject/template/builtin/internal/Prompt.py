@@ -27,6 +27,6 @@ class PromptModel(FrameModel):
     image: Union[str,None] = Field(None, description="Full or Project Relative Path of the image file. Must include file name.", examples=["/home/user/abc.png", "user/file.jpeg"])
     out_template: Union[str, None] = Field(None, description="Output Template for what the prompt responds with.")
     actions: List[str] = Field([], description="List of actions to be used in the prompt")
-    standalone: bool = Field(False,description="If True, it gets an empty narrative value, except for the context message. The follow-up prompts continue with the narrative before it.")
+    reset_conversation: bool = Field(False,description="If True, it gets an empty narrative value, except for the context message. The follow-up prompts continue with the narrative before it.")
     
 Prompt = Template.build("Prompt", model=PromptModel)

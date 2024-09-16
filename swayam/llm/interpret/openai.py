@@ -51,7 +51,7 @@ class OpenAIClient(LLMClient):
                     response = self._client.beta.chat.completions.parse(
                         model=self.model_name,
                         messages=messages,
-                        response_format=out_template.model,
+                        response_format=out_template.definition,
                         **self._model_kwargs
                     )
                     
