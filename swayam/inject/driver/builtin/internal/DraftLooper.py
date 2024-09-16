@@ -64,18 +64,14 @@ def draft_loop(*, invoker, entity_name):
                 reference_image_file_path = None
             else:
                 writeup = reference.singular_writeup(content)
-                if reference.has_image:
-                    reference_image_file_path = content["file_name"]
-                else:
-                    reference_image_file_path = None
             return ReferenceTemplate(
                     reference_description=ref.description,
                     reference_template=json.dumps(ref.template.definition),
                     reference_content=json.dumps(content),
                     reference_writeup=writeup,
-                    reference_image_file_path=reference_image_file_path
+                    reference_data=content
                 ) 
-        
+
         # Handle references
         for reference in draft.references:
             if isinstance(reference, str):

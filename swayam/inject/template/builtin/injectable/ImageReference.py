@@ -15,12 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
 from pydantic import BaseModel, Field
 from .Reference import ReferenceContentModel
 from .FileInfo import FileInfoModel
 from swayam import Template
 
-class ImageInfo(ReferenceContentModel, FileInfoModel):
-    pass
+class ImageReferenceModel(ReferenceContentModel):
+    reference_image_name: str = Field(None, description="Path to the image file associated with the reference. Same as file_path if present.")
+    reference_image_file_path: str = Field(description="Path to the image file associated with the reference. Same as file_path if present.")
 
-ImageInfo = Template.build("ImageInfo", model=ImageInfo)
+ImageReference = Template.build("ImageReference", model=ImageReferenceModel)

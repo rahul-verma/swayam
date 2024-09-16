@@ -31,7 +31,6 @@ class ArtifactModel(BaseModel):
     plural_name: str = Field(None, description="Plural name for all entries in contents. If not provided, it is taken from singular name by suffixing 's'.")
     description: str = Field(None, description="Description of an entry in its content. If not provided, it is taken from Template description.")
     template: str = Field(None, description="Name of the Swayam Template for each unit in contents. Default is TextContent.")
-    image: bool = Field(False, description="Whether the artifact entry have an image associated with it.")
     refer: List[Union[str, ReferenceDependencyModel]] = Field(list(), description="List of references that this draft depends on.")
     feed: List[Union[str,InjectableModel]] = Field(list(), description="List of references that this draft depends on.")
     interim: bool = Field(True, description="Whether this draft is an interim artifact (draft). In such a case, it is local to the current thought and not stored in artifacts as reference for other thoughts.")

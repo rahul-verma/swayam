@@ -15,20 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Union
+from typing import List, Union, Any
 
 from pydantic import BaseModel, Field
 from swayam import Template
 
 class ReferenceContentModel(BaseModel):
     reference_content: str = Field("", description="All contents or content of one entry, depending on the iterator logic.")
-    reference_image_file_path: Union[str,None] = Field(None, description="Path to the image file associated with the reference. Same as file_path if present.")
     reference_writeup: str = Field("", description="Writeup of the reference in singular or plural form.")
-    
 
 class ReferenceModel(ReferenceContentModel):
     reference_description :str = Field(..., description="Description of the reference")
     reference_template:str = Field(..., description="Template of an entry in its contents")
+    reference_image_name: Union[str, None] = Field(None, description="Path to the image file associated with the reference. Same as file_path if present.")
+    reference_image_file_path: Union[str, None] = Field(None, description="Path to the image file associated with the reference. Same as file_path if present.")
+    reference_data: dict[str, Any] = Field({}, description="Data of a single entry in the reference.")
 
 Reference = Template.build("Reference", model=ReferenceModel)
 ReferenceContent = Template.build("ReferenceContent", model=ReferenceContentModel)
