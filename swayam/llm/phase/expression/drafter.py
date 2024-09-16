@@ -27,35 +27,23 @@ import shutil
 
 class Drafter:
     
-    def __init__(self, *, artifact, thought):
+    def __init__(self, *, artifact, thought, draft_name=None, mode="overwrite"):
         self.__artifact = artifact
         from tarkash import Tarkash
         from swayam.core.constant import SwayamOption
-        self.__file_path = os.path.join(Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR), thought,  artifact.name + ".json")
+        if draft_name is None:
+            draft_name = artifact.name
+        self.__file_path = os.path.join(Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR), thought,  draft_name + ".json")
         directory = os.path.dirname(self.__file_path)
-        os.makedirs(directory, exist_ok=True)
-        with open(self.__file_path, "w") as file:
-            file.write(json.dumps([], indent=4))
-            
-    def draft(self, content):
-        existing_content = None
-        with open(self.__file_path, "r") as file:
-            existing_content = json.loads(file.read())
-            
-        updated_content = existing_content
-        with open(self.__file_path, "w") as file:
-            if isinstance(content, str):
-                content = {"content": content}
-                updated_content.append(content)
-            elif isinstance(content, dict):
-                updated_content.append(content)
-            else:
-                updated_content.extend(content)
-            file.write(json.dumps(updated_content, indent=4))
-            
-    def export(self):
-        if self.__artifact.interim:
-            return
+        
+        if mode == "overwrite":
+            os.makedirs(directory, exist_ok=True)
+            with open(self.__file_path, "w") as file:
+                begin_content = {
+                    "artifact": artifact.name,
+                    "contents": []
+                }
+                file.write(json.dumps(begin_content, indent=4))
         
         reference_name = "generated_" + self.__artifact.reference_name
             
@@ -63,18 +51,29 @@ class Drafter:
         from swayam.core.constant import SwayamOption
         ref_dir = Tarkash.get_option_value(SwayamOption.FOLIO_ARTIFACT_DIR)
         os.makedirs(ref_dir, exist_ok=True)
-        shutil.copy(self.__file_path, os.path.join(ref_dir, reference_name + ".json"))
+        self.__artifact_path = os.path.join(ref_dir, reference_name + ".json")
         
-        artifact_def = {
-            "singular_name": self.__artifact.singular_name,
-            "plural_name": self.__artifact.plural_name,
-            "description": self.__artifact.description,
-            "template": self.__artifact.template.name,
-        }
-        
-        if self.__artifact.reference_name != self.__artifact.name:
-            import yaml
-            artifact_def_dir = Tarkash.get_option_value(SwayamOption.DEFINITION_ARTIFACT_DIR)
-            with open(os.path.join(artifact_def_dir, self.__artifact.reference_name + ".yaml"), "w") as file:
-                file.write(yaml.dump(artifact_def))
+            
+    def draft(self, content):
+        existing_content = None
+        with open(self.__file_path, "r") as file:
+            existing_content = json.loads(file.read())
+            
+        updated_content = existing_content["contents"]
+        with open(self.__file_path, "w") as file:
+            if isinstance(content, str):
+                updated_content.append(content)
+            elif isinstance(content, dict):
+                updated_content.append(content)
+            else:
+                updated_content.extend(content)
+            existing_content["contents"] = updated_content
+            file.write(json.dumps(existing_content, indent=4))
+            
+        self.export()
+            
+    def export(self):
+        if self.__artifact.interim:
+            return
+        shutil.copy(self.__file_path, self.__artifact_path)
         

@@ -77,7 +77,6 @@ class ExpressionEnactor(BaseLLMEnactor):
             # Handle single prompt
             if isinstance(prompts, UserPrompt):
                 prompt = prompts
-                print("Is prompt reset_conversation?", prompts.reset_conversation)
                 prompt_conversation = None
                 if prompt.reset_conversation:
                     overall_conversation = execute_prompt(prompt)
@@ -87,7 +86,6 @@ class ExpressionEnactor(BaseLLMEnactor):
                 generated = False
                 
             else:
-                print("Is generator reset_conversation?", prompts.reset_conversation)
                 generated = True
                 generator_conversation = None
                 
@@ -100,7 +98,6 @@ class ExpressionEnactor(BaseLLMEnactor):
                 prompts = prompts() # Lazy loading
 
                 for prompt in prompts:
-                    print(prompt.purpose, "is reset_conversation?", prompt.reset_conversation)
                     if prompt.reset_conversation:
                         generator_conversation = execute_prompt(prompt)
                     else:

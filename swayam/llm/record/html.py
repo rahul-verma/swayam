@@ -287,13 +287,13 @@ class HtmlRecorder(Reporter):
                         })
             
         # Appending non-LLM expression requirements
-        if "action_calls" in response and response["action_calls"]:
+        if "tool_calls" in response and response["tool_calls"]:
             action_response_for_main_page = {
                 "heading": "Action Calls Suggested by LLM",
                 "content": {}
             }
-
-            for action in response["action_calls"]:
+ 
+            for action in response["tool_calls"]:
                 action_response_for_main_page["content"][action["id"]] = {
                     "name": action["function"]["name"],
                     "arguments": json.loads(action["function"]["arguments"])

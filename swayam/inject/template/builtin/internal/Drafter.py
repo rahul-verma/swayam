@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union, List
+from typing import Union, List, Literal
 from pydantic import BaseModel, Field
 
 from swayam import Template
@@ -26,6 +26,11 @@ class DrafterDefinitionModel(BaseModel):
     definitions: List[str] = Field(..., description="Children Definition names to be repeated.")
     artifact: str = Field(..., description="Name of the artifact to draft")
     reset_conversation: bool = Field(True, description="Whether the repeated prompts are reset_conversation or not.")
+    mode: Literal["overwrite", "append"] = Field("overwrite", description="Mode of drafting.")
+    draft_name: Union[str,None] = Field(None, description="Name of the draft. If None, it is same as the name of the artifact.") 
     
-class DrafterModel(BaseModel):
+class DraftModel(BaseModel):
     draft: DrafterDefinitionModel = Field(..., description="Draft dictionary.")
+
+DrafterTemplate = Template.build("DrafterTemplate", model=DrafterDefinitionModel)    
+DraftTemplate = Template.build("DraftTemplate", model=DraftModel)

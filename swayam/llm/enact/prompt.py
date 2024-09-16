@@ -43,8 +43,6 @@ class PromptEnactor(BaseLLMEnactor):
         # For an extended expression, the system prompt is already executed in one of the previous expressions.
         
         #conversation = expression.narrative.conversation
-        print("What prompt enactor got", prompt.reset_conversation)
-        print("Conversation length", len(narrative.conversation.messages))
                 
         prompt.vault = narrative.vault
         
@@ -95,9 +93,8 @@ class PromptEnactor(BaseLLMEnactor):
                 conversation.append_action_response(action_response)
             narrative.vault.set("action_results",  action_results, phase=prompt)
         else:
-            if not drafter_found:
-                if prompt.draft_mode:
-                    prompt.call_action("internal42", "Draft", content=llm_response.content)
+            if prompt.draft_mode:
+                prompt.call_action("internal42", "Draft", content=llm_response.content)
             response_messages = llm_response.message
             
         prompt.frame.epilogue()

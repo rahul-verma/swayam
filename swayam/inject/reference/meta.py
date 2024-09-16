@@ -15,13 +15,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from swayam.namespace.meta import NamespaceMeta
 from swayam.core.caller import get_caller_module_file_location
 from swayam import Artifact
+from .reference import Reference
     
 class ReferenceMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
-        artifact = getattr(Artifact, name)
-        from .reference import ReferenceMetaData
-        return ReferenceMetaData(artifact=artifact)
+        ref_file_name = f"{name}.json"
+        from tarkash import Tarkash
+        from swayam.core.constant import SwayamOption
+        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_ARTIFACT_DIR)
+        reference_file_path = os.path.join(folio_draft_dir, ref_file_name)
+        if not os.path.exists(reference_file_path):
+            # Look for generated name
+            reference_file_path = os.path.join(folio_draft_dir, "generated_" + ref_file_name)
+            if not os.path.exists(reference_file_path):
+                from .error import ReferenceContentNotFoundError
+                raise ReferenceContentNotFoundError(name=name)
+        return Reference(name, file_path=reference_file_path)

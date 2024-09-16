@@ -50,7 +50,6 @@ def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution
                 if index == len(prompt_names) - 1:
                     prompt.draft_mode = True
                     prompt.suggest_mandatory_actions([expression.mandatory_action])
-            print("From repeater", prompt.reset_conversation)
             yield prompt
 
 class PromptDriver:
@@ -63,11 +62,11 @@ class PromptDriver:
         self.__parent_fmt_kwargs = parent_fmt_kwargs
 
         self.__prompt_names = prompt_dict["definitions"]
-        self.__reset_conversation = prompt_dict["reset_conversation"]
-        from swayam.inject.template.builtin.internal import Driver as DriverTemplate        
+        self.__reset_conversation = prompt_dict["reset_conversation"]       
         from swayam import Driver
         
         if self.__primary_key == "repeat":
+            from swayam.inject.template.builtin.internal import Driver as DriverTemplate 
             self.__iterator_type = "repeat"
             if isinstance(prompt_dict["driver"], dict):
                 driver_data = DriverTemplate(driver=prompt_dict["driver"])        
@@ -77,11 +76,12 @@ class PromptDriver:
                 self.__driver = getattr(Driver, prompt_dict["driver"])
                 self.__driver_kwargs = dict()
         else:
-            # It is "draft"
+            from swayam.inject.template.builtin.internal import DraftTemplate
             self.__iterator_type = "draft"
             from swayam.inject.driver.builtin.internal.DraftLooper import DraftLooper
+            driver_data = DraftTemplate(draft=prompt_dict)    
             self.__driver = DraftLooper
-            self.__driver_kwargs = {"entity_name": prompt_dict["artifact"]}
+            self.__driver_kwargs = driver_data.draft.dict()
         self.__image = None
         self.__out_template = None
         self.__actions = None

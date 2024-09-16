@@ -1,4 +1,4 @@
-purpose: Dependency on Templated Draft - No Loop
+purpose: Dependency on Templated Draft - Loop
 
 prompts:
   - draft:

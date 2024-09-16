@@ -6,3 +6,16 @@ prompts:
         - trip_command
         - trip_query
       artifact: simple
+  - draft:
+      definitions: 
+        - trip_command
+        - trip_query
+      artifact: simple
+      draft_name: different_name
+  - draft:
+      definitions: 
+        - trip_command
+        - trip_query
+      artifact: simple
+      draft_name: different_name
+      mode: append

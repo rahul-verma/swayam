@@ -39,31 +39,31 @@ def call_drafter(*, invoker, **kwargs):
     invoker.phase.drafter.draft(kwargs)
     return Template.Success()
 
-def draft_loop(*, invoker, entity_name):
+def draft_loop(*, invoker, definitions, artifact, reset_conversation=True, mode="overwrite", draft_name=None):
     from swayam import Action
     from swayam import Artifact
     from swayam.llm.phase.expression.drafter import Drafter
-    draft = getattr(Artifact, entity_name)
-    drafter = Drafter(artifact=draft, thought=invoker.thought_name)
+    artifact = getattr(Artifact, artifact)
+    drafter = Drafter(artifact=artifact, thought=invoker.thought_name, mode=mode, draft_name=draft_name)
     invoker.phase.drafter = drafter
     
     Draft = Action.build("Draft", 
                          callable=call_drafter, 
-                         description=f"Writes the {draft.singular_name} to disk.",
-                         in_template=draft.template,
+                         description=f"Writes the {artifact.singular_name} to disk.",
+                         in_template=artifact.template,
                          out_template=Template.Result
     )
     
     invoker.phase.mandatory_action = Draft
     
-    if not draft.has_dependencies:
+    if not artifact.has_dependencies:
         yield ReferenceTemplate(
                             reference_description="",
                             reference_template="",
                             reference_content=""
                         )
     else:
-        for feeder in draft.feeders:
+        for feeder in artifact.feeders:
             feed_driver = None
             feed_template = None
             if isinstance(feeder, str):
@@ -79,9 +79,25 @@ def draft_loop(*, invoker, entity_name):
             for content in feed_driver:
                 yield feed_template(**content)
             
-        def create_reference(ref, content, whole_reference=True):
+        def get_reference(name):
+            from swayam.inject.reference.error import ReferenceContentNotFoundError
+            try:
+                return getattr(Reference, name)
+            except ReferenceContentNotFoundError:
+                # Look in Thought's Drafts
+                from tarkash import Tarkash
+                from swayam.core.constant import SwayamOption
+                folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
+                reference_file_path = os.path.join(folio_draft_dir, invoker.phase.thought_name, name + ".json")
+                if os.path.exists(reference_file_path): 
+                    from swayam.inject.reference.reference import Reference as ReferenceObject
+                    return ReferenceObject(name, file_path=reference_file_path)
+                else:
+                    raise ReferenceContentNotFoundError(name=name)
+                
+        def create_prompt_formatter(ref, content, whole_reference=True):
             if whole_reference:
-                writeup = reference.plural_writeup(content)
+                writeup = reference.plural_writeup()
                 reference_data = dict()
             else:
                 writeup = reference.singular_writeup(content)
@@ -93,28 +109,29 @@ def draft_loop(*, invoker, entity_name):
                     reference_writeup=writeup,
                     reference_data=reference_data
                 ) 
+                           
 
         # Handle references
-        for reference in draft.references:
+        for reference_data in artifact.references:
             from swayam import Reference
-            if isinstance(reference, str):
-                print(Reference)
-                reference = getattr(Reference, reference)(thought=invoker.thought_name)
-                contents = reference.load()
-                yield create_reference(reference, contents, whole_reference=True)
+            if isinstance(reference_data, str):
+                ref_name = reference_data
+                reference = get_reference(ref_name)
+                yield create_prompt_formatter(reference, reference.contents, whole_reference=True)
             else:
-                name = reference["name"]
-                iter_content = reference.get("iter_content", False)
-                reference = getattr(Reference, name)(thought=invoker.thought_name)
-                contents = reference.load()
+                ref_name = reference_data["name"]
+                iter_content = reference_data.get("iter_content", False)
+                reference = get_reference(ref_name)
                 if iter_content:
-                    for content in contents:
-                        yield create_reference(reference, content, whole_reference=False) 
+                    for content in reference.contents:
+                        yield create_prompt_formatter(reference, content, whole_reference=False) 
                 else:
-                    yield create_reference(reference, contents, whole_reference=True)
+                    yield create_prompt_formatter(reference, reference.contents, whole_reference=True)
+
+from swayam.inject.template.builtin.internal import DrafterTemplate
 
 DraftLooper = Driver.build("DraftLooper", 
                         callable=draft_loop,
-                        in_template=Template.EntityName, 
+                        in_template=DrafterTemplate, 
                         out_template=ReferenceContent)
 
