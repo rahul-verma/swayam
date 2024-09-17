@@ -15,11 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union, List
+from typing import Union, List, Literal
 from pydantic import BaseModel, Field
 
 from swayam import Template
 from .Frame import FrameModel
+
+class LLMModel(BaseModel):
+    provider: Literal['openai'] = Field(..., description="The provider of the LLM")
+    name: str = Field(..., description="Name of the model.")
 
 class PromptModel(FrameModel):
     purpose: Union[str,None] = Field(None, description="A statement describing the purpose of the prompt.")
@@ -28,5 +32,6 @@ class PromptModel(FrameModel):
     out_template: Union[str, None] = Field(None, description="Output Template for what the prompt responds with.")
     actions: List[str] = Field([], description="List of actions to be used in the prompt")
     reset_conversation: bool = Field(False,description="If True, it gets an empty narrative value, except for the context message. The follow-up prompts continue with the narrative before it.")
+    model: LLMModel = Field(None, description="The model to use for the prompt.")
     
 Prompt = Template.build("Prompt", model=PromptModel)

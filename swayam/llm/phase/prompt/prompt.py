@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, reset_conversation:bool=False) -> None:
+    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, reset_conversation:bool=False, model:None) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -40,6 +40,13 @@ class UserPrompt:
         
         self.__prologue = prologue
         self.__epilogue = epilogue
+        
+        from swayam.llm.config.model import ModelConfig
+        if model:
+            self.__model = ModelConfig(provider=model["provider"], model=model["name"])
+        else:
+            self.__model = ModelConfig(provider=None, model=None)
+        
         self.draft_mode = False
         
         if not self.__prologue:
@@ -85,6 +92,10 @@ class UserPrompt:
     @property
     def vault(self):
         return self.__vault
+    
+    @property
+    def model(self):
+        return self.__model
     
     @vault.setter
     def vault(self, vault):

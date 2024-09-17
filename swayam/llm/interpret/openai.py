@@ -30,7 +30,7 @@ class OpenAIClient(LLMClient):
         from pprint import pprint
         from swayam.llm.phase.prompt.response import LLMResponse
         import openai
-        
+
         actions = actions
         if actions:
             actions =[action.definition for action in actions]
@@ -41,12 +41,20 @@ class OpenAIClient(LLMClient):
             try:
                 response = None
                 if out_template is None:
-                    response = self._client.chat.completions.create(
-                        model=self.model_name,
-                        messages=messages,
-                        tools=actions,
-                        **self._model_kwargs
-                    )
+                    if actions is None:
+                        response = self._client.chat.completions.create(
+                            model=self.model_name,
+                            messages=messages,
+                            **self._model_kwargs
+                        )
+                    else:
+                        response = self._client.chat.completions.create(
+                            model=self.model_name,
+                            messages=messages,
+                            tools=actions,
+                            tool_choice="required",
+                            **self._model_kwargs
+                        )
                 else:
                     response = self._client.beta.chat.completions.parse(
                         model=self.model_name,

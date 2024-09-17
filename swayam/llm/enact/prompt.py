@@ -30,11 +30,6 @@ class PromptEnactor(BaseLLMEnactor):
     def __init__(self, *, recorder:str, model:str = None, name:str = "Expression Enactor", provider:str = None, temperature=0, **kwargs):
         super().__init__(recorder=recorder, name=name, provider=provider, model=model, temperature=temperature, **kwargs)            
         log_debug(f"Expression Enactor {name} created")
-        self._load()
-
-    def _load(self):
-        from swayam.llm.interpret import Model
-        self.__client = Model.create_client(config=self.model_config, prompt_config=self.prompt_config)
     
     def enact(self, prompt, *, narrative, report=True):
         '''
@@ -60,6 +55,8 @@ class PromptEnactor(BaseLLMEnactor):
         log_debug("Finished processing prompt...")
 
         log_debug("Executing prompt...")
+        from swayam.llm.interpret import Model
+        self.__client = Model.create_client(config=prompt.model, prompt_config=self.prompt_config)
         llm_response = self.__client.execute_messages(messages=conversation.messages, out_template=prompt.out_template, actions=prompt.actions)
         log_debug("Handling Response.")
         
