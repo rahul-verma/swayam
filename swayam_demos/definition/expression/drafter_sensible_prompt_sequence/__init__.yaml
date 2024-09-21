@@ -5,4 +5,4 @@ prompts:
       definitions:
         - command
         - event
-      artifact: sensible_events
+      entity: sensible_events

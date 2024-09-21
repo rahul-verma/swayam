@@ -1,7 +1,0 @@
-singular_name: Story
-plural_name: Stories
-template: CalendarEvent
-description: contains data for a story in Calendar
-refer:
-  - another1
-  - another2

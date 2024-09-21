@@ -5,17 +5,18 @@ prompts:
       definitions: 
         - trip_command
         - trip_query
-      artifact: simple
+      entity: trip_input
+      aggregate_name: trip
   - draft:
       definitions: 
         - trip_command
         - trip_query
-      artifact: simple
-      draft_name: different_name
+      entity: trip_input
+      aggregate_name: another_trip
   - draft:
       definitions: 
         - trip_command
         - trip_query
-      artifact: simple
-      draft_name: different_name
+      entity: trip_input
+      aggregate_name: another_trip
       mode: append

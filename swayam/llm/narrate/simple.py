@@ -29,5 +29,5 @@ class SimpleNarrator(PromptNarrator):
         if not isinstance(prompt, str):
             raise TypeError(f"Simple Narrator cannot execute prompt of type {type(prompt)}. It must be a string.")
         from swayam.llm.phase.prompt.prompt import UserPrompt
-        super().narrate(UserPrompt(text=prompt))
+        super().narrate(UserPrompt(text=prompt, model=None))
 

@@ -19,7 +19,7 @@ import os
 
 from swayam.namespace.meta import NamespaceMeta
 from swayam.core.caller import get_caller_module_file_location
-from swayam import Artifact
+from swayam import Entity
 from .reference import Reference
     
 class ReferenceMeta(NamespaceMeta):
@@ -28,7 +28,7 @@ class ReferenceMeta(NamespaceMeta):
         ref_file_name = f"{name}.json"
         from tarkash import Tarkash
         from swayam.core.constant import SwayamOption
-        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_ARTIFACT_DIR)
+        folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_BLUEPRINT_DIR)
         reference_file_path = os.path.join(folio_draft_dir, ref_file_name)
         if not os.path.exists(reference_file_path):
             # Look for generated name

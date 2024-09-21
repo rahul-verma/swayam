@@ -34,6 +34,9 @@ class OpenAIClient(LLMClient):
         actions = actions
         if actions:
             actions =[action.definition for action in actions]
+            
+        if actions:
+            out_template = None
 
         error_content = ""
         for attempt in range(5):  # Retry up to 5 times
@@ -52,7 +55,7 @@ class OpenAIClient(LLMClient):
                             model=self.model_name,
                             messages=messages,
                             tools=actions,
-                            tool_choice="required",
+                            # tool_choice="required",
                             **self._model_kwargs
                         )
                 else:

@@ -4,8 +4,8 @@ prompts:
   - draft:
       definitions:
         - gifts
-      artifact: events_hil_no_override
+      entity: events_hil_no_override
   - draft:
       definitions:
         - gifts
-      artifact: events_hil_override
+      entity: events_hil_override

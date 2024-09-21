@@ -174,11 +174,12 @@ class HtmlRecorder(Reporter):
                                     "children": []
                                 })
 
-        if expression.directive:
-            self.__get_expression_node()["data"]["content"].append({
-                "heading": "Directive Text",
-                "content": expression.directive
-            })
+        if expression:
+            if expression.directive:
+                self.__get_expression_node()["data"]["content"].append({
+                    "heading": "Directive Text",
+                    "content": expression.directive
+                })
         self.__update_report()
         log_debug("Finished: Reporting  Directive.")
         self.__update_report()
@@ -190,6 +191,8 @@ class HtmlRecorder(Reporter):
         Args:
             prompt (Prompt): The prompt to report.
         """
+        if self.__json_data == []:
+            self.record_begin_expression()
         log_debug("Begin: Reporting Prompt.")
         prompt_id = "prompt_" + uuid4().hex
         prompt_node = {

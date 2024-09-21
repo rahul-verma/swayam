@@ -4,4 +4,4 @@ prompts:
   - draft:
       definitions:
         - gift_ideas
-      artifact: depends_events_loop
+      entity: depends_events_loop

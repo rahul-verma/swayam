@@ -4,4 +4,4 @@ prompts:
   - draft:
       definitions: 
         - review
-      artifact: depends_multiref_loop
+      entity: depends_multiref_loop

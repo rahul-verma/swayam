@@ -24,7 +24,7 @@ from abc import ABC, abstractmethod
 from swayam.inject.template.template import DataTemplate
 
 
-class Artifact:
+class Entity:
     
     def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, export_as=None) -> None:
         self.__name = name
@@ -35,22 +35,26 @@ class Artifact:
         self.__template_name = template
         if self.__template_name is None:
             self.__template_name = "TextContent"
-        self.__references = refer
-        self.__feeders = feed
-        self.__interim = interim
-        if export_as is None:
-            self.__reference_name = self.__name
-        else:
-            self.__reference_name = export_as
+        
         from swayam import Template
-        self.__template = getattr(Template, self.__template_name)
+        template = getattr(Template, self.__template_name)
         
         if self.__singular_name is None:
             self.__singular_name = name
         if self.__plural_name is None:
             self.__plural_name = self.__singular_name + "s"
         if self.__description is None:
-            self.__description = getattr(Template, self.__template_name).description
+            self.__description = template.description
+        self.__primary_key = name + "_name"
+        self.__content_key = name + "_content"
+        
+        from pydantic import create_model, Field
+        field_defs = {}
+        field_defs[self.__primary_key] = (str, Field(..., description="Name of the " + self.__singular_name))
+        field_defs[self.__content_key] = (template.model, Field(..., description="Data Content for " + self.__description))
+        model = create_model(template.name + "FragmentModel", **field_defs)
+        self.__template = Template.build(template.name + "Fragment", description=self.__description.title(), model=model)
+        self.__description = self.__template.description.title()
                 
     @property
     def name(self):
@@ -81,24 +85,9 @@ class Artifact:
         return self.__template
     
     @property
-    def interim(self):
-        return self.__interim
+    def primary_key(self):
+        return self.__primary_key
     
     @property
-    def reference_name(self):
-        return self.__reference_name
-    
-    @property
-    def has_dependencies(self):
-        if not self.__feeders and not self.__references:
-            return False
-        else:
-            return True
-        
-    @property
-    def references(self):
-        return self.__references
-    
-    @property
-    def feeders(self):
-        return self.__feeders
+    def content_key(self):
+        return self.__content_key

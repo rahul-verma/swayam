@@ -4,11 +4,11 @@ prompts:
   - draft:
       definitions:
         - events
-      artifact: events_interim_false
+      entity: events_interim_false
 
   - draft:
       definitions:
         - events_name
-      artifact: events_interim_false_name
+      entity: events_interim_false_name
 
 out_template: CalendarEvent

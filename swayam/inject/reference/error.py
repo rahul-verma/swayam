@@ -21,4 +21,4 @@ from swayam.inject.error import *
 
 class ReferenceContentNotFoundError(Exception):
     def __init__(self, *, name):
-            super().__init__(f"Reference content file not found for {name}.json in artifacts or drafts in current thought.")
+            super().__init__(f"Reference content file not found for {name}.json in entitys or drafts in current thought.")

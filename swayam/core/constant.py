@@ -40,20 +40,20 @@ class SwayamOption(Enum):
     DEFINITION_STORY_DIR = auto()
     '''Root Directory for Plan Files'''
     
-    DEFINITION_ARTIFACT_DIR = auto()
-    '''Root Directory for Artifact Definition Files'''
+    DEFINITION_ENTITY_DIR = auto()
+    '''Root Directory for Entity Definition Files'''
     
     FOLIO_DIR = auto()
     '''Root Directory for Folio Files'''
     
-    FOLIO_DRAFT_DIR = auto()
+    FOLIO_AGGREGATE_DIR = auto()
     '''Root Directory for Drafts in Folio.'''
     
-    FOLIO_ARTIFACT_DIR = auto()
-    '''Root Directory for Artifact Files in Folio'''
+    FOLIO_BLUEPRINT_DIR = auto()
+    '''Root Directory for Blueprint Files in Folio'''
     
-    FOLIO_TRANSLATION_DIR = auto()
-    '''Root Directory for Translated Drafts in Folio'''
+    FOLIO_OUTPUT_DIR = auto()
+    '''Root Directory for Output in Folio'''
     
     FOLIO_NARRATION_DIR = auto()
     '''Root Directory for Narration Files in Folio'''

@@ -43,7 +43,7 @@ class PromptNarrator(BaseNarrator):
             self.narrative.conversation.append_system_prompt(self.narrative.get_instructions())
             context_prompt = self.narrative.get_context_prompt(expression=None)
             self.__first_prompt = False
-            enactor.enact(UserPrompt(text=context_prompt, purpose="Context Setting"), narrative=self.narrative, report=False)
+            enactor.enact(UserPrompt(text=context_prompt, purpose="Context Setting", model=None), narrative=self.narrative, report=False)
             
         enactor.enact(prompt, narrative=self.narrative)
         

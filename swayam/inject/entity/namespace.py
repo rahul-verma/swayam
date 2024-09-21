@@ -16,33 +16,31 @@
 # limitations under the License.
 
 import os
-from .artifact import Artifact
+from .entity import Entity
 from swayam.namespace.namespace import Namespace
 from swayam.namespace.error import *
 from swayam.core.caller import get_caller_module_file_location
 
-class ArtifactNamespace(Namespace):
+class EntityNamespace(Namespace):
     
     def __init__(self, path, resolution=None, **fmt_kwargs):
-        super().__init__(type="Artifact", path=path, resolution=resolution, **fmt_kwargs)  
+        super().__init__(type="Entity", path=path, resolution=resolution, **fmt_kwargs)  
 
     def handle_current_name_as_package(self, *, name, path, resolution, **kwargs):
-        return ArtifactNamespace(path=path, resolution=resolution)
+        return EntityNamespace(path=path, resolution=resolution)
     
     def handle_current_name_as_definition(self, *, name, path, resolution, purpose, content):
         from swayam import Template
         import yaml
         content = yaml.safe_load(content)
         from tarkash import Tarkash
-        if content is None:
-            return Artifact(name=name)
-        elif isinstance(content, dict):
-            from swayam.inject.template.builtin.internal import Artifact as ArtifactTemplate
+        if isinstance(content, dict):
+            from swayam.inject.template.builtin.internal import Entity as EntityTemplate
             try:
-                return Artifact(name=name, **ArtifactTemplate(**content).as_dict())
+                return Entity(name=name, **EntityTemplate(**content).as_dict())
             except Exception as e:
                 import traceback
-                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{ArtifactTemplate.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
+                raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Allowed dictionary keys are [{EntityTemplate.keys}]. Error: {e}. Check: {traceback.format_exc()} ")
         else:
             raise DefinitionIsInvalidError(self, name=name, path=path, resolution=resolution, error=f"Expected dict, got {type(content)}")
         

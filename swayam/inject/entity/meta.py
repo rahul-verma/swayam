@@ -23,10 +23,10 @@ from swayam.namespace.meta import NamespaceMeta
 from swayam.namespace.error import DefinitionNotFoundError
 from swayam.core.caller import get_caller_module_file_location
     
-class ArtifactMeta(NamespaceMeta):
+class EntityMeta(NamespaceMeta):
     
     def __getattr__(cls, name):
         from swayam.core.constant import SwayamOption
-        from .namespace import ArtifactNamespace
-        cls.load_root_namespace(SwayamOption.DEFINITION_ARTIFACT_DIR, ArtifactNamespace)
+        from .namespace import EntityNamespace
+        cls.load_root_namespace(SwayamOption.DEFINITION_ENTITY_DIR, EntityNamespace)
         return getattr(cls.root, name)

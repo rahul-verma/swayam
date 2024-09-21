@@ -32,12 +32,12 @@ class Reference:
         self.__file_path = file_path
         with open(self.__file_path, "r") as file:
             self.__ref_file_content = json.loads(file.read())
-        from swayam import Artifact
-        self.__artifact = getattr(Artifact, self.__ref_file_content["artifact"])
+        from swayam import Entity
+        self.__entity = getattr(Entity, self.__ref_file_content["entity"])
         self.__contents = self.__ref_file_content["contents"]
         
     def __getattr__(self, name):
-        return getattr(self.__artifact, name)
+        return getattr(self.__entity, name)
     
     @property
     def name(self):

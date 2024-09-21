@@ -21,5 +21,5 @@ from .Snippet import *
 from .Story import *
 from .Thought import *
 from .Driver import *
-from .Artifact import *
+from .Entity import *
 from .Drafter import *

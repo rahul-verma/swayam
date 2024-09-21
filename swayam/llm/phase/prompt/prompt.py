@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class UserPrompt:
     
-    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, reset_conversation:bool=False, model:None) -> None:
+    def __init__(self, *, text:str, name="Anonymous", purpose:str=None, image:str=None, out_template:str=None, actions:list=None, prologue=None, epilogue=None, reset_conversation:bool=False, model=None) -> None:
         self.__role = "user"
         self.__purpose = purpose
         if self.__purpose is None:
@@ -279,5 +279,11 @@ class UserPrompt:
     @reset_conversation.setter
     def reset_conversation(self, flag):
         self.__reset_conversation = flag
+        
+    def append_text(self, text):
+        if not self.image:
+            self.__message["content"] = self.__message["content"] + "\n\n" + text
+        else:
+            self.__message["content"][0]["text"] = self.__message["content"][0]["text"]  + "\n\n" + text       
     
     

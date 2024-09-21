@@ -50,6 +50,7 @@ def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution
                 if index == len(prompt_names) - 1:
                     prompt.draft_mode = True
                     prompt.suggest_mandatory_actions([expression.mandatory_action])
+                    prompt.append_text(f"Write {expression.drafter.entity.singular_name} to disk.")
             yield prompt
 
 class PromptDriver:

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .meta import ArtifactMeta
+from .meta import EntityMeta
 
-class Artifact(metaclass=ArtifactMeta):
+class Entity(metaclass=EntityMeta):
     pass

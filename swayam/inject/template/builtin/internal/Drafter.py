@@ -21,13 +21,21 @@ from pydantic import BaseModel, Field
 from swayam import Template
 
 from .FrameInjectable import InjectableModel
+
+class ReferenceDependencyModel(BaseModel):
+    name: str = Field(..., description="Name of the reference.")
+    iter_content: bool = Field(False, description="Whether to iterate over the contents of the reference.")
     
 class DrafterDefinitionModel(BaseModel):
     definitions: List[str] = Field(..., description="Children Definition names to be repeated.")
-    artifact: str = Field(..., description="Name of the artifact to draft")
-    reset_conversation: bool = Field(True, description="Whether the repeated prompts are reset_conversation or not.")
+    entity: str = Field(..., description="Name of the entity to draft a fragment")
+    aggregate_name: str = Field(..., description="Name of the aggregate. If None, it is same as the plural name for the entities.")
+    interim: bool = Field(True, description="Whether this aggregate is an interim draft. In such a case, it is local to the current thought and not stored in blueprints as reference for other thoughts.")
+    blueprint_name: Union[str,None] = Field(None, description="Name of the blueprint to export the aggregate. If not provided, it is stored as the name of the aggregate. A prefix 'generated_' is added to the name of the aggregate in both the cases.")
     mode: Literal["overwrite", "append"] = Field("overwrite", description="Mode of drafting.")
-    draft_name: Union[str,None] = Field(None, description="Name of the draft. If None, it is same as the name of the artifact.") 
+    reset_conversation: bool = Field(True, description="Whether conversation is reset for the repeated prompts or not.")
+    refer: List[Union[str, ReferenceDependencyModel]] = Field(list(), description="List of references that this draft depends on.")
+    feed: List[Union[str,InjectableModel]] = Field(list(), description="List of references that this draft depends on.")
     
 class DraftModel(BaseModel):
     draft: DrafterDefinitionModel = Field(..., description="Draft dictionary.")

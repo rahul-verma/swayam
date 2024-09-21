@@ -38,5 +38,5 @@ from swayam.inject.driver import Driver
 from swayam.inject.cue import Cue
 from swayam.inject.snippet import Snippet
 from swayam.inject.prop import Prop
-from swayam.inject.artifact import Artifact
+from swayam.inject.entity import Entity
 from swayam.inject.reference import Reference

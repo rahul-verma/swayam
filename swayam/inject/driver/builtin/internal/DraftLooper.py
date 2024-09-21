@@ -39,31 +39,31 @@ def call_drafter(*, invoker, **kwargs):
     invoker.phase.drafter.draft(kwargs)
     return Template.Success()
 
-def draft_loop(*, invoker, definitions, artifact, reset_conversation=True, mode="overwrite", draft_name=None):
+def draft_loop(*, invoker, definitions, entity, **kwargs):
     from swayam import Action
-    from swayam import Artifact
+    from swayam import Entity
     from swayam.llm.phase.expression.drafter import Drafter
-    artifact = getattr(Artifact, artifact)
-    drafter = Drafter(artifact=artifact, thought=invoker.thought_name, mode=mode, draft_name=draft_name)
+    entity = getattr(Entity, entity)
+    drafter = Drafter(entity=entity, thought=invoker.thought_name, **kwargs)
     invoker.phase.drafter = drafter
     
     Draft = Action.build("Draft", 
                          callable=call_drafter, 
-                         description=f"Writes the {artifact.singular_name} to disk.",
-                         in_template=artifact.template,
+                         description=f"Writes the {entity.singular_name} to disk.",
+                         in_template=entity.template,
                          out_template=Template.Result
     )
     
     invoker.phase.mandatory_action = Draft
     
-    if not artifact.has_dependencies:
+    if not drafter.has_dependencies:
         yield ReferenceTemplate(
                             reference_description="",
                             reference_template="",
                             reference_content=""
                         )
     else:
-        for feeder in artifact.feeders:
+        for feeder in drafter.feeders:
             feed_driver = None
             feed_template = None
             if isinstance(feeder, str):
@@ -87,7 +87,7 @@ def draft_loop(*, invoker, definitions, artifact, reset_conversation=True, mode=
                 # Look in Thought's Drafts
                 from tarkash import Tarkash
                 from swayam.core.constant import SwayamOption
-                folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_DRAFT_DIR)
+                folio_draft_dir = Tarkash.get_option_value(SwayamOption.FOLIO_AGGREGATE_DIR)
                 reference_file_path = os.path.join(folio_draft_dir, invoker.phase.thought_name, name + ".json")
                 if os.path.exists(reference_file_path): 
                     from swayam.inject.reference.reference import Reference as ReferenceObject
@@ -108,11 +108,10 @@ def draft_loop(*, invoker, definitions, artifact, reset_conversation=True, mode=
                     reference_content=json.dumps(content),
                     reference_writeup=writeup,
                     reference_data=reference_data
-                ) 
-                           
+                )    
 
         # Handle references
-        for reference_data in artifact.references:
+        for reference_data in drafter.references:
             from swayam import Reference
             if isinstance(reference_data, str):
                 ref_name = reference_data

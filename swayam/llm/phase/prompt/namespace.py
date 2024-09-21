@@ -35,7 +35,7 @@ class PromptNamespace(Namespace):
         import yaml
         content = yaml.safe_load(content)
         if isinstance(content, str):
-            return UserPrompt(text=content, purpose=purpose)
+            return UserPrompt(text=content, purpose=purpose, model=None)
         elif isinstance(content, dict):
             from swayam.inject.template.builtin.internal import Prompt
             try:
