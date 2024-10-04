@@ -272,10 +272,6 @@ class UserPrompt:
     def reset_conversation(self):
         return self.__reset_conversation
     
-    @property
-    def reset_conversation(self):
-        return self.__reset_conversation
-    
     @reset_conversation.setter
     def reset_conversation(self, flag):
         self.__reset_conversation = flag
