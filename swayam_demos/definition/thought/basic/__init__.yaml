@@ -1,8 +1,5 @@
 purpose: Basic Thought Demo
 
-actions:
-    - Calculate
-
 expressions:
   - basic
   - diverse
