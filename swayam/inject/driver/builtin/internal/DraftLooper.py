@@ -108,9 +108,29 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
             else:
                 writeup = reference.singular_writeup(content)
                 reference_data = content
-                # For merge scenarios
+                # # For merge scenarios
+                # if type(reference_data) is list:
+                #     reference_data = {"All Entries": content}
+                
                 if type(reference_data) is list:
-                    reference_data = {"All Entries": content}
+                    reference_data = reference_data[-1]
+                    
+                entity_name = None
+                entity_content = None
+                for k,v in content.items():
+                    entity_name = k
+                    entity_content = v
+                    
+                entity_content = entity_content[-1] # The last value holds as reference data
+                print("ENTITY CONTENT BEFORE", entity_content)
+                
+                if reference.template_primary_key:
+                    # Updating the primary key in the template to a unique name generated during prompting.
+                    entity_content[reference.template_primary_key] = entity_name
+                
+                print("ENTITY CONTENT AFTER", entity_content)
+                
+                reference_data = entity_content
             return ReferenceTemplate(
                     reference_description=ref.description,
                     reference_template=json.dumps(ref.template.definition),

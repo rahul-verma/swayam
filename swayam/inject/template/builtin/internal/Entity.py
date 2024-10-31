@@ -27,5 +27,6 @@ class EntityModel(BaseModel):
     plural_name: str = Field(None, description="Plural name for the aggregates of this entity. If not provided, it is taken from singular name by suffixing 's'.")
     description: str = Field(..., description="Description of the entity. If not provided, it is taken from Template description.")
     template: str = Field(..., description="Name of the Swayam Template for entity content. Default is TextContent.")
+    template_primary_key: str = Field(None, description="Name of the field whose value needs to stay unique across multiple objects.")
     
 Entity = Template.build("Entity", model=EntityModel)

@@ -25,8 +25,10 @@ def iterator(iterator_type, expression, prompt_names, prompt_ns_path, resolution
         temp_dict.update(parent_fmt_kwargs)
         if iterator_type=="draft":
             if "reference_data" in out_dict:
-                temp_dict.update(out_dict.pop("reference_data"))
+                temp_dict.update(out_dict["reference_data"])
+                out_dict.pop("reference_data")
         temp_dict.update(out_dict)
+        print("Formatting dict", temp_dict)
         prompt_namespace = PromptNamespace(path=prompt_ns_path, resolution=resolution).formatter(**temp_dict) 
         
         # This is the loop for an individual prompt definition

@@ -36,6 +36,7 @@ class DrafterDefinitionModel(BaseModel):
     reset_conversation: bool = Field(True, description="Whether conversation is reset for the repeated prompts or not.")
     refer: List[Union[str, ReferenceDependencyModel]] = Field(list(), description="List of references that this draft depends on.")
     feed: List[Union[str,InjectableModel]] = Field(list(), description="List of references that this draft depends on.")
+    force_unique_entries: bool = Field(False, description="If True, it forces creation of additional primary keys if content for primary key already exists. Default is False.")
     
 class DraftModel(BaseModel):
     draft: DrafterDefinitionModel = Field(..., description="Draft dictionary.")

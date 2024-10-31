@@ -26,7 +26,7 @@ from swayam.inject.template.template import DataTemplate
 
 class Entity:
     
-    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, refer=None, feed=None, interim=False, export_as=None) -> None:
+    def __init__(self, *, name, singular_name=None, plural_name=None, description=None, template=None, template_primary_key=None, refer=None, feed=None, interim=False, export_as=None) -> None:
         self.__name = name
         self.__file_name = name + ".json"
         self.__singular_name = singular_name
@@ -35,6 +35,7 @@ class Entity:
         self.__template_name = template
         if self.__template_name is None:
             self.__template_name = "TextContent"
+        self.__template_primary_key = template_primary_key
         
         from swayam import Template
         template = getattr(Template, self.__template_name)
@@ -45,7 +46,9 @@ class Entity:
             self.__plural_name = self.__singular_name + "s"
         if self.__description is None:
             self.__description = template.description
-        self.__primary_key = name + "_name"
+        self.__primary_key = self.__template_primary_key
+        if self.__primary_key is None:
+            self.__primary_key = name + "_name"
         self.__content_key = name + "_content"
         
         from pydantic import create_model, Field
@@ -83,6 +86,10 @@ class Entity:
     @property
     def template(self):
         return self.__template
+    
+    @property
+    def template_primary_key(self):
+        return self.__template_primary_key
     
     @property
     def primary_key(self):

@@ -63,6 +63,10 @@ class Reference:
     def contents(self):
         return self.__contents
     
+    @property
+    def template_primary_key(self):
+        return self.__entity.template_primary_key
+    
     def make_safe(self, in_json):
         return json.dumps(in_json).replace("{", "__LC__").replace("}", "__RC__").replace(":", "__COL__").replace("\\n", "__NL__")
         

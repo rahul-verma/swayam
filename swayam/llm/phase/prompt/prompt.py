@@ -114,6 +114,7 @@ class UserPrompt:
         if self.image:
             updated_content = updated_content[0]["text"]
         import re
+        
         for key, value in self.vault.items():
             print(key, value)
             if value is None:
