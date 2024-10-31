@@ -5,3 +5,6 @@ prompts:
       definitions:
         - gift_ideas
       entity: depends_feeder
+      aggregate_name: gifts_feeder
+      feed:
+        - EventNameFeeder

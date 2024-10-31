@@ -33,6 +33,7 @@ class PromptNamespace(Namespace):
         from swayam import Template
         
         import yaml
+        print(content)
         content = yaml.safe_load(content)
         if isinstance(content, str):
             return UserPrompt(text=content, purpose=purpose, model=None)

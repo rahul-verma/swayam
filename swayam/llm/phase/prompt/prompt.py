@@ -33,7 +33,7 @@ class UserPrompt:
             self.__purpose = f"Prompt"
         else:
             self.__purpose = f"Prompt: {self.__purpose}"
-        self.__content = text.replace("__NL__", "\n")
+        self.__content = text.replace("__LC__", "{").replace("__RC__", "}").replace("__COL__",":").replace("__NL__", "\n")
         
         self.__out_template = None
         self.out_template = out_template
@@ -115,6 +115,7 @@ class UserPrompt:
             updated_content = updated_content[0]["text"]
         import re
         for key, value in self.vault.items():
+            print(key, value)
             if value is None:
                 value = ""
             elif type(value) in (dict, list):

@@ -6,3 +6,4 @@ prompts:
         - command
         - event
       entity: sensible_events
+      aggregate_name: sensible_event

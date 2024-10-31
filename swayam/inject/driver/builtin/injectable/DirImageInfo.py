@@ -28,6 +28,7 @@ def get_image_info(*, invoker, dir_path:str):
     screenshots_dir = os.path.join(epic_dir, "data/screenshots")
     for file_info in Driver.DirFileInfo(dir_path=screenshots_dir, file_filter_pattern=".*png"):
         file_path = file_info["file_path"]
+        print("Input Image file_path", file_path)
         yield Template.ImageReference(
             reference_writeup=f"### Image Path of provided image __NL__{file_path}__NL__",
             reference_image_file_path=file_path,

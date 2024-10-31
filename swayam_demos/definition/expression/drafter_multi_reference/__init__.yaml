@@ -5,3 +5,8 @@ prompts:
       definitions: 
         - review
       entity: depends_multiref_loop
+      aggregate_name: reviews_multiref
+      refer:
+        - events
+        - name: gift_ideas
+          iter_content: True

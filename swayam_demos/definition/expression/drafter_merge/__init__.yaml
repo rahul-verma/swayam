@@ -1,0 +1,11 @@
+purpose: Basic Text Drafter Demo
+
+prompts:
+  - draft:
+      definitions: 
+        - merge
+      entity: events
+      aggregate_name: merged_events
+      refer:
+        - name: events
+          iter_content: True

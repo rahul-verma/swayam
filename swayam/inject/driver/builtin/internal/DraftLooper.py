@@ -40,6 +40,7 @@ def call_drafter(*, invoker, **kwargs):
     return Template.Success()
 
 def draft_loop(*, invoker, definitions, entity, **kwargs):
+    print("Starting draft loop")
     from swayam import Action
     from swayam import Entity
     from swayam.llm.phase.expression.drafter import Drafter
@@ -47,6 +48,7 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
     drafter = Drafter(entity=entity, thought=invoker.thought_name, **kwargs)
     invoker.phase.drafter = drafter
     
+    print("Building Draft Action ...")
     Draft = Action.build("Draft", 
                          callable=call_drafter, 
                          description=f"Writes the {entity.singular_name} to disk.",
@@ -54,16 +56,20 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
                          out_template=Template.Result
     )
     
+    print("Associating Action with Tool Calling ...")
     invoker.phase.mandatory_action = Draft
     
     if not drafter.has_dependencies:
+        print("No references for this entity ...")
         yield ReferenceTemplate(
                             reference_description="",
                             reference_template="",
                             reference_content=""
                         )
     else:
+        print("Feeders:", drafter.feeders)
         for feeder in drafter.feeders:
+            print("Processing Feeder:", feeder)
             feed_driver = None
             feed_template = None
             if isinstance(feeder, str):
@@ -102,6 +108,9 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
             else:
                 writeup = reference.singular_writeup(content)
                 reference_data = content
+                # For merge scenarios
+                if type(reference_data) is list:
+                    reference_data = {"All Entries": content}
             return ReferenceTemplate(
                     reference_description=ref.description,
                     reference_template=json.dumps(ref.template.definition),
@@ -110,7 +119,7 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
                     reference_data=reference_data
                 )    
 
-        # Handle references
+        print("References:", drafter.references)
         for reference_data in drafter.references:
             from swayam import Reference
             if isinstance(reference_data, str):
@@ -122,7 +131,10 @@ def draft_loop(*, invoker, definitions, entity, **kwargs):
                 iter_content = reference_data.get("iter_content", False)
                 reference = get_reference(ref_name)
                 if iter_content:
-                    for content in reference.contents:
+                    for entity_name, entity_content in reference.contents.items():
+                        # for item in entity_content:
+                        #     item[entity.primary_key] = entity_name
+                        content =  {entity_name: entity_content}
                         yield create_prompt_formatter(reference, content, whole_reference=False) 
                 else:
                     yield create_prompt_formatter(reference, reference.contents, whole_reference=True)

@@ -64,7 +64,6 @@ class SwayamOption(Enum):
     LLM_MODEL = auto()
     '''Default LLM Model name.'''
     
-    
     # Updating the Tarkash option
     LOG_DIR = auto()
     '''Root Directory for Logs'''

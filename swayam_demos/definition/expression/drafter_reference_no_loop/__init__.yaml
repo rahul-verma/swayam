@@ -5,3 +5,6 @@ prompts:
       definitions:
         - gift_ideas
       entity: depends_events
+      aggregate_name: gift_ideas
+      refer:
+        - merged_events

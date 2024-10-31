@@ -1,5 +1,2 @@
 description: contains gift ideas for an event in Calendar.
-
-refer:
-  - name: events
-    iter_content: True
+template: TextContent

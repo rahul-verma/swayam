@@ -5,3 +5,7 @@ prompts:
       definitions:
         - gift_ideas
       entity: depends_events_loop
+      aggregate_name: gift_ideas_looped
+      refer:
+        - name: merged_events
+          iter_content: True

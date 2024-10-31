@@ -1,4 +1,2 @@
 description: contains gift ideas for an event in Calendar.
-
-refer:
-  - events
+template: TextContent
