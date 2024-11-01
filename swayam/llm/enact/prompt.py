@@ -81,10 +81,11 @@ class PromptEnactor(BaseLLMEnactor):
                 if tool.function.name == "Draft":
                     drafter_found = True
                 action_results[tool.id] = {"name": tool.function.name, "arguments": tool.function.arguments}
-                
-                action_response = prompt.call_action(tool.id, tool.function.name, **json.loads(tool.function.arguments))
-                
-                action_results[tool.id]["response"] = json.dumps(action_response.content)
+                if json.loads(tool.function.arguments) is not None:
+                    action_response = prompt.call_action(tool.id, tool.function.name, **json.loads(tool.function.arguments))
+                    action_results[tool.id]["response"] = json.dumps(action_response.content)
+                else:
+                    action_results[tool.id]["response"] = "null"
                 self.recorder.record_action_response(action_response)
                 response_messages.append(action_response)
                 conversation.append_action_response(action_response)

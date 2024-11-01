@@ -55,7 +55,7 @@ class OpenAIClient(LLMClient):
                             model=self.model_name,
                             messages=messages,
                             tools=actions,
-                            # tool_choice="required",
+                            tool_choice="required",
                             **self._model_kwargs
                         )
                 else:
