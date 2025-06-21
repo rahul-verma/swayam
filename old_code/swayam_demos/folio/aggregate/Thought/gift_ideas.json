@@ -1,0 +1,15 @@
+{
+    "entity": "depends_events",
+    "fragments": {
+        "Event 1": [
+            {
+                "content": "Gift ideas for Bob could include a personalized mug, a gift card to his favorite restaurant, or a book in a genre he enjoys."
+            }
+        ],
+        "Event 2": [
+            {
+                "content": "For the ATD event, consider gifts like custom notebooks, team-building games, or a shared experience like a cooking class."
+            }
+        ]
+    }
+}

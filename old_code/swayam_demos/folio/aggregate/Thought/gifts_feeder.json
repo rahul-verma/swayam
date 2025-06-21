@@ -1,0 +1,15 @@
+{
+    "entity": "depends_feeder",
+    "fragments": {
+        "Birthday Party Gift Ideas": [
+            {
+                "content": "1. Personalized gifts (e.g., custom mugs, photo frames)\n2. Gift cards to favorite stores or restaurants\n3. Experience gifts (e.g., concert tickets, spa day)\n4. Subscription boxes (e.g., books, snacks)\n5. Tech gadgets (e.g., headphones, smart speakers)\n6. Hobby-related items (e.g., art supplies, sports gear)\n7. Books or novels from favorite genres\n8. Board games or puzzles for family fun\n9. Gourmet food baskets or treats\n10. Plants or flowers for a touch of nature."
+            }
+        ],
+        "Professional_Conference_Gift_Ideas": [
+            {
+                "content": "1. Customized Notebooks: Useful for taking notes during sessions.\n2. High-Quality Pens: A professional touch for signing documents.\n3. Portable Phone Chargers: Essential for keeping devices charged throughout the day.\n4. Business Card Holders: Helps in networking and exchanging contact information.\n5. Conference Tote Bags: Practical for carrying materials and swag.\n6. Gift Cards to Local Restaurants: Encourages networking over meals.\n7. Professional Development Books: Relevant to the conference theme.\n8. Stress Relief Toys: Helpful for relaxation during busy schedules.\n9. Personalized Water Bottles: Eco-friendly and useful for hydration.\n10. Tech Gadgets: Such as Bluetooth speakers or headphones for leisure."
+            }
+        ]
+    }
+}

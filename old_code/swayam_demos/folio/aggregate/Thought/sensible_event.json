@@ -1,0 +1,16 @@
+{
+    "entity": "sensible_events",
+    "fragments": {
+        "Science Fair Event": [
+            {
+                "event_name": "Science Fair",
+                "event_date": "Friday",
+                "event_participants": [
+                    "Alice",
+                    "Bob"
+                ],
+                "event_city": []
+            }
+        ]
+    }
+}

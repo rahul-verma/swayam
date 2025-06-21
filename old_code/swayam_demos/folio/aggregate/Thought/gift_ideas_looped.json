@@ -1,0 +1,13 @@
+{
+    "entity": "depends_events_loop",
+    "fragments": {
+        "Gift Ideas for Events": [
+            {
+                "content": "Gift ideas for the event 'Unknown' on 'Friday' with participant 'Bob':\n1. Personalized mug with Bob's name.\n2. A gift card to Bob's favorite coffee shop.\n3. A custom notebook for Bob to jot down ideas.\n4. A small potted plant for his workspace.\n5. A fun desk toy to keep him entertained."
+            },
+            {
+                "content": "Gift ideas for the event 'ATD' could include personalized items for participants A, T, and D, such as custom notebooks, engraved pens, or team-building experiences. Since the event does not have a specified date or city, consider gifts that are versatile and can be used in various settings."
+            }
+        ]
+    }
+}

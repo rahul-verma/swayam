@@ -1,0 +1,10 @@
+{
+    "entity": "trip_input",
+    "fragments": {
+        "Berlin Trip Packing List": [
+            {
+                "content": "1. Clothing: Light layers for warm weather, a light jacket for cooler evenings, comfortable walking shoes, and a hat. \n2. Toiletries: Travel-sized shampoo, conditioner, toothpaste, and any personal care items. \n3. Electronics: Phone, charger, camera, and any necessary adapters. \n4. Travel Documents: Passport, travel insurance, and any reservation confirmations. \n5. Miscellaneous: Sunglasses, reusable water bottle, and a small backpack for day trips."
+            }
+        ]
+    }
+}

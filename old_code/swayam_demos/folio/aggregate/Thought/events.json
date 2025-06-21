@@ -1,0 +1,45 @@
+{
+    "entity": "events",
+    "fragments": {
+        "Event 1": [
+            {
+                "event_name": "Unknown",
+                "event_date": "Friday",
+                "event_participants": [
+                    "Bob"
+                ],
+                "event_city": []
+            },
+            {
+                "event_name": "Unknown",
+                "event_date": "Friday",
+                "event_participants": [
+                    "Bob"
+                ],
+                "event_city": []
+            }
+        ],
+        "Event 2": [
+            {
+                "event_name": "ATD",
+                "event_date": "",
+                "event_participants": [
+                    "A",
+                    "T",
+                    "D"
+                ],
+                "event_city": []
+            },
+            {
+                "event_name": "ATD",
+                "event_date": "",
+                "event_participants": [
+                    "A",
+                    "T",
+                    "D"
+                ],
+                "event_city": []
+            }
+        ]
+    }
+}
