@@ -1,5 +1,5 @@
 import os
-from swayam.lib.util.file import TextFile
+from swayam.core.util.file import TextFile
 
 class PromptFile:
     
